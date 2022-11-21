@@ -1,0 +1,32 @@
+.zy-row {
+  display: flex;
+  height: calc(100vh - 200px);
+  background: #fff;
+}
+
+.left-content {
+  flex-shrink: 0;
+  width: 200px;
+  padding: 24px;
+  padding-right: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+
+  :global {
+    .ant-steps-item-description {
+      min-height: 50px;
+    }
+
+    .ant-steps-item-active {
+      .ant-steps-item-container {
+        // padding-top: 8px;
+        border-right: 2px solid #1890ff;
+      }
+    }
+  }
+}
+
+.right-content {
+  flex: 1;
+  padding: 24px;
+  overflow: auto;
+}

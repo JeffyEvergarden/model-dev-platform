@@ -2,15 +2,31 @@
   font-size: 20px;
 }
 
-
 .title-row {
   display: flex;
   justify-content: space-around;
+  margin: 8px -16px;
 }
 
 .title-box {
-  padding: 16px;
   display: flex;
-  justify-content: space-between;
+  flex: 1 1 auto;
   align-items: center;
+  justify-content: space-between;
+  min-width: 300px;
+  height: 80px;
+  margin: 0 16px;
+  padding: 16px;
+  background: #fff;
+  cursor: default;
+
+  .content {
+    display: flex;
+    font-size: 16px;
+  }
+
+  .number {
+    font-weight: bold;
+    font-size: 16px;
+  }
 }
