@@ -15,6 +15,12 @@ const StepOne: React.FC = (props: any) => {
 
   const [form] = Form.useForm();
 
+  const submitNextStep = () => {
+    // console.log('---------');
+    // ------------------------------
+    // history.push('/step');
+  };
+
   useEffect(() => {}, []);
 
   return (
@@ -82,7 +88,7 @@ const StepOne: React.FC = (props: any) => {
         </div>
       </Form>
 
-      <NextStepButton />
+      <NextStepButton onClick={submitNextStep} />
     </div>
   );
 };

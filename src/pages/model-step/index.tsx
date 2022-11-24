@@ -4,7 +4,7 @@ import { useModel, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps } from 'antd';
 import style from './style.less';
-import { config as configMap } from './config';
+import { config as configMap, STEP_ITEM_LIST } from './config';
 
 const Step = Steps.Step;
 
@@ -35,7 +35,7 @@ const Myjob: React.FC = (props: any) => {
 
   const [modelStep, setModelStep] = useState<number>(0);
 
-  const [finishStep, setFinishStep] = useState<number>(3);
+  const [finishStep, setFinishStep] = useState<number>(9);
 
   useEffect(() => {}, []);
 
@@ -50,58 +50,20 @@ const Myjob: React.FC = (props: any) => {
     }
     setModelStep(val);
     // 跳转
-    if (configMap[val]) {
-      history.push(configMap[val]);
+    let key: any = STEP_ITEM_LIST[val]?.name;
+    console.log(key);
+    if (configMap[key]) {
+      history.push(configMap[key]);
     }
   };
 
-  const stepItems = [
-    {
-      title: '模型概况',
-      description: modelMapToValue(modelStep, finishStep, 0),
-      status: modelMapToStatus(modelStep, finishStep, 0),
-    },
-    {
-      title: '样本选取',
-      description: modelMapToValue(modelStep, finishStep, 1),
-      status: modelMapToStatus(modelStep, finishStep, 1),
-    },
-    {
-      title: '策略回溯',
-      description: modelMapToValue(modelStep, finishStep, 2),
-      status: modelMapToStatus(modelStep, finishStep, 2),
-    },
-    {
-      title: '前期分析',
-      description: modelMapToValue(modelStep, finishStep, 3),
-      status: modelMapToStatus(modelStep, finishStep, 3),
-    },
-    {
-      title: '样本定义',
-      description: modelMapToValue(modelStep, finishStep, 4),
-      status: modelMapToStatus(modelStep, finishStep, 4),
-    },
-    {
-      title: '特征工程',
-      description: modelMapToValue(modelStep, finishStep, 5),
-      status: modelMapToStatus(modelStep, finishStep, 5),
-    },
-    {
-      title: '模型构建',
-      description: modelMapToValue(modelStep, finishStep, 6),
-      status: modelMapToStatus(modelStep, finishStep, 6),
-    },
-    {
-      title: '模型对比',
-      description: modelMapToValue(modelStep, finishStep, 7),
-      status: modelMapToStatus(modelStep, finishStep, 7),
-    },
-    {
-      title: '生成报告',
-      description: modelMapToValue(modelStep, finishStep, 8),
-      status: modelMapToStatus(modelStep, finishStep, 8),
-    },
-  ];
+  const _stepItems = STEP_ITEM_LIST.map((item: any, i: number) => {
+    return {
+      title: item.title,
+      description: modelMapToValue(modelStep, finishStep, i),
+      status: modelMapToStatus(modelStep, finishStep, i),
+    };
+  });
 
   return (
     <PageContainer
@@ -134,10 +96,10 @@ const Myjob: React.FC = (props: any) => {
         },
       }}
     >
-      <div className={style['zy-row']}>
+      <div className={style['zy-row']} key={modelStep}>
         <div className={style['left-content']}>
           <Steps direction="vertical" current={modelStep} onChange={onChange}>
-            {stepItems.map((item: any, index: number) => {
+            {_stepItems.map((item: any, index: number) => {
               return <Step key={index} {...item} />;
             })}
           </Steps>

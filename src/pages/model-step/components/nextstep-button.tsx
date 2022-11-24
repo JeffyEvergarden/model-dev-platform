@@ -12,11 +12,11 @@ const { RangePicker }: any = DatePicker;
 const NextStepButton: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { text = '下一个流程', onClick } = props;
+  const { text = '下一个流程', onClick, extra } = props;
 
   return (
     <div className={styles['step-bottom']}>
-      <div className={styles['step-left']}></div>
+      <div className={styles['step-left']}>{extra}</div>
 
       <div className={styles['step-right']}>
         <Button type="primary" size="large" onClick={onClick}>

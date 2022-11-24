@@ -3,6 +3,7 @@ import { DeleteOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-de
 import { Button, Input, message, Modal, Table, Tabs, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
+import NextStepButton from '../../components/nextstep-button';
 import { useStepSelectModel } from './model';
 import MyTree from './components/my-tree';
 import style from './style.less';
@@ -42,7 +43,7 @@ const { Search } = Input;
 // selectedWishKeys 已选择的意图
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'checkbox' } = props;
+  const { cref, confirm, type = 'checkbox', onNext } = props;
 
   // tabs 操作
   const [activeKey, setActivekey] = useState<string>('1');
@@ -158,6 +159,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
     getTreeList();
   }, []);
 
+  const onClick = () => {
+    onNext?.();
+  };
+
   return (
     <div className={style['modal-bg_default']}>
       <Tabs activeKey={activeKey}>
@@ -209,6 +214,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
           </div>
         </TabPane>
       </Tabs>
+
+      <NextStepButton onClick={onClick} />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 .zy-row {
   display: flex;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 205px);
+  overflow: auto;
   background: #fff;
 }
 
@@ -9,7 +10,10 @@
   width: 200px;
   padding: 24px;
   padding-right: 0;
+  padding-bottom: 30px;
   border-right: 1px solid rgba(0, 0, 0, 0.06);
+
+  // overflow: auto;
 
   :global {
     .ant-steps-item-description {
@@ -28,5 +32,5 @@
 .right-content {
   flex: 1;
   padding: 24px;
-  overflow: auto;
+  // overflow: auto;
 }
