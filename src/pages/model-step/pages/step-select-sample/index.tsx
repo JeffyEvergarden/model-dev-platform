@@ -27,7 +27,7 @@ const StepOne: React.FC = (props: any) => {
   const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
 
   // 过程id
-  const [processId, setProcessId] = useState<any>('');
+  const [processId, setProcessId] = useState<any>('1233');
 
   useEffect(() => {}, []);
 
@@ -74,7 +74,7 @@ const StepOne: React.FC = (props: any) => {
       <Condition r-if={stepType === 2}>
         <TabTwo
           tabType={tabType}
-          id={processId}
+          processId={processId}
           extra={
             <Button size="large" onClick={onClickReSelect}>
               重新选取

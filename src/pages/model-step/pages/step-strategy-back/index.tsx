@@ -3,6 +3,7 @@ import { Form, Input, DatePicker, Row, Col, Radio, Button } from 'antd';
 import styles from '../style.less';
 import { useState } from 'react';
 import Condition from '@/components/Condition';
+import TabTwo from './tab-two';
 
 const FormItem = Form.Item;
 
@@ -14,11 +15,25 @@ const { RangePicker }: any = DatePicker;
 const StepStrategyBack: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const [form] = Form.useForm();
+  const [tabType, setTabType] = useState<any>(1); // 导入数据类型 0、1  // 0 -> 是， 1 -> 否
+
+  const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
+
+  // 过程id
+  const [processId, setProcessId] = useState<any>('000');
 
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>策略回溯</div>
+
+      {/* 步骤一 */}
+      <Condition r-if={stepType === 1}>123</Condition>
+
+      {/* 步骤二 */}
+
+      <Condition r-if={stepType === 2}>
+        <TabTwo tabType={tabType} processId={processId}></TabTwo>
+      </Condition>
     </div>
   );
 };

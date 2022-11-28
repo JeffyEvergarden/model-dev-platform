@@ -16,9 +16,16 @@ const { Option } = Select;
 // 首页
 const StepTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { loadingContent, sucessContent, errorContent } = props;
+  const {
+    loadingContent,
+    sucessContent,
+    errorContent,
+    pageType = 'loading',
+    columns,
+    detailInfo,
+  } = props;
 
-  const [pageType, setPageType] = useState<any>('loading'); // init、 loading、finish、fail
+  // const [pageType, setPageType] = useState<any>('loading'); // init、 loading、finish、fail
 
   return (
     <div>
@@ -33,7 +40,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         </div>
       </Condition>
 
-      <Condition r-if={pageType === 'loading'}>
+      <Condition r-if={pageType === 'finish'}>
         <div className={styles['page_finish']}>
           <div className={styles['my-column']}>
             <div className={styles['common-icon']}>
@@ -44,7 +51,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         </div>
       </Condition>
 
-      <Condition r-if={pageType === 'loading'}>
+      <Condition r-if={pageType === 'error'}>
         <div className={styles['page_finish']}>
           <div className={styles['my-column']}>
             <div className={styles['common-icon']}>
@@ -55,7 +62,23 @@ const StepTwo: React.FC<any> = (props: any) => {
         </div>
       </Condition>
 
-      <div className={styles['common-content']}></div>
+      <Condition r-if={detailInfo}>
+        <div className={styles['detail-content']}>
+          {columns.map((item: any, index: number) => {
+            let val = detailInfo[item.key];
+            let fn = item?.formate;
+            if (typeof fn === 'function') {
+              val = fn(val);
+            }
+            return (
+              <div className={styles['col-row']} key={index}>
+                <span className={styles['label-item']}>{item.name}：</span>
+                <span className={styles['value-item']}>{val}</span>
+              </div>
+            );
+          })}
+        </div>
+      </Condition>
     </div>
   );
 };

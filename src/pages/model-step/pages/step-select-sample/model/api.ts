@@ -18,3 +18,10 @@ export async function getDatacolumnsList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function getWaitResult(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelStep/selectSample/result`, {
+    method: 'GET',
+    params,
+  });
+}

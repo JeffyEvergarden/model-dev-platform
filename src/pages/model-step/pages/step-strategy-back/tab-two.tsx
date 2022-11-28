@@ -4,9 +4,9 @@ import styles from './style.less';
 import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
-import { useSampleUploadAwaitModel } from './model';
+import { useStrategyBackUploadAwaitModel } from './model';
 
-import { tabSelectColumns } from './model/config';
+// import { tabSelectColumns } from './model/config';
 
 const FormItem = Form.Item;
 
@@ -17,13 +17,13 @@ const { RangePicker }: any = DatePicker;
 const { Option } = Select;
 
 // 首页
-const StepTwo: React.FC<any> = (props: any) => {
+const TabTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { processId, form, onNext, extra } = props;
 
   const [_form] = Form.useForm(form);
 
-  const { processType, awaitResult, startLoop } = useSampleUploadAwaitModel();
+  const { processType, startLoop } = useStrategyBackUploadAwaitModel();
 
   const onClick = () => {
     onNext?.();
@@ -40,24 +40,24 @@ const StepTwo: React.FC<any> = (props: any) => {
       <CommonPage
         loadingContent={
           <>
-            <div className={styles['title']}>样本选取中</div>
+            <div className={styles['title']}>策略回溯中</div>
             <div className={styles['desc']}>请稍后，待策略回溯完成后可开始下一个流程</div>
           </>
         }
         sucessContent={
           <>
-            <div className={styles['title']}>样本选取成功</div>
+            <div className={styles['title']}>策略回溯成功</div>
             <div className={styles['desc']}></div>
           </>
         }
         errorContent={
           <>
-            <div className={styles['title']}>样本选取失败</div>
+            <div className={styles['title']}>策略回溯失败</div>
             <div className={styles['desc']}></div>
           </>
         }
         pageType={processType}
-        columns={tabSelectColumns}
+        columns={[]}
         detailInfo={{
           isImport: '是',
           rangeDate: '20200113 - 20221130',
@@ -75,4 +75,4 @@ const StepTwo: React.FC<any> = (props: any) => {
   );
 };
 
-export default StepTwo;
+export default TabTwo;
