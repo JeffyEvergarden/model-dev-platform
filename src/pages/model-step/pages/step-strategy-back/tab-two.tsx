@@ -69,7 +69,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         }}
       />
       <Condition r-if={processType === 'finish'}>
-        <NextStepButton />
+        <NextStepButton onClick={onClick} />
       </Condition>
     </div>
   );

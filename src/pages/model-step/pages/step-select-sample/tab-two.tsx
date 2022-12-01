@@ -41,7 +41,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         loadingContent={
           <>
             <div className={styles['title']}>样本选取中</div>
-            <div className={styles['desc']}>请稍后，待策略回溯完成后可开始下一个流程</div>
+            <div className={styles['desc']}>请稍后，待样本选取完成后可开始下一个流程</div>
           </>
         }
         sucessContent={

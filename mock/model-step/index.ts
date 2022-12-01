@@ -148,4 +148,5 @@ export default {
 
   // 策略回溯
   [`GET ${baseUrl}/modelStep/strategyBack/list`]: getStrategyBackList,
+  [`GET ${baseUrl}/modelStep/strategyBack/result`]: getWaitResult,
 };
