@@ -265,7 +265,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         </Form>
       </div>
 
-      <div className={styles['page-table']}>
+      <div className={styles['page-table']} style={{ paddingBottom: '16px' }}>
         <div className={style['table-box']}>
           <Table
             pagination={false}
