@@ -64,7 +64,7 @@ const StepTwo: React.FC<any> = (props: any) => {
 
       <Condition r-if={detailInfo}>
         <div className={styles['detail-content']}>
-          {columns.map((item: any, index: number) => {
+          {columns?.map((item: any, index: number) => {
             let val = detailInfo[item.key];
             let fn = item?.formate;
             if (typeof fn === 'function') {
