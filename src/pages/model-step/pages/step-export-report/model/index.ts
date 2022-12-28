@@ -2,31 +2,30 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 
-import { getExportReportList } from './api';
+import { sampleDividerQueryApi, monthSpreadQueryApi } from './api';
 
 export const successCode = config.successCode;
 
 export const useExportReportModel = () => {
-  const [tableList, setTableList] = useState<any[]>([]);
-  const [tableTotal, setTableTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const getReportTableList = async (params?: any) => {
+  const sampleDividerQuery = async (params?: any) => {
     setLoading(true);
-    const res: any = await getExportReportList(params);
+    const res: any = await sampleDividerQueryApi(params);
     setLoading(false);
-    // 策略分析
-    if (res.resultCode === successCode) {
-      let data: any[] = res.data || [];
-      setTableTotal(res.total || 0);
-      setTableList(data);
-    }
+    return res;
+  };
+
+  const monthSpreadQuery = async (params?: any) => {
+    setLoading(true);
+    const res: any = await monthSpreadQueryApi(params);
+    setLoading(false);
+    return res;
   };
 
   return {
     loading,
-    tableList,
-    tableTotal,
-    getReportTableList,
+    sampleDividerQuery,
+    monthSpreadQuery,
   };
 };

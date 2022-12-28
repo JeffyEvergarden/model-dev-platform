@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, Tag, Tabs } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form, DatePicker, Space, Button, Tag, Tabs, Select } from 'antd';
 import styles from '../style.less';
-import { useState } from 'react';
+import { useModel, history } from 'umi';
 import Condition from '@/components/Condition';
 import ComparePage from './components/comparePage';
+import NextStepButton from '../../components/nextstep-button';
 
 const FormItem = Form.Item;
 
@@ -24,6 +25,14 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     { name: 'model1-4', data: [] },
   ]);
 
+  const nextFlow = async () => {
+    const values = await form.validateFields();
+    if (!values) {
+      return;
+    }
+    history.push('/modelStep/exportReport');
+  };
+
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
@@ -39,6 +48,38 @@ const StepModelCompare: React.FC<any> = (props: any) => {
             children: <ComparePage data={el?.data} />,
           };
         })}
+      />
+      <NextStepButton
+        extra={
+          <div className={styles.compareForm}>
+            <Form form={form} layout="inline">
+              <Form.Item
+                label="选择最优模型"
+                name="modelName"
+                rules={[{ required: true, message: '请选择最优模型' }]}
+              >
+                <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>
+                  <Select.Option key={'model_1'} value={'model_1'}>
+                    model_1
+                  </Select.Option>
+                  <Select.Option key={'model_2'} value={'model_2'}>
+                    model_2
+                  </Select.Option>
+                  <Select.Option key={'model_3'} value={'model_3'}>
+                    model_3
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+            </Form>
+          </div>
+        }
+        btnNode={
+          <Space>
+            <Button onClick={nextFlow} size="large" type="primary">
+              下一流程
+            </Button>
+          </Space>
+        }
       />
     </div>
   );
