@@ -10,3 +10,11 @@ export async function getTreeList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+/** 获取所有数据库列表 **/
+export async function getVarList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelStep/featurePrepare/var/list`, {
+    method: 'GET',
+    params,
+  });
+}

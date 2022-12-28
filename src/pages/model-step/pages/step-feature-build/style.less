@@ -1,0 +1,27 @@
+.form {
+  display: flex;
+  .formItem {
+    flex: 1;
+    max-width: 250px;
+    margin-right: 12px;
+  }
+  .inputNumber {
+    width: 100px;
+    margin-right: 12px;
+  }
+}
+
+.missingTable {
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+  .titleSpan {
+    font-weight: bold;
+  }
+  :global {
+    .ant-table-title {
+      padding: 0;
+    }
+  }
+}

@@ -1,3 +1,51 @@
 .test {
   font-size: 14px;
 }
+
+//
+
+.select-box {
+  margin-top: 16px;
+  font-size: 16px;
+  .select-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .select-item {
+    display: flex;
+    align-items: center;
+    margin-right: 36px;
+
+    .label {
+      width: 215px;
+      margin-right: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .num {
+      flex-shrink: 0;
+      margin-right: 4px;
+      // color: #1890ff;
+    }
+
+    .icon {
+      flex-shrink: 0;
+      margin-right: 4px;
+    }
+
+    .del {
+      color: #00000060;
+      :hover {
+        color: #1890ff;
+      }
+    }
+  }
+
+  .title {
+    font-weight: 700;
+  }
+}
