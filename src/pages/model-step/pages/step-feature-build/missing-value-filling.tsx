@@ -10,6 +10,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   const formData = Form.useWatch('number', form);
   const formData2 = Form.useWatch('type', form);
+  const formData3 = Form.useWatch('box', form);
   const { Item: FormItem, List: FormList } = Form;
   const { Option } = Select;
 
@@ -89,7 +90,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
   return (
     <div>
-      <div style={{ fontWeight: 'bold' }}>缺失值填充</div>
+      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>缺失值填充</div>
       <Form form={form}>
         <div className={style['form']}>
           <FormItem label={'数值型变量'} className={style['formItem']} name={'number'}>
@@ -109,7 +110,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           </FormItem>
           <Condition r-if={formData == 4}>
             <FormItem className={style['inputNumber']} name={'inputNumber'}>
-              <Input type={'number'} allowClear></Input>
+              <Input type={'number'} allowClear placeholder="请输入"></Input>
             </FormItem>
           </Condition>
 
@@ -124,7 +125,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           </FormItem>
           <Condition r-if={formData2 == 4}>
             <FormItem className={style['inputNumber']} name={'input'}>
-              <Input allowClear></Input>
+              <Input allowClear placeholder="请输入"></Input>
             </FormItem>
           </Condition>
 
@@ -137,6 +138,12 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               ))}
             </Select>
           </FormItem>
+
+          <Condition r-if={formData3 == 1}>
+            <FormItem className={style['inputNumber']} name={'boxinputNumber'}>
+              <Input type={'number'} allowClear placeholder="分箱个数"></Input>
+            </FormItem>
+          </Condition>
           <Button type="primary" onClick={searchTable}>
             确定
           </Button>

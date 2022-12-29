@@ -92,7 +92,7 @@ const getVarList = (req: any, res: any) => {
       },
     ],
   };
-  let list = new Array(10).fill(1).map((item: any, index: number) => {
+  let list = new Array(50).fill(1).map((item: any, index: number) => {
     return {
       ...jsonObj,
       name: '阿斯拉大' + index,
@@ -109,8 +109,8 @@ const getVarList = (req: any, res: any) => {
     requestId: '111',
     success: true,
     data: {
-      pageSize: 10,
-      totalPage: 11,
+      pageSize: req?.pageSize || 10,
+      totalPage: 100,
       page: 1,
       similarNum: 20,
       list: [...list],

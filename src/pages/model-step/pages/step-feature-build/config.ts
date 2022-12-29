@@ -35,3 +35,34 @@ export const boxList: any[] = [
     label: '决策树分箱',
   },
 ];
+
+export const VarBoxList: any[] = [
+  {
+    label: 'IV筛选',
+    name: 'iv',
+    str: 'ivStr',
+    min: '0.00',
+    max: '10.00',
+  },
+  {
+    label: 'KS筛选',
+    name: 'ks',
+    str: 'ksStr',
+    min: '0.00',
+    max: '1.00',
+  },
+  {
+    label: '缺失率筛选',
+    name: 'lost',
+    str: 'lostStr',
+    min: '0.00',
+    max: '1.00',
+  },
+  {
+    label: '相关性筛选',
+    name: 'relevant',
+    str: 'relevantStr',
+    min: '0.00',
+    max: '1.00',
+  },
+];
