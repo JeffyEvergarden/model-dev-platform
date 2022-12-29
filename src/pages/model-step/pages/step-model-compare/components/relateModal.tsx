@@ -1,6 +1,7 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Modal } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
+import VarCodeRelateTable from '@/pages/model-step/components/varCodeRelateTable';
 import styles from './index.less';
 import classnames from 'classnames';
 
@@ -27,20 +28,12 @@ export default (props: any) => {
     >
       <div className={classnames(styles.comparePage, styles.modalPage)}>
         <div className={classnames(styles.tableBox, styles.relateTable)}>
-          <ProTable
+          <VarCodeRelateTable
             headerTitle=""
             rowKey={(record: any) => record.id}
             toolBarRender={() => []}
-            options={false}
-            bordered
-            pagination={false}
-            search={false}
             columns={columnsRelate}
             dataSource={dataSourceRelate}
-            scroll={{
-              x: columnsRelate?.length * 150,
-              y: dataSourceRelate?.length > 10 ? 200 : undefined,
-            }}
           />
         </div>
       </div>

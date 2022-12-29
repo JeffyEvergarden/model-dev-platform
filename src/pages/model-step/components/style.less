@@ -47,3 +47,93 @@
     }
   }
 }
+
+.TableCommonSty {
+  :global {
+    .ant-pro-card-body {
+      padding: 0;
+    }
+    .ant-pro-table-list-toolbar-title {
+      color: rgba(0, 0, 0, 0.847);
+      // font-weight: 700;
+      font-size: 14px;
+      font-family: '微软雅黑 Bold', '微软雅黑 Regular';
+    }
+  }
+}
+
+.relateTable {
+  // margin-top: 20px;
+  :global {
+    .ant-table-tbody {
+      .ant-table-cell {
+        padding: 0 !important;
+      }
+    }
+  }
+  .commonSty {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 8px;
+  }
+  .colorFir {
+    background-color: rgba(#52c41a, 35%);
+  }
+  .colorTwo {
+    background-color: rgba(#ff4d4f, 35%);
+  }
+  .colorThree {
+    background-color: rgba(#ff4d4f, 45%);
+  }
+  .colorFour {
+    background-color: rgba(#ff4d4f, 55%);
+  }
+  .colorFive {
+    background-color: rgba(#ff4d4f, 65%);
+  }
+  .colorSix {
+    background-color: rgba(#ff4d4f, 75%);
+  }
+  .colorSeven {
+    background-color: rgba(#ff4d4f, 85%);
+  }
+}
+.cellSty {
+  padding-left: 8px;
+}
+.progressBox {
+  position: relative;
+  :global {
+    .ant-progress-inner {
+      border-radius: 0;
+    }
+    .ant-progress-bg {
+      height: 40px !important;
+      border-radius: 0;
+    }
+  }
+  .progressPercent {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: rgba(0, 0, 0, 0.847);
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    font-style: normal;
+  }
+}
+.progressBox_even {
+  :global {
+    .ant-progress-bg {
+      background-color: rgba(#52c41a, 35%);
+    }
+  }
+}
+.progressBox_odd {
+  :global {
+    .ant-progress-bg {
+      background-color: rgba(#1a86c4, 35%);
+    }
+  }
+}

@@ -8,7 +8,7 @@ const codeListData = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      total: 6,
+      total: 30,
       pageSize: 10,
       pageNum: 1,
       list: [
@@ -32,7 +32,7 @@ const relateCodeListGet = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      total: 6,
+      total: 60,
       pageSize: 10,
       pageNum: 1,
       list: [

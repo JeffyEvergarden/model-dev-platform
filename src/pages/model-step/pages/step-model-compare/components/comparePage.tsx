@@ -7,6 +7,9 @@ import Condition from '@/components/Condition';
 import classnames from 'classnames';
 import { ZoomInOutlined } from '@ant-design/icons';
 import RelateModal from './relateModal';
+import InputVariableTable from '@/pages/model-step/components/inputVariableTable';
+import VarCodeRelateTable from '@/pages/model-step/components/varCodeRelateTable';
+import ScoreCardTable from '@/pages/model-step/components/scoreCardTable';
 import { changeData } from '@/utils';
 
 export default (props: any) => {
@@ -29,7 +32,6 @@ export default (props: any) => {
   //变量相关性
   const [dataSourceRelate, setDataSourceRelate] = useState<any>([]);
   const [columnsRelate, setColumnsRelate] = useState<any>([]);
-  const [columnsRelateTemp, setColumnsRelateTemp] = useState<any>([]);
 
   //集合
   const [columnsCollect, setColumnsCollect] = useState<any>([
@@ -143,58 +145,6 @@ export default (props: any) => {
     getStableData();
   }, []);
 
-  useEffect(() => {
-    let temp: any = [
-      {
-        title: '',
-        dataIndex: 'name',
-        key: 'name',
-        ellipsis: true,
-        fixed: 'left',
-        render: (t: any, r: any, i: any) => {
-          return <span className={styles.cellSty}>{r.name}</span>;
-        },
-      },
-    ];
-    columnsRelateTemp?.map((item: any, index: any) => {
-      temp.push({
-        title: item.name,
-        dataIndex: item.dataIndex,
-        key: item,
-        ellipsis: true,
-        render: (t: any, r: any, i: any) => {
-          let currentVal = Math.abs(Number(r?.[item.dataIndex]));
-          return (
-            <Fragment>
-              {(currentVal < 0.1 || currentVal == 0.1) && (
-                <span className={classnames(styles.commonSty, styles.colorFir)}>{t}</span>
-              )}
-              {0.1 < currentVal && (currentVal < 0.2 || currentVal == 0.2) && (
-                <span className={classnames(styles.commonSty, styles.colorTwo)}>{t}</span>
-              )}
-              {0.2 < currentVal && (currentVal < 0.3 || currentVal == 0.3) && (
-                <span className={classnames(styles.commonSty, styles.colorThree)}>{t}</span>
-              )}
-              {0.3 < currentVal && (currentVal < 0.4 || currentVal == 0.4) && (
-                <span className={classnames(styles.commonSty, styles.colorFour)}>{t}</span>
-              )}
-              {0.4 < currentVal && (currentVal < 0.5 || currentVal == 0.5) && (
-                <span className={classnames(styles.commonSty, styles.colorFive)}>{t}</span>
-              )}
-              {0.5 < currentVal && currentVal < 1 && (
-                <span className={classnames(styles.commonSty, styles.colorSix)}>{t}</span>
-              )}
-              {currentVal == 1 && (
-                <span className={classnames(styles.commonSty, styles.colorSeven)}>{t}</span>
-              )}
-            </Fragment>
-          );
-        },
-      });
-    });
-    setColumnsRelate(temp);
-  }, [columnsRelateTemp]);
-
   const getVarCodeStable = async (payload: any) => {
     let params = {};
     let res = await varCodeStableQuery(params);
@@ -287,7 +237,7 @@ export default (props: any) => {
     let params = {};
     let res = await relateCodeList(params);
     setDataSourceRelate(res?.data?.list);
-    setColumnsRelateTemp(res?.data?.columnsRelate);
+    setColumnsRelate(res?.data?.columnsRelate);
   };
 
   const varCodeList = async (payload: any) => {
@@ -297,7 +247,7 @@ export default (props: any) => {
     setPageInfo(res?.data);
     return {
       data: res?.data?.list || [],
-      total: res?.data?.totalPage || 0,
+      total: res?.data?.total || 0,
       current: payload.current,
       pageSize: payload.pageSize,
     };
@@ -336,180 +286,6 @@ export default (props: any) => {
       pageSize: payload.pageSize,
     };
   };
-
-  const columns: any[] = [
-    {
-      title: '序号',
-      width: 50,
-      dataIndex: 'index',
-      render: (t: any, r: any, index: number) => {
-        return (Number(pageInfo.pageNum) - 1) * Number(pageInfo.pageSize) + Number(index);
-      },
-    },
-    {
-      title: '变量名称',
-      dataIndex: 'name',
-      ellipsis: true,
-    },
-    {
-      title: '中文名称',
-      dataIndex: 'nameZH',
-      ellipsis: true,
-    },
-    ,
-    {
-      title: '变量来源',
-      dataIndex: 'source',
-      ellipsis: true,
-    },
-    {
-      title: '自由度',
-      dataIndex: 'free',
-      ellipsis: true,
-    },
-    {
-      title: 'coef_',
-      dataIndex: 'coef_',
-      ellipsis: true,
-    },
-    {
-      title: 'VIF',
-      dataIndex: 'VIF',
-      ellipsis: true,
-    },
-    {
-      title: 'wald_test',
-      dataIndex: 'wald_test',
-      ellipsis: true,
-    },
-    {
-      title: 'p_value',
-      dataIndex: 'p_value',
-      ellipsis: true,
-    },
-    {
-      title: 'iv',
-      dataIndex: 'iv',
-      ellipsis: true,
-    },
-  ];
-
-  const columnsScoreCard: any = [
-    {
-      title: '变量名称',
-      dataIndex: 'name',
-      render: (t: any, r: any, i: any) => {
-        return {
-          children: <span className={styles.cellSty}>{r.name}</span>,
-          props: {
-            rowSpan: r.namerowSpan,
-          },
-        };
-      },
-    },
-    {
-      title: '中文含义',
-      dataIndex: 'nameZH',
-      render: (t: any, r: any, i: any) => {
-        return {
-          children: <span className={styles.cellSty}>{r.nameZH}</span>,
-          props: {
-            rowSpan: r.namerowSpan,
-          },
-        };
-      },
-    },
-    {
-      title: '分箱',
-      dataIndex: 'divider',
-      render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
-      },
-    },
-    {
-      title: '分数',
-      dataIndex: 'score',
-      render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.score}</span>;
-      },
-    },
-    {
-      title: '训练坏比率',
-      dataIndex: 'badRate',
-      render: (t: any, r: any, i: any) => {
-        let temp = r?.badRate?.replace('%', '');
-        let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
-        return (
-          <div
-            className={classnames(
-              styles.progressBox,
-              idxNum === 'even' ? styles.progressBox_even : styles.progressBox_odd,
-            )}
-          >
-            <Progress percent={Number(temp)} showInfo={false} trailColor="#fff" />
-            <span className={styles.progressPercent}>{t}</span>
-          </div>
-        );
-      },
-    },
-    {
-      title: '验证坏比率',
-      dataIndex: 'trateRate',
-      render: (t: any, r: any, i: any) => {
-        let temp = r?.trateRate?.replace('%', '');
-        let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
-        return (
-          <div
-            className={classnames(
-              styles.progressBox,
-              idxNum === 'even' ? styles.progressBox_even : styles.progressBox_odd,
-            )}
-          >
-            <Progress percent={Number(temp)} showInfo={false} trailColor="#fff" />
-            <span className={styles.progressPercent}>{t}</span>
-          </div>
-        );
-      },
-    },
-    {
-      title: '训练该箱占比',
-      dataIndex: 'trateCurrentRate',
-      render: (t: any, r: any, i: any) => {
-        let temp = r?.trateCurrentRate?.replace('%', '');
-        let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
-        return (
-          <div
-            className={classnames(
-              styles.progressBox,
-              idxNum === 'even' ? styles.progressBox_even : styles.progressBox_odd,
-            )}
-          >
-            <Progress percent={Number(temp)} showInfo={false} trailColor="#fff" />
-            <span className={styles.progressPercent}>{t}</span>
-          </div>
-        );
-      },
-    },
-    {
-      title: '验证该箱占比',
-      dataIndex: 'verifyCurrentRate',
-      render: (t: any, r: any, i: any) => {
-        let temp = r?.verifyCurrentRate?.replace('%', '');
-        let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
-        return (
-          <div
-            className={classnames(
-              styles.progressBox,
-              idxNum === 'even' ? styles.progressBox_even : styles.progressBox_odd,
-            )}
-          >
-            <Progress percent={Number(temp)} showInfo={false} trailColor="#fff" />
-            <span className={styles.progressPercent}>{t}</span>
-          </div>
-        );
-      },
-    },
-  ];
 
   const columnsTrate: any = [
     {
@@ -598,25 +374,18 @@ export default (props: any) => {
       </Descriptions>
       <div className={styles.tableBox}>
         <span className={styles.tableTitle}>模型结果</span>
-        <ProTable
+        <InputVariableTable
           headerTitle="入模变量"
           rowKey={(record: any) => record.id}
-          toolBarRender={() => []}
-          options={false}
-          bordered
           actionRef={actionRef}
-          pagination={{
-            pageSize: 10,
-          }}
-          search={false}
-          columns={columns}
+          pageInfo={pageInfo}
           request={async (params = {}) => {
             return varCodeList(params);
           }}
         />
       </div>
       <div className={classnames(styles.relateTable)}>
-        <ProTable
+        <VarCodeRelateTable
           headerTitle="变量相关性"
           rowKey={(record: any) => record.id}
           toolBarRender={() => [
@@ -631,31 +400,17 @@ export default (props: any) => {
               </Space>
             </div>,
           ]}
-          options={false}
-          bordered
-          pagination={false}
-          search={false}
           columns={columnsRelate}
           dataSource={dataSourceRelate}
-          scroll={{
-            x: columnsRelate?.length * 150,
-            y: dataSourceRelate?.length > 10 ? 200 : undefined,
-          }}
         />
       </div>
       <div className={classnames(styles.relateTable)}>
-        <ProTable
+        <ScoreCardTable
+          pageType="compareAndReport"
           headerTitle="评分卡-计算逻辑"
           rowKey={(record: any) => record.id}
           toolBarRender={() => []}
-          options={false}
-          bordered
           actionRef={actionRef}
-          pagination={{
-            pageSize: 10,
-          }}
-          search={false}
-          columns={columnsScoreCard}
           request={async (params = {}) => {
             return scoreCardList(params);
           }}
