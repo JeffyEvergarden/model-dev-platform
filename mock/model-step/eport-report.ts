@@ -12,95 +12,79 @@ const normalDeal = (req: any, res: any) => {
     resultCode: successCode,
   });
 };
-// 提交过程 通用
-const getWaitResult = (req: any, res: any) => {
-  if (time >= 2) {
-    time = 0;
-    res.json({
-      resultCode: successCode,
-      data: {
-        type: 'finish',
-      },
-    });
-  } else {
-    time++;
-    res.json({
-      resultCode: successCode,
-      data: {
-        type: 'loading',
-      },
-    });
-  }
-};
 
-// 策略回溯
-
-const getList = (req: any, res: any) => {
+const sampleDividerQueryApi = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    total: 6,
-    data: [
-      {
-        month: '2022-02',
-        goodNum: 1,
-        badNum: 1,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-03',
-        goodNum: 2,
-        badNum: 2,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-04',
-        goodNum: 3,
-        badNum: 3,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-05',
-        goodNum: 4,
-        badNum: 4,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-06',
-        goodNum: 5,
-        badNum: 5,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-07',
-        goodNum: 6,
-        badNum: 6,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-    ],
+    data: {
+      total: 6,
+      pageSize: 10,
+      pageNum: 1,
+      list: [
+        {
+          value1: '训练集',
+          value2: '4000',
+          value3: '4000',
+          value4: '33.33%',
+          value5: '12000',
+          value6: '4000',
+          value7: '33.33%',
+        },
+        {
+          value1: '跨期验证',
+          value2: '4000',
+          value3: '4000',
+          value4: '33.33%',
+          value5: '12000',
+          value6: '4000',
+          value7: '33.33%',
+        },
+      ],
+    },
   });
 };
 
-// 菜单管理相关
+const monthSpreadQueryApi = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: {
+      total: 6,
+      pageSize: 10,
+      pageNum: 1,
+      list: [
+        {
+          value1: '2022-01',
+          value2: '4000',
+          value3: '4000',
+          value4: '33.33%',
+          value5: '12000',
+          value6: '4000',
+          value7: '33.33%',
+        },
+        {
+          value1: '2022-02',
+          value2: '4000',
+          value3: '4000',
+          value4: '33.33%',
+          value5: '12000',
+          value6: '4000',
+          value7: '33.33%',
+        },
+        {
+          value1: '总计',
+          value2: '4000',
+          value3: '4000',
+          value4: '33.33%',
+          value5: '12000',
+          value6: '4000',
+          value7: '33.33%',
+        },
+      ],
+    },
+  });
+};
+
 export default {
-  // 样本定义
-  [`GET ${baseUrl}/modelStep/exportReport/list`]: getList,
-  [`POST ${baseUrl}/modelStep/exportReport/resultlist`]: getList,
+  [`POST ${baseUrl}/modelStep/exportReport/sampleDividerQueryApi`]: sampleDividerQueryApi,
+  [`POST ${baseUrl}/modelStep/exportReport/monthSpreadQueryApi`]: monthSpreadQueryApi,
 };

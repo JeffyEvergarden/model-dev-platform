@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Modal } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import styles from '../../style.less';
+import styles from './index.less';
 import classnames from 'classnames';
 
 export default (props: any) => {
