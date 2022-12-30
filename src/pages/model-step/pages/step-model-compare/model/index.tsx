@@ -8,6 +8,7 @@ import {
   trateAndVerifyDataApi,
   stableDataQueryApi,
   varCodeStableQueryApi,
+  modelSortListApi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -57,6 +58,13 @@ export const useComparePage = () => {
     return res;
   };
 
+  const modelSortList = async (params?: any) => {
+    setLoading(true);
+    const res: any = await modelSortListApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
     codeList,
@@ -65,5 +73,6 @@ export const useComparePage = () => {
     trateAndVerifyData,
     stableDataQuery,
     varCodeStableQuery,
+    modelSortList,
   };
 };

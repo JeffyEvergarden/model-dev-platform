@@ -43,3 +43,10 @@ export async function varCodeStableQueryApi(data?: Record<string, any>) {
     data,
   });
 }
+
+export async function modelSortListApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/robot/testWhiteList/modelSortListApi`, {
+    method: 'POST',
+    data,
+  });
+}
