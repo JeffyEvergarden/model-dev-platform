@@ -216,6 +216,32 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           );
         },
       },
+      {
+        title: '数据维度',
+        dataIndex: 'dataDimension',
+        fieldProps: {
+          placeholder: '请选择数据维度',
+        },
+        valueType: 'select',
+        valueEnum: {
+          账户层: '账户层',
+          借据层: '借据层',
+        },
+        hideInTable: true,
+      },
+      {
+        title: '汇总指标',
+        dataIndex: 'summary',
+        fieldProps: {
+          placeholder: '请选择数据维度',
+        },
+        valueType: 'select',
+        valueEnum: {
+          账户数: '账户数',
+          金额: '金额',
+        },
+        hideInTable: true,
+      },
     ];
     return [..._columns, ...extra];
   };
@@ -328,7 +354,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         <ProTable
           actionRef={rateRef}
           headerTitle="滚动率分析结果"
-          rowKey="id"
+          rowKey={(r) => r.key}
           toolBarRender={() => []}
           options={false}
           search={{

@@ -219,16 +219,82 @@ const getRateListRequest = (req: any, res: any) => {
     ],
     data: [
       {
+        key: 1,
         periodName: 'M0',
         period_0: '98.45%',
         period_1: '98.45%',
         period_2: '98.45%',
+        children: [
+          {
+            key: '11',
+            periodName: '2021-12',
+            period_0: '98.45%',
+            period_1: '98.45%',
+            period_2: '98.45%',
+            children: [
+              {
+                key: '111',
+                periodName: '2021-12',
+                period_0: '98.45%',
+                period_1: '98.45%',
+                period_2: '98.45%',
+              },
+            ],
+          },
+          {
+            key: '12',
+            periodName: '2022-01',
+            period_0: '98.45%',
+            period_1: '98.45%',
+            period_2: '98.45%',
+            children: [
+              {
+                key: '111',
+                periodName: '2021-12',
+                period_0: '98.45%',
+                period_1: '98.45%',
+                period_2: '98.45%',
+              },
+            ],
+          },
+          {
+            key: '13',
+            periodName: '2022-02',
+            period_0: '98.45%',
+            period_1: '98.45%',
+            period_2: '98.45%',
+          },
+        ],
       },
       {
+        key: 2,
         periodName: 'M1',
         period_0: '33.98%',
         period_1: '33.98%',
         period_2: '33.98%',
+        children: [
+          {
+            key: '21',
+            periodName: '2021-12',
+            period_0: '98.45%',
+            period_1: '98.45%',
+            period_2: '98.45%',
+          },
+          {
+            key: '22',
+            periodName: '2022-01',
+            period_0: '98.45%',
+            period_1: '98.45%',
+            period_2: '98.45%',
+          },
+          {
+            key: '23',
+            periodName: '2022-02',
+            period_0: '98.45%',
+            period_1: '98.45%',
+            period_2: '98.45%',
+          },
+        ],
       },
     ],
   });
