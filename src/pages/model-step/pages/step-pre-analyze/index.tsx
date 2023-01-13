@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useMemo } from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button } from 'antd';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
+import { Form, Input, DatePicker, Divider, Select } from 'antd';
 import styles from '../style.less';
-import { useState } from 'react';
 import Condition from '@/components/Condition';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
+import config from '@/config/index';
 
 const FormItem = Form.Item;
-
 const TextArea = Input.TextArea;
+const { Option } = Select;
 
 const { RangePicker }: any = DatePicker;
 
@@ -20,7 +20,12 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const formRef = useRef<any>({});
   const [form] = Form.useForm();
   const tableRef = useRef<any>({});
+  const rateRef = useRef<any>({});
 
+  const [rateColumns, setRateColumns] = useState<any[]>([]);
+  const [yearMonth, setYearMonth] = useState<any[]>([]);
+  const [useTimeData, setUseTimeData] = useState<any>('');
+  const [limitTimeData, setLimitTimeData] = useState<any>('');
   // vintage 分析
   const {
     vloading,
@@ -34,6 +39,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     scrollTotal,
     getScrollList,
     sColumns,
+
+    getRateList,
   } = usePreAnalyzeModel();
 
   const {
@@ -43,6 +50,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     setChannelMidList,
     setChannelSmList,
     getConditionList,
+    getYaerMonthRequest,
     originChannelMidList,
     originChannelSmList,
   } = useSearchModel();
@@ -110,19 +118,161 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     [vColumns, productList, channelMidList, channelSmList],
   );
 
+  const onSelect = (val: any, type: string) => {
+    if (type === 'useTime') {
+      if (val !== '') {
+        let temp = [...useTimeData];
+        temp = temp.filter((item: any) => item !== '');
+        temp.push(val);
+        setUseTimeData(temp);
+        // rateform.setFieldValue({
+
+        // })
+      } else if (val == '') {
+        setUseTimeData('');
+      }
+    } else if (type === 'limitTime') {
+      if (val !== '') {
+        let temp = [...limitTimeData];
+        temp = temp.filter((item: any) => item !== '');
+        temp.push(val);
+        setLimitTimeData(temp);
+        // rateform.setFieldValue({
+
+        // })
+      } else if (val == '') {
+        setLimitTimeData('');
+      }
+    }
+  };
+
+  const onDeselect = (val: any, type: string) => {
+    let temp = [...useTimeData];
+    temp = temp.filter((item: any) => item !== val);
+    if (type === 'useTime') {
+      setUseTimeData(temp);
+    } else if (type === 'limitTime') {
+      setLimitTimeData(temp);
+    }
+  };
+
+  const getRateColumns = (extra: any[]) => {
+    let _columns: any[] = [
+      {
+        title: '用款年月',
+        dataIndex: 'useTime',
+        hideInTable: true,
+        renderFormItem: (t: any, r: any, i: any) => {
+          return (
+            <Select
+              style={{ maxWidth: '400px', minWidth: '120px' }}
+              onSelect={(val) => onSelect(val, 'useTime')}
+              onDeselect={(val) => onDeselect(val, 'useTime')}
+              mode="multiple"
+              allowClear
+              maxTagCount={2}
+              value={useTimeData}
+            >
+              <Option key={''} value="">
+                全选
+              </Option>
+              {yearMonth.map((item: any) => {
+                return (
+                  <Option key={item.value} value={item.value}>
+                    {item.value}
+                  </Option>
+                );
+              })}
+            </Select>
+          );
+        },
+      },
+      {
+        title: '贷款期限',
+        dataIndex: 'limitTime',
+        hideInTable: true,
+        renderFormItem: (t: any, r: any, i: any) => {
+          return (
+            <Select
+              style={{ maxWidth: '400px', minWidth: '120px' }}
+              onSelect={(val) => onSelect(val, 'limitTime')}
+              onDeselect={(val) => onDeselect(val, 'limitTime')}
+              mode="multiple"
+              allowClear
+              maxTagCount={2}
+              value={limitTimeData}
+            >
+              <Option key={''} value="">
+                全选
+              </Option>
+              {yearMonth.map((item: any) => {
+                return (
+                  <Option key={item.value} value={item.value}>
+                    {item.value}
+                  </Option>
+                );
+              })}
+            </Select>
+          );
+        },
+      },
+    ];
+    return [..._columns, ...extra];
+  };
+
+  const _rateColumns = useMemo(
+    () => getRateColumns(rateColumns),
+    [rateColumns, yearMonth, useTimeData, limitTimeData],
+  );
+
   useEffect(() => {
     getConditionList();
     // console.log(formRef);
+    getYaerMonth();
   }, []);
 
-  //
+  const getYaerMonth = async () => {
+    let params = {};
+    let res = await getYaerMonthRequest(params);
+    setYearMonth(res?.data);
+  };
 
   const [vform] = Form.useForm();
+  const [rateform] = Form.useForm();
+
+  const getRateListArr = async (payLoad: any) => {
+    let res = await getRateList(payLoad);
+    if (res.resultCode === config.successCode) {
+      let data: any[] = res.data || [];
+      let columns: any[] = res.columns || [];
+      let total = res.total || 0;
+      columns = columns.map((item: any) => {
+        return {
+          ...item,
+          title: item.label,
+          dataIndex: item.key,
+          search: false,
+          ellipsis: true,
+          width: 120,
+        };
+      });
+      setRateColumns(columns);
+      return {
+        data,
+        total,
+      };
+    } else {
+      return {
+        data: [],
+        total: 0,
+      };
+    }
+  };
 
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>前期分析</div>
-
+      <p className={styles.commonTitle}>VINTAGE分析</p>
       <div>
         <ProTable<any>
           // params={searchForm}
@@ -160,9 +310,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               return values;
             },
           }}
-          pagination={{
-            pageSize: 10,
-          }}
+          pagination={false}
           dateFormatter="string"
           headerTitle="VINTAGE分析结果"
           toolBarRender={() => []}
@@ -174,6 +322,27 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
         </FormItem>
       </Form>
+      <Divider />
+      <p className={styles.commonTitle}>滚动率分析</p>
+      <div>
+        <ProTable
+          actionRef={rateRef}
+          headerTitle="滚动率分析结果"
+          rowKey="id"
+          toolBarRender={() => []}
+          options={false}
+          search={{
+            labelWidth: 'auto',
+            // optionRender: false,
+            // collapsed: false,
+          }}
+          pagination={false}
+          columns={_rateColumns}
+          request={async (params = {}, sort, filter) => {
+            return getRateListArr({ page: params.current, ...params });
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -195,10 +195,58 @@ const getConditionList = (req: any, res: any) => {
   });
 };
 
+const getRateListRequest = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    total: 6,
+    columns: [
+      {
+        key: 'periodName',
+        label: '本期状态',
+      },
+      {
+        key: 'period_0',
+        label: 'M0',
+      },
+      {
+        key: 'period_1',
+        label: 'M1',
+      },
+      {
+        key: 'period_2',
+        label: 'M2',
+      },
+    ],
+    data: [
+      {
+        periodName: 'M0',
+        period_0: '98.45%',
+        period_1: '98.45%',
+        period_2: '98.45%',
+      },
+      {
+        periodName: 'M1',
+        period_0: '33.98%',
+        period_1: '33.98%',
+        period_2: '33.98%',
+      },
+    ],
+  });
+};
+
+const getYaerMonthApi = (req: any, res: any) => {
+  res.json({
+    resultCode: successCode,
+    data: [{ value: '2023-01' }, { value: '2023-02' }, { value: '2023-03' }],
+  });
+};
+
 // 菜单管理相关
 export default {
   // 样本定义
   [`POST ${baseUrl}/modelStep/preAnalyze/vintage/list`]: getList,
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/list`]: getList,
+  [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getRateListRequest`]: getRateListRequest,
   [`GET ${baseUrl}/modelStep/preAnalyze/condition/list`]: getConditionList,
+  [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getYaerMonthApi`]: getYaerMonthApi,
 };

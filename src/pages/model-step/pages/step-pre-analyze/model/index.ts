@@ -1,8 +1,15 @@
 import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
+import { Select } from 'antd';
 
-import { getPreAnalyzeVintageList, getPreAnalyzeScrollList, getSearchConditionList } from './api';
+import {
+  getPreAnalyzeVintageList,
+  getPreAnalyzeScrollList,
+  getSearchConditionList,
+  getRateListRequest,
+  getYaerMonthApi,
+} from './api';
 
 export const successCode = config.successCode;
 
@@ -60,6 +67,11 @@ export const useSearchModel = () => {
     }
   };
 
+  const getYaerMonthRequest = async (params: any) => {
+    let res: any = await getYaerMonthApi(params);
+    return res;
+  };
+
   return {
     productList,
     channelMidList,
@@ -67,6 +79,7 @@ export const useSearchModel = () => {
     setChannelMidList,
     setChannelSmList,
     getConditionList,
+    getYaerMonthRequest,
     originChannelMidList,
     originChannelSmList,
   };
@@ -172,6 +185,13 @@ export const usePreAnalyzeModel = () => {
     }
   };
 
+  const getRateList = async (params?: any) => {
+    setSLoading(true);
+    const res: any = await getRateListRequest(params);
+    setSLoading(false);
+    return res;
+  };
+
   return {
     vloading,
     vintageList,
@@ -184,5 +204,7 @@ export const usePreAnalyzeModel = () => {
     scrollTotal,
     getScrollList,
     sColumns,
+    // -------
+    getRateList,
   };
 };
