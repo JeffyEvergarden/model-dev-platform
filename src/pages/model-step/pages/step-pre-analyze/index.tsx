@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react';
-import { Form, Input, DatePicker, Divider, Select } from 'antd';
+import React, { useEffect, useRef, useMemo, useState, Fragment } from 'react';
+import { Form, Input, DatePicker, Divider, Select, InputNumber, Space } from 'antd';
 import styles from '../style.less';
 import Condition from '@/components/Condition';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
@@ -125,9 +125,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         temp = temp.filter((item: any) => item !== '');
         temp.push(val);
         setUseTimeData(temp);
-        // rateform.setFieldValue({
-
-        // })
       } else if (val == '') {
         setUseTimeData('');
       }
@@ -137,9 +134,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         temp = temp.filter((item: any) => item !== '');
         temp.push(val);
         setLimitTimeData(temp);
-        // rateform.setFieldValue({
-
-        // })
       } else if (val == '') {
         setLimitTimeData('');
       }
@@ -265,6 +259,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   const [vform] = Form.useForm();
   const [rateform] = Form.useForm();
+  const [analysisform] = Form.useForm();
+  const [goodform] = Form.useForm();
 
   const getRateListArr = async (payLoad: any) => {
     let res = await getRateList(payLoad);
@@ -280,6 +276,19 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           search: false,
           ellipsis: true,
           width: 120,
+          filters:
+            item.label === '本期状态'
+              ? [
+                  {
+                    text: 'M0',
+                    value: 'M0',
+                  },
+                  {
+                    text: 'M1',
+                    value: 'M1',
+                  },
+                ]
+              : null,
         };
       });
       setRateColumns(columns);
@@ -299,7 +308,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>前期分析</div>
       <p className={styles.commonTitle}>VINTAGE分析</p>
-      <div>
+      <div className={styles.commonTable}>
         <ProTable<any>
           // params={searchForm}
           columns={_vcolumns}
@@ -340,6 +349,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           dateFormatter="string"
           headerTitle="VINTAGE分析结果"
           toolBarRender={() => []}
+          options={false}
         />
       </div>
 
@@ -350,13 +360,13 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       </Form>
       <Divider />
       <p className={styles.commonTitle}>滚动率分析</p>
-      <div>
+      <div className={styles.commonTable}>
         <ProTable
           actionRef={rateRef}
           headerTitle="滚动率分析结果"
           rowKey={(r) => r.key}
           toolBarRender={() => []}
-          options={false}
+          options={{ density: false, fullScreen: false, reload: false, setting: true }}
           search={{
             labelWidth: 'auto',
             // optionRender: false,
@@ -369,6 +379,162 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           }}
         />
       </div>
+      <Form form={analysisform} layout="vertical">
+        <FormItem name="vcomment" label="滚动率分析结论" style={{ width: '100%' }}>
+          <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
+        </FormItem>
+      </Form>
+      <Divider />
+      <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
+      <div className={styles.commonLabel}>好客户定义</div>
+      <Form form={goodform}>
+        <div className={styles.formListBox}>
+          <FormItem
+            name="listItem"
+            label=""
+            style={{ width: '330px' }}
+            rules={[{ required: true, message: '请填写' }]}
+          >
+            <Select placeholder="请选择">
+              <Select.Option key={'列表项1'} value={'列表项1'}>
+                列表项1
+              </Select.Option>
+              <Select.Option key={'列表项2'} value={'列表项2'}>
+                列表项2
+              </Select.Option>
+            </Select>
+          </FormItem>
+          <FormItem
+            name="mark"
+            label=""
+            style={{ width: '100px' }}
+            initialValue={'='}
+            rules={[{ required: true, message: '请填写' }]}
+          >
+            <Select placeholder="请选择">
+              <Select.Option key={'='} value={'='}>
+                =
+              </Select.Option>
+              <Select.Option key={'≠'} value={'≠'}>
+                ≠
+              </Select.Option>
+            </Select>
+          </FormItem>
+          <FormItem
+            name="measures"
+            label=""
+            style={{ width: '100px' }}
+            rules={[
+              { required: true, pattern: new RegExp('^-?[1-9]d*$', 'g'), message: '衡量值为整数' },
+            ]}
+          >
+            <InputNumber placeholder="衡量值" precision={0} />
+          </FormItem>
+        </div>
+        <div>
+          <Form.List name="ruleClips">
+            {(fields, { add, remove }) => (
+              <Fragment>
+                <div>
+                  {fields.map(({ key, name, ...restField }, index) => (
+                    <div key={index} className={styles.formListBox}>
+                      <Form.Item
+                        label={''}
+                        name={[name, 'TF']}
+                        initialValue={'and'}
+                        rules={[{ required: true, message: '请选择' }]}
+                        style={{ width: '100px' }}
+                      >
+                        <Select>
+                          <Option key={'and'} value={'and'}>
+                            and
+                          </Option>
+                          <Option key={'or'} value={'or'}>
+                            or
+                          </Option>
+                          <Option key={'!'} value={'!'}>
+                            !
+                          </Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item
+                        label={''}
+                        name={[name, 'listItem_s']}
+                        rules={[{ required: true, message: '请选择' }]}
+                        style={{ width: '330px' }}
+                      >
+                        <Select placeholder="请选择">
+                          <Select.Option key={'列表项1'} value={'列表项1'}>
+                            列表项1
+                          </Select.Option>
+                          <Select.Option key={'列表项2'} value={'列表项2'}>
+                            列表项2
+                          </Select.Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item
+                        label={''}
+                        name={[name, 'mark_s']}
+                        initialValue={'='}
+                        rules={[{ required: true, message: '请选择' }]}
+                        style={{ width: '100px' }}
+                      >
+                        <Select placeholder="请选择">
+                          <Select.Option key={'='} value={'='}>
+                            =
+                          </Select.Option>
+                          <Select.Option key={'≠'} value={'≠'}>
+                            ≠
+                          </Select.Option>
+                        </Select>
+                      </Form.Item>
+                      <FormItem
+                        name={[name, 'measures_s']}
+                        label=""
+                        style={{ width: '100px' }}
+                        rules={[{ required: true, message: '衡量值为整数' }]}
+                      >
+                        <InputNumber placeholder="衡量值" precision={0} />
+                      </FormItem>
+                      <MinusCircleOutlined
+                        onClick={() => remove(index)}
+                        style={{ marginBottom: '24px', color: 'rgba(24,144,255,1)' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <Form.Item label={''}>
+                    <div
+                      onClick={() =>
+                        add(
+                          {
+                            TF: 'and',
+                            listItem_s: '',
+                            mark_s: '=',
+                            measures_s: '',
+                          },
+                          fields.length,
+                        )
+                      }
+                      style={{
+                        color: 'rgba(24,144,255,1)',
+                        cursor: 'pointer',
+                        width: '200px',
+                      }}
+                    >
+                      <Space>
+                        <PlusCircleOutlined />
+                        <span>添加筛选条件</span>
+                      </Space>
+                    </div>
+                  </Form.Item>
+                </div>
+              </Fragment>
+            )}
+          </Form.List>
+        </div>
+      </Form>
     </div>
   );
 };

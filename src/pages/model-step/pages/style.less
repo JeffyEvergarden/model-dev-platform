@@ -95,3 +95,34 @@
   font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
   font-style: normal;
 }
+
+.commonTable {
+  :global {
+    .ant-pro-card-body {
+      padding: 24px 0;
+    }
+  }
+}
+.commonLabel::before {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
+  margin-inline-end: 4px;
+}
+.formListBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 10px;
+  :global {
+    .ant-form-item {
+      // margin-top: 10px;
+      margin-right: 10px;
+    }
+  }
+}
