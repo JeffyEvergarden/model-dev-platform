@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useMemo, useState, Fragment } from 'react';
-import { Form, Input, DatePicker, Divider, Select, InputNumber, Space } from 'antd';
+import { Form, Input, DatePicker, Divider, Select, Button, Space } from 'antd';
 import styles from '../style.less';
 import Condition from '@/components/Condition';
 import ProTable from '@ant-design/pro-table';
-import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import CustomerFormBox from './component/customerFormBox';
+import NextStepButton from '../../components/nextstep-button';
 import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
@@ -260,7 +261,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const [vform] = Form.useForm();
   const [rateform] = Form.useForm();
   const [analysisform] = Form.useForm();
-  const [goodform] = Form.useForm();
 
   const getRateListArr = async (payLoad: any) => {
     let res = await getRateList(payLoad);
@@ -303,6 +303,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       };
     }
   };
+
+  const exportResult = () => {};
+
+  const nextFlow = () => {};
 
   return (
     <div className={styles['step-page']}>
@@ -352,7 +356,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           options={false}
         />
       </div>
-
       <Form form={vform} layout="vertical">
         <FormItem name="vcomment" label="VINTAGE分析结果" style={{ width: '100%' }}>
           <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
@@ -387,154 +390,23 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       <Divider />
       <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
       <div className={styles.commonLabel}>好客户定义</div>
-      <Form form={goodform}>
-        <div className={styles.formListBox}>
-          <FormItem
-            name="listItem"
-            label=""
-            style={{ width: '330px' }}
-            rules={[{ required: true, message: '请填写' }]}
-          >
-            <Select placeholder="请选择">
-              <Select.Option key={'列表项1'} value={'列表项1'}>
-                列表项1
-              </Select.Option>
-              <Select.Option key={'列表项2'} value={'列表项2'}>
-                列表项2
-              </Select.Option>
-            </Select>
-          </FormItem>
-          <FormItem
-            name="mark"
-            label=""
-            style={{ width: '100px' }}
-            initialValue={'='}
-            rules={[{ required: true, message: '请填写' }]}
-          >
-            <Select placeholder="请选择">
-              <Select.Option key={'='} value={'='}>
-                =
-              </Select.Option>
-              <Select.Option key={'≠'} value={'≠'}>
-                ≠
-              </Select.Option>
-            </Select>
-          </FormItem>
-          <FormItem
-            name="measures"
-            label=""
-            style={{ width: '100px' }}
-            rules={[
-              { required: true, pattern: new RegExp('^-?[1-9]d*$', 'g'), message: '衡量值为整数' },
-            ]}
-          >
-            <InputNumber placeholder="衡量值" precision={0} />
-          </FormItem>
-        </div>
-        <div>
-          <Form.List name="ruleClips">
-            {(fields, { add, remove }) => (
-              <Fragment>
-                <div>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <div key={index} className={styles.formListBox}>
-                      <Form.Item
-                        label={''}
-                        name={[name, 'TF']}
-                        initialValue={'and'}
-                        rules={[{ required: true, message: '请选择' }]}
-                        style={{ width: '100px' }}
-                      >
-                        <Select>
-                          <Option key={'and'} value={'and'}>
-                            and
-                          </Option>
-                          <Option key={'or'} value={'or'}>
-                            or
-                          </Option>
-                          <Option key={'!'} value={'!'}>
-                            !
-                          </Option>
-                        </Select>
-                      </Form.Item>
-                      <Form.Item
-                        label={''}
-                        name={[name, 'listItem_s']}
-                        rules={[{ required: true, message: '请选择' }]}
-                        style={{ width: '330px' }}
-                      >
-                        <Select placeholder="请选择">
-                          <Select.Option key={'列表项1'} value={'列表项1'}>
-                            列表项1
-                          </Select.Option>
-                          <Select.Option key={'列表项2'} value={'列表项2'}>
-                            列表项2
-                          </Select.Option>
-                        </Select>
-                      </Form.Item>
-                      <Form.Item
-                        label={''}
-                        name={[name, 'mark_s']}
-                        initialValue={'='}
-                        rules={[{ required: true, message: '请选择' }]}
-                        style={{ width: '100px' }}
-                      >
-                        <Select placeholder="请选择">
-                          <Select.Option key={'='} value={'='}>
-                            =
-                          </Select.Option>
-                          <Select.Option key={'≠'} value={'≠'}>
-                            ≠
-                          </Select.Option>
-                        </Select>
-                      </Form.Item>
-                      <FormItem
-                        name={[name, 'measures_s']}
-                        label=""
-                        style={{ width: '100px' }}
-                        rules={[{ required: true, message: '衡量值为整数' }]}
-                      >
-                        <InputNumber placeholder="衡量值" precision={0} />
-                      </FormItem>
-                      <MinusCircleOutlined
-                        onClick={() => remove(index)}
-                        style={{ marginBottom: '24px', color: 'rgba(24,144,255,1)' }}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <Form.Item label={''}>
-                    <div
-                      onClick={() =>
-                        add(
-                          {
-                            TF: 'and',
-                            listItem_s: '',
-                            mark_s: '=',
-                            measures_s: '',
-                          },
-                          fields.length,
-                        )
-                      }
-                      style={{
-                        color: 'rgba(24,144,255,1)',
-                        cursor: 'pointer',
-                        width: '200px',
-                      }}
-                    >
-                      <Space>
-                        <PlusCircleOutlined />
-                        <span>添加筛选条件</span>
-                      </Space>
-                    </div>
-                  </Form.Item>
-                </div>
-              </Fragment>
-            )}
-          </Form.List>
-        </div>
-      </Form>
+      <CustomerFormBox />
+      <div className={styles.commonLabel}>坏客户定义</div>
+      <CustomerFormBox />
+      <div className={styles.commonLabel}>中间客户定义</div>
+      <CustomerFormBox />
+      <NextStepButton
+        btnNode={
+          <Space>
+            <Button onClick={exportResult} size="large">
+              导出结果
+            </Button>
+            <Button onClick={nextFlow} size="large" type="primary">
+              下一流程
+            </Button>
+          </Space>
+        }
+      />
     </div>
   );
 };
