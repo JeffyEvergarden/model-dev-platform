@@ -6,13 +6,12 @@ import styles from './../../style.less';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-export default () => {
-  const [goodform] = Form.useForm();
+const formDom = (listItem: string, mark: string, measures: string, ruleClips: string) => {
   return (
-    <Form form={goodform}>
+    <Fragment>
       <div className={styles.formListBox}>
         <FormItem
-          name="listItem"
+          name={listItem}
           label=""
           style={{ width: '330px' }}
           rules={[{ required: true, message: '请填写' }]}
@@ -27,7 +26,7 @@ export default () => {
           </Select>
         </FormItem>
         <FormItem
-          name="mark"
+          name={mark}
           label=""
           style={{ width: '100px' }}
           initialValue={'='}
@@ -43,7 +42,7 @@ export default () => {
           </Select>
         </FormItem>
         <FormItem
-          name="measures"
+          name={measures}
           label=""
           style={{ width: '100px' }}
           rules={[
@@ -54,7 +53,7 @@ export default () => {
         </FormItem>
       </div>
       <div>
-        <Form.List name="ruleClips">
+        <Form.List name={ruleClips}>
           {(fields, { add, remove }) => (
             <Fragment>
               <div>
@@ -156,6 +155,22 @@ export default () => {
           )}
         </Form.List>
       </div>
-    </Form>
+    </Fragment>
+  );
+};
+
+export default (props: any) => {
+  const { customerFormRef } = props;
+  return (
+    <Fragment>
+      <Form form={customerFormRef}>
+        <div className={styles.commonLabel}>好客户定义</div>
+        {formDom('good_listItem', 'good_mark', 'good_measures', 'good_ruleClips')}
+        <div className={styles.commonLabel}>坏客户定义</div>
+        {formDom('bad_listItem', 'bad_mark', 'bad_measures', 'bad_ruleClips')}
+        <div className={styles.commonLabel}>中间客户定义</div>
+        {formDom('middle_listItem', 'middle_mark', 'middle_measures', 'middle_ruleClips')}
+      </Form>
+    </Fragment>
   );
 };
