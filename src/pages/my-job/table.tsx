@@ -80,7 +80,7 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '模型单号',
-      dataIndex: 'modelCode',
+      dataIndex: 'itmModelRegisCode',
       search: false,
       width: 200,
       ellipsis: true,
@@ -90,7 +90,7 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '模型类型',
-      dataIndex: 'businessCode',
+      dataIndex: 'modelType',
       fieldProps: {
         placeholder: '请选择模型类型',
       },
@@ -103,7 +103,7 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '当前阶段',
-      dataIndex: 'code',
+      dataIndex: 'currentStage',
       fieldProps: {
         placeholder: '请选择当前阶段',
       },
@@ -116,7 +116,7 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '模型状态',
-      dataIndex: 'status',
+      dataIndex: 'modelStatus',
       fieldProps: {
         placeholder: '请选择模型状态',
       },
@@ -139,8 +139,8 @@ const ModelManagement: React.FC = (props: any) => {
       width: 200,
     },
     {
-      title: '操作',
-      dataIndex: 'op',
+      title: '模型报告',
+      dataIndex: 'report-op',
       search: false,
       fixed: 'right',
       width: 200,
@@ -148,20 +148,12 @@ const ModelManagement: React.FC = (props: any) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Button type="text" className={style['btn-disable']} onClick={() => {}}>
-                停用
-              </Button>
-
               <Button type="link" className={style['btn-success']} onClick={() => {}}>
-                启用
+                查看
               </Button>
 
               <Button type="link" onClick={() => {}}>
-                编辑
-              </Button>
-
-              <Button type="link" className={style['btn-success']} onClick={() => {}}>
-                配置
+                下载
               </Button>
 
               <Popconfirm
@@ -176,6 +168,24 @@ const ModelManagement: React.FC = (props: any) => {
                   删除
                 </Button>
               </Popconfirm>
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      title: '操作',
+      dataIndex: 'op',
+      search: false,
+      fixed: 'right',
+      width: 200,
+      render: (val: any, row: any, index: number) => {
+        return (
+          <>
+            <div style={{ display: 'flex' }}>
+              <Button type="link" onClick={() => {}}>
+                查看
+              </Button>
             </div>
           </>
         );

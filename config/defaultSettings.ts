@@ -13,7 +13,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: '模型开发平台',
   pwa: false,
-  logo: '/model-dev-platform/logo.png',
+  logo: '/modelManage/devPlatform/logo.png',
   iconfontUrl: '',
 };
 
