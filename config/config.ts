@@ -11,9 +11,9 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-  publicPath: '/model-dev-platform/',
-  outputPath: 'dist/',
-  base: '/model-dev-platform',
+  publicPath: '/modelManage/devPlatform/',
+  outputPath: 'dist/devPlatform',
+  base: '/modelManage/devPlatform',
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
