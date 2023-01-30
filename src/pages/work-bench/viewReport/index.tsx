@@ -3,7 +3,11 @@ import { history } from 'umi';
 import { Tabs } from 'antd';
 import styles from './index.less';
 import ModelBasic from './components/modelBasic';
-
+import PreAnalysis from './components/preAnalysis';
+import DefineSample from './components/defineSample';
+import InputVariable from '@/pages/model-step/pages/step-export-report/components/InputVariable';
+import ScoreCardPage from './components/scoreCardPage';
+import CompareAndReportCommonPage from '@/pages/model-step/components/compareAndReportCommonPage';
 export default () => {
   const onClickBreadcrumb = (route: any) => {
     history.push(route.path);
@@ -46,19 +50,19 @@ export default () => {
             <ModelBasic />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'前期分析'} key={'2'}>
-            前期分析
+            <PreAnalysis />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'样本定义'} key={'3'}>
-            样本定义
+            <DefineSample />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'入模变量'} key={'4'}>
-            入模变量
+            <InputVariable />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'评分卡'} key={'5'}>
-            评分卡
+            <ScoreCardPage />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'模型效果'} key={'6'}>
-            模型效果
+            <CompareAndReportCommonPage pageType={'modelEffect'} />
           </Tabs.TabPane>
         </Tabs>
       </PageContainer>

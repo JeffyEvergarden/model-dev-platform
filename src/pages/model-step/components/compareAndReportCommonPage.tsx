@@ -347,7 +347,7 @@ export default (props: any) => {
       {pageType == 'modelEffect' && (
         <div className={styles.tableBox}>
           <ProTable
-            headerTitle={<span style={{ fontWeight: 700 }}>模型排序性</span>}
+            headerTitle={<span style={{ fontWeight: 700 }}>模型稳定性</span>}
             rowKey={(record: any) => record.id}
             toolBarRender={() => []}
             options={false}
