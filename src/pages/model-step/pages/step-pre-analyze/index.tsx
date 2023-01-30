@@ -259,7 +259,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   };
 
   const [vform] = Form.useForm();
-  const [rateform] = Form.useForm();
+  const [customerFormRef] = Form.useForm();
   const [analysisform] = Form.useForm();
 
   const getRateListArr = async (payLoad: any) => {
@@ -304,7 +304,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     }
   };
 
-  const exportResult = () => {};
+  const exportResult = () => {
+    customerFormRef.validateFields().then((value: any) => {
+      console.log('value', value);
+    });
+  };
 
   const nextFlow = () => {};
 
@@ -389,12 +393,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       </Form>
       <Divider />
       <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
-      <div className={styles.commonLabel}>好客户定义</div>
-      <CustomerFormBox />
-      <div className={styles.commonLabel}>坏客户定义</div>
-      <CustomerFormBox />
-      <div className={styles.commonLabel}>中间客户定义</div>
-      <CustomerFormBox />
+      <CustomerFormBox customerFormRef={customerFormRef} />
       <NextStepButton
         btnNode={
           <Space>
