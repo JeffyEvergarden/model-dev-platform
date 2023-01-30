@@ -27,6 +27,12 @@ export default [
     component: './datasource-manage/layout',
   },
   {
+    path: '/datasource/model-report',
+    layout: true,
+    name: '模型报告',
+    component: './model-report',
+  },
+  {
     path: '/modelStep',
     layout: true,
     name: '模型详情',
