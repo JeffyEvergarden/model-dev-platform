@@ -67,6 +67,10 @@ const ModelManagement: React.FC = (props: any) => {
     }
   };
 
+  const viewReport = (row: any) => {
+    history.push('/workBench/viewReport');
+  };
+
   const columns: any[] = [
     {
       title: '模型名称',
@@ -87,6 +91,13 @@ const ModelManagement: React.FC = (props: any) => {
       render: (val: any, row: any) => {
         return val;
       },
+    },
+    {
+      title: '模型编码',
+      dataIndex: 'modelCode',
+      search: false,
+      width: 200,
+      ellipsis: true,
     },
     {
       title: '模型类型',
@@ -139,29 +150,27 @@ const ModelManagement: React.FC = (props: any) => {
       width: 200,
     },
     {
-      title: '操作',
+      title: '模型报告',
       dataIndex: 'op',
       search: false,
       fixed: 'right',
-      width: 200,
+      width: 150,
       render: (val: any, row: any, index: number) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Button type="text" className={style['btn-disable']} onClick={() => {}}>
-                停用
+              <Button
+                type="text"
+                className={style['btn-success']}
+                onClick={() => {
+                  viewReport(row);
+                }}
+              >
+                查看
               </Button>
 
               <Button type="link" className={style['btn-success']} onClick={() => {}}>
-                启用
-              </Button>
-
-              <Button type="link" onClick={() => {}}>
-                编辑
-              </Button>
-
-              <Button type="link" className={style['btn-success']} onClick={() => {}}>
-                配置
+                下载
               </Button>
 
               <Popconfirm
@@ -176,6 +185,24 @@ const ModelManagement: React.FC = (props: any) => {
                   删除
                 </Button>
               </Popconfirm>
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      title: '操作',
+      dataIndex: 'op',
+      search: false,
+      fixed: 'right',
+      width: 50,
+      render: (val: any, row: any, index: number) => {
+        return (
+          <>
+            <div style={{ display: 'flex' }}>
+              <Button type="text" className={style['btn-disable']} onClick={() => {}}>
+                查看
+              </Button>
             </div>
           </>
         );

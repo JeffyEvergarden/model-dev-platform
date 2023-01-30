@@ -6,12 +6,6 @@ import Condition from '@/components/Condition';
 import ComparePage from './components/comparePage';
 import NextStepButton from '../../components/nextstep-button';
 
-const FormItem = Form.Item;
-
-const { TabPane } = Tabs;
-
-const { RangePicker }: any = DatePicker;
-
 // 首页
 const StepModelCompare: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
@@ -38,17 +32,15 @@ const StepModelCompare: React.FC<any> = (props: any) => {
       <div className={styles['step-title']}>
         模型对比 <Tag color={'processing'}>进行中</Tag>
       </div>
-      <Tabs
-        type="card"
-        size="large"
-        items={tabList.map((el: any, i: any) => {
-          return {
-            label: `${el.name}`,
-            key: el.name,
-            children: <ComparePage data={el?.data} />,
-          };
+      <Tabs type="card" size="large">
+        {tabList?.map((item: any) => {
+          return (
+            <Tabs.TabPane tab={item.name} key={item.name}>
+              <ComparePage data={item?.data} />
+            </Tabs.TabPane>
+          );
         })}
-      />
+      </Tabs>
       <NextStepButton
         extra={
           <div className={styles.compareForm}>

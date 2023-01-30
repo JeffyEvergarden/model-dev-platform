@@ -16,32 +16,20 @@ const StepExportReport: React.FC<any> = (props: any) => {
       <div className={styles['step-title']}>
         生成报告<Tag color={'processing'}>进行中</Tag>
       </div>
-      <Tabs
-        type="card"
-        size="large"
-        items={[
-          {
-            label: `样本定义`,
-            key: '1',
-            children: <SampleDefination />,
-          },
-          {
-            label: `入模变量`,
-            key: '2',
-            children: <InputVariable />,
-          },
-          {
-            label: `评分卡`,
-            key: '3',
-            children: <ScoreCard />,
-          },
-          {
-            label: `模型效果`,
-            key: '4',
-            children: <ModelEffect />,
-          },
-        ]}
-      />
+      <Tabs type="card" size="large">
+        <Tabs.TabPane tab="样本定义" key={'1'}>
+          <SampleDefination />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="入模变量" key={'2'}>
+          <InputVariable />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="评分卡" key={'3'}>
+          <ScoreCard />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="模型效果" key={'4'}>
+          <ModelEffect />
+        </Tabs.TabPane>
+      </Tabs>
       <NextStepButton
         btnNode={
           <Space>
