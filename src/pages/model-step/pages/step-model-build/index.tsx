@@ -67,15 +67,15 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       ...formVal,
     };
     let res = await beginBuildModel(params);
-    if (res.resultCode === successCode) {
+    if (res.status?.code === successCode) {
       setLoading(false);
-      message.success(res?.resultMsg || '成功');
+      message.success(res.status?.desc || '成功');
       setFormVal(formVal);
       setPageType('finish');
       setTagStatus('success');
     } else {
       setLoading(false);
-      message.error(res?.resultMsg || '失败');
+      message.error(res.status?.desc || '失败');
       setPageType('');
       setTagStatus('');
     }
@@ -87,7 +87,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     };
     setLoading(true);
     let res = await rebuildModel(params);
-    if (res.resultCode === successCode) {
+    if (res.status?.code === successCode) {
       setLoading(false);
       setPageType('');
       // setRulist(ruleList)
@@ -96,7 +96,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       form.setFieldsValue(formVal);
     } else {
       setLoading(false);
-      message.error(res?.resultMsg || '失败');
+      message.error(res.status?.desc || '失败');
       setPageType('');
       setTagStatus('');
       form.setFieldsValue(formVal);
@@ -109,12 +109,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     };
     setLoading(true);
     let res = await nextFlowRequest(params);
-    if (res.resultCode === successCode) {
+    if (res.status?.code === successCode) {
       setLoading(false);
       history.push('/modelStep/modelCompare');
     } else {
       setLoading(false);
-      message.error(res?.resultMsg || '失败');
+      message.error(res.status?.desc || '失败');
     }
   };
 
@@ -525,7 +525,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               <Col span={3}>
                 <Form.Item
                   label="分箱数"
-                  name="dividerNum"
+                  name="scoreBoxNum"
                   rules={[{ required: true, message: '请输入评分分箱方式' }]}
                 >
                   <InputNumber

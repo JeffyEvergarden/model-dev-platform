@@ -8,22 +8,10 @@ const codeListData = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
     data: {
-      total: 30,
-      pageSize: 10,
+      total: 10,
+      pageSize: 5,
       pageNum: 1,
-      list: [
-        {
-          name: '变量名称',
-          nameZH: '中文名称',
-          source: '变量来源',
-          free: '自由度',
-          coef_: 'coef_',
-          VIF: 'VIF',
-          wald_test: 'wald_test',
-          p_value: 'p_value',
-          iv: 'iv',
-        },
-      ],
+      list: [],
     },
   });
 };
@@ -453,6 +441,210 @@ const varCodeStableQueryApi = (req: any, res: any) => {
   });
 };
 
+const getVersionNameList = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: ['model1-1', 'model1-2', 'model1-3', 'model1-4'],
+  });
+};
+
+const getModelStructureParam = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      modelBuildMethod: '建模方法',
+      penalty: '惩罚项',
+      solver: 'solver',
+      lrc: '正则化系数',
+      lrMaxIter: '迭代次数',
+      variables: 'variables',
+      varBinningType: '分箱方式',
+      boxNum: '箱数',
+      minSampleRate: '每箱最小样本占比',
+      emptySeparate: '空值单独分箱',
+      isStepwise: '1', //是否进行逐步回归，1-是 0-否
+      estimator: 'estimator值',
+      direction: '方向',
+      criteria: '评判标准',
+      stepwiseMaxIter: '最大循环次数',
+      isVif: '1', //是否进行多重共线性检验，1-是 0-否
+      vifOperator: '<',
+      vifThreshold: '10',
+      baseScore: '基准分数',
+      pdo: '比率翻倍的分值',
+      baseOdds: '基准好坏比',
+      rate: '设定的比base_odds好坏的倍数',
+      scoreBinningType: '评分分箱方式',
+    },
+  });
+};
+
+const getModelStructureResult = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      //入模变量列表
+      inputVariableList: [
+        {
+          sortId: 0,
+          variable: '变量名称1',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 1,
+          variable: '变量名称2',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 2,
+          variable: '变量名称3',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 3,
+          variable: '变量名称4',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 4,
+          variable: '变量名称5',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 5,
+          variable: '变量名称6',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 6,
+          variable: '变量名称7',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 7,
+          variable: '变量名称8',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 8,
+          variable: '变量名称9',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 9,
+          variable: '变量名称10',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+        {
+          sortId: 10,
+          variable: '变量名称11',
+          variableName: '中文名称',
+          variableSource: '变量来源',
+          freeDegree: '自由度',
+          coef_: 'coef_',
+          vif: 'VIF',
+          waldTest: 'wald_test',
+          pvalue: 'p_value',
+          iv: 'iv',
+        },
+      ],
+      //变量相关性列表
+      variableRelevanceList: [],
+      //评分卡-计算逻辑
+      scoreCardLogicList: [],
+      //集合KS
+      collectionKsObj: {},
+      //年月ks
+      monthKsObj: {},
+      //数据集分布（训练集分布列表、验证集分布列表
+      dataScoreList: [],
+      //模型稳定性
+      modelStabilityList: [],
+      //变量稳定性
+      variableStabilityList: [],
+    },
+  });
+};
+
 export default {
   [`POST ${baseUrl}/robot/testWhiteList/codeListData`]: codeListData,
   [`POST ${baseUrl}/robot/testWhiteList/relateCodeListGet`]: relateCodeListGet,
@@ -460,4 +652,7 @@ export default {
   [`POST ${baseUrl}/robot/testWhiteList/trateAndVerifyDataApi`]: trateAndVerifyDataApi,
   [`POST ${baseUrl}/robot/testWhiteList/stableDataQueryApi`]: stableDataQueryApi,
   [`POST ${baseUrl}/robot/testWhiteList/varCodeStableQueryApi`]: varCodeStableQueryApi,
+  [`GET ${baseUrl}/compare/getVersionNameList`]: getVersionNameList,
+  [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
+  [`GET ${baseUrl}/compare/getModelStructureResult`]: getModelStructureResult,
 };

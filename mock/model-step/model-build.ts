@@ -6,8 +6,10 @@ const baseUrl = config.basePath;
 
 const normalDeal = (req: any, res: any) => {
   res.json({
-    resultCode: successCode,
-    resultMsg: '成功',
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
   });
 };
 

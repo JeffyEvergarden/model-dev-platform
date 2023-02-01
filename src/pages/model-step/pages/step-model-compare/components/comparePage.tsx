@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { Descriptions, Button, Space, Progress } from 'antd';
+import { Descriptions, Button, Space, Progress, message } from 'antd';
 import styles from './index.less';
 import { ProTable } from '@ant-design/pro-components';
 import { useComparePage } from './../model';
@@ -13,13 +13,31 @@ import ScoreCardTable from '@/pages/model-step/components/scoreCardTable';
 import { changeData } from '@/utils';
 import CompareAndReportCommonPage from '@/pages/model-step/components/compareAndReportCommonPage';
 
-export default (props: any) => {
-  const { data } = props;
+import config from '@/config';
+const successCode = config.successCode;
 
-  const { codeList, relateCodeList, getScoreCardList, stableDataQuery } = useComparePage();
+export default (props: any) => {
+  const { activeKey } = props;
+
+  const {
+    loading,
+    setLoading,
+    getModelStructureParamRequest,
+    getModelResultRequest,
+    codeList,
+    relateCodeList,
+    getScoreCardList,
+    stableDataQuery,
+  } = useComparePage();
 
   const actionRef = useRef<any>();
   const relateModalRef = useRef<any>({});
+
+  //模型构建参数
+  const [modelParams, setModelParams] = useState<any>({});
+
+  //模型结果
+  const [modelResult, setModelResult] = useState<any>({});
 
   const [pageInfo, setPageInfo] = useState<any>([]);
 
@@ -28,8 +46,46 @@ export default (props: any) => {
   const [columnsRelate, setColumnsRelate] = useState<any>([]);
 
   useEffect(() => {
+    //模型构建参数
+    getModelStructureParam();
+
+    //模型结果
+    getModelResult();
+
     getVarCode(); //变量相关性
   }, []);
+
+  const getModelStructureParam = async () => {
+    let params = {
+      itmModelRegisCode: '',
+      modelVersionName: activeKey,
+    };
+    setLoading(true);
+    let res = await getModelStructureParamRequest(params);
+    if (res?.status?.code === successCode) {
+      setLoading(false);
+      setModelParams(res?.result);
+    } else {
+      setLoading(false);
+      message.error(res?.status?.desc || '异常');
+    }
+  };
+
+  const getModelResult = async () => {
+    let params = {
+      itmModelRegisCode: '',
+      modelVersionName: activeKey,
+    };
+    setLoading(true);
+    let res = await getModelResultRequest(params);
+    if (res?.status?.code === successCode) {
+      setLoading(false);
+      setModelResult(res?.result);
+    } else {
+      setLoading(false);
+      message.error(res?.status?.desc || '异常');
+    }
+  };
 
   const getVarCode = async () => {
     let params = {};
@@ -91,47 +147,46 @@ export default (props: any) => {
         <b>模型构建参数</b>
       </div>
       <Descriptions title="LogisticRegression参数" bordered column={4}>
-        <Descriptions.Item label="惩罚项">12</Descriptions.Item>
-        <Descriptions.Item label="solver">liblinear</Descriptions.Item>
-        <Descriptions.Item label="正则化系数">1.0</Descriptions.Item>
-        <Descriptions.Item label="迭代次数">100</Descriptions.Item>
+        <Descriptions.Item label="惩罚项">{modelParams?.penalty}</Descriptions.Item>
+        <Descriptions.Item label="solver">{modelParams?.solver}</Descriptions.Item>
+        <Descriptions.Item label="正则化系数">{modelParams?.lrc}</Descriptions.Item>
+        <Descriptions.Item label="迭代次数">{modelParams?.lrMaxIter}</Descriptions.Item>
       </Descriptions>
       <Descriptions title="变量分箱" bordered column={4}>
-        <Descriptions.Item label="分箱方式">等频分箱</Descriptions.Item>
-        <Descriptions.Item label="箱数">10</Descriptions.Item>
-        <Descriptions.Item label="每箱最小样本占比">0.1</Descriptions.Item>
-        <Descriptions.Item label="空值单独分箱">否</Descriptions.Item>
+        <Descriptions.Item label="分箱方式">{modelParams?.varBinningType}</Descriptions.Item>
+        <Descriptions.Item label="箱数">{modelParams?.boxNum}</Descriptions.Item>
+        <Descriptions.Item label="每箱最小样本占比">{modelParams?.minSampleRate}</Descriptions.Item>
+        <Descriptions.Item label="空值单独分箱">{modelParams?.emptySeparate}</Descriptions.Item>
       </Descriptions>
       <Descriptions title="逐步回归" bordered column={4}>
-        <Descriptions.Item label="estimator">ols</Descriptions.Item>
-        <Descriptions.Item label="方向">both</Descriptions.Item>
-        <Descriptions.Item label="评判标准">aic</Descriptions.Item>
-        <Descriptions.Item label="最大循环次数">100</Descriptions.Item>
+        <Descriptions.Item label="estimator">{modelParams?.estimator}</Descriptions.Item>
+        <Descriptions.Item label="方向">{modelParams?.direction}</Descriptions.Item>
+        <Descriptions.Item label="评判标准">{modelParams?.criteria}</Descriptions.Item>
+        <Descriptions.Item label="最大循环次数">{modelParams?.stepwiseMaxIter}</Descriptions.Item>
       </Descriptions>
       <Descriptions title="多重共线性检验" bordered column={4}>
         <Descriptions.Item label="VIF阈值设置" span={3}>
-          {'<10'}
+          {modelParams?.vifOperator}
+          {modelParams?.vifThreshold}
         </Descriptions.Item>
       </Descriptions>
       <Descriptions title="标准评分卡" bordered column={4}>
-        <Descriptions.Item label="标准分">100</Descriptions.Item>
-        <Descriptions.Item label="Pdo">100</Descriptions.Item>
-        <Descriptions.Item label="Base Odds">100</Descriptions.Item>
-        <Descriptions.Item label="Rate">100</Descriptions.Item>
+        <Descriptions.Item label="标准分">{modelParams?.baseScore}</Descriptions.Item>
+        <Descriptions.Item label="Pdo">{modelParams?.pdo}</Descriptions.Item>
+        <Descriptions.Item label="Base Odds">{modelParams?.baseOdds}</Descriptions.Item>
+        <Descriptions.Item label="Rate">{modelParams?.rate}</Descriptions.Item>
         <Descriptions.Item label="评分分箱方式" span={3}>
-          等频分箱
+          {modelParams?.scoreBinningType}
         </Descriptions.Item>
       </Descriptions>
       <div className={styles.tableBox}>
         <span className={styles.tableTitle}>模型结果</span>
         <InputVariableTable
           headerTitle="入模变量"
-          rowKey={(record: any) => record.id}
+          rowKey={(record: any) => record?.name}
           actionRef={actionRef}
           pageInfo={pageInfo}
-          request={async (params = {}) => {
-            return varCodeList(params);
-          }}
+          dataSource={modelResult?.inputVariableList}
         />
       </div>
       <div className={classnames(styles.relateTable)}>
