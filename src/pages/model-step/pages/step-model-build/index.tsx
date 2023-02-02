@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
   Form,
   Input,
-  DatePicker,
+  message,
   Row,
   Col,
   Radio,
@@ -11,12 +11,18 @@ import {
   InputNumber,
   Select,
   Space,
+  Spin,
 } from 'antd';
 import styles from '../style.less';
 import { useModel, history } from 'umi';
 import Condition from '@/components/Condition';
 import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '@/pages/model-step/components/common-page';
+import config from '@/config';
+import { useBuildModel } from './model';
+import { stubFalse } from 'lodash';
+
+const successCode = config.successCode;
 
 const gutter = { xs: 8, sm: 16, md: 24, lg: 32 };
 
@@ -31,6 +37,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const [form] = Form.useForm();
 
+  const { beginBuildModel, rebuildModel, nextFlowRequest, loading, setLoading } = useBuildModel();
+
   const [ruleList, setRulist] = useState<any>([
     { name: '变量一', value: '1' },
     { name: '变量二', value: '2' },
@@ -40,9 +48,9 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const [formVal, setFormVal] = useState<any>({});
   const [tagStatus, setTagStatus] = useState<string>('processing'); //processing success error
 
-  const isBack: any = Form.useWatch('isBack', form);
-  const test: any = Form.useWatch('test', form);
-  const coreMethod: any = Form.useWatch('coreMethod', form);
+  const isStepwise: any = Form.useWatch('isStepwise', form);
+  const isVif: any = Form.useWatch('isVif', form);
+  const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
 
   const handleClose = (entityValueName: any) => {
     let temp = JSON.parse(JSON.stringify(ruleList));
@@ -52,20 +60,62 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const beginBuild = async () => {
     let formVal = await form.validateFields();
-    setFormVal(formVal);
-    setPageType('finish');
-    setTagStatus('success');
+    setLoading(true);
+    let params = {
+      itmModelRegisCode: '',
+      sampleTable: '',
+      ...formVal,
+    };
+    let res = await beginBuildModel(params);
+    if (res.status?.code === successCode) {
+      setLoading(false);
+      message.success(res.status?.desc || '成功');
+      setFormVal(formVal);
+      setPageType('finish');
+      setTagStatus('success');
+    } else {
+      setLoading(false);
+      message.error(res.status?.desc || '失败');
+      setPageType('');
+      setTagStatus('');
+    }
   };
 
   const rebuild = async () => {
-    setPageType('');
-    // setRulist(ruleList)
-    setTagStatus('processing');
-    form.setFieldsValue(formVal);
+    let params = {
+      itmModelRegisCode: '',
+    };
+    setLoading(true);
+    let res = await rebuildModel(params);
+    if (res.status?.code === successCode) {
+      setLoading(false);
+      setPageType('');
+      // setRulist(ruleList)
+      setTagStatus('processing');
+      setFormVal(formVal);
+      form.setFieldsValue(formVal);
+    } else {
+      setLoading(false);
+      message.error(res.status?.desc || '失败');
+      setPageType('');
+      setTagStatus('');
+      form.setFieldsValue(formVal);
+    }
   };
 
-  const nextFlow = () => {
-    history.push('/modelStep/modelCompare');
+  const nextFlow = async () => {
+    let params = {
+      itmModelRegisCode: '',
+    };
+    setLoading(true);
+    let res = await nextFlowRequest(params);
+    if (res.status?.code === successCode) {
+      setLoading(false);
+      history.push('/modelStep/modelCompare');
+    } else {
+      setLoading(false);
+      message.error(res.status?.desc || '失败');
+    }
   };
 
   return (
@@ -101,25 +151,25 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           form={form}
           layout="vertical"
           initialValues={{
-            punishment: 12,
+            penalty: 12,
             solver: 'solver1',
-            coefficient: 1.0,
-            iteration: 100,
-            isSingle: '否',
-            isBack: '是',
+            c: 1.0,
+            lrMaxIter: 100,
+            emptySeparate: '否',
+            isStepwise: '是',
             estimator: 'ols',
             direction: 'both',
-            stardard: 'aic',
-            loopNum: 100,
-            test: '是',
-            VIFSet: '=',
+            criterion: 'aic',
+            stepwiseMaxIter: 100,
+            isVif: '是',
+            vifOperator: '=',
           }}
         >
           <Row gutter={gutter}>
             <Col span={8}>
               <Form.Item
                 label="建模方法"
-                name="buildMethod"
+                name="modelBuildMethod"
                 rules={[{ required: true, message: '请选择建模方法' }]}
               >
                 <Select placeholder="请选择建模方法">
@@ -137,7 +187,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="惩罚项"
-                name="punishment"
+                name="penalty"
                 rules={[{ required: true, message: '请选择惩罚项' }]}
               >
                 <Select placeholder="请选择建模方法">
@@ -169,7 +219,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="正则化系数"
-                name="coefficient"
+                name="c"
                 rules={[{ required: true, message: '请输入正则化系数' }]}
               >
                 <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
@@ -178,7 +228,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="迭代次数"
-                name="iteration"
+                name="lrMaxIter"
                 rules={[{ required: true, message: '请输入迭代次数' }]}
               >
                 <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
@@ -192,7 +242,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="变量分箱方式"
-                name="divisionMethod"
+                name="varBinningType"
                 rules={[{ required: true, message: '请选择变量分箱方式' }]}
               >
                 <Select placeholder="请选择变量分箱方式">
@@ -217,7 +267,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="每箱最小样本占比"
-                name="everyPercent"
+                name="minSampleRate"
                 rules={[{ required: true, message: '请输入迭代次数' }]}
               >
                 <InputNumber
@@ -233,7 +283,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="变量空值单独分箱"
-                name="isSingle"
+                name="emptySeparate"
                 rules={[{ required: true, message: '请选择' }]}
               >
                 <Select>
@@ -245,7 +295,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={24}>
               <Form.Item
                 label="选择变量"
-                name="choseVarCode"
+                name="variableNames"
                 rules={[{ required: false, message: '请选择' }]}
               >
                 <div className={styles.listBox}>
@@ -270,14 +320,14 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           <div style={{ marginTop: '20px' }}> </div>
           <Row gutter={gutter}>
             <Col span={24}>
-              <Form.Item name="isBack" label="逐步回归">
+              <Form.Item name="isStepwise" label="逐步回归">
                 <Radio.Group>
                   <Radio value="是">是</Radio>
                   <Radio value="否">否</Radio>
                 </Radio.Group>
               </Form.Item>
             </Col>
-            <Condition r-if={isBack === '是'}>
+            <Condition r-if={isStepwise === '是'}>
               <Col span={6}>
                 <Form.Item
                   name="estimator"
@@ -321,7 +371,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               </Col>
               <Col span={6}>
                 <Form.Item
-                  name="stardard"
+                  name="criterion"
                   label="评判标准"
                   rules={[{ required: true, message: '请选择' }]}
                 >
@@ -344,7 +394,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               <Col span={6}>
                 <Form.Item
                   label="最大循环次数"
-                  name="loopNum"
+                  name="stepwiseMaxIter"
                   rules={[{ required: true, message: '请输入最大循环次数' }]}
                 >
                   <InputNumber step="1" min={0} style={{ width: '100%' }} />
@@ -356,16 +406,16 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           <div style={{ marginTop: '20px' }}> </div>
           <Row gutter={gutter}>
             <Col span={24}>
-              <Form.Item name="test" label="多重共线性检验">
+              <Form.Item name="isVif" label="多重共线性检验">
                 <Radio.Group>
                   <Radio value="是">是</Radio>
                   <Radio value="否">否</Radio>
                 </Radio.Group>
               </Form.Item>
             </Col>
-            <Condition r-if={test === '是'}>
+            <Condition r-if={isVif === '是'}>
               <Col span={3}>
-                <Form.Item name="VIFSet" label="VIF阈值设置">
+                <Form.Item name="vifOperator" label="VIF阈值设置">
                   <Select>
                     <Select.Option key={'='} value={'='}>
                       {'='}
@@ -390,7 +440,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               </Col>
               <Col span={3}>
                 <span className={styles.balanceVal}>
-                  <Form.Item name="balanceVal" label="衡量值">
+                  <Form.Item name="vifThreshold" label="衡量值">
                     <Input placeholder="衡量值" />
                   </Form.Item>
                 </span>
@@ -404,7 +454,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="标准分"
-                name="boxNum"
+                name="baseScore"
                 rules={[{ required: true, message: '请输入标准分' }]}
               >
                 <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
@@ -424,7 +474,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="Base Odds"
-                name="isSingle"
+                name="baseOdds"
                 rules={[{ required: true, message: '请输入Base Odds' }]}
               >
                 <InputNumber
@@ -439,7 +489,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="Rate"
-                name="Rate"
+                name="rate"
                 rules={[{ required: true, message: '请输入Rate' }]}
               >
                 <InputNumber
@@ -452,10 +502,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               </Form.Item>
             </Col>
 
-            <Col span={coreMethod !== '等频分箱' ? 6 : 3}>
+            <Col span={scoreBinningType !== '等频分箱' ? 6 : 3}>
               <Form.Item
                 label="评分分箱方式"
-                name="coreMethod"
+                name="scoreBinningType"
                 rules={[{ required: true, message: '请输入评分分箱方式' }]}
               >
                 <Select
@@ -471,11 +521,11 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 </Select>
               </Form.Item>
             </Col>
-            <Condition r-if={coreMethod === '等频分箱'}>
+            <Condition r-if={scoreBinningType === '等频分箱'}>
               <Col span={3}>
                 <Form.Item
-                  label="评分分箱方式"
-                  name="dividerNum"
+                  label="分箱数"
+                  name="scoreBoxNum"
                   rules={[{ required: true, message: '请输入评分分箱方式' }]}
                 >
                   <InputNumber
@@ -492,7 +542,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
         </Form>
       </Condition>
       <Condition r-if={pageType == ''}>
-        <NextStepButton onClick={beginBuild} text={'开始建模'} />
+        <NextStepButton onClick={beginBuild} text={'开始建模'} loading={loading} />
       </Condition>
       <Condition r-if={pageType == 'error'}>
         <NextStepButton onClick={rebuild} text={'重新建模'} />

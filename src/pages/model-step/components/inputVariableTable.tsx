@@ -3,8 +3,7 @@ import { ProTable } from '@ant-design/pro-components';
 import styles from './style.less';
 
 export default (props: any) => {
-  const { headerTitle, rowKey, actionRef, pageInfo, request } = props;
-
+  const { headerTitle, rowKey, actionRef, pageInfo, request, dataSource } = props;
   const columns: any[] = [
     {
       title: '序号',
@@ -16,23 +15,23 @@ export default (props: any) => {
     },
     {
       title: '变量名称',
-      dataIndex: 'name',
+      dataIndex: 'variable',
       ellipsis: true,
     },
     {
       title: '中文名称',
-      dataIndex: 'nameZH',
+      dataIndex: 'variableName',
       ellipsis: true,
     },
     ,
     {
       title: '变量来源',
-      dataIndex: 'source',
+      dataIndex: 'variableSource',
       ellipsis: true,
     },
     {
       title: '自由度',
-      dataIndex: 'free',
+      dataIndex: 'freeDegree',
       ellipsis: true,
     },
     {
@@ -42,17 +41,17 @@ export default (props: any) => {
     },
     {
       title: 'VIF',
-      dataIndex: 'VIF',
+      dataIndex: 'vif',
       ellipsis: true,
     },
     {
       title: 'wald_test',
-      dataIndex: 'wald_test',
+      dataIndex: 'waldTest',
       ellipsis: true,
     },
     {
       title: 'p_value',
-      dataIndex: 'p_value',
+      dataIndex: 'pvalue',
       ellipsis: true,
     },
     {
@@ -76,9 +75,10 @@ export default (props: any) => {
         scroll={{ x: columns?.length * 150 }}
         search={false}
         columns={columns}
-        request={async (params = {}) => {
-          return request(params);
-        }}
+        // request={async (params = {}) => {
+        //   return request(params);
+        // }}
+        dataSource={dataSource}
       />
     </div>
   );
