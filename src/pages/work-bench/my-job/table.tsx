@@ -9,7 +9,7 @@ import { history } from 'umi';
 
 import { useTableModel, useOpModel } from './model';
 
-import { listToMap, BUSSINESS_CODE } from './model/const';
+import { listToMap, MODEL_TYPE, MODEL_STAGE, MODEL_STATUS } from './model/const';
 
 import style from './style.less';
 
@@ -84,7 +84,7 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '模型单号',
-      dataIndex: 'modelCode',
+      dataIndex: 'itmModelRegisCode',
       search: false,
       width: 200,
       ellipsis: true,
@@ -94,46 +94,45 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '模型编码',
-      dataIndex: 'modelCode',
+      dataIndex: 'modelNo',
       search: false,
       width: 200,
       ellipsis: true,
     },
     {
       title: '模型类型',
-      dataIndex: 'businessCode',
+      dataIndex: 'modelType',
       fieldProps: {
         placeholder: '请选择模型类型',
       },
       valueType: 'select',
       initialValue: undefined,
       valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+        ...listToMap(MODEL_TYPE),
       },
       width: 120,
     },
     {
       title: '当前阶段',
-      dataIndex: 'code',
+      dataIndex: 'currentStage',
       fieldProps: {
         placeholder: '请选择当前阶段',
       },
       valueType: 'select',
       initialValue: undefined,
       valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+        ...listToMap(MODEL_STAGE),
       },
       width: 120,
     },
     {
       title: '模型状态',
-      dataIndex: 'status',
+      dataIndex: 'modelStatus',
       fieldProps: {
         placeholder: '请选择模型状态',
       },
       valueEnum: {
-        0: { text: '已完成', status: 'Success' },
-        1: { text: '未完成', status: 'Default' },
+        ...listToMap(MODEL_STATUS),
       },
       width: 120,
     },
@@ -145,13 +144,13 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createDate',
       search: false,
       width: 200,
     },
     {
       title: '模型报告',
-      dataIndex: 'op',
+      dataIndex: 'report',
       search: false,
       fixed: 'right',
       width: 150,

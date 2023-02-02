@@ -110,7 +110,7 @@ const normalDeal = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 模型管理相关
-  [`GET ${baseUrl}/dataSource/list`]: getList, // 获取模型管理列表
+  [`GET ${baseUrl}/datasourceManage/findDatasourceList`]: getList, // 获取模型管理列表
   [`POST ${baseUrl}/dataSource/add`]: normalDeal,
   [`POST ${baseUrl}/dataSource/delete`]: normalDeal,
   [`POST ${baseUrl}/dataSource/info`]: normalDeal,

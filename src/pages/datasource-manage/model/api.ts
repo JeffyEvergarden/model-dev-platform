@@ -5,7 +5,7 @@ const baseUrl: string = config.basePath;
 
 /** 获取所有模型列表 **/
 export async function getDataSourceList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/dataSource/list`, {
+  return request(`${baseUrl}/datasourceManage/findDatasourceList`, {
     method: 'GET',
     params,
   });

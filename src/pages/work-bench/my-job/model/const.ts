@@ -1,10 +1,27 @@
-export const BUSSINESS_CODE = [
-  { name: '营销', label: '营销' },
-  { name: '客服', label: '客服' },
-  { name: '风险', label: '风险' },
-  { name: '催收', label: '催收' },
-  { name: '审批', label: '审批' },
-  { name: '渠道', label: '渠道' },
+export const MODEL_TYPE = [
+  { name: 'A', label: 'A' },
+  { name: 'B', label: 'B' },
+  { name: 'C', label: 'C' },
+  { name: 'F', label: 'F' },
+  { name: '其他', label: '其他' },
+];
+
+export const MODEL_STAGE = [
+  { name: '1', label: '模型概况' },
+  { name: '2', label: '样本选取' },
+  { name: '3', label: '策略回溯' },
+  { name: '4', label: '前期分析' },
+  { name: '5', label: '样本定义' },
+  { name: '6', label: '特征准备' },
+  { name: '7', label: '特征工程' },
+  { name: '8', label: '模型构建' },
+  { name: '9', label: '模型对比' },
+  { name: '10', label: '生成报告' },
+];
+
+export const MODEL_STATUS = [
+  { name: '0', label: '未完成' },
+  { name: '1', label: '已完成' },
 ];
 
 export const listToMap = (list: any[]) => {
