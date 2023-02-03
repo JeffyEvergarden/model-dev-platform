@@ -10,9 +10,8 @@ import RelateModal from './relateModal';
 import InputVariableTable from '@/pages/model-step/components/inputVariableTable';
 import VarCodeRelateTable from '@/pages/model-step/components/varCodeRelateTable';
 import ScoreCardTable from '@/pages/model-step/components/scoreCardTable';
-import { changeData } from '@/utils';
 import CompareAndReportCommonPage from '@/pages/model-step/components/compareAndReportCommonPage';
-
+import { changeData } from '@/utils';
 import config from '@/config';
 const successCode = config.successCode;
 
@@ -53,7 +52,7 @@ export default (props: any) => {
     getModelResult();
 
     getVarCode(); //变量相关性
-  }, []);
+  }, [activeKey]);
 
   const getModelStructureParam = async () => {
     let params = {
@@ -80,7 +79,11 @@ export default (props: any) => {
     let res = await getModelResultRequest(params);
     if (res?.status?.code === successCode) {
       setLoading(false);
-      setModelResult(res?.result);
+      let resultData = res.result;
+      if (resultData.scoreCardLogicList) {
+        resultData.scoreCardLogicList = togetherData(resultData.scoreCardLogicList);
+      }
+      setModelResult(resultData);
     } else {
       setLoading(false);
       message.error(res?.status?.desc || '异常');
@@ -92,6 +95,27 @@ export default (props: any) => {
     let res = await relateCodeList(params);
     setDataSourceRelate(res?.data?.list);
     setColumnsRelate(res?.data?.columnsRelate);
+  };
+
+  const togetherData = (data: any) => {
+    let tempArr: any = [];
+    data?.map((item: any, index: any) => {
+      item?.boxList?.map((el: any) => {
+        tempArr.push({
+          idx: index,
+          id: el?.variable,
+          variable: item?.variable,
+          variableName: item?.variableName,
+          boxGroup: el?.boxGroup,
+          boxGroupScore: el?.boxGroupScore,
+          trainBadRate: el?.trainBadRate,
+          validBadRate: el?.validBadRate,
+          trainGroupRate: el?.trainGroupRate,
+          validGroupRate: el?.validGroupRate,
+        });
+      });
+    });
+    return changeData(tempArr, 'variable');
   };
 
   const varCodeList = async (payload: any) => {
@@ -109,36 +133,6 @@ export default (props: any) => {
 
   const openMax = () => {
     relateModalRef?.current?.open();
-  };
-
-  const scoreCardList = async (payload: any) => {
-    let params = {};
-
-    let res = await getScoreCardList(params);
-    let tempArr: any = [];
-    res?.data?.list?.map((item: any, index: any) => {
-      item?.dividerList?.map((el: any) => {
-        tempArr.push({
-          idx: index,
-          id: item.id + '-' + el.id,
-          name: item?.name,
-          nameZH: item?.nameZH,
-          divider: el?.divider,
-          score: el?.score,
-          badRate: el?.badRate,
-          trateRate: el?.trateRate,
-          trateCurrentRate: el?.trateCurrentRate,
-          verifyCurrentRate: el?.verifyCurrentRate,
-        });
-      });
-    });
-    changeData(tempArr, 'name');
-    return {
-      data: tempArr || [],
-      total: res?.data?.total || 0,
-      current: payload.current,
-      pageSize: payload.pageSize,
-    };
   };
 
   return (
@@ -216,12 +210,13 @@ export default (props: any) => {
           rowKey={(record: any) => record.id}
           toolBarRender={() => []}
           actionRef={actionRef}
-          request={async (params = {}) => {
-            return scoreCardList(params);
-          }}
+          // request={async (params = {}) => {
+          //   return scoreCardList(params);
+          // }}
+          dataSource={modelResult?.scoreCardLogicList}
         />
       </div>
-      <CompareAndReportCommonPage pageType="comparePage" />
+      <CompareAndReportCommonPage pageType="comparePage" modelResult={modelResult} />
       <RelateModal
         columnsRelate={columnsRelate}
         dataSourceRelate={dataSourceRelate}
