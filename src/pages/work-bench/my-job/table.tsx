@@ -9,7 +9,7 @@ import { history } from 'umi';
 
 import { useTableModel, useOpModel } from './model';
 
-import { listToMap, BUSSINESS_CODE } from './model/const';
+import { listToMap, MODEL_TYPE, MODEL_STAGE, MODEL_STATUS } from './model/const';
 
 import style from './style.less';
 
@@ -67,6 +67,10 @@ const ModelManagement: React.FC = (props: any) => {
     }
   };
 
+  const viewReport = (row: any) => {
+    history.push('/workBench/viewReport');
+  };
+
   const columns: any[] = [
     {
       title: '模型名称',
@@ -89,6 +93,13 @@ const ModelManagement: React.FC = (props: any) => {
       },
     },
     {
+      title: '模型编码',
+      dataIndex: 'modelNo',
+      search: false,
+      width: 200,
+      ellipsis: true,
+    },
+    {
       title: '模型类型',
       dataIndex: 'modelType',
       fieldProps: {
@@ -97,7 +108,7 @@ const ModelManagement: React.FC = (props: any) => {
       valueType: 'select',
       initialValue: undefined,
       valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+        ...listToMap(MODEL_TYPE),
       },
       width: 120,
     },
@@ -110,7 +121,7 @@ const ModelManagement: React.FC = (props: any) => {
       valueType: 'select',
       initialValue: undefined,
       valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+        ...listToMap(MODEL_STAGE),
       },
       width: 120,
     },
@@ -121,8 +132,7 @@ const ModelManagement: React.FC = (props: any) => {
         placeholder: '请选择模型状态',
       },
       valueEnum: {
-        0: { text: '已完成', status: 'Success' },
-        1: { text: '未完成', status: 'Default' },
+        ...listToMap(MODEL_STATUS),
       },
       width: 120,
     },
@@ -134,25 +144,31 @@ const ModelManagement: React.FC = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createDate',
       search: false,
       width: 200,
     },
     {
       title: '模型报告',
-      dataIndex: 'report-op',
+      dataIndex: 'report',
       search: false,
       fixed: 'right',
-      width: 200,
+      width: 150,
       render: (val: any, row: any, index: number) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Button type="link" className={style['btn-success']} onClick={() => {}}>
+              <Button
+                type="text"
+                className={style['btn-success']}
+                onClick={() => {
+                  viewReport(row);
+                }}
+              >
                 查看
               </Button>
 
-              <Button type="link" onClick={() => {}}>
+              <Button type="link" className={style['btn-success']} onClick={() => {}}>
                 下载
               </Button>
 
@@ -178,12 +194,12 @@ const ModelManagement: React.FC = (props: any) => {
       dataIndex: 'op',
       search: false,
       fixed: 'right',
-      width: 200,
+      width: 50,
       render: (val: any, row: any, index: number) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Button type="link" onClick={() => {}}>
+              <Button type="text" className={style['btn-disable']} onClick={() => {}}>
                 查看
               </Button>
             </div>

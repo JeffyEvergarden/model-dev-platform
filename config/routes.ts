@@ -15,10 +15,21 @@ export default [
     noAuth: true,
   },
   {
-    path: '/myjob',
+    path: '/workBench',
     layout: true,
     name: '我的工作台',
-    component: './my-job',
+    component: './work-bench/home',
+    routes: [
+      {
+        path: '/workBench/moy-job',
+        component: './work-bench/my-job',
+      },
+      {
+        path: '/workBench/viewReport',
+        component: './work-bench/viewReport',
+      },
+      { redirect: '/workBench/moy-job' },
+    ],
   },
   {
     path: '/datasource/management',

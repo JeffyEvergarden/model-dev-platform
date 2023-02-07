@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useMemo, useState, Fragment } from 'react';
-import { Form, Input, DatePicker, Divider, Select, Button, Space } from 'antd';
-import styles from '../style.less';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
+import { Form, Input, DatePicker, Divider, Select } from 'antd';
+import styles from '@/pages/model-step/pages/style.less';
 import ProTable from '@ant-design/pro-table';
-import CustomerFormBox from './component/customerFormBox';
-import NextStepButton from '../../components/nextstep-button';
-import { genColumns } from './model/config';
-import { usePreAnalyzeModel, useSearchModel } from './model';
+import { genColumns } from '@/pages/model-step/pages/step-pre-analyze/model/config';
+import {
+  usePreAnalyzeModel,
+  useSearchModel,
+} from '@/pages/model-step/pages/step-pre-analyze/model';
 import config from '@/config/index';
 
 const FormItem = Form.Item;
@@ -313,7 +314,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>前期分析</div>
       <p className={styles.commonTitle}>VINTAGE分析</p>
       <div className={styles.commonTable}>
         <ProTable<any>
@@ -390,21 +390,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
         </FormItem>
       </Form>
-      <Divider />
-      <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
-      <CustomerFormBox customerFormRef={customerFormRef} />
-      <NextStepButton
-        btnNode={
-          <Space>
-            <Button onClick={exportResult} size="large">
-              导出结果
-            </Button>
-            <Button onClick={nextFlow} size="large" type="primary">
-              下一流程
-            </Button>
-          </Space>
-        }
-      />
     </div>
   );
 };

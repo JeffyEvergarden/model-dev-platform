@@ -1,7 +1,7 @@
 import config from '@/config/index';
 import { message } from 'antd';
 import { useState } from 'react';
-import { addNewModel, deleteModel, getModelInfo, getModelList } from './api';
+import { addNewModel, deleteModel, getModelInfo, getModelList, getSummaryList } from './api';
 
 export const successCode = config.successCode;
 
@@ -15,7 +15,7 @@ export const useTableModel = () => {
     setTableLoading(true);
     let res: any = await getModelList(params);
     setTableLoading(false);
-    let { list = [], totalPage, totalSize } = res.data;
+    let { tableData: list = [], totalPage, totalSize } = res;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -89,5 +89,28 @@ export const useOpModel = () => {
     addNewModel: _addNewModel, // 添加机器人
     opLoading: loading,
     getInfo,
+  };
+};
+
+//事项
+export const useSummaryModel = () => {
+  const [allItemNum, setAllItemNum] = useState<any>();
+  const [incompleteNum, setIncompleteNum] = useState<any>();
+  const [completeNum, setCompleteNum] = useState<any>();
+
+  const getSummaryInfo = async (params?: any) => {
+    let res: any = await getSummaryList(params);
+    if (res?.code == successCode) {
+      setAllItemNum(res?.data?.allItemNum);
+      setIncompleteNum(res?.data?.incompleteNum);
+      setCompleteNum(res?.data?.completeNum);
+    }
+  };
+
+  return {
+    allItemNum,
+    incompleteNum,
+    completeNum,
+    getSummaryInfo,
   };
 };

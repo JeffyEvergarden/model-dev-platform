@@ -2,6 +2,7 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 import {
+  getModelStructureParamApi,
   codeListData,
   relateCodeListGet,
   scoreCardListApi,
@@ -9,12 +10,21 @@ import {
   stableDataQueryApi,
   varCodeStableQueryApi,
   modelSortListApi,
+  versionListApi,
+  getModelResultApi,
 } from './api';
 
 export const successCode = config.successCode;
 
 export const useComparePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  const getModelStructureParamRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getModelStructureParamApi(params);
+    setLoading(false);
+    return res;
+  };
 
   const codeList = async (params?: any) => {
     setLoading(true);
@@ -65,8 +75,23 @@ export const useComparePage = () => {
     return res;
   };
 
+  const versionListRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await versionListApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getModelResultRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getModelResultApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
+    setLoading,
     codeList,
     relateCodeList,
     getScoreCardList,
@@ -74,5 +99,8 @@ export const useComparePage = () => {
     stableDataQuery,
     varCodeStableQuery,
     modelSortList,
+    versionListRequest,
+    getModelStructureParamRequest,
+    getModelResultRequest,
   };
 };

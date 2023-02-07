@@ -6,7 +6,15 @@ const baseUrl: string = config.basePath;
 /** 获取所有模型列表 **/
 export async function getModelList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/myWorkbench/getModelInfoList`, {
-    method: 'GET',
+    method: 'POST',
+    params,
+  });
+}
+
+/** 获取事项 **/
+export async function getSummaryList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/myWorkbench/myModelInfoSummary`, {
+    method: 'POST',
     params,
   });
 }
