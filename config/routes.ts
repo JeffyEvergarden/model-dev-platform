@@ -32,12 +32,6 @@ export default [
     ],
   },
   {
-    path: '/datasource/management',
-    layout: true,
-    name: '数据源管理',
-    component: './datasource-manage/layout',
-  },
-  {
     path: '/datasource/model-report',
     layout: true,
     name: '模型报告',

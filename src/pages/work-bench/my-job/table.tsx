@@ -159,8 +159,7 @@ const ModelManagement: React.FC = (props: any) => {
           <>
             <div style={{ display: 'flex' }}>
               <Button
-                type="text"
-                className={style['btn-success']}
+                type="link"
                 onClick={() => {
                   viewReport(row);
                 }}
@@ -168,7 +167,7 @@ const ModelManagement: React.FC = (props: any) => {
                 查看
               </Button>
 
-              <Button type="link" className={style['btn-success']} onClick={() => {}}>
+              <Button type="text" className={style['btn-success']} onClick={() => {}}>
                 下载
               </Button>
 
@@ -199,7 +198,7 @@ const ModelManagement: React.FC = (props: any) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Button type="text" className={style['btn-disable']} onClick={() => {}}>
+              <Button type="link" className={style['btn-disable']} onClick={() => {}}>
                 查看
               </Button>
             </div>
