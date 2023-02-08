@@ -32,10 +32,10 @@ export default [
     ],
   },
   {
-    path: '/datasource/model-report',
+    path: '/report/modelReport',
     layout: true,
     name: '模型报告',
-    component: './model-report',
+    component: './work-bench/viewReport',
   },
   {
     path: '/modelStep',
