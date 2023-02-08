@@ -1,8 +1,8 @@
 export const MODEL_TYPE = [
-  { name: 'A', label: 'A' },
-  { name: 'B', label: 'B' },
-  { name: 'C', label: 'C' },
-  { name: 'F', label: 'F' },
+  { name: 'A', label: 'A卡' },
+  { name: 'B', label: 'B卡' },
+  { name: 'C', label: 'C卡' },
+  { name: 'F', label: 'F卡' },
   { name: '其他', label: '其他' },
 ];
 
@@ -19,15 +19,29 @@ export const MODEL_STAGE = [
   { name: '10', label: '生成报告' },
 ];
 
+export const STAGESTATUS_MAP = {
+  '0': '未开始',
+  '1': '进行中',
+  '2': '已完成',
+  '3': '处理失败',
+};
+
+export const STAGESTATUS_COLOR_MAP = {
+  '0': 'default',
+  '1': 'warning',
+  '2': 'success',
+  '3': 'error',
+};
+
 export const MODEL_STATUS = [
-  { name: '0', label: '未完成' },
-  { name: '1', label: '已完成' },
+  { name: '0', label: '未完成', status: 'Error' },
+  { name: '1', label: '已完成', status: 'Success' },
 ];
 
 export const listToMap = (list: any[]) => {
   let obj: any = {};
   list.forEach((item: any, index: number) => {
-    obj[item.name] = { text: item.label };
+    obj[item.name] = { text: item.label, status: item?.status || undefined };
   });
   return obj;
 };

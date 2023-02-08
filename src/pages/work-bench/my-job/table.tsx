@@ -3,15 +3,23 @@ import config from '@/config/index';
 import useUpdateModel from '@/ models';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Popconfirm } from 'antd';
-import React, { useEffect, useRef } from 'react';
+import { Button, message, Popconfirm, Select, Space, Tag } from 'antd';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { history } from 'umi';
 
 import { useTableModel, useOpModel } from './model';
 
-import { listToMap, MODEL_TYPE, MODEL_STAGE, MODEL_STATUS } from './model/const';
+import {
+  listToMap,
+  MODEL_TYPE,
+  MODEL_STAGE,
+  MODEL_STATUS,
+  STAGESTATUS_MAP,
+  STAGESTATUS_COLOR_MAP,
+} from './model/const';
 
 import style from './style.less';
+import DetailModal from './detail';
 
 enum MACHINE_STATUS {
   RUNNING = 0,
@@ -19,12 +27,15 @@ enum MACHINE_STATUS {
 }
 
 // 机器人列表
-const ModelManagement: React.FC = (props: any) => {
+const ModelManagement: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
+  const { cref } = props;
 
-  const { tableList, getTableList, tableLoading } = useTableModel();
+  const { tableList, getTableList, tableLoading, userList, getUserList } = useTableModel();
 
   const { opLoading, deleteModel, addNewModel } = useOpModel();
+
+  const [modelType, setModelType] = useState<any>(undefined);
 
   // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
   //   info: model.info,
@@ -34,6 +45,8 @@ const ModelManagement: React.FC = (props: any) => {
   const { updatePage } = useUpdateModel();
 
   const tableRef = useRef<any>({});
+  const formRef = useRef<any>({});
+  const detailRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
 
@@ -47,6 +60,15 @@ const ModelManagement: React.FC = (props: any) => {
     localStorage.setItem('robot_id', row.id);
     sessionStorage.setItem('robot_id', row.id);
   };
+
+  useImperativeHandle(cref, () => ({
+    setModelType: (val: any) => {
+      formRef?.current?.setFieldsValue({
+        modelStatus: val,
+      });
+      formRef?.current?.submit();
+    },
+  }));
 
   const deleteRow = async (row: any) => {
     if (row?.status == 0) {
@@ -106,7 +128,7 @@ const ModelManagement: React.FC = (props: any) => {
         placeholder: '请选择模型类型',
       },
       valueType: 'select',
-      initialValue: undefined,
+
       valueEnum: {
         ...listToMap(MODEL_TYPE),
       },
@@ -120,10 +142,25 @@ const ModelManagement: React.FC = (props: any) => {
       },
       valueType: 'select',
       initialValue: undefined,
-      valueEnum: {
-        ...listToMap(MODEL_STAGE),
-      },
+      // valueEnum: {
+      //   ...listToMap(MODEL_STAGE),
+      // },
       width: 120,
+      render: (_: any, record: any) => {
+        console.log(_);
+
+        return (
+          <Space>
+            {MODEL_STAGE?.find((item) => item.name == record?.currentStage)?.label}
+            <Tag
+              color={STAGESTATUS_COLOR_MAP[record?.currentStageStatus]}
+              key={record?.currentStageStatus}
+            >
+              {STAGESTATUS_MAP[record?.currentStageStatus]}
+            </Tag>
+          </Space>
+        );
+      },
     },
     {
       title: '模型状态',
@@ -131,6 +168,7 @@ const ModelManagement: React.FC = (props: any) => {
       fieldProps: {
         placeholder: '请选择模型状态',
       },
+      // initialValue: modelType,
       valueEnum: {
         ...listToMap(MODEL_STATUS),
       },
@@ -139,21 +177,41 @@ const ModelManagement: React.FC = (props: any) => {
     {
       title: '建模人员',
       dataIndex: 'creator',
-      search: false,
+      fieldProps: {
+        placeholder: '请选择建模人员',
+      },
+      valueEnum: {
+        ...listToMap(userList),
+      },
+      initialValue: '123',
       width: 200,
     },
     {
       title: '创建时间',
       dataIndex: 'createDate',
-      search: false,
+      hideInSearch: true,
       width: 200,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createDate',
+      valueType: 'dateRange',
+      hideInTable: true,
+      search: {
+        transform: (value: any) => {
+          return {
+            beginDate: value[0],
+            endDate: value[1],
+          };
+        },
+      },
     },
     {
       title: '模型报告',
       dataIndex: 'report',
       search: false,
       fixed: 'right',
-      width: 150,
+      width: 120,
       render: (val: any, row: any, index: number) => {
         return (
           <>
@@ -199,7 +257,13 @@ const ModelManagement: React.FC = (props: any) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Button type="text" className={style['btn-disable']} onClick={() => {}}>
+              <Button
+                type="text"
+                className={style['btn-disable']}
+                onClick={() => {
+                  detailRef?.current?.open?.(row);
+                }}
+              >
                 查看
               </Button>
             </div>
@@ -210,6 +274,8 @@ const ModelManagement: React.FC = (props: any) => {
   ];
 
   useEffect(() => {
+    console.log(tableRef);
+    getUserList(); // 获取建模人员
     tableRef.current.reload();
   }, []);
 
@@ -219,6 +285,7 @@ const ModelManagement: React.FC = (props: any) => {
         // params={searchForm}
         columns={columns}
         actionRef={tableRef}
+        formRef={formRef}
         scroll={{ x: columns.length * 200 }}
         request={async (params = {}, sort, filter) => {
           return getTableList({ page: params.current, ...params });
@@ -254,18 +321,20 @@ const ModelManagement: React.FC = (props: any) => {
         dateFormatter="string"
         headerTitle=""
         toolBarRender={() => [
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            type="primary"
-            onClick={() => {
-              modalRef.current?.open?.();
-            }}
-          >
-            新建
-          </Button>,
+          // <Button
+          //   key="button"
+          //   icon={<PlusOutlined />}
+          //   type="primary"
+          //   onClick={() => {
+          //     modalRef.current?.open?.();
+          //   }}
+          // >
+          //   新建
+          // </Button>,
         ]}
       />
+
+      <DetailModal cref={detailRef}></DetailModal>
     </div>
   );
 };

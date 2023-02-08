@@ -9,25 +9,46 @@ let time = 0;
 // 新增方式通用
 const normalDeal = (req: any, res: any) => {
   res.json({
-    resultCode: successCode,
+    status: {
+      code: successCode,
+      desc: '',
+    },
   });
 };
 // 提交过程 通用
 const getWaitResult = (req: any, res: any) => {
+  // res.json({
+  //   status: {
+  //     code: successCode,
+  //     desc: '',
+  //   },
+  // });
   if (time >= 2) {
     time = 0;
     res.json({
-      resultCode: successCode,
-      data: {
-        type: 'finish',
+      status: {
+        code: successCode,
+        desc: '',
+      },
+      result: {
+        currentStage: '3',
+        currentStageStatus: '2', //完成
+        currentStageDesc: '1',
+        backtrackProcessName: '编排1,编排2',
       },
     });
   } else {
     time++;
     res.json({
-      resultCode: successCode,
-      data: {
-        type: 'loading',
+      status: {
+        code: successCode,
+        desc: '',
+      },
+      result: {
+        currentStage: '3',
+        currentStageStatus: '1', //进行中
+        currentStageDesc: '1',
+        backtrackProcessName: '编排1,编排2',
       },
     });
   }
@@ -109,32 +130,38 @@ const getColumnsList = (req: any, res: any) => {
 };
 
 // 策略回溯
-
 const getStrategyBackList = (req: any, res: any) => {
   res.json({
-    resultCode: successCode,
-    data: [
-      {
-        id: 1,
-        name: '独角兽一号',
-        num: 1000,
-      },
-      {
-        id: 2,
-        name: '报丧女妖二号',
-        num: 1200,
-      },
-      {
-        id: 3,
-        name: '菲尼克斯三号',
-        num: 1300,
-      },
-      {
-        id: 4,
-        name: '沙扎比',
-        num: 1300,
-      },
-    ],
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      // processDataList: [
+      //   {
+      //     id: 1,
+      //     processName: '独角兽一号',
+      //     sampleCount: 1000,
+      //   },
+      //   {
+      //     id: 2,
+      //     processName: '报丧女妖二号',
+      //     sampleCount: 1200,
+      //   },
+      //   {
+      //     id: 3,
+      //     processName: '菲尼克斯三号',
+      //     sampleCount: 1300,
+      //   },
+      //   {
+      //     id: 4,
+      //     processName: '沙扎比',
+      //     sampleCount: 1300,
+      //   },
+      // ],
+      processName: '编排1,编排2',
+      backtrackProcessName: '编排1,编排2',
+    },
   });
 };
 
@@ -147,6 +174,8 @@ export default {
   [`GET ${baseUrl}/modelStep/selectSample/result`]: getWaitResult,
 
   // 策略回溯
-  [`GET ${baseUrl}/modelStep/strategyBack/list`]: getStrategyBackList,
-  [`GET ${baseUrl}/modelStep/strategyBack/result`]: getWaitResult,
+  [`POST ${baseUrl}/policyBacktrack/getProcessInfo`]: getStrategyBackList,
+  [`POST ${baseUrl}/policyBacktrack/getStageStatus`]: getWaitResult,
+  [`POST ${baseUrl}/policyBacktrack/backTracking`]: normalDeal,
+  [`POST ${baseUrl}/policyBacktrack/nextStage`]: normalDeal,
 };

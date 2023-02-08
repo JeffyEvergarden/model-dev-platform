@@ -333,7 +333,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       className={style['modal-bg']}
       width={950}
       title={'变量选择'}
-      open={visible}
+      visible={visible}
       maskClosable={false}
       onCancel={() => {
         setSearchText1('');

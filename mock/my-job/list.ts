@@ -15,25 +15,40 @@ const getList = (req: any, res: any) => {
       modelStatus: Math.floor(Math.random() * 100) > 50 ? 0 : 1,
       creator: 'creater',
       createDate: '2023-01-31 11:11:11',
+      currentStageStatus: Math.floor(Math.random() * 4),
     };
   });
 
   res.json({
-    status: {},
-    code: successCode,
-    desc: '',
-    totalPage: 7,
-    pageSize: 10,
-    current: 1,
-    tableData: list,
+    status: { code: successCode, desc: '' },
+    data: {
+      totalPage: 7,
+      pageSize: 10,
+      current: 1,
+      tableData: list,
+    },
+  });
+};
+
+const getInfo = (req: any, res: any) => {
+  let list = new Array(41).fill(1).map((item: any, index: number) => {
+    return {
+      dataSet: '数据集' + index,
+      modelStage: Math.floor(Math.random() * 10) + 1,
+      database: '存放库' + index,
+    };
+  });
+
+  res.json({
+    status: { code: successCode, desc: '' },
+    data: list,
   });
 };
 
 const getSummaryList = (req: any, res: any) => {
   res.json({
-    status: {},
-    code: successCode,
-    desc: '',
+    status: { code: successCode, desc: '' },
+
     data: {
       allItemNum: 10,
       incompleteNum: 7,
@@ -48,12 +63,20 @@ const normalDeal = (req: any, res: any) => {
   });
 };
 
+const userList = (req: any, res: any) => {
+  res.json({
+    status: { code: successCode, desc: '' },
+    data: ['梁山伯', '梁博'],
+  });
+};
+
 // 菜单管理相关
 export default {
   // 模型管理相关
-  [`POST ${baseUrl}/myWorkbench/getModelInfoList`]: getList, // 获取模型管理列表
-  [`POST ${baseUrl}/myWorkbench/myModelInfoSummary`]: getSummaryList,
+  [`POST ${baseUrl}/modelDev/myWorkbench/getModelInfoList`]: getList, // 获取模型管理列表
+  [`POST ${baseUrl}/modelDev/myWorkbench/myModelInfoSummary`]: getSummaryList,
   [`POST ${baseUrl}/model/add`]: normalDeal,
   [`POST ${baseUrl}/model/delete`]: normalDeal,
-  [`POST ${baseUrl}/model/info`]: normalDeal,
+  [`GET ${baseUrl}/modelDev/myWorkbench/getModelStageInfo`]: getInfo,
+  [`GET ${baseUrl}/modelDev/myWorkbench/getModelAnalysts`]: userList,
 };

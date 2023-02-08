@@ -1,10 +1,10 @@
 import Condition from '@/components/Condition';
 import { DeleteOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Input, message, Modal, Table, Tabs, Tooltip } from 'antd';
+import { Button, Input, message, Modal, Space, Table, Tabs, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import NextStepButton from '../../components/nextstep-button';
-import { useStrategyBackModel } from './model';
+import { useStrategyBackModel, useStrategyBackUploadAwaitModel } from './model';
 import style from './style.less';
 import styles from '../style.less';
 
@@ -14,14 +14,14 @@ const columns1: any[] = [
   // 问题列表-列
   {
     title: '编排名称',
-    dataIndex: 'name',
-    width: 300,
+    dataIndex: 'processName',
+    // width: 300,
   },
-  {
-    title: '样本包括的总数量',
-    dataIndex: 'num',
-    width: 200,
-  },
+  // {
+  //   title: '样本包括的总数量',
+  //   dataIndex: 'sampleCount',
+  //   width: 200,
+  // },
 ];
 
 const { Search } = Input;
@@ -44,6 +44,7 @@ const SelectorTable: React.FC<any> = (props: any) => {
   //  批量相关操作
 
   const { tableList, loading, getStrategyTableList } = useStrategyBackModel();
+  const { submitProcess, passBackStep } = useStrategyBackUploadAwaitModel();
 
   // ------------------------
 
@@ -71,12 +72,29 @@ const SelectorTable: React.FC<any> = (props: any) => {
     getStrategyTableList({});
   }, []);
 
-  const onClick = () => {
+  const onClick = async () => {
+    console.log(selectedKeys);
     if (selectedKeys.length === 0) {
       message.warning('请选择需要回溯的编排');
     } else {
-      onNext?.(selectedKeys);
+      console.log(selectedKeys);
+      let reqData = { itmModelRegisCode: '', backtrackProcessName: selectedKeys };
+      await submitProcess(reqData).then((res: any) => {
+        if (res) {
+          onNext?.(selectedKeys);
+        }
+      });
     }
+  };
+
+  const skipBackStep = async () => {
+    let reqData = { itmModelRegisCode: '' };
+    await passBackStep(reqData).then((res: any) => {
+      if (res) {
+        // onNext?.(selectedKeys);
+        //跳到下一流程
+      }
+    });
   };
 
   return (
@@ -88,18 +106,29 @@ const SelectorTable: React.FC<any> = (props: any) => {
             type: 'checkbox',
             ...rowSelection,
             selectedRowKeys: selectedKeys,
-            hideSelectAll: true,
+            // hideSelectAll: true,
           }}
           size="small"
-          pagination={false}
+          // pagination={false}
           dataSource={tableList}
           columns={columns1}
-          rowKey="id"
+          rowKey="processName"
           loading={loading}
         />
       </div>
 
-      <NextStepButton onClick={onClick} text={'提交'} />
+      <NextStepButton
+        btnNode={
+          <Space>
+            <Button onClick={skipBackStep} size="large">
+              跳过，下一流程
+            </Button>
+            <Button onClick={onClick} size="large" type="primary">
+              提交
+            </Button>
+          </Space>
+        }
+      />
     </div>
   );
 };

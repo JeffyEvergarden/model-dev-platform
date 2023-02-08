@@ -5,7 +5,7 @@ const baseUrl: string = config.basePath;
 
 /** 获取所有模型列表 **/
 export async function getModelList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/myWorkbench/getModelInfoList`, {
+  return request(`${baseUrl}/modelDev/myWorkbench/getModelInfoList`, {
     method: 'POST',
     params,
   });
@@ -13,15 +13,23 @@ export async function getModelList(params?: { [key: string]: any }) {
 
 /** 获取事项 **/
 export async function getSummaryList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/myWorkbench/myModelInfoSummary`, {
+  return request(`${baseUrl}/modelDev/myWorkbench/myModelInfoSummary`, {
     method: 'POST',
+    params,
+  });
+}
+
+/** 获取建模人员 **/
+export async function getModelAnalysts(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelDev/myWorkbench/getModelAnalysts`, {
+    method: 'GET',
     params,
   });
 }
 
 /** 获取单个模型信息 **/
 export async function getModelInfo(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/model/info`, {
+  return request(`${baseUrl}/modelDev/myWorkbench/getModelStageInfo`, {
     method: 'GET',
     params,
   });

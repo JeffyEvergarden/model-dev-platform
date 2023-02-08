@@ -20,11 +20,14 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
 
+  const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
+
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
 
-  const onNext = () => {
+  const onNext = (key: any) => {
     setStepType(2);
+    setSelectedKeys(key);
   };
 
   return (
@@ -39,7 +42,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
       {/* 步骤二 */}
 
       <Condition r-if={stepType === 2}>
-        <TabTwo tabType={tabType} processId={processId}></TabTwo>
+        <TabTwo tabType={tabType} processId={processId} selectedKeys={selectedKeys}></TabTwo>
       </Condition>
     </div>
   );
