@@ -2,16 +2,26 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 
-import { getWaitResult, getStrategyBackList } from './api';
+import {
+  getWaitResult,
+  getStrategyBackList,
+  backTracking,
+  skipCurrentStage,
+  getStageStatus,
+  nextStage,
+} from './api';
 
 export const successCode = config.successCode;
 
-//
+export const StageStatus = {
+  '1': 'loading',
+  '2': 'finish',
+  '3': 'error',
+};
 
 // 策略分析
 export const useStrategyBackModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
-
   const [loading, setLoading] = useState<boolean>(false);
 
   const getStrategyTableList = async (params: any) => {
@@ -19,8 +29,11 @@ export const useStrategyBackModel = () => {
     const res: any = await getStrategyBackList(params);
     setLoading(false);
     // 策略分析
-    if (res.resultCode === successCode) {
-      let data: any[] = res.data || [];
+    if (res?.status?.code === successCode) {
+      let data: any[] =
+        res?.result?.processName?.split(',')?.map((item: any) => ({
+          processName: item,
+        })) || [];
       setTableList(data);
     }
   };
@@ -33,17 +46,53 @@ export const useStrategyBackModel = () => {
 };
 
 export const useStrategyBackUploadAwaitModel = () => {
-  const [processType, setProcessType] = useState<any>('loading');
+  const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
 
   const fake = useRef<any>({});
 
+  //提交
+  const submitProcess = async (params: any) => {
+    let res: any = await backTracking(params);
+    const { code = '', desc = '' } = res?.status || {};
+    if (code == successCode) {
+      return true;
+    } else {
+      message.error(desc);
+      return false;
+    }
+  };
+
+  //跳过
+  const passBackStep = async (params: any) => {
+    let res: any = await skipCurrentStage(params);
+    const { code = '', desc = '' } = res?.status || {};
+    if (code == successCode) {
+      return true;
+    } else {
+      message.error(desc);
+      return false;
+    }
+  };
+
+  //下一流程
+  const nextFlow = async (params: any) => {
+    let res: any = await nextStage(params);
+    const { code = '', desc = '' } = res?.status;
+    if (code == successCode) {
+      return true;
+    } else {
+      message.error(desc);
+      return false;
+    }
+  };
+
   const awaitResult = async (params?: any) => {
-    let res: any = await getWaitResult(params);
-    let data = res.data || {};
-    if (data.type === 'finish') {
+    let res: any = await getStageStatus(params);
+    let data = res?.result || {};
+    if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
-    } else if (data.type === 'loading') {
+    } else if (StageStatus[data?.currentStageStatus] === 'loading') {
       setProcessType('loading');
       return 'loading';
     } else {
@@ -77,5 +126,8 @@ export const useStrategyBackUploadAwaitModel = () => {
     processType,
     awaitResult,
     startLoop,
+    submitProcess,
+    passBackStep,
+    nextFlow,
   };
 };

@@ -11,12 +11,17 @@ import FinishImage from './img/finish.png';
 import style from './style.less';
 import { useSummaryModel } from './model';
 
+import allItem from '@/asset/image/allItem.png';
+import incomplete from '@/asset/image/incomplete.png';
+import complete from '@/asset/image/complete.png';
+
 // 首页
 const Myjob: React.FC = (props: any) => {
   const [activeTabs, setActiveTabs] = useState<number>(1);
 
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { allItemNum, incompleteNum, completeNum, getSummaryInfo } = useSummaryModel();
+  const tableRef: any = useRef();
 
   const onTabClick = (it: any) => {
     if (activeTabs === it) {
@@ -40,6 +45,7 @@ const Myjob: React.FC = (props: any) => {
             className={`${style['title-box']} ${activeTabs === 1 ? style['tabs-active'] : ''}`}
             onClick={() => {
               onTabClick(1);
+              tableRef?.current?.setModelType?.(undefined);
             }}
           >
             <div className={`${style['zy-row']}`}>
@@ -54,6 +60,7 @@ const Myjob: React.FC = (props: any) => {
             className={`${style['title-box']} ${activeTabs === 2 ? style['tabs-active'] : ''}`}
             onClick={() => {
               onTabClick(2);
+              tableRef?.current?.setModelType?.('0');
             }}
           >
             <div className={style['zy-row']}>
@@ -67,6 +74,7 @@ const Myjob: React.FC = (props: any) => {
             className={`${style['title-box']} ${activeTabs === 3 ? style['tabs-active'] : ''}`}
             onClick={() => {
               onTabClick(3);
+              tableRef?.current?.setModelType?.('1');
             }}
           >
             <div className={style['zy-row']}>
@@ -82,7 +90,7 @@ const Myjob: React.FC = (props: any) => {
           我的模型
         </div>
 
-        <ModelTable />
+        <ModelTable cref={tableRef} />
       </div>
     </PageContainer>
   );

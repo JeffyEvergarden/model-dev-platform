@@ -6,6 +6,10 @@ const baseUrl = config.basePath;
 // 样本选择
 const getTreeList = (req: any, res: any) => {
   res.json({
+    status: {
+      code: '',
+      desc: '',
+    },
     resultCode: successCode,
     data: [
       {

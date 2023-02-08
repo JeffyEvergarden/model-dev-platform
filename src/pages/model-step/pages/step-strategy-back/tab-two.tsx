@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Input, DatePicker, Row, Col, Select } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Select, Space, Button } from 'antd';
 import styles from './style.less';
 import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
@@ -19,19 +19,20 @@ const { Option } = Select;
 // 首页
 const TabTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, extra } = props;
+  const { processId, form, onNext, extra, selectedKeys } = props;
 
   const [_form] = Form.useForm(form);
 
-  const { processType, startLoop } = useStrategyBackUploadAwaitModel();
+  const { processType, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
 
   const onClick = () => {
-    onNext?.();
+    // onNext?.();
+    nextFlow({ itmModelRegisCode: '' });
   };
 
   useEffect(() => {
     if (processId) {
-      startLoop({ processId }, 4);
+      startLoop({ processId }, 2);
     }
   }, [processId]);
 
@@ -57,19 +58,30 @@ const TabTwo: React.FC<any> = (props: any) => {
           </>
         }
         pageType={processType}
-        columns={[]}
+        columns={[{ key: 'backtrackProcessName', name: '回溯编排' }]}
         detailInfo={{
-          isImport: '是',
-          rangeDate: '20200113 - 20221130',
-          dimension: '进件层',
-          productBigClass: '全部',
-          channelMidClass: '全部',
-          channelSmClass: '全部',
-          groupModelTag: '字段名＜衡量值',
+          backtrackProcessName: selectedKeys?.join('，'),
         }}
       />
-      <Condition r-if={processType === 'finish'}>
-        <NextStepButton onClick={onClick} />
+      <Condition r-if={processType === 'finish' || processType === 'error'}>
+        <NextStepButton
+          btnNode={
+            <Space>
+              <Button
+                onClick={onClick}
+                size="large"
+                type={processType === 'error' ? 'primary' : undefined}
+              >
+                重新回溯
+              </Button>
+              <Condition r-if={processType !== 'error'}>
+                <Button onClick={onClick} size="large" type="primary">
+                  下一流程
+                </Button>
+              </Condition>
+            </Space>
+          }
+        />
       </Condition>
     </div>
   );

@@ -1,7 +1,14 @@
 import config from '@/config/index';
 import { message } from 'antd';
 import { useState } from 'react';
-import { addNewModel, deleteModel, getModelInfo, getModelList, getSummaryList } from './api';
+import {
+  addNewModel,
+  deleteModel,
+  getModelAnalysts,
+  getModelInfo,
+  getModelList,
+  getSummaryList,
+} from './api';
 
 export const successCode = config.successCode;
 
@@ -10,12 +17,15 @@ export const useTableModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [opLoading, setOpLoading] = useState<boolean>(false);
+  const [InfoList, setInfoList] = useState<any[]>([]);
+  const [infoLoading, setInfoLoading] = useState<boolean>(false);
+  const [userList, setUserList] = useState<any[]>([]);
 
   const getTableList = async (params?: any) => {
     setTableLoading(true);
     let res: any = await getModelList(params);
     setTableLoading(false);
-    let { tableData: list = [], totalPage, totalSize } = res;
+    let { tableData: list = [], totalPage, totalSize } = res.data;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -31,13 +41,38 @@ export const useTableModel = () => {
     return { data: list, total: totalPage };
   };
 
+  const getItemInfo = async (params?: any) => {
+    setInfoLoading(true);
+    let res: any = await getModelInfo(params);
+    setInfoLoading(false);
+    setInfoList(res?.data || []);
+  };
+
+  const getUserList = async (params?: any) => {
+    let res: any = await getModelAnalysts();
+
+    let data = res?.data?.map((item: any) => {
+      return {
+        name: item,
+        label: item,
+      };
+    });
+
+    setUserList(data || []);
+  };
+
   return {
     tableList,
+    InfoList,
+    userList,
     setTableList,
     tableLoading,
     opLoading,
+    infoLoading,
     setOpLoading,
     getTableList, // 获取表格数据
+    getItemInfo, //详情
+    getUserList, //获取建模人员
   };
 };
 
@@ -100,7 +135,7 @@ export const useSummaryModel = () => {
 
   const getSummaryInfo = async (params?: any) => {
     let res: any = await getSummaryList(params);
-    if (res?.code == successCode) {
+    if (res?.status?.code == successCode) {
       setAllItemNum(res?.data?.allItemNum);
       setIncompleteNum(res?.data?.incompleteNum);
       setCompleteNum(res?.data?.completeNum);
