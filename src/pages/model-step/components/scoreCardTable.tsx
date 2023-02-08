@@ -3,31 +3,31 @@ import { ProTable } from '@ant-design/pro-components';
 import { Progress } from 'antd';
 import styles from './style.less';
 import classnames from 'classnames';
+import { changeData } from '@/utils';
 
 export default (props: any) => {
-  const { pageType, headerTitle, rowKey, toolBarRender, actionRef, request } = props;
-
+  const { pageType, headerTitle, rowKey, toolBarRender, actionRef, request, dataSource } = props;
   const columnsScoreCard: any = [
     {
       title: '变量名称',
-      dataIndex: 'name',
+      dataIndex: 'variable',
       render: (t: any, r: any, i: any) => {
         return {
-          children: <span className={styles.cellSty}>{r.name}</span>,
+          children: <span className={styles.cellSty}>{r.variable}</span>,
           props: {
-            rowSpan: r.namerowSpan,
+            rowSpan: r.variablerowSpan,
           },
         };
       },
     },
     {
       title: '中文含义',
-      dataIndex: 'nameZH',
+      dataIndex: 'variableName',
       render: (t: any, r: any, i: any) => {
         return {
-          children: <span className={styles.cellSty}>{r.nameZH}</span>,
+          children: <span className={styles.cellSty}>{r.variableName}</span>,
           props: {
-            rowSpan: r.namerowSpan,
+            rowSpan: r.variablerowSpan,
           },
         };
       },
@@ -52,32 +52,32 @@ export default (props: any) => {
       ],
       render: (t: any, r: any, i: any) => {
         return {
-          children: <span className={styles.cellSty}>{r.nameZH}</span>,
+          children: <span className={styles.cellSty}>{r?.nameZH}</span>,
           props: {
-            rowSpan: r.namerowSpan,
+            rowSpan: r.variablerowSpan,
           },
         };
       },
     },
     {
       title: '分箱',
-      dataIndex: 'divider',
+      dataIndex: 'boxGroup',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
+        return <span className={styles.cellSty}>{r.boxGroup}</span>;
       },
     },
     {
       title: '分数',
-      dataIndex: 'score',
+      dataIndex: 'boxGroupScore',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.score}</span>;
+        return <span className={styles.cellSty}>{r.boxGroupScore}</span>;
       },
     },
     {
       title: '训练坏比率',
-      dataIndex: 'badRate',
+      dataIndex: 'trainBadRate',
       render: (t: any, r: any, i: any) => {
-        let temp = r?.badRate?.replace('%', '');
+        let temp = r?.trainBadRate?.replace('%', '');
         let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
         return (
           <div
@@ -94,9 +94,9 @@ export default (props: any) => {
     },
     {
       title: '验证坏比率',
-      dataIndex: 'trateRate',
+      dataIndex: 'validBadRate',
       render: (t: any, r: any, i: any) => {
-        let temp = r?.trateRate?.replace('%', '');
+        let temp = r?.validBadRate?.replace('%', '');
         let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
         return (
           <div
@@ -113,9 +113,9 @@ export default (props: any) => {
     },
     {
       title: '训练该箱占比',
-      dataIndex: 'trateCurrentRate',
+      dataIndex: 'trainGroupRate',
       render: (t: any, r: any, i: any) => {
-        let temp = r?.trateCurrentRate?.replace('%', '');
+        let temp = r?.trainGroupRate?.replace('%', '');
         let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
         return (
           <div
@@ -132,9 +132,9 @@ export default (props: any) => {
     },
     {
       title: '验证该箱占比',
-      dataIndex: 'verifyCurrentRate',
+      dataIndex: 'validGroupRate',
       render: (t: any, r: any, i: any) => {
-        let temp = r?.verifyCurrentRate?.replace('%', '');
+        let temp = r?.validGroupRate?.replace('%', '');
         let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
         return (
           <div
@@ -190,6 +190,7 @@ export default (props: any) => {
       },
     },
   ];
+
   return (
     <div className={classnames(styles.relateTable, styles.TableCommonSty)}>
       <ProTable
@@ -205,9 +206,10 @@ export default (props: any) => {
         scroll={{ x: columnsScoreCard?.length * 120 }}
         search={false}
         columns={columnsScoreCard}
-        request={async (params = {}, sorter, filter) => {
-          return request(params, sorter, filter);
-        }}
+        // request={async (params = {}, sorter, filter) => {
+        //   return request(params, sorter, filter);
+        // }}
+        dataSource={dataSource}
       />
     </div>
   );

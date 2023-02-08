@@ -4,6 +4,10 @@ import { useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import ModelTable from './table';
 
+import AllImage from './img/all.png';
+import FailImage from './img/fail.png';
+import FinishImage from './img/finish.png';
+
 import style from './style.less';
 import { useSummaryModel } from './model';
 
@@ -13,9 +17,19 @@ import complete from '@/asset/image/complete.png';
 
 // 首页
 const Myjob: React.FC = (props: any) => {
+  const [activeTabs, setActiveTabs] = useState<number>(1);
+
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { allItemNum, incompleteNum, completeNum, getSummaryInfo } = useSummaryModel();
   const tableRef: any = useRef();
+
+  const onTabClick = (it: any) => {
+    if (activeTabs === it) {
+      setActiveTabs(0);
+    } else {
+      setActiveTabs(it);
+    }
+  };
 
   useEffect(() => {
     getSummaryInfo();
@@ -28,45 +42,44 @@ const Myjob: React.FC = (props: any) => {
 
         <div className={style['title-row']}>
           <div
-            className={style['title-box']}
+            className={`${style['title-box']} ${activeTabs === 1 ? style['tabs-active'] : ''}`}
             onClick={() => {
-              console.log(1);
+              onTabClick(1);
               tableRef?.current?.setModelType?.(undefined);
             }}
           >
-            <div className={style['contentBox']}>
-              <img src={allItem} alt="全部事项" />
-              <span className={style['content']}>全部事项</span>
+            <div className={`${style['zy-row']}`}>
+              <img className={style['img']} src={AllImage} />
+              <div className={style['content']}>全部事项</div>
             </div>
 
             <div className={style['number']}>{allItemNum ?? '-'}</div>
           </div>
 
           <div
-            className={style['title-box']}
+            className={`${style['title-box']} ${activeTabs === 2 ? style['tabs-active'] : ''}`}
             onClick={() => {
-              console.log(1);
+              onTabClick(2);
               tableRef?.current?.setModelType?.('0');
             }}
           >
-            <div className={style['contentBox']}>
-              <img src={incomplete} alt="未完成事项" />
-              <span className={style['content']}>未完成事项</span>
+            <div className={style['zy-row']}>
+              <img className={style['img']} src={FailImage} />
+              <div className={style['content']}>未完成事项</div>
             </div>
-
             <div className={style['number']}>{incompleteNum ?? '-'}</div>
           </div>
 
           <div
-            className={style['title-box']}
+            className={`${style['title-box']} ${activeTabs === 3 ? style['tabs-active'] : ''}`}
             onClick={() => {
-              console.log(1);
+              onTabClick(3);
               tableRef?.current?.setModelType?.('1');
             }}
           >
-            <div className={style['contentBox']}>
-              <img src={complete} alt="已完成事项" />
-              <span className={style['content']}>已完成事项</span>
+            <div className={style['zy-row']}>
+              <img className={style['img']} src={FinishImage} />
+              <div className={style['content']}>已完成事项</div>
             </div>
 
             <div className={style['number']}>{completeNum ?? '-'}</div>

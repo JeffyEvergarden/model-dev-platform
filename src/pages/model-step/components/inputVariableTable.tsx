@@ -8,10 +8,10 @@ export default (props: any) => {
     {
       title: '序号',
       width: 50,
-      dataIndex: 'index',
-      render: (t: any, r: any, index: number) => {
-        return (Number(pageInfo.pageNum) - 1) * Number(pageInfo.pageSize) + Number(index);
-      },
+      dataIndex: 'sortId',
+      // render: (t: any, r: any, index: number) => {
+      //   return (Number(pageInfo.pageNum) - 1) * Number(pageInfo.pageSize) + Number(index);
+      // },
     },
     {
       title: '变量名称',

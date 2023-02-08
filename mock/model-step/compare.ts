@@ -167,121 +167,6 @@ const relateCodeListGet = (req: any, res: any) => {
   });
 };
 
-const getScoreCardList = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      list: [
-        {
-          id: 'a',
-          name: '变量名称1',
-          nameZH: '中文含义',
-          dividerList: [
-            {
-              id: 1,
-              divider: '[-inf ~ 3.0)或nan',
-              score: '64.29',
-              badRate: '36.25%',
-              trateRate: '36.25%',
-              trateCurrentRate: '36.25%',
-              verifyCurrentRate: '36.25%',
-            },
-            {
-              id: 2,
-              divider: '[3.0 ~ 5.0)',
-              score: '39.45',
-              badRate: '34.89%',
-              trateRate: '34.89%',
-              trateCurrentRate: '34.89%',
-              verifyCurrentRate: '34.89%',
-            },
-            {
-              id: 3,
-              divider: '[5.0 ~ inf)',
-              score: '12.28',
-              badRate: '56.92%',
-              trateRate: '56.92%',
-              trateCurrentRate: '56.92%',
-              verifyCurrentRate: '56.92%',
-            },
-          ],
-        },
-        {
-          id: 'b',
-          name: '变量名称2',
-          nameZH: '中文含义2',
-          dividerList: [
-            {
-              id: 1,
-              divider: '[-inf ~ 3.0)或nan',
-              score: '64.29',
-              badRate: '36.25%',
-              trateRate: '36.25%',
-              trateCurrentRate: '36.25%',
-              verifyCurrentRate: '36.25%',
-            },
-            {
-              id: 2,
-              divider: '[3.0 ~ 5.0)',
-              score: '39.45',
-              badRate: '34.89%',
-              trateRate: '34.89%',
-              trateCurrentRate: '34.89%',
-              verifyCurrentRate: '34.89%',
-            },
-            {
-              id: 3,
-              divider: '[5.0 ~ inf)',
-              score: '12.28',
-              badRate: '56.92%',
-              trateRate: '56.92%',
-              trateCurrentRate: '56.92%',
-              verifyCurrentRate: '56.92%',
-            },
-          ],
-        },
-        {
-          id: 'c',
-          name: '变量名称3',
-          nameZH: '中文含义3',
-          dividerList: [
-            {
-              id: 1,
-              divider: '[-inf ~ 3.0)或nan',
-              score: '64.29',
-              badRate: '36.25%',
-              trateRate: '36.25%',
-              trateCurrentRate: '36.25%',
-              verifyCurrentRate: '36.25%',
-            },
-            {
-              id: 2,
-              divider: '[3.0 ~ 5.0)',
-              score: '39.45',
-              badRate: '34.89%',
-              trateRate: '34.89%',
-              trateCurrentRate: '34.89%',
-              verifyCurrentRate: '34.89%',
-            },
-            {
-              id: 3,
-              divider: '[5.0 ~ inf)',
-              score: '12.28',
-              badRate: '56.92%',
-              trateRate: '56.92%',
-              trateCurrentRate: '56.92%',
-              verifyCurrentRate: '56.92%',
-            },
-          ],
-        },
-      ],
-    },
-  });
-};
-
 const trateAndVerifyDataApi = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
@@ -630,17 +515,168 @@ const getModelStructureResult = (req: any, res: any) => {
       //变量相关性列表
       variableRelevanceList: [],
       //评分卡-计算逻辑
-      scoreCardLogicList: [],
+      scoreCardLogicList: [
+        {
+          variable: '变量名称1',
+          variableName: '变量中文名1',
+          boxList: [
+            {
+              boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
+              boxGroupScore: '64.29', //分箱对应分数
+              trainBadRate: '36.25%', //训练坏比率
+              validBadRate: '36.25%', //验证坏比率
+              trainGroupRate: '36.25%', //训练该箱占比
+              validGroupRate: '36.25%', //验证该箱占比
+            },
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              boxGroupScore: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainGroupRate: '34.89%',
+              validGroupRate: '34.89%',
+            },
+            {
+              boxGroup: '[5.0 ~ inf)',
+              boxGroupScore: '12.28',
+              trainBadRate: '56.92%',
+              validBadRate: '56.92%',
+              trainGroupRate: '56.92%',
+              validGroupRate: '56.92%',
+            },
+          ],
+        },
+        {
+          variable: '变量名称2',
+          variableName: '中文含义2',
+          boxList: [
+            {
+              boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
+              boxGroupScore: '64.29', //分箱对应分数
+              trainBadRate: '36.25%', //训练坏比率
+              validBadRate: '36.25%', //验证坏比率
+              trainGroupRate: '36.25%', //训练该箱占比
+              validGroupRate: '36.25%', //验证该箱占比
+            },
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              boxGroupScore: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainGroupRate: '34.89%',
+              validGroupRate: '34.89%',
+            },
+            {
+              boxGroup: '[5.0 ~ inf)',
+              boxGroupScore: '12.28',
+              trainBadRate: '56.92%',
+              validBadRate: '56.92%',
+              trainGroupRate: '56.92%',
+              validGroupRate: '56.92%',
+            },
+          ],
+        },
+      ],
       //集合KS
-      collectionKsObj: {},
+      collectionKsObj: {
+        trainKsValue: '36.25%',
+        validKsValue: '55.25%',
+        otherValidKsList: [
+          { name: '验证集1', value: '23%' },
+          { name: '验证集2', value: '23%' },
+        ],
+      },
       //年月ks
-      monthKsObj: {},
+      monthKsObj: {
+        '2022-01-02': '36.25%',
+        '2022-01-03': '36.25%',
+        '2022-01-04': '36.25%',
+      },
       //数据集分布（训练集分布列表、验证集分布列表
-      dataScoreList: [],
+      dataScoreList: [
+        {
+          datasetType: '1', //数据集类型
+          scoreRang: '(0, 315]', //评分区间
+          totalSampleNum: '5040', //总样本数
+          goodSampleNum: '489', //好样本数
+          badSampleNum: '452', //坏样本数
+          badSampleRate: '36.25%', //坏样本率
+          totalGoodSampleRate: '36.25%', //累计好样本率
+          totalBadSampleRate: '36.25%', //总样本数
+          ks: '36.25%',
+          lift: '2.03',
+        },
+        {
+          datasetType: '2', //数据集类型
+          scoreRang: '(2, 315]', //评分区间
+          totalSampleNum: '5040', //总样本数
+          goodSampleNum: '489', //好样本数
+          badSampleNum: '452', //坏样本数
+          badSampleRate: '36.25%', //坏样本率
+          totalGoodSampleRate: '36.25%', //累计好样本率
+          totalBadSampleRate: '36.25%', //总样本数
+          ks: '36.25%',
+          lift: '2.03',
+        },
+      ],
       //模型稳定性
-      modelStabilityList: [],
+      modelStabilityList: [
+        {
+          scoreRang: '(2, 315]', //评分区间
+          trainRate: '36.25%', //训练集占比
+          validRate: '36.25%',
+          otherValidRateList: [
+            //其他验证
+            { name: '验证集1', value: '23%' },
+            { name: '验证集2', value: '23%' },
+          ],
+          PSI_train: '0.2685', //训练集PSI指标值
+          PSI_valid: '0.2685', //验证集PSI指标值
+          otherValidPsiList: [
+            //其他验证1PSI指标值
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
+          ],
+        },
+        {
+          scoreRang: '(3, 415]', //评分区间
+          trainRate: '37.88%', //训练集占比
+          validRate: '37.88%',
+          otherValidRateList: [
+            //其他验证
+            { name: '验证集1', value: '23%' },
+            { name: '验证集2', value: '23%' },
+          ],
+          PSI_train: '0.2685', //训练集PSI指标值
+          PSI_valid: '0.2685', //验证集PSI指标值
+          otherValidPsiList: [
+            //其他验证1PSI指标值
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
+          ],
+        },
+      ],
       //变量稳定性
-      variableStabilityList: [],
+      variableStabilityList: [
+        {
+          variable: '变量名称', //变量
+          variableName: '中文名称', //变量中文名
+          PSI_valid: '0.5232', //验证集变量值PSI指标值
+          otherPsiValidList: [
+            { name: 'PSI_valid1', value: '0.5232' },
+            { name: 'PSI_valid2', value: '0.5232' },
+          ],
+        },
+        {
+          variable: '变量名称2', //变量
+          variableName: '中文名称2', //变量中文名
+          PSI_valid: '0.5232', //验证集变量值PSI指标值
+          otherPsiValidList: [
+            { name: 'PSI_valid1', value: '0.5232' },
+            { name: 'PSI_valid2', value: '0.5232' },
+          ],
+        },
+      ],
     },
   });
 };
@@ -648,10 +684,10 @@ const getModelStructureResult = (req: any, res: any) => {
 export default {
   [`POST ${baseUrl}/robot/testWhiteList/codeListData`]: codeListData,
   [`POST ${baseUrl}/robot/testWhiteList/relateCodeListGet`]: relateCodeListGet,
-  [`POST ${baseUrl}/robot/testWhiteList/scoreCardListApi`]: getScoreCardList,
   [`POST ${baseUrl}/robot/testWhiteList/trateAndVerifyDataApi`]: trateAndVerifyDataApi,
   [`POST ${baseUrl}/robot/testWhiteList/stableDataQueryApi`]: stableDataQueryApi,
   [`POST ${baseUrl}/robot/testWhiteList/varCodeStableQueryApi`]: varCodeStableQueryApi,
+
   [`GET ${baseUrl}/compare/getVersionNameList`]: getVersionNameList,
   [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
   [`GET ${baseUrl}/compare/getModelStructureResult`]: getModelStructureResult,

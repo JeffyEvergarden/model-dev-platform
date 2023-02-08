@@ -217,8 +217,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
           <>
             <div style={{ display: 'flex' }}>
               <Button
-                type="text"
-                className={style['btn-success']}
+                type="link"
                 onClick={() => {
                   viewReport(row);
                 }}
@@ -226,7 +225,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 查看
               </Button>
 
-              <Button type="link" className={style['btn-success']} onClick={() => {}}>
+              <Button type="text" className={style['btn-success']} onClick={() => {}}>
                 下载
               </Button>
 
