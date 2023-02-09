@@ -5,6 +5,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Steps } from 'antd';
 import style from './style.less';
 import { config as configMap, STEP_ITEM_LIST } from './config';
+import Condition from '@/components/Condition';
 
 const Step = Steps.Step;
 
@@ -66,6 +67,7 @@ const Myjob: React.FC<any> = (props: any) => {
     history.push(route.path);
   };
 
+  // 切换步骤
   const onChange = (val: any) => {
     console.log(val);
     if (val > finishStep + 1) {
@@ -119,17 +121,19 @@ const Myjob: React.FC<any> = (props: any) => {
         },
       }}
     >
-      <div className={style['zy-row']} key={modelStep}>
-        <div className={style['left-content']}>
-          <Steps direction="vertical" current={modelStep} onChange={onChange}>
-            {_stepItems.map((item: any, index: number) => {
-              return <Step key={index} {...item} />;
-            })}
-          </Steps>
-        </div>
+      <Condition r-if={modelId}>
+        <div className={style['zy-row']} key={modelStep}>
+          <div className={style['left-content']}>
+            <Steps direction="vertical" current={modelStep} onChange={onChange}>
+              {_stepItems.map((item: any, index: number) => {
+                return <Step key={index} {...item} />;
+              })}
+            </Steps>
+          </div>
 
-        <div className={style['right-content']}>{children}</div>
-      </div>
+          <div className={style['right-content']}>{children}</div>
+        </div>
+      </Condition>
     </PageContainer>
   );
 };

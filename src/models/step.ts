@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default function useStepModel() {
   // 模型ID
-  const [modelId, setModelId] = useState<any>(null);
+  const [modelId, setModelId] = useState<any>(localStorage.getItem('dev-model-id') || '');
 
   // 当前已完成步骤
   const [doneStep, setDoneStep] = useState<any>(0);
