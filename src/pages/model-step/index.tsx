@@ -29,15 +29,38 @@ const modelMapToStatus = (cur: number, fs: number, i: number) => {
 };
 
 // 首页
-const Myjob: React.FC = (props: any) => {
+const Myjob: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { children } = props;
+
+  const { modelId, setModelId, doneStep, setDoneStep, doneStepStatus, setDoneStepStatus } =
+    useModel('step' as any, (model: any) => ({
+      modelId: model.modelId,
+      setModelId: model.setModelId,
+      doneStep: model.doneStep,
+      setDoneStep: model.setDoneStep,
+      doneStepStatus: model.doneStepStatus,
+      setDoneStepStatus: model.setDoneStepStatus,
+    }));
 
   const [modelStep, setModelStep] = useState<number>(0);
 
   const [finishStep, setFinishStep] = useState<number>(9);
 
-  useEffect(() => {}, []);
+  const query: any = history.location.query || {};
+
+  const _modelId: any = query?.id;
+
+  useEffect(() => {
+    // 设置模型ID
+    if (_modelId) {
+      setModelId(_modelId);
+      // 设置 location-href sessionStorage
+      localStorage.setItem('dev-model-id', _modelId);
+    }
+
+    // 获取模型信息 getModelInfo(_modelId || modelId)
+  }, []);
 
   const onClickBreadcrumb = (route: any) => {
     history.push(route.path);
@@ -53,7 +76,7 @@ const Myjob: React.FC = (props: any) => {
     let key: any = STEP_ITEM_LIST[val]?.name;
     console.log(key);
     if (configMap[key]) {
-      history.push(configMap[key]);
+      history.push(configMap[key] + '?id=' + `${_modelId || modelId}`);
     }
   };
 

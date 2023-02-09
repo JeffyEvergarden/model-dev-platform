@@ -15,6 +15,32 @@ const normalDeal = (req: any, res: any) => {
     },
   });
 };
+
+const getStepOneForm = (req: any, res: any) => {
+  res.json({
+    code: successCode,
+    result: {
+      modelAnalyst: '日番谷冬狮郎',
+      modelDevStartTime: '2023-01-10',
+      modelDevEndTime: '2023-01-31',
+      modelInnovation: '日番谷冬狮郎',
+      modelName: '日番谷冬狮郎',
+      modelPerformanceMetrics: '日番谷冬狮郎',
+      modelPolicyCounterpart: '日番谷冬狮郎',
+      modelPresentSituation: '日番谷冬狮郎',
+      modelSceneThought: '日番谷冬狮郎',
+      targetDesc: '日番谷冬狮郎',
+    },
+  });
+};
+
+const postStepOneForm = (req: any, res: any) => {
+  res.json({
+    code: successCode,
+    result: {},
+  });
+};
+
 // 提交过程 通用
 const getWaitResult = (req: any, res: any) => {
   // res.json({
@@ -137,28 +163,6 @@ const getStrategyBackList = (req: any, res: any) => {
       desc: '',
     },
     result: {
-      // processDataList: [
-      //   {
-      //     id: 1,
-      //     processName: '独角兽一号',
-      //     sampleCount: 1000,
-      //   },
-      //   {
-      //     id: 2,
-      //     processName: '报丧女妖二号',
-      //     sampleCount: 1200,
-      //   },
-      //   {
-      //     id: 3,
-      //     processName: '菲尼克斯三号',
-      //     sampleCount: 1300,
-      //   },
-      //   {
-      //     id: 4,
-      //     processName: '沙扎比',
-      //     sampleCount: 1300,
-      //   },
-      // ],
       processName: '编排1,编排2',
       backtrackProcessName: '编排1,编排2',
     },
@@ -167,6 +171,9 @@ const getStrategyBackList = (req: any, res: any) => {
 
 // 菜单管理相关
 export default {
+  // 模型概况
+  [`GET ${baseUrl}/summary/getSummaryDetail`]: getStepOneForm,
+  [`POST ${baseUrl}/summary/saveInfo`]: postStepOneForm,
   // 样本选择
   // 样本选择 - 获取数据源
   [`GET ${baseUrl}/database/list`]: getDatabaseList, // 获取模型管理列表

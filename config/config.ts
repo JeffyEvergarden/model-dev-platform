@@ -67,4 +67,8 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  define: {
+    API_SUCCESS_CODE: '000',
+    'process.env.API_SUCCESS_CODE': '000',
+  },
 });

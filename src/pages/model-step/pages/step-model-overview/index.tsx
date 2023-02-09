@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Form, Input, DatePicker } from 'antd';
 import styles from '../style.less';
+import { useFormSelect } from './model';
 import NextStepButton from '../../components/nextstep-button';
 
 const FormItem = Form.Item;
@@ -15,10 +16,21 @@ const StepOne: React.FC = (props: any) => {
 
   const [form] = Form.useForm();
 
-  const submitNextStep = () => {
+  const { getForm, postForm } = useFormSelect();
+
+  // 初始化获取表单已填信息
+  useEffect(() => {
+    getForm('fate grand order');
+  }, []);
+
+  const submitNextStep = async () => {
     // console.log('---------');
     // ------------------------------
-    // history.push('/step');
+    let _form = await form.validateFields().then((obj) => {
+      console.log(obj);
+      return obj;
+    });
+    postForm(_form);
   };
 
   useEffect(() => {}, []);
@@ -53,23 +65,31 @@ const StepOne: React.FC = (props: any) => {
             <TextArea rows={4} placeholder="请输入模型开发目标" maxLength={150} />
           </FormItem>
 
-          <FormItem name="desc1" label="现有评分应用现状" style={{ width: '600px' }}>
+          <FormItem
+            name="modelPresentSituation"
+            label="现有评分应用现状"
+            style={{ width: '600px' }}
+          >
             <TextArea rows={4} placeholder="请输入现有评分应用现状" maxLength={150} />
           </FormItem>
 
-          <FormItem name="desc2" label="模型应用场景和思路" style={{ width: '600px' }}>
+          <FormItem name="modelSceneThought" label="模型应用场景和思路" style={{ width: '600px' }}>
             <TextArea rows={4} placeholder="请输入模型应用场景和思路" maxLength={150} />
           </FormItem>
 
-          <FormItem name="desc3" label="模型主要性能指标" style={{ width: '600px' }}>
+          <FormItem
+            name="modelPerformanceMetrics"
+            label="模型主要性能指标"
+            style={{ width: '600px' }}
+          >
             <TextArea rows={4} placeholder="请输入模型主要性能指标" maxLength={150} />
           </FormItem>
 
-          <FormItem name="desc4" label="模型主要创新点" style={{ width: '600px' }}>
+          <FormItem name="modelInnovation" label="模型主要创新点" style={{ width: '600px' }}>
             <TextArea rows={4} placeholder="请输入模型主要创新点" maxLength={150} />
           </FormItem>
 
-          <FormItem name="timeRange" label="模型开发时间" style={{ width: '600px' }}>
+          <FormItem name="modelDevTime" label="模型开发时间" style={{ width: '600px' }}>
             <RangePicker
               // format="YYYY-MM-DD"
               style={{ width: '400px' }}
@@ -78,11 +98,11 @@ const StepOne: React.FC = (props: any) => {
             ></RangePicker>
           </FormItem>
 
-          <FormItem name="people1" label="模型开发人" style={{ width: '400px' }}>
+          <FormItem name="modelAnalyst" label="模型开发人" style={{ width: '400px' }}>
             <Input placeholder="模型开发人" maxLength={150} />
           </FormItem>
 
-          <FormItem name="people2" label="政策对接人" style={{ width: '400px' }}>
+          <FormItem name="modelPolicyCounterpart" label="政策对接人" style={{ width: '400px' }}>
             <Input placeholder="政策对接人" maxLength={150} />
           </FormItem>
         </div>
