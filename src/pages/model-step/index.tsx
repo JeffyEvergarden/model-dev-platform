@@ -4,30 +4,18 @@ import { useModel, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps } from 'antd';
 import style from './style.less';
-import { config as configMap, STEP_ITEM_LIST } from './config';
+import {
+  config as configMap,
+  STEP_ITEM_LIST,
+  formateStatus,
+  codeToName,
+  nameToCode,
+  goToUrl,
+} from './config';
 import Condition from '@/components/Condition';
+import { useBaseInfoModel } from './model';
 
 const Step = Steps.Step;
-
-const modelMapToValue = (cur: number, fs: number, i: number) => {
-  if (fs >= i) {
-    return '已完成';
-  } else if (cur === fs + 1 && i === fs + 1) {
-    return '进行中';
-  } else if (fs < i) {
-    return '未完成';
-  }
-};
-
-const modelMapToStatus = (cur: number, fs: number, i: number) => {
-  if (i <= fs) {
-    return 'process';
-  } else if (cur === fs + 1 && i === fs + 1) {
-    return 'process';
-  } else {
-    return 'wait';
-  }
-};
 
 // 首页
 const Myjob: React.FC<any> = (props: any) => {
@@ -44,14 +32,38 @@ const Myjob: React.FC<any> = (props: any) => {
       setDoneStepStatus: model.setDoneStepStatus,
     }));
 
+  const { hasDone, getModelInfo, getModelDetail } = useBaseInfoModel();
+
   const [modelStep, setModelStep] = useState<number>(0);
 
-  const [finishStep, setFinishStep] = useState<number>(9);
+  const [pageLoad, setPageLoad] = useState<boolean>(false);
 
   const query: any = history.location.query || {};
 
   const _modelId: any = query?.id;
 
+  // 获取模型详情
+  const _getInfo = async () => {
+    let res = await getModelInfo(_modelId || modelId);
+
+    if (typeof res === 'object') {
+      // 设置全局状态
+      let _index = Number(res.currentStage) || 1;
+      setDoneStep(Number(_index));
+      setDoneStepStatus(formateStatus(Number(res.currentStageStatus)));
+      // 进行页面跳转
+      setPageLoad(true);
+      goToUrl(codeToName(_index), _modelId || modelId);
+      setModelStep(_index - 1);
+    } else {
+      setDoneStep(1);
+      setDoneStepStatus('process');
+      goToUrl('model_overview', _modelId || modelId);
+      setModelStep(0);
+    }
+  };
+
+  // 加载模型信息
   useEffect(() => {
     // 设置模型ID
     if (_modelId) {
@@ -59,36 +71,88 @@ const Myjob: React.FC<any> = (props: any) => {
       // 设置 location-href sessionStorage
       localStorage.setItem('dev-model-id', _modelId);
     }
-
-    // 获取模型信息 getModelInfo(_modelId || modelId)
+    // 获取模型信息
+    _getInfo();
   }, []);
 
   const onClickBreadcrumb = (route: any) => {
     history.push(route.path);
   };
 
-  // 切换步骤
-  const onChange = (val: any) => {
-    console.log(val);
-    if (val > finishStep + 1) {
-      return;
+  const modelMapToValue = (cur: number, fs: number, i: number) => {
+    // 点击完成步骤之前的
+    if (i <= fs) {
+      // 选中菜单
+      if (cur === i) {
+        return '进行中';
+      }
+      if (i === fs) {
+        let status = formateStatus(doneStepStatus);
+        if (status === 'error') {
+          return '已失败';
+        } else if (status === 'finish') {
+          return '已完成';
+        } else {
+          return '未开始';
+        }
+      }
+      return '已完成';
+    } else if (i > fs) {
+      return '未完成';
     }
-    setModelStep(val);
-    // 跳转
-    let key: any = STEP_ITEM_LIST[val]?.name;
-    console.log(key);
-    if (configMap[key]) {
-      history.push(configMap[key] + '?id=' + `${_modelId || modelId}`);
+  };
+
+  // wait process finish error
+  const modelMapToStatus = (cur: number, fs: number, i: number) => {
+    // 点击完成步骤之前的
+    if (i <= fs) {
+      // 选中菜单
+      if (cur === i) {
+        return 'process';
+      }
+      if (i === fs) {
+        let status = formateStatus(doneStepStatus);
+        if (status === 'error') {
+          return 'error';
+        } else {
+          return 'process';
+        }
+      }
+      return 'process';
+    } else if (i > fs) {
+      return 'wait';
     }
   };
 
   const _stepItems = STEP_ITEM_LIST.map((item: any, i: number) => {
     return {
       title: item.title,
-      description: modelMapToValue(modelStep, finishStep, i),
-      status: modelMapToStatus(modelStep, finishStep, i),
+      name: item.name,
+      description: modelMapToValue(modelStep, doneStep - 1, i),
+      status: modelMapToStatus(modelStep, doneStep - 1, i),
     };
   });
+
+  // 切换步骤
+  const onChange = (val: any) => {
+    // val 输出的是数组序号
+    // 获取数组对象
+    let stepItem: any = STEP_ITEM_LIST[val];
+    // 当前数字序号
+    let index: any = nameToCode(stepItem.name);
+
+    // 超过当前序号无效
+    if (index > doneStep) {
+      return;
+    }
+    // 设置当前显示步骤
+    setModelStep(val);
+    // 跳转
+    let key: any = stepItem?.name;
+    if (configMap[key]) {
+      history.push(configMap[key] + '?id=' + `${_modelId || modelId}`);
+    }
+  };
 
   return (
     <PageContainer
@@ -121,12 +185,12 @@ const Myjob: React.FC<any> = (props: any) => {
         },
       }}
     >
-      <Condition r-if={modelId}>
+      <Condition r-if={modelId && pageLoad}>
         <div className={style['zy-row']} key={modelStep}>
           <div className={style['left-content']}>
             <Steps direction="vertical" current={modelStep} onChange={onChange}>
               {_stepItems.map((item: any, index: number) => {
-                return <Step key={index} {...item} />;
+                return <Step key={item.name} {...item} />;
               })}
             </Steps>
           </div>

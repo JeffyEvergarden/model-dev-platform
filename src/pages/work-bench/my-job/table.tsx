@@ -147,8 +147,6 @@ const ModelManagement: React.FC<any> = (props: any) => {
       // },
       width: 120,
       render: (_: any, record: any) => {
-        console.log(_);
-
         return (
           <Space>
             {MODEL_STAGE?.find((item) => item.name == record?.currentStage)?.label}

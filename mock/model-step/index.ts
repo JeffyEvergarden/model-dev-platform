@@ -16,9 +16,25 @@ const normalDeal = (req: any, res: any) => {
   });
 };
 
+const getStepInfo = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      currentStage: 1, // 1~10
+      currentStageStatus: 1, // 0~3
+    },
+  });
+};
+
 const getStepOneForm = (req: any, res: any) => {
   res.json({
-    code: successCode,
+    status: {
+      code: successCode,
+      desc: '',
+    },
     result: {
       modelAnalyst: '日番谷冬狮郎',
       modelDevStartTime: '2023-01-10',
@@ -36,7 +52,10 @@ const getStepOneForm = (req: any, res: any) => {
 
 const postStepOneForm = (req: any, res: any) => {
   res.json({
-    code: successCode,
+    status: {
+      code: successCode,
+      desc: '',
+    },
     result: {},
   });
 };
@@ -171,6 +190,9 @@ const getStrategyBackList = (req: any, res: any) => {
 
 // 菜单管理相关
 export default {
+  // 基础模块
+  [`GET ${baseUrl}/stage/getCurrentStage`]: getStepInfo,
+
   // 模型概况
   [`GET ${baseUrl}/summary/getSummaryDetail`]: getStepOneForm,
   [`POST ${baseUrl}/summary/saveInfo`]: postStepOneForm,
