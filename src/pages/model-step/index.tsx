@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { useState } from 'react';
 import { useModel, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -22,19 +22,27 @@ const Myjob: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { children } = props;
 
-  const { modelId, setModelId, doneStep, setDoneStep, doneStepStatus, setDoneStepStatus } =
-    useModel('step' as any, (model: any) => ({
-      modelId: model.modelId,
-      setModelId: model.setModelId,
-      doneStep: model.doneStep,
-      setDoneStep: model.setDoneStep,
-      doneStepStatus: model.doneStepStatus,
-      setDoneStepStatus: model.setDoneStepStatus,
-    }));
+  const {
+    modelId,
+    setModelId,
+    doneStep,
+    setDoneStep,
+    doneStepStatus,
+    setDoneStepStatus,
+    curStep,
+    setCurStep,
+  } = useModel('step' as any, (model: any) => ({
+    modelId: model.modelId,
+    setModelId: model.setModelId,
+    doneStep: model.doneStep,
+    setDoneStep: model.setDoneStep,
+    doneStepStatus: model.doneStepStatus,
+    setDoneStepStatus: model.setDoneStepStatus,
+    curStep: model.curStep,
+    setCurStep: model.setCurStep,
+  }));
 
   const { hasDone, getModelInfo, getModelDetail } = useBaseInfoModel();
-
-  const [modelStep, setModelStep] = useState<number>(0);
 
   const [pageLoad, setPageLoad] = useState<boolean>(false);
 
@@ -54,12 +62,12 @@ const Myjob: React.FC<any> = (props: any) => {
       // 进行页面跳转
       setPageLoad(true);
       goToUrl(codeToName(_index), _modelId || modelId);
-      setModelStep(_index - 1);
+      setCurStep(_index - 1);
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');
       goToUrl('model_overview', _modelId || modelId);
-      setModelStep(0);
+      setCurStep(0);
     }
   };
 
@@ -124,14 +132,16 @@ const Myjob: React.FC<any> = (props: any) => {
     }
   };
 
-  const _stepItems = STEP_ITEM_LIST.map((item: any, i: number) => {
-    return {
-      title: item.title,
-      name: item.name,
-      description: modelMapToValue(modelStep, doneStep - 1, i),
-      status: modelMapToStatus(modelStep, doneStep - 1, i),
-    };
-  });
+  const _stepItems = useMemo(() => {
+    return STEP_ITEM_LIST.map((item: any, i: number) => {
+      return {
+        title: item.title,
+        name: item.name,
+        description: modelMapToValue(curStep, doneStep - 1, i),
+        status: modelMapToStatus(curStep, doneStep - 1, i),
+      };
+    });
+  }, [curStep, doneStep]);
 
   // 切换步骤
   const onChange = (val: any) => {
@@ -146,7 +156,7 @@ const Myjob: React.FC<any> = (props: any) => {
       return;
     }
     // 设置当前显示步骤
-    setModelStep(val);
+    setCurStep(val);
     // 跳转
     let key: any = stepItem?.name;
     if (configMap[key]) {
@@ -186,9 +196,9 @@ const Myjob: React.FC<any> = (props: any) => {
       }}
     >
       <Condition r-if={modelId && pageLoad}>
-        <div className={style['zy-row']} key={modelStep}>
+        <div className={style['zy-row']}>
           <div className={style['left-content']}>
-            <Steps direction="vertical" current={modelStep} onChange={onChange}>
+            <Steps direction="vertical" current={curStep} onChange={onChange}>
               {_stepItems.map((item: any, index: number) => {
                 return <Step key={item.name} {...item} />;
               })}

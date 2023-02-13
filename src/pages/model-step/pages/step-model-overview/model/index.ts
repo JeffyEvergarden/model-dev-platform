@@ -21,14 +21,12 @@ export const useFormSelect = () => {
 
   const postForm = async (data: any) => {
     let res = await submitStepOneForm(data);
-    return res;
-    // if (res?.status?.code == process.env.API_SUCCESS_CODE) {
-    //   debugger
-    //   return res.result;
-    // } else {
-    //   message.error('模型概况-提交表单失败');
-    //   return false;
-    // }
+    if (res?.status?.code === process.env.API_SUCCESS_CODE) {
+      return true;
+    } else {
+      message.error('模型概况-提交表单失败');
+      return false;
+    }
   };
 
   return {

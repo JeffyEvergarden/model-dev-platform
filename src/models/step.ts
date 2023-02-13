@@ -11,13 +11,15 @@ export default function useStepModel() {
   const [doneStepStatus, setDoneStepStatus] = useState<any>(null);
 
   // 当前所选步骤
-  const [curStep, setCurStep] = useState<any>(null);
+  const [curStep, setCurStep] = useState<any>(0);
 
   const nextStep = () => {};
 
   return {
     modelId,
     setModelId,
+    curStep,
+    setCurStep,
     doneStep,
     setDoneStep,
     doneStepStatus,

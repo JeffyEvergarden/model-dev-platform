@@ -3,6 +3,8 @@ import { Form, Input, DatePicker, message } from 'antd';
 import styles from '../style.less';
 import { useModel, history } from 'umi';
 import { useFormSelect } from './model';
+import { useNextStep } from '../../config';
+import moment from 'moment';
 import NextStepButton from '../../components/nextstep-button';
 
 import config from '@/config';
@@ -18,24 +20,61 @@ const { RangePicker }: any = DatePicker;
 const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
+  const { modelId, doneStep } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    doneStep: model.doneStep,
+  }));
+
   const [form] = Form.useForm();
 
   const { getForm, postForm, loading } = useFormSelect();
 
+  const { nextStep } = useNextStep();
+
+  const _getForm = async () => {
+    let res: any = await getForm(modelId);
+    if (res) {
+      let modelDevTime = undefined;
+      try {
+        modelDevTime = [res.modelDevStartTime, res.modelDevEndTime];
+        // 时间格式化
+        if (typeof modelDevTime[0] === 'string' && typeof modelDevTime[0] === 'string') {
+          modelDevTime[0] = moment(modelDevTime[0]);
+          modelDevTime[1] = moment(modelDevTime[1]);
+        }
+      } catch (e) {
+        console.log(e);
+        console.warn('获取表单时间格式化错误');
+      }
+      form.setFieldsValue({
+        ...res,
+        modelDevTime,
+      });
+    }
+  };
+
   // 初始化获取表单已填信息
   useEffect(() => {
-    getForm('fate grand order');
+    _getForm();
   }, []);
 
   const submitNextStep = async () => {
-    let _form = await form.validateFields();
+    // console.log('---------');
+    // ------------------------------
+    let _form = await form.validateFields().then((obj) => {
+      return {
+        ...obj,
+      };
+    });
+    let modelDevTime = _form.modelDevTime;
+    _form.modelDevStartTime = modelDevTime?.[0]?.format('YYYY-MM-DD');
+    _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
+
     let res = await postForm(_form);
-    debugger;
-    if (res?.status?.code === successCode) {
-      message.success(res?.status?.desc || '成功');
-      history.push('/modelStep/selectSample');
-    } else {
-      message.error(res?.status?.desc || '失败');
+    // console.log(_form, res)
+    if (res) {
+      // 跳到下一个步骤
+      nextStep();
     }
   };
 
