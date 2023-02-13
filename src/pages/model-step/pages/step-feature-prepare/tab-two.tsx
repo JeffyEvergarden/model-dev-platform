@@ -40,33 +40,25 @@ const TabTwo: React.FC<any> = (props: any) => {
       <CommonPage
         loadingContent={
           <>
-            <div className={styles['title']}>策略回溯中</div>
-            <div className={styles['desc']}>请稍后，待策略回溯完成后可开始下一个流程</div>
+            <div className={styles['title']}>特征准备中</div>
+            <div className={styles['desc']}>请稍后，待特征准备完成后可开始下一个流程</div>
           </>
         }
         sucessContent={
           <>
-            <div className={styles['title']}>策略回溯成功</div>
+            <div className={styles['title']}>特征匹配成功</div>
             <div className={styles['desc']}></div>
           </>
         }
         errorContent={
           <>
-            <div className={styles['title']}>策略回溯失败</div>
+            <div className={styles['title']}>特征匹配失败</div>
             <div className={styles['desc']}></div>
           </>
         }
         pageType={processType}
         columns={[]}
-        detailInfo={{
-          isImport: '是',
-          rangeDate: '20200113 - 20221130',
-          dimension: '进件层',
-          productBigClass: '全部',
-          channelMidClass: '全部',
-          channelSmClass: '全部',
-          groupModelTag: '字段名＜衡量值',
-        }}
+        detailInfo={{}}
       />
       <Condition r-if={processType === 'finish'}>
         <NextStepButton onClick={onClick} />

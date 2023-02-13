@@ -22,13 +22,13 @@ export const useStepSelectModel = () => {
     }
     let _data = data.map((item: any) => {
       let obj: any = {
-        title: item.name,
-        value: item.key,
-        key: item.key,
+        title: item.featureCategoryName,
+        value: item.parentId,
+        key: item.parentId,
         parent: parent || item.parent || undefined,
         deep: parent?.deep + 1 || 1,
       };
-      let children: any = processTreeData(item.children, obj);
+      let children: any = processTreeData(item.child, obj);
 
       obj.children = children;
       return obj;
@@ -38,7 +38,7 @@ export const useStepSelectModel = () => {
 
   const getTreeList = async (params?: any) => {
     let res: any = await getDatabaseList(params);
-    let list: any[] = res.data;
+    let list: any[] = res?.result || [];
     if (!Array.isArray(list)) {
       list = [];
     }

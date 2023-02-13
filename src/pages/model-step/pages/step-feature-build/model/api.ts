@@ -9,3 +9,10 @@ export async function getExportReportList(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function getFillFeatureMetrics(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelMange/featureEngineering/getFillFeatureMetrics`, {
+    method: 'GET',
+    params,
+  });
+}

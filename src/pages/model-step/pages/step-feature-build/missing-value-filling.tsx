@@ -2,78 +2,78 @@ import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, Select, Space, Table } from 'antd';
 import { useEffect, useState } from 'react';
-import { useExportReportModel } from '../step-export-report/model';
 import { boxList, varList } from './config';
+import { useExportReportModel } from './model';
 import style from './style.less';
 
 const MissingValueFilling: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
-  const formData = Form.useWatch('number', form);
-  const formData2 = Form.useWatch('type', form);
-  const formData3 = Form.useWatch('box', form);
+  const formData = Form.useWatch('numberFillType', form);
+  const formData2 = Form.useWatch('categoryFillType', form);
+  const formData3 = Form.useWatch('boxFillType', form);
   const { Item: FormItem, List: FormList } = Form;
   const { Option } = Select;
 
   const [selectReportList, setReportList] = useState<any[]>();
 
-  const { loading, tableList, tableTotal, getReportTableList } = useExportReportModel();
+  const { loading, tableList, tableTotal, getLostList } = useExportReportModel();
 
   const columns: any[] = [
     {
       title: '变量名称',
-      dataIndex: 'month',
+      dataIndex: 'variable',
       width: 200,
       fixed: 'left',
     },
     {
       title: '中文名称',
-      dataIndex: 'goodNum',
+      dataIndex: 'variableName',
       width: 200,
       fixed: 'left',
     },
     {
       title: '变量类型',
-      dataIndex: 'badNum',
-      width: 200,
-    },
-    {
-      title: '作为类别型',
-      dataIndex: 'total',
+      dataIndex: 'variableType',
       width: 200,
     },
     {
       title: '缺失率_train',
-      dataIndex: 'month',
+      dataIndex: 'trainMissRate',
       width: 200,
     },
     {
-      title: '缺失率_train',
-      dataIndex: 'goodNum',
+      title: '缺失率_valid',
+      dataIndex: 'validMissRate',
       width: 200,
     },
     {
       title: 'KS_train',
-      dataIndex: 'badNum',
+      dataIndex: 'trainKs',
       width: 200,
     },
     {
       title: 'KS_valid',
-      dataIndex: 'total',
+      dataIndex: 'validKs',
       width: 200,
     },
     {
       title: 'IV_train',
-      dataIndex: 'badNum',
+      dataIndex: 'trainIv',
       width: 200,
     },
     {
       title: 'IV_valid',
-      dataIndex: 'total',
+      dataIndex: 'validIv',
+      width: 200,
+    },
+    {
+      title: 'PSI_train',
+      dataIndex: 'trainPsi',
       width: 200,
     },
     {
       title: 'PSI_valid',
-      dataIndex: 'total',
+      dataIndex: 'validPsi',
       width: 200,
     },
   ];
@@ -85,7 +85,13 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   };
 
   const searchTable = () => {
-    getReportTableList({});
+    console.log();
+    let formData: any = form.getFieldsValue();
+    let reqData = {
+      itmModelRegisCode: '',
+      ...formData,
+    };
+    getLostList(reqData);
   };
 
   return (
@@ -93,7 +99,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       <div style={{ fontWeight: 'bold', fontSize: '16px' }}>缺失值填充</div>
       <Form form={form}>
         <div className={style['form']}>
-          <FormItem label={'数值型变量'} className={style['formItem']} name={'number'}>
+          <FormItem label={'数值型变量'} className={style['formItem']} name={'numberFillType'}>
             <Select
               placeholder={'请选择填充方式'}
               onChange={() => {
@@ -109,12 +115,12 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={formData == 4}>
-            <FormItem className={style['inputNumber']} name={'inputNumber'}>
+            <FormItem className={style['inputNumber']} name={'numberCustomValue'}>
               <Input type={'number'} allowClear placeholder="请输入"></Input>
             </FormItem>
           </Condition>
 
-          <FormItem label={'类别型变量'} className={style['formItem']} name={'type'}>
+          <FormItem label={'类别型变量'} className={style['formItem']} name={'categoryFillType'}>
             <Select placeholder={'请选择填充方式'} allowClear>
               {varList?.map((item) => (
                 <Option key={item.value} value={item.value}>
@@ -124,12 +130,12 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={formData2 == 4}>
-            <FormItem className={style['inputNumber']} name={'input'}>
+            <FormItem className={style['inputNumber']} name={'categoryCustomValue'}>
               <Input allowClear placeholder="请输入"></Input>
             </FormItem>
           </Condition>
 
-          <FormItem label={'分箱方式'} className={style['formItem']} name={'box'}>
+          <FormItem label={'分箱方式'} className={style['formItem']} name={'boxFillType'}>
             <Select placeholder={'请选择分箱方式'} allowClear>
               {boxList?.map((item) => (
                 <Option key={item.value} value={item.value}>
@@ -139,9 +145,9 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             </Select>
           </FormItem>
 
-          <Condition r-if={formData3 == 1}>
+          <Condition r-if={formData3 == 1 || formData3 == 2}>
             <FormItem className={style['inputNumber']} name={'boxinputNumber'}>
-              <Input type={'number'} allowClear placeholder="分箱个数"></Input>
+              <Input type={'number'} max={20} allowClear placeholder="分箱个数"></Input>
             </FormItem>
           </Condition>
           <Button type="primary" onClick={searchTable}>
@@ -155,7 +161,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           dataSource={tableList}
           columns={columns}
           scroll={{ x: columns.length * 200 }}
-          rowKey="month"
+          rowKey="variable"
           loading={loading}
           onChange={tableChange}
           title={() => (

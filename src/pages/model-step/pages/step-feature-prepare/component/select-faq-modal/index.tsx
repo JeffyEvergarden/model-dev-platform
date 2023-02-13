@@ -5,67 +5,37 @@ import {
   MonitorOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Input, message, Modal, Table, Tabs, Tooltip } from 'antd';
+import { Button, Input, message, Modal, Select, Table, Tabs, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
-import { useStepSelectModel } from '../../../step-select-sample/model';
-import { useFaqModal } from '../../model';
+import { useVarSelectModal } from '../../model';
 import MyTree from '../my-tree';
 import style from './style.less';
 
 const { TabPane } = Tabs;
 
 const { Search } = Input;
-
-// selectlist  (recommendType、recommendId、recommend)
-// disabledWishKeys    禁止选择的意图
-// disabledQuestionKeys  禁止选择的问题
-// selectedQuestionKeys  已选择的问题
-// selectedWishKeys 已选择的意图
+const { Option } = Select;
 
 const SelectorModal: React.FC<any> = (props: any) => {
-  const {
-    cref,
-    confirm,
-    type = 'checkbox',
-    min = 2,
-    max = 5,
-    readOnly = true,
-    tableLoading = false,
-    showQuestion = true,
-    pageType,
-    showOther = false,
-    deleteQuestion = true,
-  } = props;
-
-  const [showWishKey, setShowWishKey] = useState<boolean>(true);
-  // tabs 操作
-  const [activeKey, setActivekey] = useState<string>('1');
-
-  const [disabledQuestionKeys, setDisabledQuestionKeys] = useState<any[]>([]);
-  const [disabledWishKeys, setDisabledWishKeys] = useState<any[]>([]);
-
-  // title
-  const [title, setTitle] = useState<any>('');
+  const { cref, confirm, tableLoading = false } = props;
 
   // 对象
   const [selectList, setSelectList] = useState<any[]>([]);
-  // const [selectWishList, setSelectWishList] = useState<any[]>([]);
-
-  //  批量相关操作
-  const [operation, setOperation] = useState<string>('');
-  const [questionList, setQuestionList] = useState<any>([]);
 
   const info = { id: '100' };
 
-  const { treeList, tableList, getTreeList, getTableList, total } = useStepSelectModel();
+  const { loading, treeList, varList, totalSize, getTreeList, getVarInfo } = useVarSelectModal();
 
   const [classType, setClassType] = useState<string>('');
-  const { loading, faqList, getFaqList, totalSize, setFaqList } = useFaqModal();
 
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
   const [current1, setCurrent1] = useState<number>(1);
+
+  // 选中key值
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [selectRow, setSelectRow] = useState<any>([]);
 
   const columns1: any[] = [
     // 问题列表-列
@@ -85,7 +55,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
           </div>
         );
       },
-      dataIndex: 'question',
+      dataIndex: 'featureName',
       width: 300,
     },
   ];
@@ -96,34 +66,34 @@ const SelectorModal: React.FC<any> = (props: any) => {
       return;
     }
     setCurrent1(val);
-    if (classType) {
-      getFaqList({
-        page: val || 1,
-        pageSize: 10,
-      });
-    } else {
-      setFaqList([]);
-    }
+    // if (classType) {
+    getVarInfo({
+      page: val || 1,
+      pageSize: 10,
+    });
+    // } else {
+    // setVarList([]);
+    // }
   };
 
   const clearSelect = () => {
-    let arr = selectedQuestionKeys?.filter((item) =>
-      faqList?.find((val) => val.id == item.recommendId),
+    let arr = selectedRowKeys?.filter((item: any) =>
+      varList?.find((val) => val.id == item.recommendId),
     );
-    let arr2 = selectList?.filter((item) => faqList?.find((val) => val.id == item));
+    let arr2 = selectList?.filter((item) => varList?.find((val) => val.id == item));
     setSelectList(arr2);
-    setSelectedQuestionKeys(arr);
+    setSelectedRowKeys(arr);
   };
 
   const selectAll = () => {
-    let clearArr = selectedQuestionKeys?.filter((item) =>
-      faqList?.find((val) => val.id == item.recommendId),
+    let clearArr = selectedRowKeys?.filter((item: any) =>
+      varList?.find((val) => val.id == item.recommendId),
     );
-    let clearArr2 = selectList?.filter((item) => faqList?.find((val) => val.id == item));
-    let arr = faqList.map((item) => {
+    let clearArr2 = selectList?.filter((item) => varList?.find((val) => val.id == item));
+    let arr = varList.map((item) => {
       return item?.id;
     });
-    let arr2 = faqList.map((item) => {
+    let arr2 = varList.map((item) => {
       return {
         recommendId: item.id,
         recommendName: item.question,
@@ -132,7 +102,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     });
 
     setSelectList([...clearArr2, ...arr2]);
-    setSelectedQuestionKeys([...clearArr, ...arr]);
+    setSelectedRowKeys([...clearArr, ...arr]);
   };
 
   // 搜索文本
@@ -149,15 +119,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
       return;
     }
     setCurrent1(1);
-    getFaqList({
+    getVarInfo({
       page: 1,
       pageSize: 10,
     });
   };
-
-  // 选中key值
-  const [selectedQuestionKeys, setSelectedQuestionKeys] = useState<any[]>([]);
-  const [selectedWishKeys, setSelectedWishKeys] = useState<any[]>([]);
 
   // 选中
   const onSelect = (val: any) => {
@@ -167,7 +133,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     setClassType(val[0]);
     setCurrent1(1);
-    getFaqList({
+    getVarInfo({
       page: 1,
       pageSize: 10,
     });
@@ -177,94 +143,17 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const rowSelection = {
     preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      // 如果是单选
-      if (type === 'radio') {
-        let lastInfo = selectedRows?.[0];
-        setSelectList([
-          {
-            recommendType: 1,
-            recommendId: lastInfo.id,
-            recommendName: lastInfo.question,
-          },
-        ]);
-        // 设置选中数组
-        setSelectedWishKeys([]);
-        setSelectedQuestionKeys(selectedRowKeys);
-        setSelectedWishKeys([]);
-        return;
-      }
-      // 如果是多选
-      // 新增
-      if (selectedRowKeys.length > selectedQuestionKeys.length) {
-        // 获取
-        let lastInfo = selectedRows?.[selectedRows.length - 1];
-        let arr = selectedRows
-          ?.filter?.((item) => !selectedQuestionKeys?.find((val) => val == item?.id))
-          .map((item) => ({
-            recommendType: 1,
-            recommendId: item.id,
-            recommendName: item.question,
-          }));
-        if (lastInfo) {
-          setSelectList([...selectList, ...arr]);
-        }
-        // 减小
-      } else if (selectedRowKeys.length < selectedQuestionKeys.length) {
-        // 找出少了那个
-        let keys: any = selectedQuestionKeys.filter((_key: any) => {
-          return !selectedRowKeys.includes(_key);
-        });
-        console.log('少了', keys);
-        // 进行剔除  过滤出来
-        let list: any[] = selectList?.filter((item: any) => {
-          return !(item.recommendType === 1 && keys.includes(item.recommendId));
-        });
-        // console.log(selectedQuestionKeys, keys, list);
-        setSelectList(list);
-      }
-      // 设置选中数组
-      setSelectedQuestionKeys(selectedRowKeys);
-    },
-    getCheckboxProps: (record: any) => {
-      return {
-        disabled: disabledQuestionKeys.includes(record.id),
-        name: record.name,
-      };
+      console.log(selectedRowKeys, selectedRows);
+
+      setSelectedRowKeys(selectedRowKeys);
+      setSelectRow(selectedRows);
+      setSelectList(selectedRows);
     },
   };
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      // getWishList(info.id); // 获取意图列表
       getTreeList(info.id); // 获取faq列表
-      console.log(obj);
-      if (obj.operation === 'batch') {
-        setOperation('batch');
-        setQuestionList(obj.questionList);
-      } else {
-        setOperation('');
-        setQuestionList([]);
-      }
-      setTitle(obj.question || '');
-      // 设置不能选的
-      setDisabledWishKeys(obj?.disabledWishKeys || []);
-      setDisabledQuestionKeys(obj?.disabledQuestionKeys || []);
-      // 设置默认选中
-      setSelectedQuestionKeys(obj?.selectedQuestionKeys || []);
-      setSelectedWishKeys(obj?.selectedWishKeys || []);
-      setSelectList(obj?.selectList || []);
-
-      if (obj?.showFlow === false) {
-        setShowWishKey(false);
-        setActivekey('1');
-        onChange1(1);
-      } else {
-        if (activeKey === '1') {
-          onChange1(1);
-        }
-        setShowWishKey(true);
-      }
-      onSelect(['0']);
       // 显示
       setVisible(true);
     },
@@ -276,36 +165,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   // 提交
   const submit = async () => {
-    if (!Array.isArray(selectList)) {
-      message.warning('请选择有效的标准问/意图');
-      return;
-    }
-    // ------------------
-    if (type === 'checkbox') {
-      // if (pageType == 'sampleDetail') {
-      //   if (!((selectList.length >= min && selectList.length <= max) || selectList.length == 0)) {
-      //     message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
-      //     return;
-      //   }
-      // } else {
-      // if (selectList.length < min || selectList.length > max) {
-      // if (info.robotType == 1) {
-      //   message.warning('请选择2项FAQ或意图用于澄清问题');
-      // } else {
-      //   message.warning('请选择2-5项FAQ或意图用于澄清推荐问题');
-      // }
-      //   return;
-      // }
-      // }
-    }
-
     let res: any;
-    if (operation == 'batch') {
-      res = await confirm(selectList || [], questionList);
-    } else {
-      res = await confirm(selectList || [], title);
-    }
-
+    res = await confirm(selectList || []);
     if (res) {
       setSearchText1('');
       setVisible(false);
@@ -315,18 +176,18 @@ const SelectorModal: React.FC<any> = (props: any) => {
   // 删除某个选项
   const deleteItem = (item: any, index: number) => {
     selectList.splice(index, 1);
-    if (item.recommendType === 1) {
-      let _selectedQuestionKeys = selectedQuestionKeys.filter((_item: any) => {
-        return _item !== item.recommendId;
-      });
-      setSelectedQuestionKeys(_selectedQuestionKeys);
-    } else {
-      let _selectedWishKeys = selectedWishKeys.filter((_item: any) => {
-        return _item !== item.recommendId;
-      });
-      setSelectedWishKeys(_selectedWishKeys);
-    }
+    let _selectedRowKeys = selectedRowKeys.filter((_item: any) => {
+      return _item !== item.featureCode;
+    });
+    setSelectedRowKeys(_selectedRowKeys);
   };
+
+  useEffect(() => {
+    getVarInfo({
+      page: 1,
+      pageSize: 10,
+    });
+  }, []);
 
   return (
     <Modal
@@ -374,10 +235,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   >
                     <MinusCircleOutlined className={style['del']} />
                   </Button>
-                  <Tooltip placement="topLeft" title={item.recommendName}>
+                  <Tooltip placement="topLeft" title={item.featureName}>
                     <div className={style['label']}>
                       <span className={style['num']}>{index + 1}.</span>
-                      {item.recommendName}
+                      {item.featureName}
                     </div>
                   </Tooltip>
                 </div>
@@ -395,23 +256,33 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
           <div className={style['page_content']}>
             <div className={style['zy-row_end']}>
-              <Search
-                placeholder="输入搜索"
-                value={searchText1}
-                onSearch={onSearch1}
-                onPressEnter={onSearch1}
-                onChange={onSearchChange1}
-                allowClear
-                style={{ width: '300px' }}
-              />
+              <Input.Group compact>
+                <Select
+                  defaultValue={'feature'}
+                  // onChange={}
+                  style={{ backgroundColor: '#fff' }}
+                >
+                  <Option value={'feature'}>变量</Option>
+                  <Option value={'model'}>模型</Option>
+                </Select>
+                <Search
+                  placeholder="输入搜索"
+                  value={searchText1}
+                  onSearch={onSearch1}
+                  onPressEnter={onSearch1}
+                  onChange={onSearchChange1}
+                  allowClear
+                  style={{ width: '300px' }}
+                />
+              </Input.Group>
             </div>
 
             <div className={style['table-box']}>
               <Table
                 rowSelection={{
-                  type: type === 'radio' ? 'radio' : 'checkbox',
+                  // type: type === 'radio' ? 'radio' : 'checkbox',
                   ...rowSelection,
-                  selectedRowKeys: selectedQuestionKeys,
+                  selectedRowKeys: selectedRowKeys,
                   hideSelectAll: false,
                 }}
                 // expandable={{
@@ -426,9 +297,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   total: totalSize,
                   showSizeChanger: false,
                 }}
-                dataSource={faqList}
+                dataSource={varList}
                 columns={columns1}
-                rowKey="id"
+                rowKey="featureCode"
                 loading={loading}
               />
             </div>
