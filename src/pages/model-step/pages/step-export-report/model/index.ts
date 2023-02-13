@@ -2,30 +2,31 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 
-import { sampleDividerQueryApi, monthSpreadQueryApi } from './api';
+import { getSampleDefineDetailApi, exportPageRequestApi } from './api';
 
 export const successCode = config.successCode;
 
 export const useExportReportModel = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const sampleDividerQuery = async (params?: any) => {
+  const getSampleDefineDetail = async (params?: any) => {
     setLoading(true);
-    const res: any = await sampleDividerQueryApi(params);
+    const res: any = await getSampleDefineDetailApi(params);
     setLoading(false);
     return res;
   };
 
-  const monthSpreadQuery = async (params?: any) => {
+  const exportPageRequest = async (params?: any) => {
     setLoading(true);
-    const res: any = await monthSpreadQueryApi(params);
+    const res: any = await exportPageRequestApi(params);
     setLoading(false);
     return res;
   };
 
   return {
     loading,
-    sampleDividerQuery,
-    monthSpreadQuery,
+    setLoading,
+    getSampleDefineDetail,
+    exportPageRequest,
   };
 };

@@ -4,18 +4,6 @@ const successCode = config.successCode;
 
 const baseUrl = config.basePath;
 
-const codeListData = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 10,
-      pageSize: 5,
-      pageNum: 1,
-      list: [],
-    },
-  });
-};
-
 const relateCodeListGet = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
@@ -162,165 +150,6 @@ const relateCodeListGet = (req: any, res: any) => {
         { name: '变量八', dataIndex: 'val_8' },
         { name: '变量九', dataIndex: 'val_9' },
         { name: '变量十', dataIndex: 'val_10' },
-      ],
-    },
-  });
-};
-
-const trateAndVerifyDataApi = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      listTrate: [
-        {
-          value1: '评分区间',
-          value2: '总样本数',
-          value3: '好样本数',
-          value4: '坏样本数',
-          value5: '坏样本率',
-          value6: '累计好样本率',
-          value7: '累计坏样本率',
-          value8: 'KS',
-          value9: 'lift',
-        },
-      ],
-      listVerify: [
-        {
-          value1: '评分区间',
-          value2: '总样本数',
-          value3: '好样本数',
-          value4: '坏样本数',
-          value5: '坏样本率',
-          value6: '累计好样本率',
-          value7: '累计坏样本率',
-          value8: 'KS',
-          value9: 'lift',
-        },
-      ],
-    },
-  });
-};
-
-const stableDataQueryApi = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      list: [
-        {
-          value1: '评分区间',
-          value2: '训练集占比',
-          value3: '验证集占比',
-          value4: '其他验证1占比',
-          value5: '其他验证2占比',
-          value6: 'PSI_valid',
-          value7: 'PSI_valid1',
-          value8: 'PSI_valid2',
-        },
-        {
-          value1: '合计',
-          value2: '训练集占比_合计',
-          value3: '验证集占比_合计',
-          value4: '其他验证1占比_合计',
-          value5: '其他验证2占比_合计',
-          value6: 'PSI_valid_合计',
-          value7: 'PSI_valid1_合计',
-          value8: 'PSI_valid2_合计',
-        },
-        {
-          value1: '基准线1',
-          value2: '-',
-          value3: '-',
-          value4: '-',
-          value5: '-',
-          value6: '0.1',
-          value7: '0.1',
-          value8: '0.1',
-        },
-        {
-          value1: '基准线2',
-          value2: '-',
-          value3: '-',
-          value4: '-',
-          value5: '-',
-          value6: '0.25',
-          value7: '0.25',
-          value8: '0.1',
-        },
-      ],
-      otherVerifyList: [
-        {
-          name: '其他验证1占比',
-          dataIndex: 'value4',
-        },
-        {
-          name: '其他验证2占比',
-          dataIndex: 'value5',
-        },
-      ],
-      PSI_valid_List: [
-        {
-          name: 'PSI_valid1',
-          dataIndex: 'value7',
-        },
-        {
-          name: 'PSI_valid2',
-          dataIndex: 'value8',
-        },
-      ],
-    },
-  });
-};
-
-const varCodeStableQueryApi = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      list: [
-        {
-          value1: '变量名称',
-          value2: '中文名称',
-          value3: 'PSI_valid',
-          value4: 'PSI_valid1',
-          value5: 'PSI_valid2',
-          value6: '基准线1',
-          value7: '基准线2',
-        },
-        {
-          value1: '变量名称',
-          value2: '中文名称',
-          value3: 'PSI_valid',
-          value4: 'PSI_valid1',
-          value5: 'PSI_valid2',
-          value6: '基准线1',
-          value7: '基准线2',
-        },
-      ],
-      columnsVarCodeStableLsit: [
-        {
-          name: 'PSI_valid1',
-          dataIndex: 'value4',
-        },
-        {
-          name: 'PSI_valid2',
-          dataIndex: 'value5',
-        },
-        {
-          name: '基准线1',
-          dataIndex: 'value6',
-        },
-        {
-          name: '基准线2',
-          dataIndex: 'value7',
-        },
       ],
     },
   });
@@ -681,14 +510,18 @@ const getModelStructureResult = (req: any, res: any) => {
   });
 };
 
-export default {
-  [`POST ${baseUrl}/robot/testWhiteList/codeListData`]: codeListData,
-  [`POST ${baseUrl}/robot/testWhiteList/relateCodeListGet`]: relateCodeListGet,
-  [`POST ${baseUrl}/robot/testWhiteList/trateAndVerifyDataApi`]: trateAndVerifyDataApi,
-  [`POST ${baseUrl}/robot/testWhiteList/stableDataQueryApi`]: stableDataQueryApi,
-  [`POST ${baseUrl}/robot/testWhiteList/varCodeStableQueryApi`]: varCodeStableQueryApi,
+const normalDel = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+  });
+};
 
+export default {
   [`GET ${baseUrl}/compare/getVersionNameList`]: getVersionNameList,
   [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
   [`GET ${baseUrl}/compare/getModelStructureResult`]: getModelStructureResult,
+  [`POST ${baseUrl}/compare/nextStage`]: normalDel,
 };

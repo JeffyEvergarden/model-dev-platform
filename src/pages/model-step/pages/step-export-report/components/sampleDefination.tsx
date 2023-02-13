@@ -1,121 +1,99 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Descriptions } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import { useExportReportModel } from './../model';
 import styles from './index.less';
 
 export default (props: any) => {
+  const { sampleData } = props;
   const actionRef = useRef<any>();
-
-  const { sampleDividerQuery, monthSpreadQuery } = useExportReportModel();
-
-  const [dataSourceSample, setDataSourceSample] = useState<any>([]);
-  const [dataSourceMonth, setDataSourceMonth] = useState<any>([]);
-
-  useEffect(() => {
-    getSampleDivider(); //样本划分-整体分布
-    getMonthSpread(); //按月份分布
-  }, []);
-
-  const getSampleDivider = async () => {
-    let params = {};
-    let res = await sampleDividerQuery();
-    setDataSourceSample(res?.data?.list);
-  };
-
-  const getMonthSpread = async () => {
-    let params = {};
-    let res = await monthSpreadQuery();
-    setDataSourceMonth(res?.data?.list);
-  };
 
   const columnsSample: any[] = [
     {
       title: '样本类型',
-      dataIndex: 'value1',
-      key: 'value1',
+      dataIndex: 'dataSetType',
+      key: 'dataSetType',
     },
     {
       title: '好样本',
-      dataIndex: 'value2',
-      key: 'value2',
+      dataIndex: 'goodCount',
+      key: 'goodCount',
     },
     {
       title: '坏样本',
-      dataIndex: 'value3',
-      key: 'value3',
+      dataIndex: 'badCount',
+      key: 'badCount',
     },
     {
       title: '坏样本率',
-      dataIndex: 'value4',
-      key: 'value4',
+      dataIndex: 'badRate',
+      key: 'badRate',
     },
     {
       title: '总计',
-      dataIndex: 'value5',
-      key: 'value5',
+      dataIndex: 'totalNum',
+      key: 'totalNum',
     },
-    {
-      title: '中间客户',
-      dataIndex: 'value6',
-      key: 'value6',
-    },
-    {
-      title: '中间样本占比',
-      dataIndex: 'value7',
-      key: 'value7',
-    },
+    // {
+    //   title: '中间客户',
+    //   dataIndex: 'value6',
+    //   key: 'value6',
+    // },
+    // {
+    //   title: '中间样本占比',
+    //   dataIndex: 'value7',
+    //   key: 'value7',
+    // },
   ];
 
   const columnsMonth: any[] = [
     {
       title: '放款年月',
-      dataIndex: 'value1',
-      key: 'value1',
+      dataIndex: 'month',
+      key: 'month',
     },
     {
       title: '好样本',
-      dataIndex: 'value2',
-      key: 'value2',
+      dataIndex: 'goodCount',
+      key: 'goodCount',
     },
     {
       title: '坏样本',
-      dataIndex: 'value3',
-      key: 'value3',
+      dataIndex: 'badCount',
+      key: 'badCount',
     },
     {
       title: '坏样本率',
-      dataIndex: 'value4',
-      key: 'value4',
+      dataIndex: 'badRate',
+      key: 'badRate',
     },
     {
       title: '总计',
-      dataIndex: 'value5',
-      key: 'value5',
+      dataIndex: 'totalNum',
+      key: 'totalNum',
     },
     {
       title: '中间客户',
-      dataIndex: 'value6',
-      key: 'value6',
+      dataIndex: 'midCount',
+      key: 'midCount',
     },
     {
       title: '中间样本占比',
-      dataIndex: 'value7',
-      key: 'value7',
+      dataIndex: 'midRate',
+      key: 'midRate',
     },
   ];
 
   return (
     <div className={styles.sampleDefinationPage}>
       <Descriptions title="样本定义" bordered column={2}>
-        <Descriptions.Item label="产品">---</Descriptions.Item>
-        <Descriptions.Item label="渠道">---</Descriptions.Item>
-        <Descriptions.Item label="训练集">2022-01~2022-03</Descriptions.Item>
-        <Descriptions.Item label="验证集">2022-01~2022-03</Descriptions.Item>
-        <Descriptions.Item label="表现期">---</Descriptions.Item>
-        <Descriptions.Item label="观察期">---</Descriptions.Item>
+        <Descriptions.Item label="产品">{sampleData?.prodCatList}</Descriptions.Item>
+        <Descriptions.Item label="渠道">{sampleData?.channelCatList}</Descriptions.Item>
+        <Descriptions.Item label="训练集">{sampleData?.training}</Descriptions.Item>
+        <Descriptions.Item label="验证集">{sampleData?.validation}</Descriptions.Item>
+        <Descriptions.Item label="表现期">{sampleData?.performance}</Descriptions.Item>
+        {/* <Descriptions.Item label="观察期">---</Descriptions.Item> */}
         <Descriptions.Item label="好坏样本定义" span={2}>
-          ---
+          {sampleData?.goodAndBadDef}
         </Descriptions.Item>
       </Descriptions>
       <div className={styles.tableBox}>
@@ -130,7 +108,7 @@ export default (props: any) => {
           pagination={false}
           search={false}
           columns={columnsSample}
-          dataSource={dataSourceSample}
+          dataSource={sampleData?.dataSetList}
         />
       </div>
       <div className={styles.tableBox}>
@@ -144,7 +122,7 @@ export default (props: any) => {
           pagination={false}
           search={false}
           columns={columnsMonth}
-          dataSource={dataSourceMonth}
+          dataSource={sampleData?.monthList}
         />
       </div>
     </div>

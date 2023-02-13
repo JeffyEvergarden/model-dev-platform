@@ -4,124 +4,54 @@ const successCode = config.successCode;
 
 const baseUrl = config.basePath;
 
-let time = 0;
-
 // 新增方式通用
 const normalDeal = (req: any, res: any) => {
   res.json({
-    resultCode: successCode,
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
   });
 };
 
-const sampleDividerQueryApi = (req: any, res: any) => {
+const getSampleDefineDetail = (req: any, res: any) => {
   res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      list: [
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      prodCatList: ['产品列表1', '产品列表2'],
+      channelCatList: ['渠道列表1'],
+      training: '训练集',
+      validation: '验证集',
+      otherValidList: ['其他验证'],
+      performance: '表现期',
+      goodAndBadDef: '好坏样本定义',
+      dataSetList: [
         {
-          value1: '训练集',
-          value2: '4000',
-          value3: '4000',
-          value4: '33.33%',
-          value5: '12000',
-          value6: '4000',
-          value7: '33.33%',
+          dataSetType: '训练集',
+          goodCount: 4000,
+          badCount: 4000,
+          badRate: '33.33%',
+          totalNum: 12000,
         },
+      ],
+      monthList: [
         {
-          value1: '跨期验证',
-          value2: '4000',
-          value3: '4000',
-          value4: '33.33%',
-          value5: '12000',
-          value6: '4000',
-          value7: '33.33%',
+          month: '2022-12',
+          goodCount: 4000,
+          badCount: 4000,
+          totalNum: 12000,
+          badRate: '33.33%',
+          midCount: 4000,
+          midRate: '33.33%',
         },
       ],
     },
   });
 };
-
-const monthSpreadQueryApi = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      list: [
-        {
-          value1: '2022-01',
-          value2: '4000',
-          value3: '4000',
-          value4: '33.33%',
-          value5: '12000',
-          value6: '4000',
-          value7: '33.33%',
-        },
-        {
-          value1: '2022-02',
-          value2: '4000',
-          value3: '4000',
-          value4: '33.33%',
-          value5: '12000',
-          value6: '4000',
-          value7: '33.33%',
-        },
-        {
-          value1: '总计',
-          value2: '4000',
-          value3: '4000',
-          value4: '33.33%',
-          value5: '12000',
-          value6: '4000',
-          value7: '33.33%',
-        },
-      ],
-    },
-  });
-};
-
-const modelSortListApi = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 6,
-      pageSize: 10,
-      pageNum: 1,
-      dataList: [
-        {
-          scoreSection: '(0, 315]',
-          '2021-02': '36.25%',
-          '2021-03': '55.25%',
-          '2021-04': '46.55%',
-        },
-        {
-          scoreSection: '(315, 342]',
-          '2021-02': '36.25%',
-          '2021-03': '55.25%',
-          '2021-04': '46.55%',
-        },
-        {
-          scoreSection: '(342, 363]',
-          '2021-02': '36.25%',
-          '2021-03': '55.25%',
-          '2021-04': '46.55%',
-        },
-      ],
-      columnsList: [
-        { name: '2021-02', dataIndex: '2021-02' },
-        { name: '2021-03', dataIndex: '2021-03' },
-        { name: '2021-04', dataIndex: '2021-04' },
-      ],
-    },
-  });
-};
-
 export default {
-  [`POST ${baseUrl}/modelStep/exportReport/sampleDividerQueryApi`]: sampleDividerQueryApi,
-  [`POST ${baseUrl}/modelStep/exportReport/monthSpreadQueryApi`]: monthSpreadQueryApi,
-  [`POST ${baseUrl}/robot/testWhiteList/modelSortListApi`]: modelSortListApi,
+  [`GET ${baseUrl}/reporting/getSampleDefineDetail`]: getSampleDefineDetail,
+  [`POST ${baseUrl}/reporting/createReport`]: normalDeal,
 };

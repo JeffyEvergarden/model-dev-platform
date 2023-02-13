@@ -1,8 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker } from 'antd';
+import { Form, Input, DatePicker, message } from 'antd';
 import styles from '../style.less';
+import { useModel, history } from 'umi';
 import { useFormSelect } from './model';
 import NextStepButton from '../../components/nextstep-button';
+
+import config from '@/config';
+const successCode = config.successCode;
 
 const FormItem = Form.Item;
 
@@ -16,7 +20,7 @@ const StepOne: React.FC = (props: any) => {
 
   const [form] = Form.useForm();
 
-  const { getForm, postForm } = useFormSelect();
+  const { getForm, postForm, loading } = useFormSelect();
 
   // 初始化获取表单已填信息
   useEffect(() => {
@@ -24,16 +28,16 @@ const StepOne: React.FC = (props: any) => {
   }, []);
 
   const submitNextStep = async () => {
-    // console.log('---------');
-    // ------------------------------
-    let _form = await form.validateFields().then((obj) => {
-      console.log(obj);
-      return obj;
-    });
-    postForm(_form);
+    let _form = await form.validateFields();
+    let res = await postForm(_form);
+    debugger;
+    if (res?.status?.code === successCode) {
+      message.success(res?.status?.desc || '成功');
+      history.push('/modelStep/selectSample');
+    } else {
+      message.error(res?.status?.desc || '失败');
+    }
   };
-
-  useEffect(() => {}, []);
 
   return (
     <div className={styles['step-page']}>
@@ -58,7 +62,7 @@ const StepOne: React.FC = (props: any) => {
 
           <FormItem
             // rules={[{ required: true, message: '请输入节点描述' }]}
-            name="targetDesc"
+            name="modelDevTarget"
             label="模型开发目标"
             style={{ width: '600px' }}
           >
@@ -95,7 +99,7 @@ const StepOne: React.FC = (props: any) => {
               style={{ width: '400px' }}
               placeholder={['开始日期', '结束日期']}
               // showTime={false}
-            ></RangePicker>
+            />
           </FormItem>
 
           <FormItem name="modelAnalyst" label="模型开发人" style={{ width: '400px' }}>
@@ -108,7 +112,7 @@ const StepOne: React.FC = (props: any) => {
         </div>
       </Form>
 
-      <NextStepButton onClick={submitNextStep} />
+      <NextStepButton onClick={submitNextStep} loading={loading} />
     </div>
   );
 };

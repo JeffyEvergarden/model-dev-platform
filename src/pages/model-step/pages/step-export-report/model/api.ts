@@ -3,15 +3,15 @@ import config from '@/config/index';
 
 const baseUrl: string = config.basePath;
 
-export async function sampleDividerQueryApi(params?: Record<string, any>) {
-  return request(`${baseUrl}/modelStep/exportReport/sampleDividerQueryApi`, {
-    method: 'POST',
-    data: params,
+export async function getSampleDefineDetailApi(params?: Record<string, any>) {
+  return request(`${baseUrl}/reporting/getSampleDefineDetail`, {
+    method: 'GET',
+    params,
   });
 }
 
-export async function monthSpreadQueryApi(params?: Record<string, any>) {
-  return request(`${baseUrl}/modelStep/exportReport/monthSpreadQueryApi`, {
+export async function exportPageRequestApi(params?: Record<string, any>) {
+  return request(`${baseUrl}/reporting/createReport`, {
     method: 'POST',
     data: params,
   });
