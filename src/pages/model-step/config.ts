@@ -1,3 +1,5 @@
+import { history } from 'umi';
+
 export const config: any = {
   model_overview: '/modelStep/overview', // 模型概况  -------
   select_sample: '/modelStep/selectSample', // 样本选取 ------
@@ -55,15 +57,41 @@ export const STEP_ITEM_LIST: any[] = [
   },
 ];
 
-export const STEP_NAME_MAP: any = {
-  model_overview: 0, // 模型概况
-  select_sample: 1, // 样本选取
-  strategy_back: 2, // 策略回溯
-  pre_analyze: 3, // 前期分析
-  define_sample: 4, // 定义样本
-  feature_prepare: 5, //  特征准备
-  feature_build: 6, // 特征工程
-  model_build: 7, // 模型构建
-  model_compare: 8, // 模型对比
-  export_report: 9, // 生成报告
+export enum STEP_NAME_MAP {
+  model_overview = 1, // 模型概况
+  select_sample = 2, // 样本选取
+  strategy_back = 3, // 策略回溯
+  pre_analyze = 4, // 前期分析
+  define_sample = 5, // 定义样本
+  feature_prepare = 6, //  特征准备
+  feature_build = 7, // 特征工程
+  model_build = 8, // 模型构建
+  model_compare = 9, // 模型对比
+  export_report = 10, // 生成报告
+}
+
+export enum STEP_STATUS {
+  wait = 0,
+  process = 1,
+  finish = 2,
+  error = 3,
+}
+
+// 前端步骤名称 到 后端编码
+export const nameToCode = (name: string) => {
+  return STEP_NAME_MAP[name] || null;
+};
+
+// 后端编码 到 前端步骤名称
+export const codeToName = (index: number) => {
+  return STEP_NAME_MAP[index] || null;
+};
+
+// 前后端状态映射
+export const formateStatus = (val: any) => {
+  return STEP_STATUS[val];
+};
+
+export const goToUrl = (name: any, id: any) => {
+  history.replace(config[name] + `?id=${id}`);
 };

@@ -1,4 +1,5 @@
 export default {
-  basePath: '/modelManage/modelDev',
+  basePath: '/modelDev',
+  originPath: '/modelDev',
   successCode: '000',
 };

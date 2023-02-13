@@ -11,9 +11,9 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-  publicPath: '/modelManage/devPlatform/',
-  outputPath: 'dist/devPlatform',
-  base: '/modelManage/devPlatform',
+  publicPath: '/modelDev/',
+  outputPath: 'dist',
+  base: '/modelDev',
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
@@ -67,4 +67,8 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  define: {
+    API_SUCCESS_CODE: '000',
+    'process.env.API_SUCCESS_CODE': '000',
+  },
 });

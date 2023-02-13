@@ -1,6 +1,6 @@
 import Condition from '@/components/Condition';
 import config from '@/config/index';
-import useUpdateModel from '@/ models';
+import useUpdateModel from '@/models';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm, Select, Space, Tag } from 'antd';
@@ -147,8 +147,6 @@ const ModelManagement: React.FC<any> = (props: any) => {
       // },
       width: 120,
       render: (_: any, record: any) => {
-        console.log(_);
-
         return (
           <Space>
             {MODEL_STAGE?.find((item) => item.name == record?.currentStage)?.label}
