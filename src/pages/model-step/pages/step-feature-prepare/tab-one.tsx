@@ -4,6 +4,7 @@ import style from './style.less';
 import SelectFaqModal from './component/select-faq-modal';
 import { DeleteOutlined, MinusCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 import NextStepButton from '../../components/nextstep-button';
+import { useVarSelectModal } from './model';
 
 // 首页
 const SelectModal: React.FC<any> = (props: any) => {
@@ -12,6 +13,8 @@ const SelectModal: React.FC<any> = (props: any) => {
   const [selectList, setSelectList] = useState<any>([]);
   const tmpRef = useRef<any>({});
   const [form] = Form.useForm();
+
+  const { submitFeature } = useVarSelectModal();
 
   // 打开选择FAQ/意图模态框
   const openSelectFaqModal = (row: any) => {
@@ -52,17 +55,25 @@ const SelectModal: React.FC<any> = (props: any) => {
     (selectFaqModalRef.current as any)?.close();
   };
 
-  const onClick = () => {
+  const onClick = async () => {
     if (selectList.length === 0) {
       message.warning('请选择需要回溯的编排');
     } else {
-      onNext?.(selectList);
+      console.log(selectList);
+      let reqData = {
+        itmModelRegisCode: '',
+        featureCodeList: selectList?.map((item: any) => item.featureCode),
+      };
+      let res = await submitFeature(reqData);
+      if (res) {
+        onNext?.(selectList);
+      }
     }
   };
 
   const deleteItem = (item: any, index: any) => {
     console.log(item, index);
-    let arr = selectList?.filter((val: any) => val.recommendId != item.recommendId);
+    let arr = selectList?.filter((val: any) => val?.featureCode != item?.featureCode);
     setSelectList([...arr]);
   };
 
@@ -92,11 +103,11 @@ const SelectModal: React.FC<any> = (props: any) => {
                   >
                     <MinusCircleOutlined className={style['del']} />
                   </Button>
-                  <Tooltip placement="topLeft" title={item.recommendName}>
+                  <Tooltip placement="topLeft" title={item?.featureName}>
                     <div className={style['label']}>
                       <span className={style['num']}>{index + 1}.</span>
 
-                      {item.recommendName}
+                      {item?.featureName}
                     </div>
                   </Tooltip>
                 </div>

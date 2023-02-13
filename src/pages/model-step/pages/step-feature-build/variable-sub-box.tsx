@@ -85,6 +85,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               </div>
             );
           })}
+          <div style={{ flex: 1 }}>
+            <Button style={{ float: 'right' }} type="primary">
+              选择变量
+            </Button>
+          </div>
         </div>
       </Form>
       <VarCardList />

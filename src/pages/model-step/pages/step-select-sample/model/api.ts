@@ -3,9 +3,9 @@ import config from '@/config/index';
 
 const baseUrl: string = config.basePath;
 
-/** 获取所有数据库列表 **/
+/** 获取树**/
 export async function getDatabaseList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/database/list`, {
+  return request(`${baseUrl}/modelDev/featurePrepare/getFeatureCatTree`, {
     method: 'GET',
     params,
   });
