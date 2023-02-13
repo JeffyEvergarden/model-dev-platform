@@ -16,7 +16,7 @@ export const useFormSelect = () => {
   const postForm = async (data: any) => {
     let res = await submitStepOneForm(data);
     if (res?.status?.code === process.env.API_SUCCESS_CODE) {
-      return res.result;
+      return true;
     } else {
       message.error('模型概况-提交表单失败');
       return false;
