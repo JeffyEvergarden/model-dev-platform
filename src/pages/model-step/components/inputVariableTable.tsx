@@ -3,7 +3,8 @@ import { ProTable } from '@ant-design/pro-components';
 import styles from './style.less';
 
 export default (props: any) => {
-  const { headerTitle, rowKey, actionRef, pageInfo, request, dataSource } = props;
+  const { headerTitle, rowKey, actionRef, dataSource } = props;
+
   const columns: any[] = [
     {
       title: '序号',
@@ -75,9 +76,6 @@ export default (props: any) => {
         scroll={{ x: columns?.length * 150 }}
         search={false}
         columns={columns}
-        // request={async (params = {}) => {
-        //   return request(params);
-        // }}
         dataSource={dataSource}
       />
     </div>

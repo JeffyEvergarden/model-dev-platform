@@ -1,17 +1,17 @@
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 
-export const config: any = {
-  model_overview: '/modelStep/overview', // 模型概况  -------
-  select_sample: '/modelStep/selectSample', // 样本选取 ------
-  strategy_back: '/modelStep/strategyBack', // 策略回溯 ------
-  pre_analyze: '/modelStep/preAnalyze', // 前期分析 -------
-  define_sample: '/modelStep/defineSample', // 样本定义 ------
-  feature_prepare: '/modelStep/featurePrepare', // 特征准备 ------
-  feature_build: '/modelStep/featureBuild', // 特征工程 -------
-  model_build: '/modelStep/modelBuild', // 模型构建 -------
-  model_compare: '/modelStep/modelCompare', // 模型对比 -------
-  export_report: '/modelStep/exportReport', // 生成报告 -------
-};
+export enum config {
+  model_overview = '/modelStep/overview', // 模型概况  -------
+  select_sample = '/modelStep/selectSample', // 样本选取 ------
+  strategy_back = '/modelStep/strategyBack', // 策略回溯 ------
+  pre_analyze = '/modelStep/preAnalyze', // 前期分析 -------
+  define_sample = '/modelStep/defineSample', // 样本定义 ------
+  feature_prepare = '/modelStep/featurePrepare', // 特征准备 ------
+  feature_build = '/modelStep/featureBuild', // 特征工程 -------
+  model_build = '/modelStep/modelBuild', // 模型构建 -------
+  model_compare = '/modelStep/modelCompare', // 模型对比 -------
+  export_report = '/modelStep/exportReport', // 生成报告 -------
+}
 
 // 步骤
 export const STEP_ITEM_LIST: any[] = [
@@ -94,4 +94,36 @@ export const formateStatus = (val: any) => {
 
 export const goToUrl = (name: any, id: any) => {
   history.replace(config[name] + `?id=${id}`);
+};
+
+export const useNextStep = () => {
+  const { modelId, setDoneStep, setDoneStepStatus, setCurStep } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      setDoneStep: model.setDoneStep,
+      setDoneStepStatus: model.setDoneStepStatus,
+      setCurStep: model.setCurStep,
+    }),
+  );
+
+  const keys = Object.keys(config);
+
+  const nextStep = (conf?: any) => {
+    // console.log(history.location);
+    const curName: any = history.location.pathname;
+    let _curName: any = keys.find((item: any) => config[item] === curName);
+    const curIndex = Number(STEP_NAME_MAP[_curName]) + 1;
+    console.log(_curName, STEP_NAME_MAP[_curName], curIndex, curIndex);
+    if (STEP_NAME_MAP[curIndex]) {
+      let urlName = config[STEP_NAME_MAP[curIndex]];
+      history.replace(urlName + `?id=${modelId}`);
+      //
+      setDoneStep(curIndex);
+      setCurStep(curIndex - 1);
+      setDoneStepStatus('process');
+    }
+  };
+
+  return { nextStep };
 };

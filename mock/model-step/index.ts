@@ -23,7 +23,7 @@ const getStepInfo = (req: any, res: any) => {
       desc: '',
     },
     result: {
-      currentStage: 7, // 1~10
+      currentStage: 10, // 1~10
       currentStageStatus: 1, // 0~3
     },
   });
@@ -36,16 +36,17 @@ const getStepOneForm = (req: any, res: any) => {
       desc: '',
     },
     result: {
-      modelAnalyst: '日番谷冬狮郎',
-      modelDevStartTime: '2023-01-10',
-      modelDevEndTime: '2023-01-31',
-      modelInnovation: '日番谷冬狮郎',
-      modelName: '日番谷冬狮郎',
-      modelPerformanceMetrics: '日番谷冬狮郎',
-      modelPolicyCounterpart: '日番谷冬狮郎',
-      modelPresentSituation: '日番谷冬狮郎',
-      modelSceneThought: '日番谷冬狮郎',
-      targetDesc: '日番谷冬狮郎',
+      itmModelRegisCode: '模型单号',
+      modelDevTarget: '模型开发目标',
+      modelPresentSituation: '现有评分应用现状',
+      modelSceneThought: '模型应用场景和思路',
+      modelPerformanceMetrics: '模型主要性能指标',
+      modelInnovation: '模型主要创新点',
+      modelDevStartTime: '2022-12-12',
+      modelDevEndTime: '2022-13-13',
+      modelPolicyCounterpart: '政策对接人',
+      modelName: '模型名称',
+      modelAnalyst: '模型开发人',
     },
   });
 };

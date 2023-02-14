@@ -18,16 +18,8 @@ const successCode = config.successCode;
 export default (props: any) => {
   const { activeKey } = props;
 
-  const {
-    loading,
-    setLoading,
-    getModelStructureParamRequest,
-    getModelResultRequest,
-    codeList,
-    relateCodeList,
-    getScoreCardList,
-    stableDataQuery,
-  } = useComparePage();
+  const { loading, setLoading, getModelStructureParamRequest, getModelResultRequest } =
+    useComparePage();
 
   const actionRef = useRef<any>();
   const relateModalRef = useRef<any>({});
@@ -50,8 +42,6 @@ export default (props: any) => {
 
     //模型结果
     getModelResult();
-
-    getVarCode(); //变量相关性
   }, [activeKey]);
 
   const getModelStructureParam = async () => {
@@ -88,13 +78,6 @@ export default (props: any) => {
       setLoading(false);
       message.error(res?.status?.desc || '异常');
     }
-  };
-
-  const getVarCode = async () => {
-    let params = {};
-    let res = await relateCodeList(params);
-    setDataSourceRelate(res?.data?.list);
-    setColumnsRelate(res?.data?.columnsRelate);
   };
 
   const togetherData = (data: any) => {
