@@ -1,4 +1,5 @@
 import { Button, Divider, Form, Input, message, Select, Slider, Space, Table } from 'antd';
+import { useRef } from 'react';
 import { twoDecimal_f } from '../utils/util';
 import SubBox from './components/subBox';
 import VarCardList from './components/varCardList';
@@ -8,6 +9,7 @@ import style from './style.less';
 const MissingValueFilling: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
+  const varRef: any = useRef();
 
   const sliderAndInput = (val: any) => {
     if (Array.isArray(val)) {
@@ -20,7 +22,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     }
   };
 
-  const onChange = (e: any) => {
+  const onChange = (e: any, name: any, str: any) => {
     let val = e.target.value;
     let arr: any = val.split('~');
     let formData: any = form.getFieldsValue();
@@ -29,24 +31,40 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       if (Number(arr[0]) != NaN && Number(arr[1] != NaN)) {
         arr[0] = Number(arr[0]);
         arr[1] = Number(arr[1]);
+        console.log(arr[0], arr[1]);
+
         if (arr[0] > arr[1]) {
           arr = arr.reverse();
         }
-        if (arr[1] > 10 || arr[0] < 0) {
-          message.warning('请保证范围在0-1');
+        if (arr[1] > (name == 'ivFilter' ? 10 : 1) || arr[0] < 0) {
+          message.warning(name == 'ivFilter' ? '请保证范围在0-10' : '请保证范围在0-1');
           console.log(formData);
-          formData.ivStr = formData?.iv?.map((item: any) => twoDecimal_f(item))?.join('~');
+          formData[str] = formData?.[name]?.map((item: any) => twoDecimal_f(item))?.join('~');
           form.setFieldsValue({ ...formData });
           return;
         }
-        formData.iv = arr;
-        formData.ivStr = arr?.map((item: any) => twoDecimal_f(item))?.join('~');
+        formData[name] = arr;
+        formData[str] = arr?.map((item: any) => twoDecimal_f(item))?.join('~');
         form.setFieldsValue({ ...formData });
       }
     } else {
-      formData.ivStr = formData?.iv?.map((item: any) => twoDecimal_f(item))?.join('~');
+      formData[str] = formData?.[name]?.map((item: any) => twoDecimal_f(item))?.join('~');
       form.setFieldsValue({ ...formData });
     }
+  };
+
+  const selectVar = (type?: any) => {
+    console.log(form.getFieldsValue());
+    let formData = form.getFieldsValue();
+    let selectList = {
+      ivFilter: formData?.ivFilter?.join(),
+      ksFilter: formData?.ksFilter?.join(),
+      missFilter: formData?.missFilter?.join(),
+      corrFilter: formData?.corrFilter?.join(),
+    };
+    console.log(selectList);
+
+    varRef?.current?.getVarList(selectList, type);
   };
 
   return (
@@ -79,20 +97,22 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
                     size="small"
                     style={{ width: '100px' }}
                     // onChange={onChange}
-                    onBlur={onChange}
+                    onBlur={(e: any) => {
+                      onChange(e, item?.name, item?.str);
+                    }}
                   ></Input>
                 </FormItem>
               </div>
             );
           })}
           <div style={{ flex: 1 }}>
-            <Button style={{ float: 'right' }} type="primary">
+            <Button style={{ float: 'right' }} type="primary" onClick={selectVar}>
               选择变量
             </Button>
           </div>
         </div>
       </Form>
-      <VarCardList />
+      <VarCardList cref={varRef} selectVar={selectVar} />
       <SubBox />
     </div>
   );

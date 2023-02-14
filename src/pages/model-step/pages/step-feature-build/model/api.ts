@@ -16,3 +16,24 @@ export async function getFillFeatureMetrics(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function getVariableTypeList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelMange/featureEngineering/getVariableTypeList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function getVariableMetricsListForBinning(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelMange/featureEngineering/getVariableMetricsListForBinning`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function getVariableListForBinning(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelMange/featureEngineering/getVariableListForBinning`, {
+    method: 'POST',
+    params,
+  });
+}
