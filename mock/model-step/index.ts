@@ -23,7 +23,7 @@ const getStepInfo = (req: any, res: any) => {
       desc: '',
     },
     result: {
-      currentStage: 1, // 1~10
+      currentStage: 7, // 1~10
       currentStageStatus: 1, // 0~3
     },
   });
