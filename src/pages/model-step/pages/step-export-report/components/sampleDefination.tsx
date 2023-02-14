@@ -92,15 +92,13 @@ export default (props: any) => {
         <Descriptions.Item label="验证集">{sampleData?.validation}</Descriptions.Item>
         <Descriptions.Item label="表现期">{sampleData?.performance}</Descriptions.Item>
         {/* <Descriptions.Item label="观察期">---</Descriptions.Item> */}
-        <Descriptions.Item label="好坏样本定义" span={2}>
-          {sampleData?.goodAndBadDef}
-        </Descriptions.Item>
+        <Descriptions.Item label="好坏样本定义">{sampleData?.goodAndBadDef}</Descriptions.Item>
       </Descriptions>
       <div className={styles.tableBox}>
         <span className={styles.tableTitle}>样本划分</span>
         <ProTable
           headerTitle="整体分部"
-          rowKey={(record: any) => record.id}
+          rowKey={(record: any) => record.dataSetType}
           toolBarRender={() => []}
           options={false}
           // bordered
@@ -114,7 +112,7 @@ export default (props: any) => {
       <div className={styles.tableBox}>
         <ProTable
           headerTitle="按月份分布"
-          rowKey={(record: any) => record.id}
+          rowKey={(record: any) => record.month}
           toolBarRender={() => []}
           options={false}
           // bordered
