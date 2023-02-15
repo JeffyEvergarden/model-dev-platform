@@ -22,7 +22,7 @@ export default (props: any) => {
     <Modal
       width={'100%'}
       title={''}
-      open={visible}
+      visible={visible}
       onCancel={() => setVisible(false)}
       footer={null}
     >

@@ -16,19 +16,6 @@ const normalDeal = (req: any, res: any) => {
   });
 };
 
-const getStepInfo = (req: any, res: any) => {
-  res.json({
-    status: {
-      code: successCode,
-      desc: '',
-    },
-    result: {
-      currentStage: 10, // 1~10
-      currentStageStatus: 1, // 0~3
-    },
-  });
-};
-
 const getStepOneForm = (req: any, res: any) => {
   res.json({
     status: {
@@ -69,35 +56,36 @@ const getWaitResult = (req: any, res: any) => {
   //     desc: '',
   //   },
   // });
-  if (time >= 2) {
-    time = 0;
-    res.json({
-      status: {
-        code: successCode,
-        desc: '',
-      },
-      result: {
-        currentStage: '3',
-        currentStageStatus: '2', //完成
-        currentStageDesc: '1',
-        backtrackProcessName: '编排1,编排2',
-      },
-    });
-  } else {
-    time++;
-    res.json({
-      status: {
-        code: successCode,
-        desc: '',
-      },
-      result: {
-        currentStage: '3',
-        currentStageStatus: '1', //进行中
-        currentStageDesc: '1',
-        backtrackProcessName: '编排1,编排2',
-      },
-    });
-  }
+  // if (time >= 2) {
+  // time = 0;
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      currentStage: '10',
+      currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
+      currentStageDesc: '1',
+      backtrackProcessName: '编排1,编排2',
+    },
+  });
+  // }
+  // else {
+  //   time++;
+  //   res.json({
+  //     status: {
+  //       code: successCode,
+  //       desc: '',
+  //     },
+  //     result: {
+  //       currentStage: '3',
+  //       currentStageStatus: '1', //进行中
+  //       currentStageDesc: '1',
+  //       backtrackProcessName: '编排1,编排2',
+  //     },
+  //   });
+  // }
 };
 
 // 样本选择
@@ -192,7 +180,7 @@ const getStrategyBackList = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 基础模块
-  [`GET ${baseUrl}/stage/getCurrentStage`]: getStepInfo,
+  [`GET ${baseUrl}/stage/getCurrentStage`]: getWaitResult,
 
   // 模型概况
   [`GET ${baseUrl}/summary/getSummaryDetail`]: getStepOneForm,
@@ -201,7 +189,7 @@ export default {
   // 样本选择 - 获取数据源
   [`GET ${baseUrl}/database/list`]: getDatabaseList, // 获取模型管理列表
   [`GET ${baseUrl}/database/columnlist`]: getColumnsList,
-  [`GET ${baseUrl}/modelStep/selectSample/result`]: getWaitResult,
+  // [`GET ${baseUrl}/stage/getCurrentStage`]: getWaitResult,
 
   // 策略回溯
   [`POST ${baseUrl}/policyBacktrack/getProcessInfo`]: getStrategyBackList,

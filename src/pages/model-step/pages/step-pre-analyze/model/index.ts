@@ -61,7 +61,6 @@ export const useSearchModel = () => {
 
       originChannelMidList = cmList;
       originChannelSmList = csList;
-
       setChannelMidList(cmList);
       setChannelSmList(csList);
     }

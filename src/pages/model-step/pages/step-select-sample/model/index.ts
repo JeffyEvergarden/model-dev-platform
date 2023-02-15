@@ -2,7 +2,16 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 
-import { getDatabaseList, getDatacolumnsList, getWaitResult } from './api';
+import {
+  getDatabaseList,
+  getDatacolumnsList,
+  getWaitResult,
+  submitSampleRequestApi,
+  getCurrentDetailRequestApi,
+  confirmSunmitRequestApi,
+  getSampleRequstApi,
+  sampleNextApi,
+} from './api';
 
 export const successCode = config.successCode;
 
@@ -86,17 +95,18 @@ export const useStepSelectModel = () => {
 
 //
 export const useSampleUploadAwaitModel = () => {
-  const [processType, setProcessType] = useState<any>('loading');
+  const [processType, setProcessType] = useState<any>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fake = useRef<any>({});
 
   const awaitResult = async (params?: any) => {
     let res: any = await getWaitResult(params);
-    let data = res.data || {};
-    if (data.type === 'finish') {
+    let data = res.result || {};
+    if (data.currentStageStatus === '2') {
       setProcessType('finish');
       return 'finish';
-    } else if (data.type === 'loading') {
+    } else if (data.currentStageStatus === '1') {
       setProcessType('loading');
       return 'loading';
     } else {
@@ -132,9 +142,83 @@ export const useSampleUploadAwaitModel = () => {
     }
   };
 
+  const submitSampleRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await submitSampleRequestApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getCurrentDetailRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await getCurrentDetailRequestApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const confirmSunmitRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await confirmSunmitRequestApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
+    loading,
     processType,
+    setProcessType,
     awaitResult,
     startLoop,
+    submitSampleRequest,
+    getCurrentDetailRequest,
+    confirmSunmitRequest,
+  };
+};
+
+export const useSample = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const submitSampleRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await submitSampleRequestApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getCurrentDetailRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await getCurrentDetailRequestApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const confirmSunmitRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await confirmSunmitRequestApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getSampleRequst = async (params?: any) => {
+    setLoading(true);
+    let res: any = await getSampleRequstApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const sampleNext = async (params?: any) => {
+    setLoading(true);
+    let res: any = await sampleNextApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  return {
+    loading,
+    submitSampleRequest,
+    getCurrentDetailRequest,
+    confirmSunmitRequest,
+    getSampleRequst,
+    sampleNext,
   };
 };

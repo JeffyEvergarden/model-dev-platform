@@ -70,9 +70,23 @@ const StepTwo: React.FC<any> = (props: any) => {
             if (typeof fn === 'function') {
               val = fn(val);
             }
+            if (item.key == 'rangeDate') {
+              val = `${detailInfo?.startTime}~${detailInfo?.endTime}`;
+            }
+            if (item.key == 'featureLabel') {
+              val = `${detailInfo?.featureLabel?.featureCode ?? ''}${
+                detailInfo?.featureLabel?.operator ?? ''
+              }${detailInfo?.featureLabel?.params ?? ''}`;
+            }
+            if (item.key == 'tableName') {
+              val = `${detailInfo?.featureLabel?.tableName ?? ''}`;
+            }
+            if (item.key == 'dimensionField') {
+              val = `${detailInfo?.featureLabel?.dimensionField ?? ''}`;
+            }
             return (
               <div className={styles['col-row']} key={index}>
-                <span className={styles['label-item']}>{item.name}：</span>
+                <span className={styles['label-item']}>{item?.name}：</span>
                 <span className={styles['value-item']}>{val}</span>
               </div>
             );
