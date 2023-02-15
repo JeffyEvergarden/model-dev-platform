@@ -16,7 +16,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
   const [selectReportList, setReportList] = useState<any[]>();
 
-  const { loading, tableList, tableTotal, getLostList } = useExportReportModel();
+  const { loading, tableList, tableInfo, tableTotal, getLostList } = useExportReportModel();
 
   const columns: any[] = [
     {
@@ -167,11 +167,12 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           title={() => (
             <div className={style['title']}>
               <div>
-                变量数量：<span className={style['titleSpan']}>6,888</span>
+                变量数量：
+                <span className={style['titleSpan']}>{tableInfo?.variableNum || '-'}</span>
                 <Divider type="vertical" />
-                数值型：<span className={style['titleSpan']}>4,888</span>
+                数值型：<span className={style['titleSpan']}>{tableInfo?.numTypeNum || '-'}</span>
                 <Divider type="vertical" />
-                类别型：<span className={style['titleSpan']}>2,000</span>
+                类别型：<span className={style['titleSpan']}>{tableInfo?.otherTypeNum || '-'}</span>
               </div>
               <Button type="link" icon={<DownloadOutlined />}>
                 下载

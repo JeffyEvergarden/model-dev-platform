@@ -5,6 +5,7 @@ import style from './style.less';
 import { useState } from 'react';
 import { history } from 'umi';
 import Condition from '@/components/Condition';
+import TitleStatus from '../../components/title-status';
 import ImportTabOne from './tab-one-import';
 import ImportTrue from './components/ImportTrue';
 import ConfirmModal from './components/confirmModal';
@@ -132,7 +133,10 @@ const StepOne: React.FC = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>样本选取</div>
+      <div className={styles['step-title']}>
+        <span>样本选取</span>
+        <TitleStatus index={2}></TitleStatus>
+      </div>
 
       {/* 步骤一 */}
       <Condition r-if={stepType === 1}>

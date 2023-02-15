@@ -20,6 +20,7 @@ import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '@/pages/model-step/components/common-page';
 import config from '@/config';
 import { useBuildModel } from './model';
+import TitleStatus from '../../components/title-status';
 import { stubFalse } from 'lodash';
 
 const successCode = config.successCode;
@@ -121,7 +122,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
-        模型构建 <Tag color={tagStatus}>{STATUS[tagStatus]}</Tag>
+        <span>模型构建</span>
+        <TitleStatus index={8}></TitleStatus>
       </div>
       <Condition r-if={pageType !== ''}>
         <CommonPage

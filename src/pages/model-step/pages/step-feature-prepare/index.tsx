@@ -3,6 +3,7 @@ import styles from '../style.less';
 import Condition from '@/components/Condition';
 import SelectModal from './tab-one';
 import TabTwo from './tab-two';
+import TitleStatus from '../../components/title-status';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
@@ -19,7 +20,10 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-box']}>
-        <div className={styles['step-title']}>特征准备</div>
+        <div className={styles['step-title']}>
+          <span>特征准备</span>
+          <TitleStatus index={6}></TitleStatus>
+        </div>
       </div>
 
       <Condition r-if={stepType === 1}>

@@ -6,6 +6,7 @@ import { useFormSelect } from './model';
 import { useNextStep } from '../../config';
 import moment from 'moment';
 import NextStepButton from '../../components/nextstep-button';
+import TitleStatus from '../../components/title-status';
 
 import config from '@/config';
 const successCode = config.successCode;
@@ -80,7 +81,10 @@ const StepOne: React.FC = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>模型概况</div>
+      <div className={styles['step-title']}>
+        <span>模型概况</span>
+        <TitleStatus index={1}></TitleStatus>
+      </div>
 
       <Form form={form} layout="vertical" labelAlign="right">
         <div className={styles['antd-form']}>

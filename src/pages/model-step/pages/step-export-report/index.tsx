@@ -9,6 +9,7 @@ import NextStepButton from '../../components/nextstep-button';
 import { useExportReportModel } from './model';
 import { useComparePage } from './../step-model-compare/model';
 import config from '@/config';
+import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
 import { changeData } from '@/utils';
 
@@ -97,8 +98,10 @@ const StepExportReport: React.FC<any> = (props: any) => {
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
-        生成报告<Tag color={'processing'}>进行中</Tag>
+        <span>生成报告</span>
+        <TitleStatus index={10}></TitleStatus>
       </div>
+
       <Tabs type="card" size="large">
         <Tabs.TabPane tab="样本定义" key={'1'}>
           <SampleDefination sampleData={sampleData} />
