@@ -20,7 +20,7 @@ const { Option } = Select;
 // 首页
 const StepTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, btnNode, tabType, onClickReSelect, nextFlow } = props;
+  const { processId, form, onNext, tabType, onClickReSelect, nextFlow } = props;
 
   const [_form] = Form.useForm(form);
 

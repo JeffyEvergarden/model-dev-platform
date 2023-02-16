@@ -96,6 +96,7 @@ export const useStepSelectModel = () => {
 //
 export const useSampleUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('');
+  const [desc, setDesc] = useState<any>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const fake = useRef<any>({});
@@ -103,6 +104,7 @@ export const useSampleUploadAwaitModel = () => {
   const awaitResult = async (params?: any) => {
     let res: any = await getWaitResult(params);
     let data = res.result || {};
+    setDesc(data?.currentStageDesc);
     if (data.currentStageStatus === '2') {
       setProcessType('finish');
       return 'finish';
@@ -215,6 +217,7 @@ export const useSample = () => {
 
   return {
     loading,
+    desc,
     submitSampleRequest,
     getCurrentDetailRequest,
     confirmSunmitRequest,

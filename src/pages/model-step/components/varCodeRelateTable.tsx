@@ -6,13 +6,12 @@ import classnames from 'classnames';
 //使用前提：dataSource和columns数据字段和格式需要保持一致
 
 export default (props: any) => {
-  const { headerTitle, rowKey, toolBarRender, actionRef, dataSource, columns } = props;
+  const { headerTitle, rowKey, toolBarRender, actionRef, data } = props;
 
-  const [dataSourceRelate, setDataSourceRelate] = useState<any>([]);
+  // const [dataSourceRelate, setDataSourceRelate] = useState<any>([]);
   const [columnsRelate, setColumnsRelate] = useState<any>([]);
 
   useEffect(() => {
-    setDataSourceRelate(dataSource);
     let temp: any = [
       {
         title: '',
@@ -25,14 +24,14 @@ export default (props: any) => {
         },
       },
     ];
-    columns.map((item: any, index: any) => {
+    data?.rowList.map((item: any, index: any) => {
       temp.push({
-        title: item.name,
-        dataIndex: item.dataIndex,
+        title: item,
+        dataIndex: item,
         key: item,
         ellipsis: true,
         render: (t: any, r: any, i: any) => {
-          let currentVal = Math.abs(Number(r?.[item.dataIndex]));
+          let currentVal = Math.abs(Number(r?.[item]));
           return (
             <Fragment>
               {(currentVal < 0.1 || currentVal == 0.1) && (
@@ -62,7 +61,7 @@ export default (props: any) => {
       });
     });
     setColumnsRelate(temp);
-  }, [dataSource, columns]);
+  }, [data]);
   return (
     <div className={classnames(styles.relateTable, styles.TableCommonSty)}>
       <ProTable
@@ -75,10 +74,10 @@ export default (props: any) => {
         pagination={false}
         search={false}
         columns={columnsRelate}
-        dataSource={dataSourceRelate}
+        dataSource={data?.correlationList}
         scroll={{
           x: columnsRelate?.length * 150,
-          y: dataSourceRelate?.length > 10 ? 300 : undefined,
+          y: data?.correlationList?.length > 10 ? 300 : undefined,
         }}
       />
     </div>

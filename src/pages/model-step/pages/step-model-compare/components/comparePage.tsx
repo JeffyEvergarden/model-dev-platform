@@ -101,19 +101,6 @@ export default (props: any) => {
     return changeData(tempArr, 'variable');
   };
 
-  const varCodeList = async (payload: any) => {
-    let params = {};
-
-    let res = await codeList(params);
-    setPageInfo(res?.data);
-    return {
-      data: res?.data?.list || [],
-      total: res?.data?.total || 0,
-      current: payload.current,
-      pageSize: payload.pageSize,
-    };
-  };
-
   const openMax = () => {
     relateModalRef?.current?.open();
   };
@@ -182,8 +169,8 @@ export default (props: any) => {
               </Space>
             </div>,
           ]}
-          columns={columnsRelate}
-          dataSource={dataSourceRelate}
+          // columns={columnsRelate}
+          data={modelResult?.variableRelevanceData}
         />
       </div>
       <div className={classnames(styles.relateTable)}>
@@ -201,8 +188,8 @@ export default (props: any) => {
       </div>
       <CompareAndReportCommonPage pageType="comparePage" modelResult={modelResult} />
       <RelateModal
-        columnsRelate={columnsRelate}
-        dataSourceRelate={dataSourceRelate}
+        // columnsRelate={columnsRelate}
+        data={modelResult?.variableRelevanceData}
         cref={relateModalRef}
       />
     </div>

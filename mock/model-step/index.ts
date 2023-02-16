@@ -65,7 +65,7 @@ const getWaitResult = (req: any, res: any) => {
     },
     result: {
       currentStage: '10',
-      currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
+      currentStageStatus: '1', //：0：未开始 1：进行中 2：已完成 3：处理失败
       currentStageDesc: '1',
       backtrackProcessName: '编排1,编排2',
     },
