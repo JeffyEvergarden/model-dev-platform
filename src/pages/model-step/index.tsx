@@ -14,6 +14,7 @@ import {
 } from './config';
 import Condition from '@/components/Condition';
 import { useBaseInfoModel } from './model';
+import { isBoolean } from 'lodash';
 
 const Step = Steps.Step;
 
@@ -31,6 +32,10 @@ const Myjob: React.FC<any> = (props: any) => {
     setDoneStepStatus,
     curStep,
     setCurStep,
+    isHadBuild,
+    setIsHadBuild,
+    isHadReported,
+    setIsHadReported,
   } = useModel('step' as any, (model: any) => ({
     modelId: model.modelId,
     setModelId: model.setModelId,
@@ -40,6 +45,10 @@ const Myjob: React.FC<any> = (props: any) => {
     setDoneStepStatus: model.setDoneStepStatus,
     curStep: model.curStep,
     setCurStep: model.setCurStep,
+    isHadBuild: model.isHadBuild,
+    setIsHadBuild: model.setIsHadBuild,
+    isHadReported: model.isHadReported,
+    setIsHadReported: model.setIsHadReported,
   }));
 
   const { hasDone, getModelInfo, getModelDetail } = useBaseInfoModel();
@@ -63,11 +72,16 @@ const Myjob: React.FC<any> = (props: any) => {
       setPageLoad(true);
       goToUrl(codeToName(_index), _modelId || modelId);
       setCurStep(_index - 1);
+      // --------
+      setIsHadBuild(typeof res.isModelBuild === 'boolean' ? res.isModelBuild : false);
+      setIsHadReported(typeof res.reportFilePath === 'boolean' ? res.isModelBuild : false);
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');
       goToUrl('model_overview', _modelId || modelId);
       setCurStep(0);
+      setIsHadBuild(false);
+      setIsHadReported(false);
     }
   };
 

@@ -21,10 +21,15 @@ const { RangePicker }: any = DatePicker;
 const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { modelId, doneStep } = useModel('step', (model: any) => ({
+  const { modelId, doneStep, isHadBuild } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
   }));
+
+  // 表单是否可以编辑
+  const isDisabled = isHadBuild || false;
 
   const [form] = Form.useForm();
 
@@ -100,7 +105,12 @@ const StepOne: React.FC = (props: any) => {
             label="模型名称"
             style={{ width: '400px' }}
           >
-            <Input placeholder="请输入模型名称" maxLength={150} autoComplete="off" />
+            <Input
+              placeholder="请输入模型名称"
+              maxLength={150}
+              autoComplete="off"
+              disabled={isDisabled}
+            />
           </FormItem>
 
           <FormItem
@@ -109,7 +119,12 @@ const StepOne: React.FC = (props: any) => {
             label="模型开发目标"
             style={{ width: '600px' }}
           >
-            <TextArea rows={4} placeholder="请输入模型开发目标" maxLength={150} />
+            <TextArea
+              rows={4}
+              placeholder="请输入模型开发目标"
+              maxLength={150}
+              disabled={isDisabled}
+            />
           </FormItem>
 
           <FormItem
@@ -117,11 +132,21 @@ const StepOne: React.FC = (props: any) => {
             label="现有评分应用现状"
             style={{ width: '600px' }}
           >
-            <TextArea rows={4} placeholder="请输入现有评分应用现状" maxLength={150} />
+            <TextArea
+              rows={4}
+              placeholder="请输入现有评分应用现状"
+              maxLength={150}
+              disabled={isDisabled}
+            />
           </FormItem>
 
           <FormItem name="modelSceneThought" label="模型应用场景和思路" style={{ width: '600px' }}>
-            <TextArea rows={4} placeholder="请输入模型应用场景和思路" maxLength={150} />
+            <TextArea
+              rows={4}
+              placeholder="请输入模型应用场景和思路"
+              maxLength={150}
+              disabled={isDisabled}
+            />
           </FormItem>
 
           <FormItem
@@ -129,11 +154,21 @@ const StepOne: React.FC = (props: any) => {
             label="模型主要性能指标"
             style={{ width: '600px' }}
           >
-            <TextArea rows={4} placeholder="请输入模型主要性能指标" maxLength={150} />
+            <TextArea
+              rows={4}
+              placeholder="请输入模型主要性能指标"
+              maxLength={150}
+              disabled={isDisabled}
+            />
           </FormItem>
 
           <FormItem name="modelInnovation" label="模型主要创新点" style={{ width: '600px' }}>
-            <TextArea rows={4} placeholder="请输入模型主要创新点" maxLength={150} />
+            <TextArea
+              rows={4}
+              placeholder="请输入模型主要创新点"
+              maxLength={150}
+              disabled={isDisabled}
+            />
           </FormItem>
 
           <FormItem name="modelDevTime" label="模型开发时间" style={{ width: '600px' }}>
@@ -141,21 +176,26 @@ const StepOne: React.FC = (props: any) => {
               // format="YYYY-MM-DD"
               style={{ width: '400px' }}
               placeholder={['开始日期', '结束日期']}
+              disabled={isDisabled}
               // showTime={false}
             />
           </FormItem>
 
           <FormItem name="modelAnalyst" label="模型开发人" style={{ width: '400px' }}>
-            <Input placeholder="模型开发人" maxLength={150} />
+            <Input placeholder="模型开发人" maxLength={150} disabled={isDisabled} />
           </FormItem>
 
           <FormItem name="modelPolicyCounterpart" label="政策对接人" style={{ width: '400px' }}>
-            <Input placeholder="政策对接人" maxLength={150} />
+            <Input placeholder="政策对接人" maxLength={150} disabled={isDisabled} />
           </FormItem>
         </div>
       </Form>
 
-      <NextStepButton onClick={submitNextStep} loading={loading} />
+      <NextStepButton
+        onClick={submitNextStep}
+        loading={loading}
+        disabled={isDisabled || isHadBuild}
+      />
     </div>
   );
 };

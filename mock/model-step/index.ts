@@ -50,14 +50,6 @@ const postStepOneForm = (req: any, res: any) => {
 
 // 提交过程 通用
 const getWaitResult = (req: any, res: any) => {
-  // res.json({
-  //   status: {
-  //     code: successCode,
-  //     desc: '',
-  //   },
-  // });
-  // if (time >= 2) {
-  // time = 0;
   res.json({
     status: {
       code: successCode,
@@ -67,25 +59,11 @@ const getWaitResult = (req: any, res: any) => {
       currentStage: '10',
       currentStageStatus: '1', //：0：未开始 1：进行中 2：已完成 3：处理失败
       currentStageDesc: '1',
+      isModelBuild: false,
+      reportFilePath: false,
       backtrackProcessName: '编排1,编排2',
     },
   });
-  // }
-  // else {
-  //   time++;
-  //   res.json({
-  //     status: {
-  //       code: successCode,
-  //       desc: '',
-  //     },
-  //     result: {
-  //       currentStage: '3',
-  //       currentStageStatus: '1', //进行中
-  //       currentStageDesc: '1',
-  //       backtrackProcessName: '编排1,编排2',
-  //     },
-  //   });
-  // }
 };
 
 // 样本选择
