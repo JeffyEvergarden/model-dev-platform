@@ -5,6 +5,7 @@ import { useModel, history } from 'umi';
 import Condition from '@/components/Condition';
 import ComparePage from './components/comparePage';
 import NextStepButton from '../../components/nextstep-button';
+import TitleStatus from '../../components/title-status';
 import { useComparePage } from './model';
 
 import config from '@/config';
@@ -62,7 +63,8 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
-        模型对比 <Tag color={'processing'}>进行中</Tag>
+        <span>模型对比</span>
+        <TitleStatus index={9}></TitleStatus>
       </div>
       <Tabs type="card" size="large" onChange={changeTab}>
         {tabList?.map((item: any) => {

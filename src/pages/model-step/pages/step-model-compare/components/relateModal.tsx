@@ -6,7 +6,7 @@ import styles from './index.less';
 import classnames from 'classnames';
 
 export default (props: any) => {
-  const { cref, columnsRelate, dataSourceRelate } = props;
+  const { cref, data } = props;
 
   useImperativeHandle(cref, () => ({
     open: (row: any) => {
@@ -22,7 +22,7 @@ export default (props: any) => {
     <Modal
       width={'100%'}
       title={''}
-      open={visible}
+      visible={visible}
       onCancel={() => setVisible(false)}
       footer={null}
     >
@@ -32,8 +32,8 @@ export default (props: any) => {
             headerTitle=""
             rowKey={(record: any) => record.id}
             toolBarRender={() => []}
-            columns={columnsRelate}
-            dataSource={dataSourceRelate}
+            // columns={columnsRelate}
+            data={data}
           />
         </div>
       </div>

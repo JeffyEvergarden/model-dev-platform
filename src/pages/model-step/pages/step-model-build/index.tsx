@@ -20,7 +20,8 @@ import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '@/pages/model-step/components/common-page';
 import config from '@/config';
 import { useBuildModel } from './model';
-import { stubFalse } from 'lodash';
+import TitleStatus from '../../components/title-status';
+import PageStatus from './components/statusPage';
 
 const successCode = config.successCode;
 
@@ -39,14 +40,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const { beginBuildModel, rebuildModel, nextFlowRequest, loading, setLoading } = useBuildModel();
 
-  const [ruleList, setRulist] = useState<any>([
-    { name: '变量一', value: '1' },
-    { name: '变量二', value: '2' },
-    { name: '变量三', value: '3' },
-  ]);
+  const [ruleList, setRulist] = useState<any>([]);
   const [pageType, setPageType] = useState<string>(''); //loading error finish
   const [formVal, setFormVal] = useState<any>({});
   const [tagStatus, setTagStatus] = useState<string>('processing'); //processing success error
+
+  const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
 
   const isStepwise: any = Form.useWatch('isStepwise', form);
   const isVif: any = Form.useWatch('isVif', form);
@@ -54,30 +53,33 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const handleClose = (entityValueName: any) => {
     let temp = JSON.parse(JSON.stringify(ruleList));
-    const tags = temp.filter((item: any) => item.value !== entityValueName.value);
+    const tags = temp.filter((item: any) => item !== entityValueName);
     setRulist(tags);
   };
 
   const beginBuild = async () => {
     let formVal = await form.validateFields();
     setLoading(true);
+    let variableNames = ruleList?.join(',');
     let params = {
       itmModelRegisCode: '',
       sampleTable: '',
       ...formVal,
     };
+    params.variableNames = variableNames;
     let res = await beginBuildModel(params);
     if (res.status?.code === successCode) {
       setLoading(false);
       message.success(res.status?.desc || '成功');
-      setFormVal(formVal);
-      setPageType('finish');
-      setTagStatus('success');
+      // setFormVal(formVal);
+      setStepType(2);
+      // setPageType('finish');
+      // setTagStatus('success');
     } else {
       setLoading(false);
       message.error(res.status?.desc || '失败');
-      setPageType('');
-      setTagStatus('');
+      // setPageType('');
+      // setTagStatus('');
     }
   };
 
@@ -89,17 +91,13 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     let res = await rebuildModel(params);
     if (res.status?.code === successCode) {
       setLoading(false);
-      setPageType('');
-      // setRulist(ruleList)
-      setTagStatus('processing');
-      setFormVal(formVal);
-      form.setFieldsValue(formVal);
+      setStepType(1);
+      form.setFieldsValue(res.result);
+      let temp: any[] = res.result?.variableNames?.split(',');
+      setRulist(temp);
     } else {
       setLoading(false);
       message.error(res.status?.desc || '失败');
-      setPageType('');
-      setTagStatus('');
-      form.setFieldsValue(formVal);
     }
   };
 
@@ -121,32 +119,13 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
-        模型构建 <Tag color={tagStatus}>{STATUS[tagStatus]}</Tag>
+        <span>模型构建</span>
+        <TitleStatus index={8} />
       </div>
-      <Condition r-if={pageType !== ''}>
-        <CommonPage
-          loadingContent={
-            <>
-              <div className={styles['title']}>建模中</div>
-              <div className={styles['desc']}>请稍候，待建模完成后可开始下一个流程</div>
-            </>
-          }
-          sucessContent={
-            <>
-              <div className={styles['title']}>建模完成</div>
-              <div className={styles['desc']} />
-            </>
-          }
-          errorContent={
-            <>
-              <div className={styles['title']}>建模失败</div>
-              <div className={styles['desc']}>失败原因：描述描述描述描述描述描述描述描述描述</div>
-            </>
-          }
-          pageType={pageType}
-        />
+      <Condition r-if={stepType === 2}>
+        <PageStatus onClickReSelect={rebuild} nextFlow={nextFlow} />
       </Condition>
-      <Condition r-if={pageType == ''}>
+      <Condition r-if={stepType !== 2}>
         <Form
           form={form}
           layout="vertical"
@@ -173,68 +152,14 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择建模方法' }]}
               >
                 <Select placeholder="请选择建模方法">
-                  <Select.Option key={'评分卡'} value={'评分卡'}>
+                  <Select.Option key={'scoreCard'} value={'scoreCard'}>
                     评分卡
                   </Select.Option>
                 </Select>
               </Form.Item>
             </Col>
           </Row>
-          <div style={{ marginTop: '20px' }}>
-            <b>LogisticRegression参数</b>
-          </div>
-          <Row gutter={gutter}>
-            <Col span={6}>
-              <Form.Item
-                label="惩罚项"
-                name="penalty"
-                rules={[{ required: true, message: '请选择惩罚项' }]}
-              >
-                <Select placeholder="请选择建模方法">
-                  <Select.Option key={11} value={11}>
-                    11
-                  </Select.Option>
-                  <Select.Option key={12} value={12}>
-                    12
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label="solver"
-                name="solver"
-                rules={[{ required: true, message: '请选择solver' }]}
-              >
-                <Select placeholder="请选择solver">
-                  <Select.Option key={'solver1'} value={'solver1'}>
-                    solver1
-                  </Select.Option>
-                  <Select.Option key={'solver2'} value={'solver2'}>
-                    solver2
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label="正则化系数"
-                name="c"
-                rules={[{ required: true, message: '请输入正则化系数' }]}
-              >
-                <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label="迭代次数"
-                name="lrMaxIter"
-                rules={[{ required: true, message: '请输入迭代次数' }]}
-              >
-                <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
+
           <div style={{ marginTop: '20px' }}>
             <b>变量分箱</b>
           </div>
@@ -258,7 +183,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={6}>
               <Form.Item
                 label="箱数"
-                name="boxNum"
+                name="varBoxNum"
                 rules={[{ required: true, message: '请输入箱数' }]}
               >
                 <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
@@ -287,15 +212,15 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择' }]}
               >
                 <Select>
-                  <Select.Option value={'是'}>是</Select.Option>
-                  <Select.Option value={'否'}>否</Select.Option>
+                  <Select.Option value={'1'}>是</Select.Option>
+                  <Select.Option value={'0'}>否</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
                 label="选择变量"
-                name="variableNames"
+                name="variables"
                 rules={[{ required: false, message: '请选择' }]}
               >
                 <div className={styles.listBox}>
@@ -309,7 +234,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                           handleClose(item);
                         }}
                       >
-                        <span>{item.name}</span>
+                        <span>{item}</span>
                       </Tag>
                     );
                   })}
@@ -322,12 +247,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={24}>
               <Form.Item name="isStepwise" label="逐步回归">
                 <Radio.Group>
-                  <Radio value="是">是</Radio>
-                  <Radio value="否">否</Radio>
+                  <Radio value="1">是</Radio>
+                  <Radio value="0">否</Radio>
                 </Radio.Group>
               </Form.Item>
             </Col>
-            <Condition r-if={isStepwise === '是'}>
+            <Condition r-if={isStepwise === '1'}>
               <Col span={6}>
                 <Form.Item
                   name="estimator"
@@ -408,12 +333,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={24}>
               <Form.Item name="isVif" label="多重共线性检验">
                 <Radio.Group>
-                  <Radio value="是">是</Radio>
-                  <Radio value="否">否</Radio>
+                  <Radio value="1">是</Radio>
+                  <Radio value="0">否</Radio>
                 </Radio.Group>
               </Form.Item>
             </Col>
-            <Condition r-if={isVif === '是'}>
+            <Condition r-if={isVif === '1'}>
               <Col span={3}>
                 <Form.Item name="vifOperator" label="VIF阈值设置">
                   <Select>
@@ -446,6 +371,61 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 </span>
               </Col>
             </Condition>
+          </Row>
+          <div style={{ marginTop: '20px' }}>
+            <b>LogisticRegression参数</b>
+          </div>
+          <Row gutter={gutter}>
+            <Col span={6}>
+              <Form.Item
+                label="惩罚项"
+                name="penalty"
+                rules={[{ required: true, message: '请选择惩罚项' }]}
+              >
+                <Select placeholder="请选择建模方法">
+                  <Select.Option key={11} value={11}>
+                    11
+                  </Select.Option>
+                  <Select.Option key={12} value={12}>
+                    12
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label="solver"
+                name="solver"
+                rules={[{ required: true, message: '请选择solver' }]}
+              >
+                <Select placeholder="请选择solver">
+                  <Select.Option key={'solver1'} value={'solver1'}>
+                    solver1
+                  </Select.Option>
+                  <Select.Option key={'solver2'} value={'solver2'}>
+                    solver2
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label="正则化系数"
+                name="lrc"
+                rules={[{ required: true, message: '请输入正则化系数' }]}
+              >
+                <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label="迭代次数"
+                name="lrMaxIter"
+                rules={[{ required: true, message: '请输入迭代次数' }]}
+              >
+                <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
           </Row>
           <div style={{ marginTop: '20px' }}>
             <b>标准评分卡</b>
@@ -540,26 +520,9 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             </Condition>
           </Row>
         </Form>
-      </Condition>
-      <Condition r-if={pageType == ''}>
-        <NextStepButton onClick={beginBuild} text={'开始建模'} loading={loading} />
-      </Condition>
-      <Condition r-if={pageType == 'error'}>
-        <NextStepButton onClick={rebuild} text={'重新建模'} />
-      </Condition>
-      <Condition r-if={pageType == 'finish'}>
-        <NextStepButton
-          btnNode={
-            <Space>
-              <Button onClick={rebuild} size="large">
-                重新建模
-              </Button>
-              <Button onClick={nextFlow} size="large" type="primary">
-                下一流程
-              </Button>
-            </Space>
-          }
-        />
+        <Condition r-if={pageType == ''}>
+          <NextStepButton onClick={beginBuild} text={'开始建模'} loading={loading} />
+        </Condition>
       </Condition>
     </div>
   );

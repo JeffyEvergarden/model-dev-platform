@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Input, DatePicker, Row, Col, Select } from 'antd';
+import { Form, Input, DatePicker, Button, Select, Space } from 'antd';
 import styles from './style.less';
 import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
-import { useSampleUploadAwaitModel } from './model';
+import { useSampleUploadAwaitModel, useSample } from './model';
 
-import { tabSelectColumns } from './model/config';
+import { tabSelectColumns, tabSelectColumnsTwo } from './model/config';
+import { getModelStepDetail } from '../../model/api';
 
 const FormItem = Form.Item;
 
@@ -19,21 +20,33 @@ const { Option } = Select;
 // 首页
 const StepTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, extra } = props;
+  const { processId, form, onNext, tabType, onClickReSelect, nextFlow } = props;
 
   const [_form] = Form.useForm(form);
 
   const { processType, awaitResult, startLoop } = useSampleUploadAwaitModel();
+  const { getCurrentDetailRequest } = useSample();
 
+  const [detailInfo, setDetailInfo] = useState<any>({});
   const onClick = () => {
     onNext?.();
   };
 
   useEffect(() => {
-    if (processId) {
-      startLoop({ processId }, 4);
-    }
-  }, [processId]);
+    // if (processId) {
+    startLoop({ processId }, 4);
+    // }
+    getCurrentDetail();
+  }, [tabType]);
+
+  const getCurrentDetail = async () => {
+    let params = {
+      itmModelRegisCode: '',
+      stage: '2',
+    };
+    let res = await getCurrentDetailRequest(params);
+    setDetailInfo(res?.result?.sampleParam);
+  };
 
   return (
     <div>
@@ -47,29 +60,41 @@ const StepTwo: React.FC<any> = (props: any) => {
         sucessContent={
           <>
             <div className={styles['title']}>样本选取成功</div>
-            <div className={styles['desc']}></div>
+            <div className={styles['desc']} />
           </>
         }
         errorContent={
           <>
             <div className={styles['title']}>样本选取失败</div>
-            <div className={styles['desc']}></div>
+            <div className={styles['desc']} />
           </>
         }
         pageType={processType}
-        columns={tabSelectColumns}
-        detailInfo={{
-          isImport: '是',
-          rangeDate: '20200113 - 20221130',
-          dimension: '进件层',
-          productBigClass: '全部',
-          channelMidClass: '全部',
-          channelSmClass: '全部',
-          groupModelTag: '字段名＜衡量值',
-        }}
+        columns={tabType == '0' ? tabSelectColumns : tabType == '1' ? tabSelectColumnsTwo : []}
+        detailInfo={detailInfo}
       />
-      <Condition r-if={processType === 'finish'}>
-        <NextStepButton />
+      <Condition r-if={processType !== 'loading'}>
+        <NextStepButton
+          btnNode={
+            processType == 'error' ? (
+              <Space>
+                <Button size="large" onClick={onClickReSelect}>
+                  重新选取
+                </Button>
+              </Space>
+            ) : (
+              <Space>
+                <Button size="large" onClick={onClickReSelect}>
+                  重新选取
+                </Button>
+                <Button size="large" onClick={nextFlow} type="primary">
+                  下一流程
+                </Button>
+              </Space>
+            )
+          }
+          onClick={onClick}
+        />
       </Condition>
     </div>
   );

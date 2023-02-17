@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker, Row, Col, Select } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Select, InputNumber } from 'antd';
 import styles from '../style.less';
 import NextStepButton from '../../components/nextstep-button';
-import { useState } from 'react';
-import Condition from '@/components/Condition';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 
@@ -24,43 +23,95 @@ const demoList: any[] = [
   },
 ];
 
+const BUSINESSTYPE: any[] = [
+  {
+    value: 'SX',
+    label: '进件层',
+  },
+];
+
 // 首页
 const StepOne: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { form, onNext } = props;
+  const { form, onNext, editData } = props;
 
   const [_form] = Form.useForm(form);
 
-  const onClick = () => {
-    onNext?.();
+  useEffect(() => {
+    let start = editData?.startTime ? moment(editData.startTime) : null;
+    let end = editData?.endTime ? moment(editData.endTime) : null;
+    form.setFieldsValue({
+      importType: editData?.importType,
+      date: [start, end],
+      businessType: editData?.businessType,
+      prodCat: getFn(editData?.prodCat),
+      channelCatM: getFn(editData?.channelCatM),
+      channelCatS: getFn(editData?.channelCatS),
+      custCatS: getFn(editData?.custCatS),
+      custCat: getFn(editData?.custCat),
+      processName: getFn(editData?.processName),
+
+      featureCode: editData?.featureLabel?.featureCode,
+      operator: editData?.featureLabel?.operator,
+      params: editData?.featureLabel?.params,
+    });
+  }, [editData]);
+
+  const getFn = (str: string) => {
+    let tempArr: any = [];
+    if (!str) {
+      tempArr = [];
+    }
+    tempArr = str?.split(',');
+    return tempArr;
+  };
+
+  const onClick = async () => {
+    let val = await form.validateFields();
+    if (val.date) {
+      val.startTime = val.date?.[0]?.format('YYYY-MM-DD');
+      val.endTime = val.date?.[1]?.format('YYYY-MM-DD');
+      delete val.date;
+    }
+    let tempArr: any = [
+      'prodCat',
+      'channelCatM',
+      'channelCatS',
+      'custCat',
+      'custCatS',
+      'processName',
+    ];
+    Object.keys(val)?.forEach((item: any) => {
+      if (tempArr.includes(item)) {
+        val[item] = val[item]?.join(',');
+      }
+    });
+    onNext?.(val);
   };
 
   return (
     <div>
       <Form form={form} layout="vertical" labelAlign="right">
         <div className={styles['antd-form']}>
-          <Row gutter={24}>
+          <Row gutter={12}>
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择日期' }]}
                 name="date"
                 label="选择日期"
               >
-                <RangePicker
-                  placeholder={['开始日期', '结束日期']}
-                  style={{ minWidth: '300px' }}
-                ></RangePicker>
+                <RangePicker placeholder={['开始日期', '结束日期']} style={{ width: '100%' }} />
               </FormItem>
             </Col>
 
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择数据维度' }]}
-                name="column1"
+                name="businessType"
                 label="数据维度"
               >
                 <Select placeholder="请选择数据维度" allowClear>
-                  {demoList.map((item: any, index: number) => {
+                  {BUSINESSTYPE.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
                         {item.label}
@@ -74,10 +125,10 @@ const StepOne: React.FC<any> = (props: any) => {
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择产品大类' }]}
-                name="column2"
+                name="prodCat"
                 label="产品大类"
               >
-                <Select placeholder="请选择产品大类" allowClear>
+                <Select placeholder="请选择产品大类" allowClear mode="multiple">
                   {demoList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -92,10 +143,10 @@ const StepOne: React.FC<any> = (props: any) => {
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择渠道中类' }]}
-                name="column2"
+                name="channelCatM"
                 label="渠道中类"
               >
-                <Select placeholder="请选择渠道中类" allowClear>
+                <Select placeholder="请选择渠道中类" allowClear mode="multiple">
                   {demoList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -110,10 +161,10 @@ const StepOne: React.FC<any> = (props: any) => {
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择渠道小类' }]}
-                name="column3"
+                name="channelCatS"
                 label="渠道小类"
               >
-                <Select placeholder="请选择渠道小类" allowClear>
+                <Select placeholder="请选择渠道小类" allowClear mode="multiple">
                   {demoList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -128,10 +179,10 @@ const StepOne: React.FC<any> = (props: any) => {
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择客群大类' }]}
-                name="column4"
+                name="custCat"
                 label="客群大类"
               >
-                <Select placeholder="请选择客群大类" allowClear>
+                <Select placeholder="请选择客群大类" allowClear mode="multiple">
                   {demoList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -146,10 +197,10 @@ const StepOne: React.FC<any> = (props: any) => {
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择客群小类' }]}
-                name="column5"
+                name="custCatS"
                 label="客群小类"
               >
-                <Select placeholder="请选择客群小类" allowClear>
+                <Select placeholder="请选择客群小类" allowClear mode="multiple">
                   {demoList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -164,10 +215,10 @@ const StepOne: React.FC<any> = (props: any) => {
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择编排调度' }]}
-                name="column6"
+                name="processName"
                 label="编排调度"
               >
-                <Select placeholder="请选择编排调度" allowClear>
+                <Select placeholder="请选择编排调度" allowClear mode="multiple">
                   {demoList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -178,15 +229,58 @@ const StepOne: React.FC<any> = (props: any) => {
                 </Select>
               </FormItem>
             </Col>
+            <Col span={3}>
+              <FormItem
+                rules={[{ required: false, message: '请选择' }]}
+                name="featureCode"
+                label="分群建模标签"
+              >
+                <Select placeholder="请选择" allowClear>
+                  {demoList.map((item: any, index: number) => {
+                    return (
+                      <Option value={item.value} key={index}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={3}>
+              <span className={styles.labelSpan}>
+                <FormItem
+                  rules={[{ required: false, message: '请选择' }]}
+                  name="operator"
+                  label="操作符"
+                >
+                  <Select placeholder="请选择" allowClear>
+                    {demoList.map((item: any, index: number) => {
+                      return (
+                        <Option value={item.value} key={index}>
+                          {item.label}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </FormItem>
+              </span>
+            </Col>
+            <Col span={2}>
+              <span className={styles.labelSpan}>
+                <FormItem
+                  rules={[{ required: false, message: '请输入' }]}
+                  name="params"
+                  label="参数值"
+                >
+                  <Input placeholder="衡量值" />
+                </FormItem>
+              </span>
+            </Col>
           </Row>
-
-          <FormItem name="desc1" label="自定义sql条件">
-            <TextArea rows={4} placeholder="请输入自定义sql条件" maxLength={200} />
-          </FormItem>
         </div>
       </Form>
 
-      <NextStepButton onClick={onClick} />
+      <NextStepButton onClick={onClick} text={'提交'} />
     </div>
   );
 };

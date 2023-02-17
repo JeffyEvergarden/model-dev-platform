@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Condition from '@/components/Condition';
 import TabOne from './tab-one';
 import TabTwo from './tab-two';
+import TitleStatus from '../../components/title-status';
 
 const FormItem = Form.Item;
 
@@ -32,7 +33,10 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>策略回溯</div>
+      <div className={styles['step-title']}>
+        <span>策略回溯</span>
+        <TitleStatus index={3}></TitleStatus>
+      </div>
 
       {/* 步骤一 */}
       <Condition r-if={stepType === 1}>

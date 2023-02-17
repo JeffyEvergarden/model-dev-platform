@@ -4,6 +4,8 @@ import styles from '../style.less';
 import ProTable from '@ant-design/pro-table';
 import CustomerFormBox from './component/customerFormBox';
 import NextStepButton from '../../components/nextstep-button';
+import TitleStatus from '../../components/title-status';
+
 import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
@@ -332,7 +334,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>前期分析</div>
+      <div className={styles['step-title']}>
+        <span>前期分析</span>
+        <TitleStatus index={4}></TitleStatus>
+      </div>
       <p className={styles.commonTitle}>VINTAGE分析</p>
       <div className={styles.commonTable}>
         <ProTable<any>

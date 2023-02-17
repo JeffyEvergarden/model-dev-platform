@@ -342,7 +342,14 @@ const getModelStructureResult = (req: any, res: any) => {
         },
       ],
       //变量相关性列表
-      variableRelevanceList: [],
+      variableRelevanceData: {
+        rowList: ['fea1', 'fea2', 'fea3'], //行标题
+        correlationList: [
+          { name: 'fea1', fea1: '1.0', fea2: '0.5', fea3: '0.45' },
+          { name: 'fea2', fea1: '0.5', fea2: '1.0', fea3: '0.6' },
+          { name: 'fea3', fea1: '0.45', fea2: '0.6', fea3: '1.0' },
+        ],
+      },
       //评分卡-计算逻辑
       scoreCardLogicList: [
         {

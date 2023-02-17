@@ -7,6 +7,7 @@ import Condition from '@/components/Condition';
 import { formatePercent } from '../utils/util';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import NextStepButton from '../../components/nextstep-button';
+import TitleStatus from '../../components/title-status';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -160,7 +161,10 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>样本定义</div>
+      <div className={styles['step-title']}>
+        <span>样本定义</span>
+        <TitleStatus index={5}></TitleStatus>
+      </div>
 
       <div className={styles['step-title_sec']}>按月份分布</div>
 
