@@ -84,5 +84,6 @@ export default {
   // 样本定义
   [`GET ${baseUrl}/modelDev/featurePrepare/getFeatureCatTree`]: getTreeList,
   [`POST ${baseUrl}/modelDev/featurePrepare/findFeatureByCategoryName`]: getVarList,
+  [`POST ${baseUrl}/modelDev/featurePrepare/findFeature`]: getVarList,
   [`POST ${baseUrl}/modelDev/featurePrepare/submit`]: getVarList,
 };

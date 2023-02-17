@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useState, Fragment } from 'react';
+import React, { useEffect, useRef, useMemo, useState, Fragment, Children } from 'react';
 import { Form, Input, DatePicker, Divider, Select, Button, Space } from 'antd';
 import styles from '../style.less';
 import ProTable from '@ant-design/pro-table';
@@ -7,6 +7,7 @@ import NextStepButton from '../../components/nextstep-button';
 import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
+import Item from 'antd/lib/list/Item';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -263,10 +264,28 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   const getRateListArr = async (payLoad: any) => {
     let res = await getRateList(payLoad);
-    if (res.resultCode === config.successCode) {
-      let data: any[] = res.data || [];
-      let columns: any[] = res.columns || [];
-      let total = res.total || 0;
+    if (res?.status?.code === config.successCode) {
+      let data: any[] =
+        res?.result?.map((item: any) => ({ ...item, children: item?.monthList })) || [];
+      let columns: any[] = [
+        {
+          key: 'name',
+          label: '本期状态',
+        },
+        {
+          key: 'M0',
+          label: 'M0',
+        },
+        {
+          key: 'M1',
+          label: 'M1',
+        },
+        {
+          key: 'M2',
+          label: 'M2',
+        },
+      ];
+      let total = data?.length || 0;
       columns = columns.map((item: any) => {
         return {
           ...item,

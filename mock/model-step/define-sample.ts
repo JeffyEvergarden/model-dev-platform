@@ -34,73 +34,52 @@ const getWaitResult = (req: any, res: any) => {
 };
 
 // 策略回溯
-
-const getDefineSampleList = (req: any, res: any) => {
+const monthDistributionList = (req: any, res: any) => {
+  let list = new Array(11).fill(1).map((item: any, index: number) => {
+    return {
+      advMonth: '202302',
+      goodSample: '10',
+      badSample: '1',
+      total: '11',
+      badRate: '1%',
+      midSample: '5',
+      midRate: '50%',
+    };
+  });
   res.json({
-    resultCode: successCode,
-    total: 6,
-    data: [
-      {
-        month: '2022-02',
-        goodNum: 4000,
-        badNum: 1000,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-03',
-        goodNum: 4000,
-        badNum: 1000,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-04',
-        goodNum: 4000,
-        badNum: 1000,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-05',
-        goodNum: 4000,
-        badNum: 1000,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-06',
-        goodNum: 4000,
-        badNum: 1000,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-      {
-        month: '2022-07',
-        goodNum: 4000,
-        badNum: 1000,
-        total: 5000,
-        badPercent: 0.3,
-        midNum: 2000,
-        midPercent: 0.3333,
-      },
-    ],
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    current: 1,
+    pageSize: 10,
+    totalSize: 21,
+    result: list,
+  });
+};
+
+const totalDistributionList = (req: any, res: any) => {
+  let list = new Array(11).fill(1).map((item: any, index: number) => {
+    return {
+      sampleType: 'x',
+      goodSample: '10',
+      badSample: '1',
+      total: '11',
+      badRate: '1%',
+    };
+  });
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: list,
   });
 };
 
 // 菜单管理相关
 export default {
   // 样本定义
-  [`GET ${baseUrl}/modelStep/defineSample/list`]: getDefineSampleList,
-  [`POST ${baseUrl}/modelStep/defineSample/resultlist`]: getDefineSampleList,
+  [`POST ${baseUrl}/modelDev/sampleDefinition/monthDistribution`]: monthDistributionList,
+  [`POST ${baseUrl}/modelDev/sampleDefinition/totalDistribution`]: totalDistributionList,
 };

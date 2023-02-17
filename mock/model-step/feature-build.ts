@@ -86,18 +86,18 @@ const getVariableListForBinning = (req: any, res: any) => {
     return {
       variable: 'name' + index,
       variableName: '中文name' + index,
-      variableType: '',
-      boxGoup: '',
-      trainBoxRate: '',
-      validBoxRate: '',
-      trainBadRate: '',
-      validBadRate: '',
-      trainKs: '',
-      validKs: '',
-      trainIv: '',
-      validIv: '',
-      trainPsi: '',
-      validPsi: '',
+      variableType: '1',
+      boxGoup: '2',
+      trainBoxRate: '10',
+      validBoxRate: '20',
+      trainBadRate: '30',
+      validBadRate: '40',
+      trainKs: '5',
+      validKs: '2',
+      trainIv: '0',
+      validIv: '1',
+      trainPsi: '3',
+      validPsi: '4',
     };
   });
 
@@ -114,9 +114,9 @@ const getVariableListForBinning = (req: any, res: any) => {
 
 export default {
   // 缺失率
-  [`GET ${baseUrl}/modelMange/featureEngineering/getFillFeatureMetrics`]: getLostList,
-  [`GET ${baseUrl}/modelMange/featureEngineering/getVariableMetricsListForBinning`]: getVarList,
+  [`POST ${baseUrl}/modelMange/featureEngineering/getFillFeatureMetrics`]: getLostList,
+  [`POST ${baseUrl}/modelMange/featureEngineering/getVariableMetricsListForBinning`]: getVarList,
   [`GET ${baseUrl}/modelMange/featureEngineering/getVariableTypeList`]: getVariableTypeList,
-  [`GET ${baseUrl}/modelMange/featureEngineering/getVariableListForBinning`]:
+  [`POST ${baseUrl}/modelMange/featureEngineering/getVariableListForBinning`]:
     getVariableListForBinning,
 };

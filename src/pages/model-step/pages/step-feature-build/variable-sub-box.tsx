@@ -53,7 +53,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     }
   };
 
-  const selectVar = (type?: any) => {
+  const selectVar = () => {
     console.log(form.getFieldsValue());
     let formData = form.getFieldsValue();
     let selectList = {
@@ -64,7 +64,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     };
     console.log(selectList);
 
-    varRef?.current?.getVarList(selectList, type);
+    varRef?.current?.getVarList(selectList);
   };
 
   return (
@@ -106,7 +106,13 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             );
           })}
           <div style={{ flex: 1 }}>
-            <Button style={{ float: 'right' }} type="primary" onClick={selectVar}>
+            <Button
+              style={{ float: 'right' }}
+              type="primary"
+              onClick={() => {
+                selectVar();
+              }}
+            >
               选择变量
             </Button>
           </div>

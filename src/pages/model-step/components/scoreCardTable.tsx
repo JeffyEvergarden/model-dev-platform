@@ -21,7 +21,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '中文含义',
+      title: pageType == 'compareAndReport' ? '中文含义' : '中文名称',
       dataIndex: 'variableName',
       render: (t: any, r: any, i: any) => {
         return {
@@ -69,6 +69,7 @@ export default (props: any) => {
     {
       title: '分数',
       dataIndex: 'boxGroupScore',
+      hideInTable: pageType != 'compareAndReport',
       render: (t: any, r: any, i: any) => {
         return <span className={styles.cellSty}>{r.boxGroupScore}</span>;
       },
@@ -150,43 +151,51 @@ export default (props: any) => {
       },
     },
     {
-      title: '训练ks_max',
-      dataIndex: 'divider1',
+      title: '训练集KS',
+      dataIndex: 'trainKs',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
+        return <span className={styles.cellSty}>{r.trainKs}</span>;
       },
     },
     {
-      title: '训练iv_sum',
-      dataIndex: 'divider2',
+      title: '验证集KS',
+      dataIndex: 'validKs',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
+        return <span className={styles.cellSty}>{r.validKs}</span>;
       },
     },
     {
-      title: '验证ks_max',
-      dataIndex: 'divider3',
+      title: '训练集IV',
+      dataIndex: 'trainIv',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
+        return <span className={styles.cellSty}>{r.trainIv}</span>;
       },
     },
     {
-      title: '验证iv_sum',
-      dataIndex: 'divider4',
+      title: '验证集IV',
+      dataIndex: 'trainIv',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
+        return <span className={styles.cellSty}>{r.trainIv}</span>;
       },
     },
     {
-      title: 'psi_sum',
-      dataIndex: 'divider5',
+      title: '训练集PSI',
+      dataIndex: 'validIv',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.divider}</span>;
+        return <span className={styles.cellSty}>{r.validIv}</span>;
+      },
+    },
+    {
+      title: '验证集PSI',
+      dataIndex: 'validPsi',
+      hideInTable: pageType == 'compareAndReport',
+      render: (t: any, r: any, i: any) => {
+        return <span className={styles.cellSty}>{r.validPsi}</span>;
       },
     },
   ];

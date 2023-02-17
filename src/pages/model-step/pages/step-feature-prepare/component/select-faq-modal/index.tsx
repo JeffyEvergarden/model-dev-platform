@@ -25,17 +25,27 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const info = { id: '100' };
 
-  const { loading, treeList, varList, totalSize, getTreeList, getVarInfo } = useVarSelectModal();
+  const {
+    loading,
+    treeList,
+    varList,
+    totalSize,
+    listType,
+    getTreeList,
+    getVarInfo,
+    getKeyVarInfo,
+  } = useVarSelectModal();
 
-  const [classType, setClassType] = useState<string>('');
+  const [classType, setClassType] = useState<string>(''); //选中树
 
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
   const [current1, setCurrent1] = useState<number>(1);
 
+  const [searchMode, setSearchMode] = useState<any>('feature');
+
   // 选中key值
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [selectRow, setSelectRow] = useState<any>([]);
 
   const columns1: any[] = [
     // 问题列表-列
@@ -67,40 +77,66 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     setCurrent1(val);
     // if (classType) {
-    getVarInfo({
-      page: val || 1,
-      pageSize: 10,
-    });
+    if (listType == 'search') {
+      getKeyVarInfo({
+        page: val || 1,
+        pageSize: 10,
+        keyword: searchText1,
+        searchMode: searchMode,
+      });
+    } else {
+      getVarInfo({
+        page: val || 1,
+        pageSize: 10,
+        categoryName: val[0],
+        searchType: '',
+      });
+    }
+
     // } else {
     // setVarList([]);
     // }
   };
 
-  const clearSelect = () => {
+  const clearSelect = async () => {
+    let res: any = await getVarInfo({
+      categoryName: classType,
+      searchType: 'all',
+    });
+
+    let varList: any = res?.data || [];
+
     let arr = selectedRowKeys?.filter((item: any) =>
-      varList?.find((val) => val.id == item.recommendId),
+      varList?.every((val: any) => val.featureCode == item),
     );
-    let arr2 = selectList?.filter((item) => varList?.find((val) => val.id == item));
+    let arr2 = selectList?.filter((item) =>
+      varList?.every((val: any) => val.featureCode == item.featureCode),
+    );
+
     setSelectList(arr2);
-    setSelectedRowKeys(arr);
+    setSelectedRowKeys([...arr]);
   };
 
-  const selectAll = () => {
-    let clearArr = selectedRowKeys?.filter((item: any) =>
-      varList?.find((val) => val.id == item.recommendId),
-    );
-    let clearArr2 = selectList?.filter((item) => varList?.find((val) => val.id == item));
-    let arr = varList.map((item) => {
-      return item?.id;
-    });
-    let arr2 = varList.map((item) => {
-      return {
-        recommendId: item.id,
-        recommendName: item.question,
-        recommendType: 1,
-      };
+  const selectAll = async () => {
+    console.log(classType);
+    let res: any = await getVarInfo({
+      categoryName: classType,
+      searchType: 'all',
     });
 
+    let varList: any = res?.data || [];
+
+    let clearArr = selectedRowKeys?.filter((item: any) =>
+      varList?.every((val: any) => val.featureCode == item),
+    );
+    let clearArr2 = selectList?.filter((item) =>
+      varList?.every((val: any) => val.featureCode == item.featureCode),
+    );
+
+    let arr = varList.map((item: any) => {
+      return item?.featureCode;
+    });
+    let arr2 = varList;
     setSelectList([...clearArr2, ...arr2]);
     setSelectedRowKeys([...clearArr, ...arr]);
   };
@@ -119,9 +155,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
       return;
     }
     setCurrent1(1);
-    getVarInfo({
+    getKeyVarInfo({
       page: 1,
       pageSize: 10,
+      keyword: searchText1,
+      searchMode: searchMode,
     });
   };
 
@@ -132,10 +170,13 @@ const SelectorModal: React.FC<any> = (props: any) => {
       return;
     }
     setClassType(val[0]);
+    setSearchText1('');
     setCurrent1(1);
     getVarInfo({
       page: 1,
       pageSize: 10,
+      categoryName: val[0],
+      searchType: '',
     });
   };
 
@@ -144,9 +185,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
     preserveSelectedRowKeys: true,
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       console.log(selectedRowKeys, selectedRows);
-
       setSelectedRowKeys(selectedRowKeys);
-      setSelectRow(selectedRows);
       setSelectList(selectedRows);
     },
   };
@@ -186,6 +225,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
     getVarInfo({
       page: 1,
       pageSize: 10,
+      categoryName: classType,
+      searchType: '',
     });
   }, []);
 
@@ -258,8 +299,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
             <div className={style['zy-row_end']}>
               <Input.Group compact>
                 <Select
-                  defaultValue={'feature'}
-                  // onChange={}
+                  onChange={setSearchMode}
+                  value={searchMode}
                   style={{ backgroundColor: '#fff' }}
                 >
                   <Option value={'feature'}>变量</Option>
@@ -280,16 +321,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
             <div className={style['table-box']}>
               <Table
                 rowSelection={{
-                  // type: type === 'radio' ? 'radio' : 'checkbox',
                   ...rowSelection,
                   selectedRowKeys: selectedRowKeys,
                   hideSelectAll: false,
                 }}
-                // expandable={{
-                //   expandedRowRender: expendRender,
-                //   // 可扩展
-                //   rowExpandable: (record: any) => record?.answerList?.length > 0,
-                // }}
                 size="small"
                 pagination={{
                   current: current1,

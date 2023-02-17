@@ -38,91 +38,18 @@ const getWaitResult = (req: any, res: any) => {
 const getList = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    total: 6,
-    columns: [
-      {
-        key: 'period_1',
-        label: 'M1',
-      },
-      {
-        key: 'period_2',
-        label: 'M2',
-      },
-      {
-        key: 'period_3',
-        label: 'M3',
-      },
-      {
-        key: 'period_4',
-        label: 'M4',
-      },
-      {
-        key: 'period_5',
-        label: 'M5',
-      },
-    ],
-    data: [
-      {
-        periodName: '1期',
-        period_1: 1,
-        period_2: 2,
-        period_3: 3,
-        period_4: 1,
-        period_5: 2,
-        period_6: 3,
-        total: 5000,
-      },
-      {
-        periodName: '2期',
-        period_1: 1,
-        period_2: 2,
-        period_3: 3,
-        period_4: 1,
-        period_5: 2,
-        period_6: 3,
-        total: 5000,
-      },
-      {
-        periodName: '3期',
-        period_1: 1,
-        period_2: 2,
-        period_3: 3,
-        period_4: 1,
-        period_5: 2,
-        period_6: 3,
-        total: 5000,
-      },
-      {
-        periodName: '4期',
-        period_1: 1,
-        period_2: 2,
-        period_3: 3,
-        period_4: 1,
-        period_5: 2,
-        period_6: 3,
-        total: 5000,
-      },
-      {
-        periodName: '5期',
-        period_1: 1,
-        period_2: 2,
-        period_3: 3,
-        period_4: 1,
-        period_5: 2,
-        period_6: 3,
-        total: 5000,
-      },
-      {
-        periodName: '6期',
-        period_1: 1,
-        period_2: 2,
-        period_3: 3,
-        period_4: 1,
-        period_5: 2,
-        period_6: 3,
-        total: 5000,
-      },
-    ],
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      head: ['期数', 'M1', 'M2', 'period_3', 'period_4'],
+      data: [
+        ['mob00', '6.25%', '6.25%', '6.25%', '6.25%'],
+        ['mob01', '6.25%', '6.25%', '6.25%', '6.25%'],
+        ['mob03', '6.25%', '6.25%', '6.25%', '6.25%'],
+      ],
+    },
   });
 };
 
@@ -136,11 +63,11 @@ const getConditionList = (req: any, res: any) => {
         key: '0-1',
         label: '循环',
         // 产品种类
-        children: [
+        monthList: [
           {
             key: '0-1-1',
             label: '循环-产品中类-01',
-            children: [
+            monthList: [
               {
                 key: '0-1-1-1',
                 label: '循环-产品小类1-01',
@@ -154,7 +81,7 @@ const getConditionList = (req: any, res: any) => {
           {
             key: '0-1-2',
             label: '循环-产品中类-02',
-            children: [
+            monthList: [
               {
                 key: '0-1-2-1',
                 label: '循环-产品小类2-01',
@@ -170,11 +97,11 @@ const getConditionList = (req: any, res: any) => {
       {
         key: '0-2',
         label: '非循环',
-        children: [
+        monthList: [
           {
             key: '0-2-1',
             label: '非循环-产品中类-01',
-            children: [
+            monthList: [
               {
                 key: '0-2-1-1',
                 label: '非循环-产品小类-01',
@@ -201,98 +128,102 @@ const getRateListRequest = (req: any, res: any) => {
     total: 6,
     columns: [
       {
-        key: 'periodName',
+        key: 'name',
         label: '本期状态',
       },
       {
-        key: 'period_0',
+        key: 'M0',
         label: 'M0',
       },
       {
-        key: 'period_1',
+        key: 'M1',
         label: 'M1',
       },
       {
-        key: 'period_2',
+        key: 'M2',
         label: 'M2',
       },
     ],
-    data: [
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: [
       {
         key: 1,
-        periodName: 'M0',
-        period_0: '98.45%',
-        period_1: '98.45%',
-        period_2: '98.45%',
-        children: [
+        name: 'M0',
+        M0: '98.45%',
+        M1: '98.45%',
+        M2: '98.45%',
+        monthList: [
           {
             key: '11',
-            periodName: '2021-12',
-            period_0: '98.45%',
-            period_1: '98.45%',
-            period_2: '98.45%',
-            children: [
+            name: '2021-12',
+            M0: '98.45%',
+            M1: '98.45%',
+            M2: '98.45%',
+            monthList: [
               {
                 key: '111',
-                periodName: '2021-12',
-                period_0: '98.45%',
-                period_1: '98.45%',
-                period_2: '98.45%',
+                name: '2021-12',
+                M0: '98.45%',
+                M1: '98.45%',
+                M2: '98.45%',
               },
             ],
           },
           {
             key: '12',
-            periodName: '2022-01',
-            period_0: '98.45%',
-            period_1: '98.45%',
-            period_2: '98.45%',
-            children: [
+            name: '2022-01',
+            M0: '98.45%',
+            M1: '98.45%',
+            M2: '98.45%',
+            monthList: [
               {
                 key: '111',
-                periodName: '2021-12',
-                period_0: '98.45%',
-                period_1: '98.45%',
-                period_2: '98.45%',
+                name: '2021-12',
+                M0: '98.45%',
+                M1: '98.45%',
+                M2: '98.45%',
               },
             ],
           },
           {
             key: '13',
-            periodName: '2022-02',
-            period_0: '98.45%',
-            period_1: '98.45%',
-            period_2: '98.45%',
+            name: '2022-02',
+            M0: '98.45%',
+            M1: '98.45%',
+            M2: '98.45%',
           },
         ],
       },
       {
         key: 2,
-        periodName: 'M1',
-        period_0: '33.98%',
-        period_1: '33.98%',
-        period_2: '33.98%',
-        children: [
+        name: 'M1',
+        M0: '33.98%',
+        M1: '33.98%',
+        M2: '33.98%',
+        monthList: [
           {
             key: '21',
-            periodName: '2021-12',
-            period_0: '98.45%',
-            period_1: '98.45%',
-            period_2: '98.45%',
+            name: '2021-12',
+            M0: '98.45%',
+            M1: '98.45%',
+            M2: '98.45%',
           },
           {
             key: '22',
-            periodName: '2022-01',
-            period_0: '98.45%',
-            period_1: '98.45%',
-            period_2: '98.45%',
+            name: '2022-01',
+            M0: '98.45%',
+            M1: '98.45%',
+            M2: '98.45%',
           },
           {
             key: '23',
-            periodName: '2022-02',
-            period_0: '98.45%',
-            period_1: '98.45%',
-            period_2: '98.45%',
+            name: '2022-02',
+            M0: '98.45%',
+            M1: '98.45%',
+            M2: '98.45%',
           },
         ],
       },
@@ -307,12 +238,25 @@ const getYaerMonthApi = (req: any, res: any) => {
   });
 };
 
+const getCustomerList = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    good: ['good1', 'good2', 'good3'],
+    bad: ['bad1', 'bad2'],
+    mid: ['mid1', 'mid2'],
+  });
+};
+
 // 菜单管理相关
 export default {
   // 样本定义
-  [`POST ${baseUrl}/modelStep/preAnalyze/vintage/list`]: getList,
+  [`POST ${baseUrl}/modeldev/preanalysis/vintageResult`]: getList,
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/list`]: getList,
-  [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getRateListRequest`]: getRateListRequest,
+  [`POST ${baseUrl}/modelDev/preanalysis/rollRateResult`]: getRateListRequest,
   [`GET ${baseUrl}/modelStep/preAnalyze/condition/list`]: getConditionList,
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getYaerMonthApi`]: getYaerMonthApi,
+  [`GET ${baseUrl}/modelDev/preanalysis/customerDefinitionOptions`]: getCustomerList,
 };
