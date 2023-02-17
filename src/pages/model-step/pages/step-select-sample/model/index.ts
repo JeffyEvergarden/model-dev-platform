@@ -168,6 +168,7 @@ export const useSampleUploadAwaitModel = () => {
   return {
     loading,
     processType,
+    desc,
     setProcessType,
     awaitResult,
     startLoop,
@@ -217,7 +218,6 @@ export const useSample = () => {
 
   return {
     loading,
-    desc,
     submitSampleRequest,
     getCurrentDetailRequest,
     confirmSunmitRequest,
