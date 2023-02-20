@@ -4,7 +4,7 @@ import { request } from 'umi';
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<any>('/model-dev-platform/me', {
+  return request<any>('/modelDev/user/me1', {
     method: 'GET',
     ...(options || {}),
   });
