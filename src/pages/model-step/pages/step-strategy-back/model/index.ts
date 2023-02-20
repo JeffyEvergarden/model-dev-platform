@@ -35,6 +35,7 @@ export const useStrategyBackModel = () => {
           processName: item,
         })) || [];
       setTableList(data);
+      return res?.result;
     }
   };
 
@@ -53,11 +54,10 @@ export const useStrategyBackUploadAwaitModel = () => {
   //提交
   const submitProcess = async (params: any) => {
     let res: any = await backTracking(params);
-    const { code = '', desc = '' } = res?.status || {};
-    if (code == successCode) {
+    if (res?.status?.code == successCode) {
       return true;
     } else {
-      message.error(desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };
@@ -65,11 +65,10 @@ export const useStrategyBackUploadAwaitModel = () => {
   //跳过
   const passBackStep = async (params: any) => {
     let res: any = await skipCurrentStage(params);
-    const { code = '', desc = '' } = res?.status || {};
-    if (code == successCode) {
+    if (res?.status?.code == successCode) {
       return true;
     } else {
-      message.error(desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };
@@ -77,11 +76,10 @@ export const useStrategyBackUploadAwaitModel = () => {
   //下一流程
   const nextFlow = async (params: any) => {
     let res: any = await nextStage(params);
-    const { code = '', desc = '' } = res?.status;
-    if (code == successCode) {
+    if (res?.status?.code == successCode) {
       return true;
     } else {
-      message.error(desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };

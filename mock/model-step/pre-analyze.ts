@@ -9,7 +9,10 @@ let time = 0;
 // 新增方式通用
 const normalDeal = (req: any, res: any) => {
   res.json({
-    resultCode: successCode,
+    status: {
+      code: successCode,
+      desc: '',
+    },
   });
 };
 // 提交过程 通用
@@ -259,4 +262,5 @@ export default {
   [`GET ${baseUrl}/modelStep/preAnalyze/condition/list`]: getConditionList,
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getYaerMonthApi`]: getYaerMonthApi,
   [`GET ${baseUrl}/modelDev/preanalysis/customerDefinitionOptions`]: getCustomerList,
+  [`POST ${baseUrl}/modeldev/preanalysis/nextStage`]: normalDeal,
 };
