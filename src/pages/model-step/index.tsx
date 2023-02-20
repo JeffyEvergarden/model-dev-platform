@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useModel, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import style from './style.less';
 import {
   config as configMap,
@@ -101,11 +102,11 @@ const Myjob: React.FC<any> = (props: any) => {
     history.push(route.path);
   };
 
-  const modelMapToValue = (cur: number, fs: number, i: number) => {
+  const modelMapToValue = (cur: number, fs: number, i: number, doneStepStatus: any) => {
     // 点击完成步骤之前的
     if (i <= fs) {
       // 选中菜单
-      if (cur === i) {
+      if (cur === i && fs === i) {
         return '进行中';
       }
       if (i === fs) {
@@ -125,7 +126,7 @@ const Myjob: React.FC<any> = (props: any) => {
   };
 
   // wait process finish error
-  const modelMapToStatus = (cur: number, fs: number, i: number) => {
+  const modelMapToStatus = (cur: number, fs: number, i: number, doneStepStatus: any) => {
     // 点击完成步骤之前的
     if (i <= fs) {
       // 选中菜单
@@ -140,7 +141,7 @@ const Myjob: React.FC<any> = (props: any) => {
           return 'process';
         }
       }
-      return 'process';
+      return 'finish';
     } else if (i > fs) {
       return 'wait';
     }
@@ -148,14 +149,22 @@ const Myjob: React.FC<any> = (props: any) => {
 
   const _stepItems = useMemo(() => {
     return STEP_ITEM_LIST.map((item: any, i: number) => {
-      return {
+      let obj: any = {
         title: item.title,
         name: item.name,
-        description: modelMapToValue(curStep, doneStep - 1, i),
-        status: modelMapToStatus(curStep, doneStep - 1, i),
+        description: modelMapToValue(curStep, doneStep - 1, i, doneStepStatus),
+        status: modelMapToStatus(curStep, doneStep - 1, i, doneStepStatus),
       };
+      if (
+        curStep === i &&
+        doneStep - 1 === i &&
+        (doneStepStatus === 'process' || doneStepStatus === 'wait')
+      ) {
+        obj.icon = <LoadingOutlined />;
+      }
+      return obj;
     });
-  }, [curStep, doneStep]);
+  }, [curStep, doneStep, doneStepStatus]);
 
   // 切换步骤
   const onChange = (val: any) => {
