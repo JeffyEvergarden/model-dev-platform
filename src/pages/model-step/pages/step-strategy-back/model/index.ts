@@ -48,6 +48,7 @@ export const useStrategyBackModel = () => {
 
 export const useStrategyBackUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
+  const [errorMsg, setErrorMsg] = useState<any>('');
 
   const fake = useRef<any>({});
 
@@ -94,6 +95,7 @@ export const useStrategyBackUploadAwaitModel = () => {
       setProcessType('loading');
       return 'loading';
     } else {
+      setErrorMsg(res?.status?.code || '未知错误');
       setProcessType('error');
       return 'error';
     }
@@ -122,6 +124,7 @@ export const useStrategyBackUploadAwaitModel = () => {
 
   return {
     processType,
+    errorMsg,
     awaitResult,
     startLoop,
     submitProcess,

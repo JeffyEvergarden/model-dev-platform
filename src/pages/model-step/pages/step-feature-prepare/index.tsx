@@ -14,9 +14,17 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
 
-  const onNext = () => {
+  const [selectList, setSelectList] = useState<any>([]);
+
+  const onNext = (list: any) => {
+    setSelectList(list || []);
     setStepType(2);
   };
+
+  const reset = () => {
+    setStepType(1);
+  };
+
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-box']}>
@@ -31,7 +39,12 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
       </Condition>
 
       <Condition r-if={stepType === 2}>
-        <TabTwo tabType={tabType} processId={processId}></TabTwo>
+        <TabTwo
+          tabType={tabType}
+          processId={processId}
+          selectList={selectList}
+          reset={reset}
+        ></TabTwo>
       </Condition>
     </div>
   );

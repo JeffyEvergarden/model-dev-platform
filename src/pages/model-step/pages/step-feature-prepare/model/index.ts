@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { useRef, useState } from 'react';
 import { successCode } from '../../step-model-compare/model';
 import { StageStatus } from '../../step-strategy-back/model';
-import { getDatabaseList, getInfo, getKeyVarList, getVarList, saveFeature } from './api';
+import { getDatabaseList, getInfo, getKeyVarList, getVarList, nextStage, saveFeature } from './api';
 export const useVarSelectModal = () => {
   // 列表
   const [treeList, setTreeList] = useState<any[]>([]);
@@ -94,17 +94,29 @@ export const useVarSelectModal = () => {
     }
   };
 
-  // //下一流程
-  // const nextFlow = async (params: any) => {
-  //   let res: any = await nextStage(params);
-  //   const { code = '', desc = '' } = res?.status;
-  //   if (code == successCode) {
-  //     return true;
-  //   } else {
-  //     message.error(desc);
-  //     return false;
-  //   }
-  // };
+  //下一流程
+  const nextFlow = async (params: any) => {
+    let res: any = await nextStage(params);
+    if (res?.status?.code == successCode) {
+      return true;
+    } else {
+      message.error(res?.status?.desc);
+      return false;
+    }
+  };
+
+  const getModelStageInfo = async (params: any) => {
+    setLoading(true);
+    let res: any = await getInfo({ ...params });
+    setLoading(false);
+    if (res?.status?.code === successCode) {
+      let data = res?.data || {};
+      return data?.featureVOList || [];
+    } else {
+      message.error(res?.status?.desc || '');
+      return;
+    }
+  };
 
   const awaitResult = async (params?: any) => {
     let res: any = await getInfo(params);
@@ -148,9 +160,11 @@ export const useVarSelectModal = () => {
     varList,
     totalSize,
     listType,
+    nextFlow,
     getTreeList,
     getVarInfo,
     getKeyVarInfo,
     submitFeature,
+    getModelStageInfo,
   };
 };
