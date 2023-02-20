@@ -24,11 +24,7 @@ const Myjob: React.FC = (props: any) => {
   const tableRef: any = useRef();
 
   const onTabClick = (it: any) => {
-    if (activeTabs === it) {
-      setActiveTabs(0);
-    } else {
-      setActiveTabs(it);
-    }
+    setActiveTabs(it);
   };
 
   useEffect(() => {

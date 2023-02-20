@@ -12,7 +12,7 @@ export async function getExportReportList(params?: { [key: string]: any }) {
 
 export async function getFillFeatureMetrics(params?: { [key: string]: any }) {
   return request(`${baseUrl}/modelMange/featureEngineering/getFillFeatureMetrics`, {
-    method: 'GET',
+    method: 'POST',
     params,
   });
 }
@@ -26,7 +26,7 @@ export async function getVariableTypeList(params?: { [key: string]: any }) {
 
 export async function getVariableMetricsListForBinning(params?: { [key: string]: any }) {
   return request(`${baseUrl}/modelMange/featureEngineering/getVariableMetricsListForBinning`, {
-    method: 'GET',
+    method: 'POST',
     params,
   });
 }

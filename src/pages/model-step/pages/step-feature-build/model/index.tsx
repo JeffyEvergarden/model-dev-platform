@@ -36,10 +36,9 @@ export const useExportReportModel = () => {
     setLoading(true);
     const res: any = await getVariableMetricsListForBinning(params);
     setLoading(false);
-    console.log(res);
-    const { code, desc } = res?.status;
+    console.log(res, type);
     // 策略分析
-    if (code === successCode) {
+    if (res?.status?.code === successCode) {
       let data: any[] = res?.result?.variableList || [];
       if (type) {
         data = data.filter((item) => item?.variableType == type);

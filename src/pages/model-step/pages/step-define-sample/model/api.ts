@@ -3,15 +3,16 @@ import config from '@/config/index';
 
 const baseUrl: string = config.basePath;
 
-export async function getDefineSampleList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelStep/defineSample/list`, {
-    method: 'GET',
-    params,
+//按月列表
+export async function getMonthDistributionList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelDev/sampleDefinition/monthDistribution`, {
+    method: 'POST',
+    data,
   });
 }
 
-export async function getPostResult(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelStep/defineSample/resultlist`, {
+export async function getTotalDistributionList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelDev/sampleDefinition/totalDistribution`, {
     method: 'POST',
     data,
   });

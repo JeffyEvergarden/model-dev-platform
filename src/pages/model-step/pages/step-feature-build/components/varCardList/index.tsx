@@ -18,12 +18,7 @@ const VarCardList: React.FC<any> = (props: any) => {
   }, []);
 
   useEffect(() => {
-    console.log(varType);
-    if (varType) {
-      selectVar(varType);
-    } else {
-      selectVar();
-    }
+    selectVar();
   }, [varType]);
 
   useImperativeHandle(cref, () => ({
@@ -35,13 +30,13 @@ const VarCardList: React.FC<any> = (props: any) => {
     setPageSize(size);
   };
 
-  const getList = (params: any, type?: any) => {
+  const getList = (params: any) => {
     setPage(1);
     let reqData = {
       itmModelRegisCode: '',
       ...params,
     };
-    getVarCardList(reqData, type);
+    getVarCardList(reqData, varType);
   };
 
   return (

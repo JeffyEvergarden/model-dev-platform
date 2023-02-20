@@ -87,13 +87,16 @@ export const genColumns = (extra: any[], config: any) => {
       },
       hideInTable: true,
     },
-    {
-      title: '期数',
-      dataIndex: 'periodName',
-      search: false,
-      width: '120px',
-    },
   ];
 
   return [..._columns, ...extra];
 };
+
+export const operatorOption = [
+  { label: '=', value: '=' },
+  { label: '≠', value: '!=' },
+  { label: '>=', value: '>=' },
+  { label: '>', value: '>' },
+  { label: '<=', value: '<=' },
+  { label: '<', value: '<' },
+];

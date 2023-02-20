@@ -19,6 +19,14 @@ export async function getVarList(params?: { [key: string]: any }) {
   });
 }
 
+/** 搜索列表 **/
+export async function getKeyVarList(params?: { [key: string]: any }) {
+  return request(`${baseUrl}/modelDev/featurePrepare/findFeature`, {
+    method: 'POST',
+    params,
+  });
+}
+
 /** 保存 **/
 export async function saveFeature(params?: { [key: string]: any }) {
   return request(`${baseUrl}/modelDev/featurePrepare/submit`, {

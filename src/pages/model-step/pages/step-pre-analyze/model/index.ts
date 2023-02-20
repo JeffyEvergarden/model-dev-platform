@@ -9,6 +9,7 @@ import {
   getSearchConditionList,
   getRateListRequest,
   getYaerMonthApi,
+  getCustomerDefinitionOptions,
 } from './api';
 
 export const successCode = config.successCode;
@@ -95,38 +96,37 @@ export const usePreAnalyzeModel = () => {
   const [sloading, setSLoading] = useState<boolean>(false);
   const [sColumns, setSColumns] = useState<any[]>([]);
 
+  const [goodList, setGoodList] = useState<any[]>([]);
+  const [badList, setBadList] = useState<any[]>([]);
+  const [midList, setMidList] = useState<any[]>([]);
+
   const getVintageList = async (params?: any) => {
     setVLoading(true);
     const res: any = await getPreAnalyzeVintageList(params);
     setVLoading(false);
     // 策略分析
-    if (res.resultCode === successCode) {
-      let data: any[] =
-        res?.data?.map((item: any, i: number) => {
-          return {
-            ...item,
-            index: i,
-          };
-        }) || [];
-      let columns: any[] = res.columns || [];
-      let total = res.total || 0;
+    if (res?.status?.code === successCode) {
+      let columns: any[] = res?.result?.head || [];
+      let total = res?.result?.data?.length || 0;
       columns = columns.map((item: any) => {
         return {
-          ...item,
-          title: item.label,
-          dataIndex: item.key,
+          title: item,
+          dataIndex: item,
           search: false,
           ellipsis: true,
           width: 120,
         };
       });
-      columns.push({
-        title: '总计',
-        dataIndex: 'total',
-        search: false,
-        ellipsis: true,
-        width: 120,
-      });
+      let data: any[] =
+        res?.result?.data?.map((item: any, i: number) => {
+          let obj = {};
+          columns?.forEach((col, index) => {
+            obj[col?.title] = item[index];
+          });
+          return obj;
+        }) || [];
+      console.log(columns, data);
+
       setVintageTotal(total);
       setVintageList(data);
       setVColumns(columns);
@@ -191,6 +191,15 @@ export const usePreAnalyzeModel = () => {
     return res;
   };
 
+  const getCustomerList = async (params?: any) => {
+    const res: any = await getCustomerDefinitionOptions(params);
+    if (res?.status?.code == successCode) {
+      setGoodList(res?.good || []);
+      setBadList(res?.bad || []);
+      setMidList(res?.mid || []);
+    }
+  };
+
   return {
     vloading,
     vintageList,
@@ -205,5 +214,10 @@ export const usePreAnalyzeModel = () => {
     sColumns,
     // -------
     getRateList,
+    // -------
+    getCustomerList,
+    goodList,
+    badList,
+    midList,
   };
 };

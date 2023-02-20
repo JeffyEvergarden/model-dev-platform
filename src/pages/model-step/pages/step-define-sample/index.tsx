@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, Table } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, Table, Space } from 'antd';
 import styles from '../style.less';
 import style from './style.less';
 import { useDefineSampleModel } from './model';
@@ -19,17 +19,17 @@ const columns1: any[] = [
   // 问题列表-列
   {
     title: '放款年月',
-    dataIndex: 'month',
+    dataIndex: 'advMonth',
     width: 200,
   },
   {
     title: '好样本',
-    dataIndex: 'goodNum',
+    dataIndex: 'goodSample',
     width: 200,
   },
   {
     title: '坏样本',
-    dataIndex: 'badNum',
+    dataIndex: 'badSample',
     width: 200,
   },
   {
@@ -39,41 +39,41 @@ const columns1: any[] = [
   },
   {
     title: '坏样本率',
-    dataIndex: 'badPercent',
+    dataIndex: 'badRate',
     width: 200,
-    render: (val: any) => {
-      return formatePercent(val);
-    },
+    // render: (val: any) => {
+    //   return formatePercent(val);
+    // },
   },
   {
     title: '中间样本',
-    dataIndex: 'midNum',
+    dataIndex: 'midSample',
     width: 200,
   },
   {
     title: '中间样本占比',
-    dataIndex: 'midPercent',
+    dataIndex: 'midRate',
     width: 200,
-    render: (val: any) => {
-      return formatePercent(val);
-    },
+    // render: (val: any) => {
+    //   return formatePercent(val);
+    // },
   },
 ];
 
 const columns2: any[] = [
   {
-    title: '放款年月',
-    dataIndex: 'month',
+    title: '样本类型',
+    dataIndex: 'sampleType',
     width: 200,
   },
   {
     title: '好样本',
-    dataIndex: 'goodNum',
+    dataIndex: 'goodSample',
     width: 200,
   },
   {
     title: '坏样本',
-    dataIndex: 'badNum',
+    dataIndex: 'badSample',
     width: 200,
   },
   {
@@ -83,11 +83,11 @@ const columns2: any[] = [
   },
   {
     title: '坏样本率',
-    dataIndex: 'badPercent',
+    dataIndex: 'badRate',
     width: 200,
-    render: (val: any) => {
-      return formatePercent(val);
-    },
+    // render: (val: any) => {
+    //   return formatePercent(val);
+    // },
   },
 ];
 
@@ -127,7 +127,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      dateRangeList: [{}],
+      IntertemporalTime: [[]],
     });
   }, []);
 
@@ -141,11 +141,12 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     }
 
     const newObj: any = {
-      date: submitObj.date.map((item: any) => item.format('YYYY-MM-DD')),
-      dateRangeList: submitObj.dateRangeList.map((item: any) => {
-        return item.map((subitem: any) => subitem.format('YYYY-MM-DD'));
+      trainingTime: submitObj?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
+      IntertemporalTime: submitObj?.IntertemporalTime?.map?.((item: any) => {
+        return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
       }),
     };
+    console.log(newObj);
 
     getResultTableList(newObj);
   };
@@ -153,6 +154,10 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   const onNext = () => {
     console.log('下一个步骤');
   };
+
+  const exportResult = () => {};
+
+  const nextFlow = () => {};
 
   return (
     <div className={styles['step-page']}>
@@ -180,7 +185,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             }}
             dataSource={tableList}
             columns={columns1}
-            rowKey="month"
+            rowKey="advmonth"
             loading={loading}
           />
         </div>
@@ -194,7 +199,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         <Form form={form} layout="vertical" labelAlign="right">
           <FormItem
             rules={[{ required: true, message: '请选择训练集范围' }]}
-            name="date"
+            name="trainingTime"
             label="训练集范围"
           >
             <RangePicker
@@ -203,11 +208,11 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             ></RangePicker>
           </FormItem>
 
-          <FormList name="dateRangeList">
+          <FormList name="IntertemporalTime">
             {(fields, { add, remove }) => {
               const addNew = () => {
                 let length = fields.length;
-                add({ dateRange: [] }, length);
+                add([], length);
               };
 
               let len = fields.length;
@@ -226,7 +231,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
                         <div>
                           <Form.Item
                             name={[field.name]}
+                            key={field.fieldKey}
                             fieldKey={[field.fieldKey]}
+                            validateTrigger={['onChange', 'onBlur']}
                             rules={[{ required: true, message: '请选择跨期验证范围' }]}
                           >
                             <RangePicker
@@ -281,7 +288,19 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         </div>
       </div>
 
-      <NextStepButton onClick={onNext} />
+      <NextStepButton
+        onClick={onNext}
+        btnNode={
+          <Space>
+            <Button onClick={exportResult} size="large">
+              导出结果
+            </Button>
+            <Button onClick={nextFlow} size="large" type="primary">
+              下一流程
+            </Button>
+          </Space>
+        }
+      />
     </div>
   );
 };

@@ -2,12 +2,13 @@ import { message } from 'antd';
 import { useRef, useState } from 'react';
 import { successCode } from '../../step-model-compare/model';
 import { StageStatus } from '../../step-strategy-back/model';
-import { getDatabaseList, getInfo, getVarList, saveFeature } from './api';
+import { getDatabaseList, getInfo, getKeyVarList, getVarList, saveFeature } from './api';
 export const useVarSelectModal = () => {
   // 列表
   const [treeList, setTreeList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [varList, setVarList] = useState<any[]>([]);
+  const [listType, setListType] = useState<any>('tree'); // tree search
   const [totalSize, setTotalSize] = useState<number>(0);
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
   const fake = useRef<any>({});
@@ -51,7 +52,29 @@ export const useVarSelectModal = () => {
     setLoading(false);
     if (res?.status?.code === successCode) {
       let data = res?.data?.tableData || [];
+      if (!params?.searchType) {
+        setVarList(data);
+        setListType('tree');
+        setTotalSize(res?.data?.totalPage || 0);
+      }
+      return { data, total: res?.data?.totalPage };
+    } else {
+      if (!params?.searchType) {
+        setVarList([]);
+      }
+      message.warning(res?.resultDesc);
+      return false;
+    }
+  };
+
+  const getKeyVarInfo = async (params: any) => {
+    setLoading(true);
+    let res: any = await getKeyVarList({ ...params });
+    setLoading(false);
+    if (res?.status?.code === successCode) {
+      let data = res?.data?.tableData || [];
       setVarList(data);
+      setListType('search');
       setTotalSize(res?.data?.totalPage || 0);
       return { data, total: res?.data?.totalPage };
     } else {
@@ -124,8 +147,10 @@ export const useVarSelectModal = () => {
     treeList,
     varList,
     totalSize,
+    listType,
     getTreeList,
     getVarInfo,
+    getKeyVarInfo,
     submitFeature,
   };
 };
