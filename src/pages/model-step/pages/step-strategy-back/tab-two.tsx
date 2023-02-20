@@ -5,6 +5,7 @@ import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
 import { useStrategyBackUploadAwaitModel } from './model';
+import { useNextStep } from '../../config';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -19,15 +20,20 @@ const { Option } = Select;
 // 首页
 const TabTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, extra, selectedKeys } = props;
+  const { processId, form, onNext, extra, selectedKeys, again } = props;
 
   const [_form] = Form.useForm(form);
 
   const { processType, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
+  const { nextStep } = useNextStep();
 
   const onClick = () => {
     // onNext?.();
-    nextFlow({ itmModelRegisCode: '' });
+    nextFlow({ itmModelRegisCode: '' }).then((res) => {
+      if (res) {
+        nextStep();
+      }
+    });
   };
 
   useEffect(() => {
@@ -68,7 +74,9 @@ const TabTwo: React.FC<any> = (props: any) => {
           btnNode={
             <Space>
               <Button
-                onClick={onClick}
+                onClick={() => {
+                  again();
+                }}
                 size="large"
                 type={processType === 'error' ? 'primary' : undefined}
               >

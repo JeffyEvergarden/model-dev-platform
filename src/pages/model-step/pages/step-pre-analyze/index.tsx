@@ -10,6 +10,7 @@ import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
 import Item from 'antd/lib/list/Item';
+import { useNextStep } from '../../config';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -44,6 +45,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     sColumns,
 
     getRateList,
+    nextFlow,
   } = usePreAnalyzeModel();
 
   const {
@@ -57,6 +59,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     originChannelMidList,
     originChannelSmList,
   } = useSearchModel();
+
+  const { nextStep } = useNextStep();
 
   const changeProductClass = (val: any) => {
     if (val) {
@@ -330,7 +334,13 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     });
   };
 
-  const nextFlow = () => {};
+  const onClick = async () => {
+    await nextFlow({}).then((res) => {
+      if (res) {
+        nextStep();
+      }
+    });
+  };
 
   return (
     <div className={styles['step-page']}>
@@ -423,7 +433,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             <Button onClick={exportResult} size="large">
               导出结果
             </Button>
-            <Button onClick={nextFlow} size="large" type="primary">
+            <Button onClick={onClick} size="large" type="primary">
               下一流程
             </Button>
           </Space>

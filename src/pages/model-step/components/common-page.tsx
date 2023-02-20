@@ -23,6 +23,7 @@ const StepTwo: React.FC<any> = (props: any) => {
     pageType = 'loading',
     columns,
     detailInfo,
+    dataList,
   } = props;
 
   // const [pageType, setPageType] = useState<any>('loading'); // init、 loading、finish、fail
@@ -62,7 +63,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         </div>
       </Condition>
 
-      <Condition r-if={detailInfo}>
+      <Condition r-if={detailInfo && columns && columns?.length}>
         <div className={styles['detail-content']}>
           {columns?.map((item: any, index: number) => {
             let val = detailInfo[item.key];
@@ -90,6 +91,29 @@ const StepTwo: React.FC<any> = (props: any) => {
                 <span className={styles['value-item']}>{val}</span>
               </div>
             );
+          })}
+        </div>
+      </Condition>
+
+      <Condition r-if={dataList?.length}>
+        <div className={styles['detail-content']}>
+          <div className={styles['col-row-title']}>已选择的变量：</div>
+          {dataList?.map((item: any, index: any) => {
+            if (index < 8) {
+              return (
+                <div className={styles['col-row-3']} key={index}>
+                  <span className={styles['label-item']}>{index + 1}.</span>
+                  <span className={styles['value-item']}>{item}</span>
+                </div>
+              );
+            }
+            if (index == 8) {
+              return (
+                <div className={styles['col-row-3']} key={index}>
+                  <span className={styles['value-item']}>......</span>
+                </div>
+              );
+            }
           })}
         </div>
       </Condition>

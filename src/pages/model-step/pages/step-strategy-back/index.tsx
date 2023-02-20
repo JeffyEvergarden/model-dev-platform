@@ -1,17 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button } from 'antd';
 import styles from '../style.less';
 import { useState } from 'react';
 import Condition from '@/components/Condition';
 import TabOne from './tab-one';
 import TabTwo from './tab-two';
 import TitleStatus from '../../components/title-status';
-
-const FormItem = Form.Item;
-
-const TextArea = Input.TextArea;
-
-const { RangePicker }: any = DatePicker;
 
 // 首页
 const StepStrategyBack: React.FC<any> = (props: any) => {
@@ -31,6 +24,10 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
     setSelectedKeys(key);
   };
 
+  const again = () => {
+    setStepType(1);
+  };
+
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
@@ -46,7 +43,12 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
       {/* 步骤二 */}
 
       <Condition r-if={stepType === 2}>
-        <TabTwo tabType={tabType} processId={processId} selectedKeys={selectedKeys}></TabTwo>
+        <TabTwo
+          tabType={tabType}
+          processId={processId}
+          selectedKeys={selectedKeys}
+          again={again}
+        ></TabTwo>
       </Condition>
     </div>
   );

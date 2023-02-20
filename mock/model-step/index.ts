@@ -57,7 +57,7 @@ const getWaitResult = (req: any, res: any) => {
     },
     result: {
       currentStage: '10',
-      currentStageStatus: '1', //：0：未开始 1：进行中 2：已完成 3：处理失败
+      currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
       currentStageDesc: '1',
       isModelBuild: false,
       reportFilePath: false,
@@ -174,4 +174,5 @@ export default {
   [`POST ${baseUrl}/policyBacktrack/getStageStatus`]: getWaitResult,
   [`POST ${baseUrl}/policyBacktrack/backTracking`]: normalDeal,
   [`POST ${baseUrl}/policyBacktrack/nextStage`]: normalDeal,
+  [`POST ${baseUrl}/policyBacktrack/skipCurrentStage`]: normalDeal,
 };
