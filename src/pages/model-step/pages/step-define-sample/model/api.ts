@@ -5,14 +5,28 @@ const baseUrl: string = config.basePath;
 
 //按月列表
 export async function getMonthDistributionList(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelDev/sampleDefinition/monthDistribution`, {
+  return request(`${baseUrl}/sampleDefinition/monthDistribution`, {
     method: 'POST',
     data,
   });
 }
 
 export async function getTotalDistributionList(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelDev/sampleDefinition/totalDistribution`, {
+  return request(`${baseUrl}/sampleDefinition/totalDistribution`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function exportExcel(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/sampleDefinition/exportExcel`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function nextProcess(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/sampleDefinition/nextProcess`, {
     method: 'POST',
     data,
   });

@@ -4,42 +4,42 @@ import config from '@/config/index';
 const baseUrl: string = config.basePath;
 
 //列表
-export async function getStrategyBackList(params?: { [key: string]: any }) {
+export async function getStrategyBackList(data?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/getProcessInfo`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 //提交
-export async function backTracking(params?: { [key: string]: any }) {
+export async function backTracking(data?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/backTracking`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 //查询回溯状态
-export async function getStageStatus(params?: { [key: string]: any }) {
+export async function getStageStatus(data?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/getStageStatus`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 //跳过，下一流程
-export async function skipCurrentStage(params?: { [key: string]: any }) {
+export async function skipCurrentStage(data?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/skipCurrentStage`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 //下一流程
-export async function nextStage(params?: { [key: string]: any }) {
+export async function nextStage(data?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/nextStage`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 

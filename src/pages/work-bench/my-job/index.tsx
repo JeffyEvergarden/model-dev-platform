@@ -19,6 +19,11 @@ import complete from '@/asset/image/complete.png';
 const Myjob: React.FC = (props: any) => {
   const [activeTabs, setActiveTabs] = useState<number>(1);
 
+  const { isLeader, isDeveloper, userAuth } = useModel('auth', (model: any) => model);
+
+  console.log('userAuth:');
+  console.log(isLeader, isDeveloper, userAuth);
+
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { allItemNum, incompleteNum, completeNum, getSummaryInfo } = useSummaryModel();
   const tableRef: any = useRef();

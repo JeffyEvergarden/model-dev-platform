@@ -6,6 +6,7 @@ import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
 import { useStrategyBackUploadAwaitModel } from './model';
 import { useNextStep } from '../../config';
+import { useModel } from 'umi';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -24,12 +25,16 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
   const { processType, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
   const { nextStep } = useNextStep();
 
   const onClick = () => {
     // onNext?.();
-    nextFlow({ itmModelRegisCode: '' }).then((res) => {
+    nextFlow({ itmModelRegisCode: modelId }).then((res) => {
       if (res) {
         nextStep();
       }

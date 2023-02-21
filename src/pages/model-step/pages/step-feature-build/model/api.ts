@@ -10,30 +10,30 @@ export async function getExportReportList(params?: { [key: string]: any }) {
   });
 }
 
-export async function getFillFeatureMetrics(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelMange/featureEngineering/getFillFeatureMetrics`, {
+export async function getFillFeatureMetrics(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/getFillFeatureMetrics`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 export async function getVariableTypeList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelMange/featureEngineering/getVariableTypeList`, {
+  return request(`${baseUrl}/featureEngineering/getVariableTypeList`, {
     method: 'GET',
     params,
   });
 }
 
-export async function getVariableMetricsListForBinning(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelMange/featureEngineering/getVariableMetricsListForBinning`, {
+export async function getVariableMetricsListForBinning(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/getVariableMetricsListForBinning`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
-export async function getVariableListForBinning(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelMange/featureEngineering/getVariableListForBinning`, {
+export async function getVariableListForBinning(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/getVariableListForBinning`, {
     method: 'POST',
-    params,
+    data,
   });
 }

@@ -19,11 +19,9 @@ const columns1: any[] = [
 const SelectorTable: React.FC<any> = (props: any) => {
   const { cref, confirm, type = 'checkbox', onNext } = props;
 
-  // tabs 操作
-  const [activeKey, setActivekey] = useState<string>('1');
-
-  // 对象
-  const [selectList, setSelectList] = useState<any[]>([]);
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   //  批量相关操作
 
@@ -55,7 +53,7 @@ const SelectorTable: React.FC<any> = (props: any) => {
 
   // 查询数据库
   useEffect(() => {
-    getStrategyTableList({ itmModelRegisCode: '' }).then((res) => {
+    getStrategyTableList({ itmModelRegisCode: modelId }).then((res) => {
       if (res?.backtrackProcessName) {
         setSelectedKeys(res?.backtrackProcessName?.split(','));
       }
@@ -68,7 +66,7 @@ const SelectorTable: React.FC<any> = (props: any) => {
       message.warning('请选择需要回溯的编排');
     } else {
       console.log(selectedKeys);
-      let reqData = { itmModelRegisCode: '', backtrackProcessName: selectedKeys };
+      let reqData = { itmModelRegisCode: modelId, backtrackProcessName: selectedKeys };
       await submitProcess(reqData).then((res: any) => {
         if (res) {
           onNext?.(selectedKeys);
@@ -78,7 +76,7 @@ const SelectorTable: React.FC<any> = (props: any) => {
   };
 
   const skipBackStep = async () => {
-    let reqData = { itmModelRegisCode: '' };
+    let reqData = { itmModelRegisCode: modelId };
     await passBackStep(reqData).then((res: any) => {
       if (res) {
         //跳到下一流程

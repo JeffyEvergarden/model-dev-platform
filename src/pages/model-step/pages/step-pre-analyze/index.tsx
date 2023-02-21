@@ -5,12 +5,18 @@ import ProTable from '@ant-design/pro-table';
 import CustomerFormBox from './component/customerFormBox';
 import NextStepButton from '../../components/nextstep-button';
 import TitleStatus from '../../components/title-status';
+import 'moment/locale/zh-cn';
 
 import { genColumns } from './model/config';
 import { usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
 import Item from 'antd/lib/list/Item';
 import { useNextStep } from '../../config';
+import { useModel } from 'umi';
+import { AreaChartOutlined } from '@ant-design/icons';
+import Condition from '@/components/Condition';
+import LineChart from './component/lineChart';
+import { throttle } from '../utils/util';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -30,6 +36,33 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const [yearMonth, setYearMonth] = useState<any[]>([]);
   const [useTimeData, setUseTimeData] = useState<any>('');
   const [limitTimeData, setLimitTimeData] = useState<any>('');
+
+  const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2']);
+  const [tableType, setTableType] = useState<any>(true);
+
+  const rate = document.body.clientWidth / 1920;
+  const [base, setBase] = useState<number>(rate);
+
+  const resize = () => {
+    const html = document.documentElement;
+    const realRate = document.body.clientWidth / 1920;
+    const rate = realRate <= 0.75 ? 0.75 : realRate;
+    // console.log('resize', rate);
+    html.style.fontSize = rate * 20 + 'px';
+    setBase(rate);
+  };
+
+  useEffect(() => {
+    resize();
+    const fn = throttle(() => {
+      resize();
+    }, 200);
+    window.addEventListener('resize', fn);
+    return () => {
+      window.removeEventListener('resize', fn);
+    };
+  }, []);
+
   // vintage 分析
   const {
     vloading,
@@ -37,6 +70,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     vintageTotal,
     getVintageList,
     vColumns,
+    vChartColumns,
     // -------
     sloading,
     scrollList,
@@ -60,6 +94,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     originChannelSmList,
   } = useSearchModel();
 
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
   const { nextStep } = useNextStep();
 
   const changeProductClass = (val: any) => {
@@ -165,26 +202,12 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         hideInTable: true,
         renderFormItem: (t: any, r: any, i: any) => {
           return (
-            <Select
-              style={{ maxWidth: '400px', minWidth: '120px' }}
-              onSelect={(val) => onSelect(val, 'useTime')}
-              onDeselect={(val) => onDeselect(val, 'useTime')}
-              mode="multiple"
+            <RangePicker
               allowClear
-              maxTagCount={2}
-              value={useTimeData}
-            >
-              <Option key={''} value="">
-                全选
-              </Option>
-              {yearMonth.map((item: any) => {
-                return (
-                  <Option key={item.value} value={item.value}>
-                    {item.value}
-                  </Option>
-                );
-              })}
-            </Select>
+              style={{ maxWidth: '400px', minWidth: '120px' }}
+              picker="month"
+              placeholder={['开始时间', '结束时间']}
+            />
           );
         },
       },
@@ -264,11 +287,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     setYearMonth(res?.data);
   };
 
-  const [vform] = Form.useForm();
   const [customerFormRef] = Form.useForm();
-  const [analysisform] = Form.useForm();
 
-  const getRateListArr = async (payLoad: any) => {
+  const getRateListArr = async (payLoad: any, filter: any) => {
     let res = await getRateList(payLoad);
     if (res?.status?.code === config.successCode) {
       let data: any[] =
@@ -291,7 +312,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           label: 'M2',
         },
       ];
-      let total = data?.length || 0;
       columns = columns.map((item: any) => {
         return {
           ...item,
@@ -300,9 +320,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           search: false,
           ellipsis: true,
           width: 120,
+          filteredValue: item.label === '本期状态' ? rateFilter : null,
           filters:
             item.label === '本期状态'
-              ? [
+              ? // data?.map(item => ({ text: item?.name, value: item?.name }))
+                [
                   {
                     text: 'M0',
                     value: 'M0',
@@ -311,10 +333,19 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
                     text: 'M1',
                     value: 'M1',
                   },
+                  {
+                    text: 'M2',
+                    value: 'M2',
+                  },
                 ]
               : null,
         };
       });
+
+      data = data?.filter((item) => filter?.includes(item?.name));
+
+      let total = data?.length || 0;
+
       setRateColumns(columns);
       return {
         data,
@@ -328,16 +359,26 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     }
   };
 
+  const rateTableChange = (a: any, filter: any, c: any) => {
+    console.log(a, filter, c);
+    setRateFilter(filter?.name || []);
+  };
+
   const exportResult = () => {
     customerFormRef.validateFields().then((value: any) => {
       console.log('value', value);
     });
   };
 
-  const onClick = async () => {
-    await nextFlow({}).then((res) => {
-      if (res) {
-        nextStep();
+  const onClick = () => {
+    customerFormRef.validateFields().then((value: any) => {
+      console.log('value', value);
+      if (value) {
+        nextFlow({ itmModelRegisCode: modelId }).then((res) => {
+          if (res) {
+            nextStep();
+          }
+        });
       }
     });
   };
@@ -366,7 +407,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             persistenceKey: 'pro-table-pre-analyze-list',
             persistenceType: 'localStorage',
           }}
-          rowKey="index"
+          rowKey={(r) => r.key}
           search={{
             labelWidth: 'auto',
             // optionRender: false,
@@ -390,11 +431,30 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           dateFormatter="string"
           headerTitle="VINTAGE分析结果"
           toolBarRender={() => []}
+          toolbar={{
+            actions: [
+              <AreaChartOutlined
+                onClick={() => {
+                  setTableType(!tableType);
+                }}
+                style={{ color: tableType ? 'gray' : '#40a9ff', border: '1px solid', padding: 4 }}
+              />,
+            ],
+          }}
           options={false}
+          tableStyle={{ display: tableType ? 'block' : 'none' }}
         />
+        <Condition r-show={!tableType}>
+          <LineChart
+            base={base}
+            tableType={tableType}
+            columns={vChartColumns}
+            data={vintageList}
+          ></LineChart>
+        </Condition>
       </div>
-      <Form form={vform} layout="vertical">
-        <FormItem name="vcomment" label="VINTAGE分析结果" style={{ width: '100%' }}>
+      <Form form={form} layout="vertical">
+        <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
           <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
         </FormItem>
       </Form>
@@ -415,12 +475,13 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           pagination={false}
           columns={_rateColumns}
           request={async (params = {}, sort, filter) => {
-            return getRateListArr({ page: params.current, ...params });
+            return getRateListArr({ page: params.current, ...params }, rateFilter);
           }}
+          onChange={rateTableChange}
         />
       </div>
-      <Form form={analysisform} layout="vertical">
-        <FormItem name="vcomment" label="滚动率分析结论" style={{ width: '100%' }}>
+      <Form form={form} layout="vertical">
+        <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
           <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
         </FormItem>
       </Form>

@@ -2,7 +2,7 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 
-import { getMonthDistributionList, getTotalDistributionList } from './api';
+import { getMonthDistributionList, getTotalDistributionList, nextProcess } from './api';
 
 export const successCode = config.successCode;
 
@@ -39,6 +39,17 @@ export const useDefineSampleModel = () => {
     }
   };
 
+  //下一流程
+  const nextFlow = async (params: any) => {
+    let res: any = await nextProcess(params);
+    if (res?.status?.code == successCode) {
+      return true;
+    } else {
+      message.error(res?.status?.desc);
+      return false;
+    }
+  };
+
   return {
     loading,
     resultLoading,
@@ -47,5 +58,6 @@ export const useDefineSampleModel = () => {
     tableTotal,
     getSampleTableList,
     getResultTableList,
+    nextFlow,
   };
 };

@@ -32,7 +32,11 @@ export default {
   'GET /modelDev/user/me1': (req: Request, res: Response) => {
     // res.sendStatus(401);
     res.send({
-      authorities: ['ROLE_ADMIN'],
+      authorities: [
+        'ROLE_APP_ADMIN',
+        'RISK_MODEL_DEVELOPER',
+        //'ROLE_MANAGER'
+      ],
       principal: {
         alias: '',
         account: 'JeffyLiang',

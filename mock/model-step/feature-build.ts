@@ -114,9 +114,8 @@ const getVariableListForBinning = (req: any, res: any) => {
 
 export default {
   // 缺失率
-  [`POST ${baseUrl}/modelMange/featureEngineering/getFillFeatureMetrics`]: getLostList,
-  [`POST ${baseUrl}/modelMange/featureEngineering/getVariableMetricsListForBinning`]: getVarList,
-  [`GET ${baseUrl}/modelMange/featureEngineering/getVariableTypeList`]: getVariableTypeList,
-  [`POST ${baseUrl}/modelMange/featureEngineering/getVariableListForBinning`]:
-    getVariableListForBinning,
+  [`POST ${baseUrl}/featureEngineering/getFillFeatureMetrics`]: getLostList,
+  [`POST ${baseUrl}/featureEngineering/getVariableMetricsListForBinning`]: getVarList,
+  [`GET ${baseUrl}/featureEngineering/getVariableTypeList`]: getVariableTypeList,
+  [`POST ${baseUrl}/featureEngineering/getVariableListForBinning`]: getVariableListForBinning,
 };

@@ -82,6 +82,13 @@ export async function getInitialState(): Promise<{
   let userMsg: any = await fetchUserInfo();
 
   const orz = userMsg?.principal?.organizations?.[0]?.name || '';
+  // 目前权限
+  let userAuth: any = Array.isArray(userMsg?.authorities) ? userMsg?.authorities : [];
+
+  // ------------
+  // RISK_MODEL_DEVELOPER 风控模型岗
+  // RISK_MANAGER 决策科学团队主管岗
+  // ROLE_APP_ADMIN 角色信息管理员
 
   return {
     fetchUserInfo,
@@ -91,7 +98,8 @@ export async function getInitialState(): Promise<{
       department: orz,
       ...userMsg?.principal,
     }, // 用户信息  部门信息
-    // userAuth: userAuth, // 权限信息   userType 用户类型
+
+    userAuth: userAuth, // 权限信息   userType 用户类型
     isLogin: userMsg?.principal?.userName ? true : false,
     hadDone: userMsg?.principal?.userName ? true : false,
     settings: {},

@@ -4,24 +4,24 @@ import config from '@/config/index';
 const baseUrl: string = config.basePath;
 
 /** 获取所有模型列表 **/
-export async function getModelList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelDev/myWorkbench/getModelInfoList`, {
+export async function getModelList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/myWorkbench/getModelInfoList`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 /** 获取事项 **/
-export async function getSummaryList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelDev/myWorkbench/myModelInfoSummary`, {
+export async function getSummaryList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/myWorkbench/myModelInfoSummary`, {
     method: 'POST',
-    params,
+    data,
   });
 }
 
 /** 获取建模人员 **/
 export async function getModelAnalysts(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelDev/myWorkbench/getModelAnalysts`, {
+  return request(`${baseUrl}/myWorkbench/getModelAnalysts`, {
     method: 'GET',
     params,
   });
@@ -29,7 +29,7 @@ export async function getModelAnalysts(params?: { [key: string]: any }) {
 
 /** 获取单个模型信息 **/
 export async function getModelInfo(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/modelDev/myWorkbench/getModelStageInfo`, {
+  return request(`${baseUrl}/myWorkbench/getModelStageInfo`, {
     method: 'GET',
     params,
   });
