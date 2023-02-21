@@ -16,6 +16,7 @@ const getList = (req: any, res: any) => {
       creator: 'creater',
       createDate: '2023-01-31 11:11:11',
       currentStageStatus: Math.floor(Math.random() * 4),
+      operate: Math.floor(Math.random() * 100) > 50 ? 'scan' : 'edit',
     };
   });
 

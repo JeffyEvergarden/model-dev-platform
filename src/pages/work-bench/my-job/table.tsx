@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm, Select, Space, Tag } from 'antd';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 
 import { useTableModel, useOpModel } from './model';
 
@@ -37,6 +37,8 @@ const ModelManagement: React.FC<any> = (props: any) => {
 
   const [modelType, setModelType] = useState<any>(undefined);
 
+  const { initialState } = useModel('@@initialState');
+
   // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
   //   info: model.info,
   //   setInfo: model.setInfo,
@@ -65,6 +67,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
     setModelType: (val: any) => {
       formRef?.current?.setFieldsValue({
         modelStatus: val,
+        creator: initialState?.currentUser?.userName || undefined,
       });
       formRef?.current?.submit();
     },
@@ -103,6 +106,20 @@ const ModelManagement: React.FC<any> = (props: any) => {
       },
       ellipsis: true,
       width: 180,
+      render: (val: any, row: any) => {
+        if (row?.operate == 'scan') {
+          return <span>{row?.modelName}</span>;
+        } else {
+          return (
+            <a
+              style={{ color: '#1890ff !important' }}
+              onClick={() => {
+                history?.push(`/modelStep/exportReport?id=${row?.itmModelRegisCode}`);
+              }}
+            >{`${row?.modelName}`}</a>
+          );
+        }
+      },
     },
     {
       title: '模型单号',
@@ -181,7 +198,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
       valueEnum: {
         ...listToMap(userList),
       },
-      initialValue: '123',
+      initialValue: initialState?.currentUser?.userName || undefined,
       width: 200,
     },
     {
@@ -234,8 +251,9 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 onConfirm={() => {
                   deleteRow(row);
                 }}
+                disabled={row?.operate == 'scan'}
               >
-                <Button type="link" danger>
+                <Button type="link" danger disabled={row?.operate == 'scan'}>
                   删除
                 </Button>
               </Popconfirm>
@@ -300,37 +318,13 @@ const ModelManagement: React.FC<any> = (props: any) => {
           // optionRender: false,
           // collapsed: false,
         }}
-        form={
-          {
-            // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-            // 查询参数转化
-            // syncToUrl: (values, type) => {
-            //   if (type === 'get') {
-            //     return {
-            //       ...values,
-            //     };
-            //   }
-            //   return values;
-            // },
-          }
-        }
+        form={{}}
         pagination={{
           pageSize: 10,
         }}
         dateFormatter="string"
         headerTitle=""
-        toolBarRender={() => [
-          // <Button
-          //   key="button"
-          //   icon={<PlusOutlined />}
-          //   type="primary"
-          //   onClick={() => {
-          //     modalRef.current?.open?.();
-          //   }}
-          // >
-          //   新建
-          // </Button>,
-        ]}
+        toolBarRender={() => []}
       />
 
       <DetailModal cref={detailRef}></DetailModal>
