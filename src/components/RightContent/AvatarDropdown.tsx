@@ -20,7 +20,7 @@ export type GlobalHeaderRightProps = {
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  window.location.href = '/model-dev-platform/logout';
+  window.location.href = '/modelDev/logout';
 };
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
@@ -39,7 +39,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         if (process.env.UMI_ENV == 'dev') {
           history.push(`/login`);
         } else {
-          window.location.href = '/model-dev-platform/login';
+          window.location.href = '/modelDev/login';
         }
       }
     },
