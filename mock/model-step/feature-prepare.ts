@@ -61,7 +61,7 @@ const getVarList = (req: any, res: any) => {
   let list = new Array(21).fill(1).map((item: any, index: number) => {
     return {
       featureName: '阿斯拉大' + index,
-      featureCode: index + 1 + page * 100,
+      featureCode: index,
     };
   });
 
@@ -79,11 +79,31 @@ const getVarList = (req: any, res: any) => {
   });
 };
 
+const getInfo = (req: any, res: any) => {
+  let list = new Array(21).fill(1).map((item: any, index: number) => {
+    return {
+      featureName: '阿斯拉大' + index,
+      featureCode: index,
+    };
+  });
+
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    data: {
+      featureVOList: [...list],
+    },
+  });
+};
+
 // 菜单管理相关
 export default {
   // 样本定义
-  [`GET ${baseUrl}/modelDev/featurePrepare/getFeatureCatTree`]: getTreeList,
-  [`POST ${baseUrl}/modelDev/featurePrepare/findFeatureByCategoryName`]: getVarList,
-  [`POST ${baseUrl}/modelDev/featurePrepare/findFeature`]: getVarList,
-  [`POST ${baseUrl}/modelDev/featurePrepare/submit`]: getVarList,
+  [`GET ${baseUrl}/featurePrepare/getFeatureCatTree`]: getTreeList,
+  [`POST ${baseUrl}/featurePrepare/findFeatureByCategoryName`]: getVarList,
+  [`POST ${baseUrl}/featurePrepare/findFeature`]: getVarList,
+  [`POST ${baseUrl}/featurePrepare/submit`]: getVarList,
+  [`GET ${baseUrl}/featurePrepare/getModelStageInfo`]: getInfo,
 };

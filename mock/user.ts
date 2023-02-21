@@ -29,7 +29,7 @@ const getAccess = () => {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 获取用户信息
-  'GET /model-dev-platform/me': (req: Request, res: Response) => {
+  'GET /modelDev/user/me1': (req: Request, res: Response) => {
     // res.sendStatus(401);
     res.send({
       authorities: ['ROLE_ADMIN'],

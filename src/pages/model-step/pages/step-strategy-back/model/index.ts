@@ -35,6 +35,7 @@ export const useStrategyBackModel = () => {
           processName: item,
         })) || [];
       setTableList(data);
+      return res?.result;
     }
   };
 
@@ -47,17 +48,17 @@ export const useStrategyBackModel = () => {
 
 export const useStrategyBackUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
+  const [errorMsg, setErrorMsg] = useState<any>('');
 
   const fake = useRef<any>({});
 
   //提交
   const submitProcess = async (params: any) => {
     let res: any = await backTracking(params);
-    const { code = '', desc = '' } = res?.status || {};
-    if (code == successCode) {
+    if (res?.status?.code == successCode) {
       return true;
     } else {
-      message.error(desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };
@@ -65,11 +66,10 @@ export const useStrategyBackUploadAwaitModel = () => {
   //跳过
   const passBackStep = async (params: any) => {
     let res: any = await skipCurrentStage(params);
-    const { code = '', desc = '' } = res?.status || {};
-    if (code == successCode) {
+    if (res?.status?.code == successCode) {
       return true;
     } else {
-      message.error(desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };
@@ -77,11 +77,10 @@ export const useStrategyBackUploadAwaitModel = () => {
   //下一流程
   const nextFlow = async (params: any) => {
     let res: any = await nextStage(params);
-    const { code = '', desc = '' } = res?.status;
-    if (code == successCode) {
+    if (res?.status?.code == successCode) {
       return true;
     } else {
-      message.error(desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };
@@ -96,6 +95,7 @@ export const useStrategyBackUploadAwaitModel = () => {
       setProcessType('loading');
       return 'loading';
     } else {
+      setErrorMsg(res?.status?.code || '未知错误');
       setProcessType('error');
       return 'error';
     }
@@ -124,6 +124,7 @@ export const useStrategyBackUploadAwaitModel = () => {
 
   return {
     processType,
+    errorMsg,
     awaitResult,
     startLoop,
     submitProcess,

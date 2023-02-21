@@ -10,6 +10,7 @@ import {
   getRateListRequest,
   getYaerMonthApi,
   getCustomerDefinitionOptions,
+  nextStage,
 } from './api';
 
 export const successCode = config.successCode;
@@ -200,6 +201,17 @@ export const usePreAnalyzeModel = () => {
     }
   };
 
+  //下一流程
+  const nextFlow = async (params: any) => {
+    let res: any = await nextStage(params);
+    if (res?.status?.code == successCode) {
+      return true;
+    } else {
+      message.error(res?.status?.desc);
+      return false;
+    }
+  };
+
   return {
     vloading,
     vintageList,
@@ -219,5 +231,7 @@ export const usePreAnalyzeModel = () => {
     goodList,
     badList,
     midList,
+    // -------
+    nextFlow,
   };
 };

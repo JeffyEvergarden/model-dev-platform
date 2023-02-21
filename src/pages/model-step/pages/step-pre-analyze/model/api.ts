@@ -44,3 +44,10 @@ export async function getCustomerDefinitionOptions(params?: Record<string, any>)
     params,
   });
 }
+
+export async function nextStage(data?: Record<string, any>) {
+  return request(`${baseUrl}/modeldev/preanalysis/nextStage`, {
+    method: 'POST',
+    data,
+  });
+}

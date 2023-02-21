@@ -7,30 +7,14 @@ import NextStepButton from '../../components/nextstep-button';
 import { useStrategyBackModel, useStrategyBackUploadAwaitModel } from './model';
 import style from './style.less';
 import styles from '../style.less';
-
-const { TabPane } = Tabs;
+import { useNextStep } from '../../config';
 
 const columns1: any[] = [
-  // 问题列表-列
   {
     title: '编排名称',
     dataIndex: 'processName',
-    // width: 300,
   },
-  // {
-  //   title: '样本包括的总数量',
-  //   dataIndex: 'sampleCount',
-  //   width: 200,
-  // },
 ];
-
-const { Search } = Input;
-
-// selectlist  (recommendType、recommendId、recommend)
-// disabledWishKeys    禁止选择的意图
-// disabledQuestionKeys  禁止选择的问题
-// selectedKeys  已选择的问题
-// selectedWishKeys 已选择的意图
 
 const SelectorTable: React.FC<any> = (props: any) => {
   const { cref, confirm, type = 'checkbox', onNext } = props;
@@ -51,6 +35,8 @@ const SelectorTable: React.FC<any> = (props: any) => {
   // 选中key值
   const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
 
+  const { nextStep } = useNextStep();
+
   // 勾选筛选设置
   const rowSelection = {
     preserveSelectedRowKeys: true,
@@ -69,7 +55,11 @@ const SelectorTable: React.FC<any> = (props: any) => {
 
   // 查询数据库
   useEffect(() => {
-    getStrategyTableList({});
+    getStrategyTableList({ itmModelRegisCode: '' }).then((res) => {
+      if (res?.backtrackProcessName) {
+        setSelectedKeys(res?.backtrackProcessName?.split(','));
+      }
+    });
   }, []);
 
   const onClick = async () => {
@@ -91,8 +81,8 @@ const SelectorTable: React.FC<any> = (props: any) => {
     let reqData = { itmModelRegisCode: '' };
     await passBackStep(reqData).then((res: any) => {
       if (res) {
-        // onNext?.(selectedKeys);
         //跳到下一流程
+        nextStep();
       }
     });
   };
