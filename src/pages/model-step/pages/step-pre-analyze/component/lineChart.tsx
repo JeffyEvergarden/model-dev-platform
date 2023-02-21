@@ -21,12 +21,17 @@ const LineChart: React.FC<any> = (props: any) => {
           fontFamily: 'PingFang SC, Microsoft YaHei, SimHei',
         },
         legend: {
+          type: 'scroll',
           data: columns,
+          orient: 'vertical',
+          right: 10,
+          top: 20,
+          bottom: 20,
         },
         grid: {
-          top: 40 * base,
-          left: 55 * base,
-          right: 50 * base,
+          top: 20 * base,
+          left: 40 * base,
+          right: 110 * base,
           bottom: 30 * base,
         },
         tooltip: {

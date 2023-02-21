@@ -25,3 +25,18 @@ export function twoDecimal_f(x: any) {
   }
   return s_x;
 }
+
+export function throttle(fn: (...args: any[]) => void, second: number) {
+  let timer: any = null;
+
+  return (...args: any[]) => {
+    if (timer) {
+      return;
+    }
+
+    timer = setTimeout(() => {
+      timer = null;
+      fn(...args);
+    }, second);
+  };
+}

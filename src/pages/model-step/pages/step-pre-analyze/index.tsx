@@ -16,6 +16,7 @@ import { useModel } from 'umi';
 import { AreaChartOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import LineChart from './component/lineChart';
+import { throttle } from '../utils/util';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -38,6 +39,29 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2']);
   const [tableType, setTableType] = useState<any>(true);
+
+  const rate = document.body.clientWidth / 1920;
+  const [base, setBase] = useState<number>(rate);
+
+  const resize = () => {
+    const html = document.documentElement;
+    const realRate = document.body.clientWidth / 1920;
+    const rate = realRate <= 0.75 ? 0.75 : realRate;
+    // console.log('resize', rate);
+    html.style.fontSize = rate * 20 + 'px';
+    setBase(rate);
+  };
+
+  useEffect(() => {
+    resize();
+    const fn = throttle(() => {
+      resize();
+    }, 200);
+    window.addEventListener('resize', fn);
+    return () => {
+      window.removeEventListener('resize', fn);
+    };
+  }, []);
 
   // vintage 分析
   const {
@@ -421,7 +445,12 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           tableStyle={{ display: tableType ? 'block' : 'none' }}
         />
         <Condition r-show={!tableType}>
-          <LineChart tableType={tableType} columns={vChartColumns} data={vintageList}></LineChart>
+          <LineChart
+            base={base}
+            tableType={tableType}
+            columns={vChartColumns}
+            data={vintageList}
+          ></LineChart>
         </Condition>
       </div>
       <Form form={form} layout="vertical">
