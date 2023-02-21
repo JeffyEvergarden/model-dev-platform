@@ -11,6 +11,8 @@ import {
   confirmSunmitRequestApi,
   getSampleRequstApi,
   sampleNextApi,
+  labelListApi,
+  selectionListApi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -24,6 +26,17 @@ export const useStepSelectModel = () => {
   const [opLoading, setOpLoading] = useState<boolean>(false);
 
   const [total, setTotal] = useState<any>(0);
+
+  //分群建模标签
+  const [labelList, setLabelList] = useState<any>([]);
+  const [featureOperatorMap, setFeatureOperatorMap] = useState<any>([]);
+  const [featureType, setFeatureType] = useState<any>('');
+
+  const [operationList, setOperationList] = useState<any>([]);
+  // const [operationType, setOperationType] = useState<any>('')
+
+  const [paramList, setParamList] = useState<any>([]);
+  const [paramType, setParamType] = useState<any>('');
 
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
@@ -80,6 +93,25 @@ export const useStepSelectModel = () => {
     return true;
   };
 
+  const labelListRequest = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await labelListApi(params);
+    if (res?.status?.code == successCode) {
+      setLabelList(res?.result?.featureList);
+      setFeatureOperatorMap(res?.result?.featureOperatorMap);
+      setTableLoading(false);
+    }
+    return true;
+  };
+
+  const getSelectionList = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await selectionListApi(params);
+    setTableLoading(false);
+    setParamList(res?.result);
+    return true;
+  };
+
   return {
     treeList,
     tableList,
@@ -90,6 +122,21 @@ export const useStepSelectModel = () => {
     getTreeList, // 获取表格数据
     getTableList,
     total,
+    //分类建群标签
+    labelListRequest,
+    labelList,
+    featureOperatorMap,
+    featureType,
+    setFeatureType,
+    operationList,
+    setOperationList,
+    getSelectionList,
+    // operationType,
+    // setOperationType,
+    paramList,
+    setParamList,
+    paramType,
+    setParamType,
   };
 };
 

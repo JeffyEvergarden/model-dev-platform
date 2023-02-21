@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker, Row, Col, Select, InputNumber } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Input, DatePicker, Row, Col, Select } from 'antd';
 import styles from '../style.less';
 import NextStepButton from '../../components/nextstep-button';
 import moment from 'moment';
+import FeatureCodeForm from './components/featureCodeForm';
 
 const FormItem = Form.Item;
 
@@ -139,7 +140,6 @@ const StepOne: React.FC<any> = (props: any) => {
                 </Select>
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择渠道中类' }]}
@@ -157,7 +157,6 @@ const StepOne: React.FC<any> = (props: any) => {
                 </Select>
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择渠道小类' }]}
@@ -193,7 +192,6 @@ const StepOne: React.FC<any> = (props: any) => {
                 </Select>
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择客群小类' }]}
@@ -229,57 +227,10 @@ const StepOne: React.FC<any> = (props: any) => {
                 </Select>
               </FormItem>
             </Col>
-            <Col span={3}>
-              <FormItem
-                rules={[{ required: false, message: '请选择' }]}
-                name="featureCode"
-                label="分群建模标签"
-              >
-                <Select placeholder="请选择" allowClear>
-                  {demoList.map((item: any, index: number) => {
-                    return (
-                      <Option value={item.value} key={index}>
-                        {item.label}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={3}>
-              <span className={styles.labelSpan}>
-                <FormItem
-                  rules={[{ required: false, message: '请选择' }]}
-                  name="operator"
-                  label="操作符"
-                >
-                  <Select placeholder="请选择" allowClear>
-                    {demoList.map((item: any, index: number) => {
-                      return (
-                        <Option value={item.value} key={index}>
-                          {item.label}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                </FormItem>
-              </span>
-            </Col>
-            <Col span={2}>
-              <span className={styles.labelSpan}>
-                <FormItem
-                  rules={[{ required: false, message: '请输入' }]}
-                  name="params"
-                  label="参数值"
-                >
-                  <Input placeholder="衡量值" />
-                </FormItem>
-              </span>
-            </Col>
           </Row>
         </div>
       </Form>
-
+      <FeatureCodeForm form={_form} />
       <NextStepButton onClick={onClick} text={'提交'} />
     </div>
   );
