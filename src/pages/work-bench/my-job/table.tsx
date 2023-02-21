@@ -300,18 +300,20 @@ const ModelManagement: React.FC<any> = (props: any) => {
           // optionRender: false,
           // collapsed: false,
         }}
-        form={{
-          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-          // 查询参数转化
-          syncToUrl: (values, type) => {
-            if (type === 'get') {
-              return {
-                ...values,
-              };
-            }
-            return values;
-          },
-        }}
+        form={
+          {
+            // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+            // 查询参数转化
+            // syncToUrl: (values, type) => {
+            //   if (type === 'get') {
+            //     return {
+            //       ...values,
+            //     };
+            //   }
+            //   return values;
+            // },
+          }
+        }
         pagination={{
           pageSize: 10,
         }}

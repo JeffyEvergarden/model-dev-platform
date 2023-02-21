@@ -5,6 +5,7 @@ import SelectFaqModal from './component/select-faq-modal';
 import { DeleteOutlined, MinusCircleOutlined, MonitorOutlined } from '@ant-design/icons';
 import NextStepButton from '../../components/nextstep-button';
 import { useVarSelectModal } from './model';
+import { useModel } from 'umi';
 
 // 首页
 const SelectModal: React.FC<any> = (props: any) => {
@@ -15,6 +16,10 @@ const SelectModal: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
 
   const { submitFeature, getModelStageInfo } = useVarSelectModal();
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   // 打开选择FAQ/意图模态框
   const openSelectFaqModal = (row: any) => {
@@ -40,7 +45,7 @@ const SelectModal: React.FC<any> = (props: any) => {
     } else {
       console.log(selectList);
       let reqData = {
-        itmModelRegisCode: '',
+        itmModelRegisCode: modelId,
         featureCodeList: selectList?.map((item: any) => item.featureCode),
       };
       let res = await submitFeature(reqData);
@@ -58,7 +63,7 @@ const SelectModal: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     (async () => {
-      await getModelStageInfo({ itmModelRegisCode: '' }).then((res) => {
+      await getModelStageInfo({ itmModelRegisCode: modelId }).then((res) => {
         setSelectList(res || []);
       });
     })();

@@ -8,6 +8,8 @@ import { formatePercent } from '../utils/util';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import NextStepButton from '../../components/nextstep-button';
 import TitleStatus from '../../components/title-status';
+import { useModel } from 'umi';
+import { useNextStep } from '../../config';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -94,7 +96,6 @@ const columns2: any[] = [
 // 首页
 const StepDefineSample: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-
   const {
     loading,
     resultLoading,
@@ -103,11 +104,18 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     resultTableList,
     getSampleTableList,
     getResultTableList,
+    nextFlow,
   } = useDefineSampleModel();
-
+  const [form] = Form.useForm();
   // 页码, 分页相关
   const [current, setCurrent] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
+
+  const { nextStep } = useNextStep();
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   // 切换分页
   const onChange = (val: any) => {
@@ -116,19 +124,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     }
     setCurrent(val);
   };
-
   useEffect(() => {
     getSampleTableList();
-  }, []);
-
-  // ------------
-
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    form.setFieldsValue({
-      IntertemporalTime: [[]],
-    });
   }, []);
 
   const submit = async () => {
@@ -139,25 +136,51 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     if (!submitObj) {
       return;
     }
-
     const newObj: any = {
       trainingTime: submitObj?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
-      IntertemporalTime: submitObj?.IntertemporalTime?.map?.((item: any) => {
+      intertemporalTime: submitObj?.intertemporalTime?.map?.((item: any) =>
+        item?.format?.('YYYY-MM-DD'),
+      ),
+      other: submitObj?.other?.map?.((item: any) => {
         return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
       }),
     };
     console.log(newObj);
-
     getResultTableList(newObj);
-  };
-
-  const onNext = () => {
-    console.log('下一个步骤');
   };
 
   const exportResult = () => {};
 
-  const nextFlow = () => {};
+  const _nextFlow = () => {
+    form.validateFields().then((value: any) => {
+      if (value) {
+        nextFlow({ itmModelRegisCode: modelId, ...value }).then((res) => {
+          if (res) {
+            nextStep();
+          }
+        });
+      }
+    });
+  };
+
+  const formListAdd = () => {
+    let formData = form?.getFieldsValue();
+    let formList = formData['other'];
+    console.log(formData, formList);
+    if (formList) {
+      if (Array.isArray(formList)) {
+        formList?.push([]);
+      } else {
+        formList = [[]];
+      }
+    } else {
+      form.setFieldsValue({ other: [[]] });
+      return;
+    }
+    console.log(formData);
+
+    form.setFieldsValue({ ...formData });
+  };
 
   return (
     <div className={styles['step-page']}>
@@ -185,7 +208,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             }}
             dataSource={tableList}
             columns={columns1}
-            rowKey="advmonth"
+            rowKey="advMonth"
             loading={loading}
           />
         </div>
@@ -208,7 +231,31 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             ></RangePicker>
           </FormItem>
 
-          <FormList name="IntertemporalTime">
+          <FormItem label="跨期验证范围">
+            <Space align="baseline">
+              <FormItem
+                rules={[{ required: true, message: '请选择跨期验证范围' }]}
+                name="intertemporalTime"
+                noStyle
+              >
+                <RangePicker
+                  placeholder={['开始日期', '结束日期']}
+                  style={{ minWidth: '300px' }}
+                ></RangePicker>
+              </FormItem>
+              <Button
+                icon={<PlusCircleOutlined />}
+                type="link"
+                onClick={() => {
+                  formListAdd();
+                }}
+              >
+                添加验证范围
+              </Button>
+            </Space>
+          </FormItem>
+
+          <FormList name="other">
             {(fields, { add, remove }) => {
               const addNew = () => {
                 let length = fields.length;
@@ -219,49 +266,50 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
               return (
                 <div>
-                  <div className={'ant-form-vertical'}>
+                  {/* <div className={'ant-form-vertical'}>
                     <div className={'ant-col ant-form-item-label'}>
                       <label className={'ant-form-item-required'}>跨期验证范围</label>
                     </div>
-                  </div>
+                  </div> */}
 
                   {fields.map((field: any, index: number) => {
                     return (
-                      <div key={field.key} className={style['inner-list-box']}>
-                        <div>
-                          <Form.Item
-                            name={[field.name]}
-                            key={field.fieldKey}
-                            fieldKey={[field.fieldKey]}
-                            validateTrigger={['onChange', 'onBlur']}
-                            rules={[{ required: true, message: '请选择跨期验证范围' }]}
-                          >
-                            <RangePicker
-                              placeholder={['开始日期', '结束日期']}
-                              style={{ minWidth: '300px' }}
-                            ></RangePicker>
-                          </Form.Item>
-                        </div>
-
-                        <Condition r-if={len > 1}>
-                          <Button
-                            icon={<MinusCircleOutlined />}
-                            type="link"
-                            danger
-                            onClick={() => {
-                              remove(index);
-                            }}
-                          />
-                        </Condition>
-                        <Condition r-if={index === 0}>
-                          <Button
-                            icon={<PlusCircleOutlined />}
-                            type="link"
-                            onClick={() => {
-                              addNew();
-                            }}
-                          />
-                        </Condition>
+                      <div key={index} className={style['inner-list-box']}>
+                        <FormItem label={`其他验证${index + 1}范围`}>
+                          <Space align="baseline">
+                            <Form.Item
+                              noStyle
+                              name={[field.name]}
+                              key={field.fieldKey}
+                              fieldKey={[field.fieldKey]}
+                              validateTrigger={['onChange', 'onBlur']}
+                              rules={[
+                                { required: true, message: '请选择' + `其他验证${index + 1}范围` },
+                              ]}
+                            >
+                              <RangePicker
+                                placeholder={['开始日期', '结束日期']}
+                                style={{ minWidth: '300px' }}
+                              ></RangePicker>
+                            </Form.Item>
+                            <Button
+                              icon={<MinusCircleOutlined />}
+                              type="link"
+                              danger
+                              onClick={() => {
+                                console.log(len);
+                                if (len == 1) {
+                                  let formData = form.getFieldsValue();
+                                  formData.other = undefined;
+                                  console.log(formData);
+                                  form.setFieldsValue({ ...formData });
+                                } else {
+                                  remove(index);
+                                }
+                              }}
+                            />
+                          </Space>
+                        </FormItem>
                       </div>
                     );
                   })}
@@ -289,13 +337,18 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       </div>
 
       <NextStepButton
-        onClick={onNext}
         btnNode={
           <Space>
             <Button onClick={exportResult} size="large">
               导出结果
             </Button>
-            <Button onClick={nextFlow} size="large" type="primary">
+            <Button
+              onClick={() => {
+                _nextFlow();
+              }}
+              size="large"
+              type="primary"
+            >
               下一流程
             </Button>
           </Space>

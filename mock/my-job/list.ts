@@ -73,10 +73,10 @@ const userList = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 模型管理相关
-  [`POST ${baseUrl}/modelDev/myWorkbench/getModelInfoList`]: getList, // 获取模型管理列表
-  [`POST ${baseUrl}/modelDev/myWorkbench/myModelInfoSummary`]: getSummaryList,
+  [`POST ${baseUrl}/myWorkbench/getModelInfoList`]: getList, // 获取模型管理列表
+  [`POST ${baseUrl}/myWorkbench/myModelInfoSummary`]: getSummaryList,
   [`POST ${baseUrl}/model/add`]: normalDeal,
   [`POST ${baseUrl}/model/delete`]: normalDeal,
-  [`GET ${baseUrl}/modelDev/myWorkbench/getModelStageInfo`]: getInfo,
-  [`GET ${baseUrl}/modelDev/myWorkbench/getModelAnalysts`]: userList,
+  [`GET ${baseUrl}/myWorkbench/getModelStageInfo`]: getInfo,
+  [`GET ${baseUrl}/myWorkbench/getModelAnalysts`]: userList,
 };

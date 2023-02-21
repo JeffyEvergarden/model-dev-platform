@@ -91,6 +91,7 @@ export const usePreAnalyzeModel = () => {
   const [vintageTotal, setVintageTotal] = useState<number>(0);
   const [vloading, setVLoading] = useState<boolean>(false);
   const [vColumns, setVColumns] = useState<any[]>([]);
+  const [vChartColumns, setVChartColumns] = useState<any[]>([]);
 
   const [scrollList, setScrollList] = useState<any[]>([]);
   const [scrollTotal, setScrollTotal] = useState<number>(0);
@@ -124,13 +125,15 @@ export const usePreAnalyzeModel = () => {
           columns?.forEach((col, index) => {
             obj[col?.title] = item[index];
           });
+          obj['key'] = i;
           return obj;
         }) || [];
       console.log(columns, data);
 
       setVintageTotal(total);
-      setVintageList(data);
-      setVColumns(columns);
+      setVintageList(res?.result?.data); //用于图表（未加工）
+      setVColumns(columns); //用于图表（未加工）
+      setVChartColumns(res?.result?.head);
       return {
         data,
         total,
@@ -218,6 +221,7 @@ export const usePreAnalyzeModel = () => {
     vintageTotal,
     getVintageList,
     vColumns,
+    vChartColumns,
     // -------
     sloading,
     scrollList,

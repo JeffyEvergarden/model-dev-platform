@@ -37,7 +37,7 @@ const getWaitResult = (req: any, res: any) => {
 const monthDistributionList = (req: any, res: any) => {
   let list = new Array(11).fill(1).map((item: any, index: number) => {
     return {
-      advMonth: '202302',
+      advMonth: '202302' + index,
       goodSample: '10',
       badSample: '1',
       total: '11',
@@ -53,7 +53,7 @@ const monthDistributionList = (req: any, res: any) => {
     },
     current: 1,
     pageSize: 10,
-    totalSize: 21,
+    totalSize: 11,
     result: list,
   });
 };
@@ -80,6 +80,8 @@ const totalDistributionList = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 样本定义
-  [`POST ${baseUrl}/modelDev/sampleDefinition/monthDistribution`]: monthDistributionList,
-  [`POST ${baseUrl}/modelDev/sampleDefinition/totalDistribution`]: totalDistributionList,
+  [`POST ${baseUrl}/sampleDefinition/monthDistribution`]: monthDistributionList,
+  [`POST ${baseUrl}/sampleDefinition/totalDistribution`]: totalDistributionList,
+  [`POST ${baseUrl}/sampleDefinition/exportExcel`]: totalDistributionList,
+  [`POST ${baseUrl}/sampleDefinition/nextProcess`]: totalDistributionList,
 };

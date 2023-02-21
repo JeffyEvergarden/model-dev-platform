@@ -1,3 +1,16 @@
+@base: 1920px;
+@rate: 100vw / @base;
+
+.vw(@name: @px) {
+  @{name}: @px / @base * 100vw;
+}
+.line-box {
+  width: 100%;
+  height: 350px * @rate;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+}
+
 .step-page {
   padding-bottom: 24px;
   font-size: 12px;

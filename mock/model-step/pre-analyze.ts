@@ -256,11 +256,11 @@ const getCustomerList = (req: any, res: any) => {
 // 菜单管理相关
 export default {
   // 样本定义
-  [`POST ${baseUrl}/modeldev/preanalysis/vintageResult`]: getList,
+  [`POST ${baseUrl}/preanalysis/vintageResult`]: getList,
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/list`]: getList,
-  [`POST ${baseUrl}/modelDev/preanalysis/rollRateResult`]: getRateListRequest,
+  [`POST ${baseUrl}/preanalysis/rollRateResult`]: getRateListRequest,
   [`GET ${baseUrl}/modelStep/preAnalyze/condition/list`]: getConditionList,
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getYaerMonthApi`]: getYaerMonthApi,
-  [`GET ${baseUrl}/modelDev/preanalysis/customerDefinitionOptions`]: getCustomerList,
-  [`POST ${baseUrl}/modeldev/preanalysis/nextStage`]: normalDeal,
+  [`GET ${baseUrl}/preanalysis/customerDefinitionOptions`]: getCustomerList,
+  [`POST ${baseUrl}/preanalysis/nextStage`]: normalDeal,
 };
