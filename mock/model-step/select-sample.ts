@@ -85,10 +85,85 @@ const getSample = (req: any, res: any) => {
   });
 };
 
+const getModelLabelList = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      featureList: [
+        {
+          featureCode: '0',
+          featureName: 'boolean',
+          featureType: 'boolean', //类型，如list/boolean
+        },
+        {
+          featureCode: '1',
+          featureName: 'string',
+          featureType: 'string', //类型，如list/boolean
+        },
+        {
+          featureCode: '2',
+          featureName: 'number',
+          featureType: 'number', //类型，如list/boolean
+        },
+        {
+          featureCode: '3',
+          featureName: 'datetime',
+          featureType: 'datetime', //类型，如list/boolean
+        },
+        {
+          featureCode: '4',
+          featureName: 'list',
+          featureType: 'list', //类型，如list/boolean
+        },
+      ],
+      featureOperatorMap: {
+        boolean: [
+          { name: '等于', value: 'equal' }, //无
+          { name: '为空', value: 'regMatch' }, //无
+        ],
+        string: [
+          { name: '等于', value: 'equal' }, //下拉框
+          { name: '为空', value: 'regMatch' }, //字符输入框
+        ],
+        number: [
+          { name: '等于', value: 'equal' }, //数字输入框
+          { name: '为空', value: 'betweenAnd' }, //数字范围
+        ],
+        datetime: [
+          { name: '等于', value: 'equal' }, //日期时间选择
+          { name: '为空', value: 'betweenAnd' }, //日期时间范围选择
+        ],
+        list: [
+          { name: '等于', value: 'equal' }, //下拉框
+          { name: '为空', value: 'betweenAnd' }, //无
+        ],
+      },
+    },
+  });
+};
+
+const getSelectionList = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: [
+      { name: '操作符1', value: '11' },
+      { name: '操作符2', value: '12' },
+    ],
+  });
+};
+
 export default {
   [`POST ${baseUrl}/sampleSelection/submit`]: submit,
   [`POST ${baseUrl}/stage/getDetailInfo`]: getDetailInfo,
   [`POST ${baseUrl}/sampleSelection/confirm`]: normalDeal,
   [`POST ${baseUrl}/sampleSelection/getSample`]: getSample,
   [`POST ${baseUrl}/sampleSelection/nextStage`]: normalDeal,
+  [`GET ${baseUrl}/sampleSelection/getModelLabelList`]: getModelLabelList,
+  [`GET ${baseUrl}/sampleSelection/getSelectionList`]: getSelectionList,
 };

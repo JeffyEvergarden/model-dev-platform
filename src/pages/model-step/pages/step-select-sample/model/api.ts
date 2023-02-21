@@ -64,3 +64,19 @@ export async function sampleNextApi(params?: Record<string, any>) {
     data: params,
   });
 }
+
+//分群建模标签-
+export async function labelListApi(params?: Record<string, any>) {
+  return request(`${baseUrl}/sampleSelection/getModelLabelList`, {
+    method: 'GET',
+    params,
+  });
+}
+
+//分群建模标签-
+export async function selectionListApi(params?: Record<string, any>) {
+  return request(`${baseUrl}/sampleSelection/getSelectionList`, {
+    method: 'GET',
+    params,
+  });
+}

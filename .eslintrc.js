@@ -33,5 +33,6 @@ module.exports = {
     'no-restricted-globals': 'off',
     'prefer-destructuring': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    'react/jsx-no-target-blank': 'off',
   },
 };
