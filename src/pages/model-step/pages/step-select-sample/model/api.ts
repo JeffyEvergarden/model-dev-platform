@@ -80,3 +80,11 @@ export async function selectionListApi(params?: Record<string, any>) {
     params,
   });
 }
+
+//产品大类、渠道中类、渠道小类、客群大类、客群小类
+export async function getparamsApi(params?: Record<string, any>) {
+  return request(`${baseUrl}/sampleSelection/getParams`, {
+    method: 'GET',
+    params,
+  });
+}

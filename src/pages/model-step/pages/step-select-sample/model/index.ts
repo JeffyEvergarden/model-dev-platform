@@ -13,10 +13,10 @@ import {
   sampleNextApi,
   labelListApi,
   selectionListApi,
+  getparamsApi,
 } from './api';
 
 export const successCode = config.successCode;
-
 // 菜单管理的表格数据
 //  导入 -> 是 ， 选数据源和数据字段
 export const useStepSelectModel = () => {
@@ -27,16 +27,30 @@ export const useStepSelectModel = () => {
 
   const [total, setTotal] = useState<any>(0);
 
-  //分群建模标签
+  {
+    /* 分群建模标签*/
+  }
   const [labelList, setLabelList] = useState<any>([]);
   const [featureOperatorMap, setFeatureOperatorMap] = useState<any>([]);
   const [featureType, setFeatureType] = useState<any>('');
-
   const [operationList, setOperationList] = useState<any>([]);
-  // const [operationType, setOperationType] = useState<any>('')
-
   const [paramList, setParamList] = useState<any>([]);
   const [paramType, setParamType] = useState<any>('');
+
+  {
+    /* 产品大类、渠道中类、渠道小类、客群大类、客群小类*/
+  }
+  const [processList, setProcessList] = useState<any>([]); //编排
+  const [productList, setProductList] = useState<any[]>([]); //产品大类
+  const [channelMidList, setChannelMidList] = useState<any[]>([]); //渠道中类
+  const [channelSmList, setChannelSmList] = useState<any[]>([]); //渠道小类
+  const [custCatList, setCustCatList] = useState<any[]>([]); //客群大类
+  const [custCatSmList, setCustCatSmList] = useState<any[]>([]); //客群小类
+
+  const [originChannelMidList, setOriginChannelMidList] = useState<any[]>([]);
+  const [originChannelSmList, setOriginChannelSmList] = useState<any[]>([]);
+  const [originCustCatList, setOriginCustCatList] = useState<any[]>([]);
+  const [originCustCatSmList, setOriginCustCatSmList] = useState<any[]>([]);
 
   const processTreeData = (data: any[], parent?: any) => {
     if (!Array.isArray(data)) {
@@ -112,6 +126,94 @@ export const useStepSelectModel = () => {
     return true;
   };
 
+  // 数据处理
+  const deepFormateData = (arr: any[], level: number) => {
+    if (!Array.isArray(arr)) {
+      return [];
+    }
+    arr = arr.map((item: any) => {
+      let children = deepFormateData(item.children, level + 1);
+      return {
+        name: item.name,
+        value: item.id,
+        children,
+      };
+    });
+
+    return arr;
+  };
+
+  const getparams = async (params?: any) => {
+    setTableLoading(true);
+    let res: any = await getparamsApi(params);
+    setTableLoading(false);
+    let tempProcessList: any[] = res?.result?.processList;
+    tempProcessList.unshift({
+      value: '-1',
+      name: '全部',
+    });
+    setProcessList(tempProcessList);
+    if (res.status?.code === successCode) {
+      let data: any = deepFormateData(res.result?.prodTree, 1);
+      data.unshift({
+        value: '-1',
+        name: '全部',
+        children: [],
+      });
+      setProductList(data);
+      let channelMidTemp: any[] = []; //渠道中类
+      let channelSmTemp: any[] = []; //渠道小类
+      let custCatTemp: any[] = []; //客群大类
+      let custCatSmTemp: any[] = []; //客群小类
+      data.forEach((ele: any) => {
+        if (ele.children) {
+          channelMidTemp.push(...ele.children);
+          ele.children.forEach((subItem: any) => {
+            if (subItem) {
+              channelSmTemp.push(...subItem.children);
+              subItem.children.forEach((threeItem: any) => {
+                if (threeItem.children) {
+                  custCatTemp.push(...threeItem.children);
+                  threeItem.children.forEach((fourItem: any) => {
+                    custCatSmTemp.push(...fourItem.children);
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+
+      channelMidTemp.unshift({
+        value: '-1',
+        name: '全部',
+      });
+      channelSmTemp.unshift({
+        value: '-1',
+        name: '全部',
+      });
+      custCatTemp.unshift({
+        value: '-1',
+        name: '全部',
+      });
+      custCatSmTemp.unshift({
+        value: '-1',
+        name: '全部',
+      });
+
+      setOriginChannelMidList(channelMidTemp);
+      setOriginChannelSmList(channelSmTemp);
+      setOriginCustCatList(custCatTemp);
+      setOriginCustCatSmList(custCatSmTemp);
+
+      setChannelMidList(channelMidTemp);
+      setChannelSmList(channelSmTemp);
+      setCustCatList(custCatTemp);
+      setCustCatSmList(custCatSmTemp);
+    }
+    return true;
+  };
+
   return {
     treeList,
     tableList,
@@ -122,6 +224,7 @@ export const useStepSelectModel = () => {
     getTreeList, // 获取表格数据
     getTableList,
     total,
+
     //分类建群标签
     labelListRequest,
     labelList,
@@ -137,6 +240,26 @@ export const useStepSelectModel = () => {
     setParamList,
     paramType,
     setParamType,
+
+    //产品大类、渠道中类、渠道小类、客群大类、客群小类
+    getparams,
+    processList,
+    setProcessList,
+    productList,
+    setProductList,
+    channelMidList,
+    setChannelMidList,
+    channelSmList,
+    setChannelSmList,
+    custCatList,
+    setCustCatList,
+    custCatSmList,
+    setCustCatSmList,
+
+    originChannelMidList,
+    originChannelSmList,
+    originCustCatList,
+    originCustCatSmList,
   };
 };
 

@@ -4,6 +4,9 @@ import styles from '../style.less';
 import NextStepButton from '../../components/nextstep-button';
 import moment from 'moment';
 import FeatureCodeForm from './components/featureCodeForm';
+import { useStepSelectModel } from './model';
+import config from '@/config/index';
+export const successCode = config.successCode;
 
 const FormItem = Form.Item;
 
@@ -38,6 +41,27 @@ const StepOne: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
+  const {
+    getparams,
+    processList,
+    setProcessList,
+    productList,
+    setProductList,
+    channelMidList,
+    setChannelMidList,
+    channelSmList,
+    setChannelSmList,
+    custCatList,
+    setCustCatList,
+    custCatSmList,
+    setCustCatSmList,
+
+    originChannelMidList,
+    originChannelSmList,
+    originCustCatList,
+    originCustCatSmList,
+  } = useStepSelectModel();
+
   useEffect(() => {
     let start = editData?.startTime ? moment(editData.startTime) : null;
     let end = editData?.endTime ? moment(editData.endTime) : null;
@@ -65,6 +89,145 @@ const StepOne: React.FC<any> = (props: any) => {
     }
     tempArr = str?.split(',');
     return tempArr;
+  };
+
+  //
+  const changeBusinessType = async (val: any) => {
+    if (val) {
+      let params = {
+        businessType: val,
+      };
+      let res = await getparams(params);
+    } else {
+      setProductList([]);
+      setChannelMidList([]);
+      setChannelSmList([]);
+      setCustCatList([]);
+      setCustCatSmList([]);
+      setProcessList([]);
+    }
+
+    form.setFieldsValue({
+      prodCat: undefined,
+      channelCatM: undefined,
+      channelCatS: undefined,
+      custCat: undefined,
+      custCatS: undefined,
+      processName: undefined,
+    });
+  };
+
+  const changeProduct = (val: any, option: any) => {
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('-1')) {
+        list = originChannelMidList;
+      } else {
+        val.forEach((ele: any) => {
+          let temp: any = productList.find((item: any) => item.value == ele);
+          list = [...list, ...temp?.children];
+        });
+      }
+      setChannelMidList(list);
+      setChannelSmList([]);
+      setCustCatList([]);
+      setCustCatSmList([]);
+    } else {
+      setChannelMidList([]);
+      setChannelSmList([]);
+      setCustCatList([]);
+      setCustCatSmList([]);
+    }
+    form.setFieldsValue({
+      prodCat: val,
+      channelCatM: undefined,
+      channelCatS: undefined,
+      custCat: undefined,
+      custCatS: undefined,
+    });
+  };
+
+  const onSelect = (value: any, option: any, type: any) => {
+    if (value == '-1') {
+      form.setFieldsValue({
+        [type]: '-1',
+      });
+    } else {
+      let formval = form.getFieldsValue(type);
+      let temp = formval?.[type]?.filter((item: any) => item !== '-1');
+      form.setFieldsValue({
+        [type]: temp,
+      });
+    }
+  };
+
+  const changeChannelCatM = (val: any) => {
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('-1')) {
+        list = originChannelSmList;
+      } else {
+        val.forEach((ele: any) => {
+          let temp: any = channelMidList.find((item: any) => item.value == ele);
+          list = [...list, ...temp?.children];
+        });
+      }
+      setChannelSmList(list);
+      setCustCatList([]);
+      setCustCatSmList([]);
+    } else {
+      setChannelSmList([]);
+      setCustCatList([]);
+      setCustCatSmList([]);
+    }
+    form.setFieldsValue({
+      channelCatS: undefined,
+      custCat: undefined,
+      custCatS: undefined,
+    });
+  };
+
+  const changeChannelCatS = (val: any) => {
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('-1')) {
+        list = originCustCatList;
+      } else {
+        val.forEach((ele: any) => {
+          let temp: any = channelSmList.find((item: any) => item.value == ele);
+          list = [...list, ...temp?.children];
+        });
+      }
+      setCustCatList(list);
+      setCustCatSmList([]);
+    } else {
+      setCustCatList([]);
+      setCustCatSmList([]);
+    }
+    form.setFieldsValue({
+      custCat: undefined,
+      custCatS: undefined,
+    });
+  };
+
+  const changeCustCat = (val: any) => {
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('-1')) {
+        list = originCustCatSmList;
+      } else {
+        val.forEach((ele: any) => {
+          let temp: any = custCatList.find((item: any) => item.value == ele);
+          list = [...list, ...temp?.children];
+        });
+      }
+      setCustCatSmList(list);
+    } else {
+      setCustCatSmList([]);
+    }
+    form.setFieldsValue({
+      custCatS: undefined,
+    });
   };
 
   const onClick = async () => {
@@ -104,14 +267,13 @@ const StepOne: React.FC<any> = (props: any) => {
                 <RangePicker placeholder={['开始日期', '结束日期']} style={{ width: '100%' }} />
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择数据维度' }]}
                 name="businessType"
                 label="数据维度"
               >
-                <Select placeholder="请选择数据维度" allowClear>
+                <Select placeholder="请选择数据维度" allowClear onChange={changeBusinessType}>
                   {BUSINESSTYPE.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
@@ -122,18 +284,24 @@ const StepOne: React.FC<any> = (props: any) => {
                 </Select>
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择产品大类' }]}
                 name="prodCat"
                 label="产品大类"
+                initialValue={'-1'}
               >
-                <Select placeholder="请选择产品大类" allowClear mode="multiple">
-                  {demoList.map((item: any, index: number) => {
+                <Select
+                  placeholder="请选择产品大类"
+                  allowClear
+                  mode="multiple"
+                  onChange={changeProduct}
+                  onSelect={(value, opt) => onSelect(value, opt, 'prodCat')}
+                >
+                  {productList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
-                        {item.label}
+                        {item.name}
                       </Option>
                     );
                   })}
@@ -145,12 +313,19 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择渠道中类' }]}
                 name="channelCatM"
                 label="渠道中类"
+                // initialValue={'-1'}
               >
-                <Select placeholder="请选择渠道中类" allowClear mode="multiple">
-                  {demoList.map((item: any, index: number) => {
+                <Select
+                  placeholder="请选择渠道中类"
+                  allowClear
+                  mode="multiple"
+                  onChange={changeChannelCatM}
+                  onSelect={(value, opt) => onSelect(value, opt, 'channelCatM')}
+                >
+                  {channelMidList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
-                        {item.label}
+                        {item.name}
                       </Option>
                     );
                   })}
@@ -162,30 +337,43 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择渠道小类' }]}
                 name="channelCatS"
                 label="渠道小类"
+                initialValue={'-1'}
               >
-                <Select placeholder="请选择渠道小类" allowClear mode="multiple">
-                  {demoList.map((item: any, index: number) => {
+                <Select
+                  placeholder="请选择渠道小类"
+                  allowClear
+                  mode="multiple"
+                  onChange={changeChannelCatS}
+                  onSelect={(value, opt) => onSelect(value, opt, 'channelCatS')}
+                >
+                  {channelSmList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
-                        {item.label}
+                        {item.name}
                       </Option>
                     );
                   })}
                 </Select>
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择客群大类' }]}
                 name="custCat"
                 label="客群大类"
+                initialValue={'-1'}
               >
-                <Select placeholder="请选择客群大类" allowClear mode="multiple">
-                  {demoList.map((item: any, index: number) => {
+                <Select
+                  placeholder="请选择客群大类"
+                  allowClear
+                  mode="multiple"
+                  onChange={changeCustCat}
+                  onSelect={(value, opt) => onSelect(value, opt, 'custCat')}
+                >
+                  {custCatList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
-                        {item.label}
+                        {item.name}
                       </Option>
                     );
                   })}
@@ -197,30 +385,40 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择客群小类' }]}
                 name="custCatS"
                 label="客群小类"
+                initialValue={['-1']}
               >
-                <Select placeholder="请选择客群小类" allowClear mode="multiple">
-                  {demoList.map((item: any, index: number) => {
+                <Select
+                  placeholder="请选择客群小类"
+                  allowClear
+                  mode="multiple"
+                  onSelect={(value, opt) => onSelect(value, opt, 'custCatS')}
+                >
+                  {custCatSmList.map((item: any, index: number) => {
                     return (
                       <Option value={item.value} key={index}>
-                        {item.label}
+                        {item.name}
                       </Option>
                     );
                   })}
                 </Select>
               </FormItem>
             </Col>
-
             <Col span={8}>
               <FormItem
                 rules={[{ required: true, message: '请选择编排调度' }]}
                 name="processName"
                 label="编排调度"
               >
-                <Select placeholder="请选择编排调度" allowClear mode="multiple">
-                  {demoList.map((item: any, index: number) => {
+                <Select
+                  placeholder="请选择编排调度"
+                  mode="multiple"
+                  allowClear
+                  onSelect={(value, opt) => onSelect(value, opt, 'processName')}
+                >
+                  {processList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
-                        {item.label}
+                      <Option value={item.value} key={item.value}>
+                        {item.name}
                       </Option>
                     );
                   })}
