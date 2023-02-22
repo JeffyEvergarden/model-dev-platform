@@ -158,6 +158,89 @@ const getSelectionList = (req: any, res: any) => {
   });
 };
 
+const getParams = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      prodTree: [
+        {
+          id: 1,
+          parentId: 0,
+          name: '产品大类1',
+          children: [
+            {
+              id: 2,
+              parentId: 1,
+              name: '渠道中类1',
+              children: [
+                {
+                  id: 3,
+                  parentId: 2,
+                  name: '渠道小类1',
+                  children: [
+                    {
+                      id: 4,
+                      parentId: 3,
+                      name: '客群大类1',
+                      children: [
+                        {
+                          id: 5,
+                          parentId: 6,
+                          name: '客群小类1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 11,
+          parentId: 0,
+          name: '产品大类2',
+          children: [
+            {
+              id: 12,
+              parentId: 11,
+              name: '渠道中类2',
+              children: [
+                {
+                  id: 13,
+                  parentId: 12,
+                  name: '渠道小类2',
+                  children: [
+                    {
+                      id: 14,
+                      parentId: 13,
+                      name: '客群大类2',
+                      children: [
+                        {
+                          id: 15,
+                          parentId: 14,
+                          name: '客群小类2',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      processList: [
+        { name: '编排1', value: '1' },
+        { name: '编排2', value: '2' },
+      ],
+    },
+  });
+};
+
 export default {
   [`POST ${baseUrl}/sampleSelection/submit`]: submit,
   [`POST ${baseUrl}/stage/getDetailInfo`]: getDetailInfo,
@@ -166,4 +249,5 @@ export default {
   [`POST ${baseUrl}/sampleSelection/nextStage`]: normalDeal,
   [`GET ${baseUrl}/sampleSelection/getModelLabelList`]: getModelLabelList,
   [`GET ${baseUrl}/sampleSelection/getSelectionList`]: getSelectionList,
+  [`GET ${baseUrl}/sampleSelection/getParams`]: getParams,
 };
