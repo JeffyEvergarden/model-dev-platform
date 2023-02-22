@@ -16,17 +16,6 @@ const { RangePicker }: any = DatePicker;
 
 const { Option } = Select;
 
-const demoList: any[] = [
-  {
-    value: 1,
-    label: '选择一',
-  },
-  {
-    value: 2,
-    label: '选择二',
-  },
-];
-
 const BUSINESSTYPE: any[] = [
   {
     value: 'SX',
@@ -120,7 +109,7 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeProduct = (val: any, option: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('-1')) {
+      if (val?.includes('all')) {
         list = originChannelMidList;
       } else {
         val.forEach((ele: any) => {
@@ -148,13 +137,13 @@ const StepOne: React.FC<any> = (props: any) => {
   };
 
   const onSelect = (value: any, option: any, type: any) => {
-    if (value == '-1') {
+    if (value == 'all') {
       form.setFieldsValue({
-        [type]: '-1',
+        [type]: 'all',
       });
     } else {
       let formval = form.getFieldsValue(type);
-      let temp = formval?.[type]?.filter((item: any) => item !== '-1');
+      let temp = formval?.[type]?.filter((item: any) => item !== 'all');
       form.setFieldsValue({
         [type]: temp,
       });
@@ -164,7 +153,7 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeChannelCatM = (val: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('-1')) {
+      if (val?.includes('all')) {
         list = originChannelSmList;
       } else {
         val.forEach((ele: any) => {
@@ -190,7 +179,7 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeChannelCatS = (val: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('-1')) {
+      if (val?.includes('all')) {
         list = originCustCatList;
       } else {
         val.forEach((ele: any) => {
@@ -213,7 +202,7 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeCustCat = (val: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('-1')) {
+      if (val?.includes('all')) {
         list = originCustCatSmList;
       } else {
         val.forEach((ele: any) => {
@@ -289,7 +278,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择产品大类' }]}
                 name="prodCat"
                 label="产品大类"
-                initialValue={'-1'}
+                initialValue={'all'}
               >
                 <Select
                   placeholder="请选择产品大类"
@@ -313,7 +302,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择渠道中类' }]}
                 name="channelCatM"
                 label="渠道中类"
-                // initialValue={'-1'}
+                // initialValue={'all'}
               >
                 <Select
                   placeholder="请选择渠道中类"
@@ -337,7 +326,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择渠道小类' }]}
                 name="channelCatS"
                 label="渠道小类"
-                initialValue={'-1'}
+                initialValue={'all'}
               >
                 <Select
                   placeholder="请选择渠道小类"
@@ -361,7 +350,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择客群大类' }]}
                 name="custCat"
                 label="客群大类"
-                initialValue={'-1'}
+                initialValue={'all'}
               >
                 <Select
                   placeholder="请选择客群大类"
@@ -385,7 +374,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择客群小类' }]}
                 name="custCatS"
                 label="客群小类"
-                initialValue={['-1']}
+                initialValue={['all']}
               >
                 <Select
                   placeholder="请选择客群小类"

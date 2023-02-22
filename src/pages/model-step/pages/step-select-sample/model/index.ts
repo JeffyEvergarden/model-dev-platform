@@ -149,14 +149,14 @@ export const useStepSelectModel = () => {
     setTableLoading(false);
     let tempProcessList: any[] = res?.result?.processList;
     tempProcessList.unshift({
-      value: '-1',
+      value: 'all',
       name: '全部',
     });
     setProcessList(tempProcessList);
     if (res.status?.code === successCode) {
       let data: any = deepFormateData(res.result?.prodTree, 1);
       data.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
         children: [],
       });
@@ -185,19 +185,19 @@ export const useStepSelectModel = () => {
       });
 
       channelMidTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
       channelSmTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
       custCatTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
       custCatSmTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
 
