@@ -22,7 +22,7 @@ const getList = (req: any, res: any) => {
 
   res.json({
     status: { code: successCode, desc: '' },
-    data: {
+    result: {
       totalPage: 7,
       pageSize: 10,
       current: 1,
@@ -42,7 +42,7 @@ const getInfo = (req: any, res: any) => {
 
   res.json({
     status: { code: successCode, desc: '' },
-    data: list,
+    result: list,
   });
 };
 

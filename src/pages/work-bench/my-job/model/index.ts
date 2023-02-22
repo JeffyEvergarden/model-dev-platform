@@ -25,7 +25,7 @@ export const useTableModel = () => {
     setTableLoading(true);
     let res: any = await getModelList(params);
     setTableLoading(false);
-    let { tableData: list = [], totalPage, totalSize } = res.data;
+    let { tableData: list = [], totalPage, totalSize } = res?.result;
     if (!Array.isArray(list)) {
       list = [];
     }
@@ -45,7 +45,7 @@ export const useTableModel = () => {
     setInfoLoading(true);
     let res: any = await getModelInfo(params);
     setInfoLoading(false);
-    setInfoList(res?.data || []);
+    setInfoList(res?.result || []);
   };
 
   const getUserList = async (params?: any) => {
