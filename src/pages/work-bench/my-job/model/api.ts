@@ -12,10 +12,10 @@ export async function getModelList(data?: { [key: string]: any }) {
 }
 
 /** 获取事项 **/
-export async function getSummaryList(data?: { [key: string]: any }) {
+export async function getSummaryList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/myWorkbench/myModelInfoSummary`, {
-    method: 'POST',
-    data,
+    method: 'GET',
+    params,
   });
 }
 
