@@ -5,6 +5,7 @@ import config from '../config';
 
 const request = extend({
   timeout: 10000, // 超时10s就报错提示
+  withCredentials: true,
   // headers: {
   //   'Content-Type': 'multipart/form-data',
   // },

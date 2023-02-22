@@ -21,14 +21,14 @@ export default [
     component: './work-bench/home',
     routes: [
       {
-        path: '/workBench/moy-job',
+        path: '/workBench/my-job',
         component: './work-bench/my-job',
       },
       {
         path: '/workBench/viewReport',
         component: './work-bench/viewReport',
       },
-      { redirect: '/workBench/moy-job' },
+      { redirect: '/workBench/my-job' },
     ],
   },
   {
