@@ -4,7 +4,7 @@ import config from '../config';
 // import { history } from 'umi';
 
 const request = extend({
-  timeout: 10000, // 超时10s就报错提示
+  timeout: 20000, // 超时10s就报错提示
   withCredentials: true,
   // headers: {
   //   'Content-Type': 'multipart/form-data',
@@ -15,14 +15,19 @@ const request = extend({
   errorHandler: function (error: any) {
     // 捕获错误
     console.log('捕获错误');
-    // console.log(error);
+    console.log('error:');
+    console.log(error?.response);
     // console.log(Object.keys(error));
     // console.log(Object.keys(error).map((it: any) => error[it]));
     // 权限无验证 跳转 统一认证页面
     if (error?.response.status === 401) {
-      if (!process.env.mock) {
+      if (!process.env.devmock) {
         window.location.href = `${config.originPath}/login`; // 填写统一认证地址，地址不固定
       }
+    } else if (error?.response.status === 404) {
+      message.warning('请求路径不存在');
+    } else if (error?.response.status === 403) {
+      message.warning('请求路径forbidden');
     }
     if (error?.type === 'Timeout') {
       message.warning('请求超时');
