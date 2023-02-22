@@ -5,7 +5,7 @@ export default function useAuthModel() {
   // 初始化信息
   const { initialState } = useModel('@@initialState');
 
-  const { userAuth = [] }: any = initialState;
+  const { userAuth = [] }: any = initialState || {};
 
   console.log('userAuth', userAuth);
 

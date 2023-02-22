@@ -78,18 +78,27 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     },
   ];
 
+  const overMenu = (
+    <Menu className={styles.menu} onClick={onMenuClick}>
+      <Menu.Item key={'logout'}>
+        <LogoutOutlined />
+        退出登录
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    // <HeaderDropdown menu={{ items: menuItems, onClick: onMenuClick }}>
-    <span className={`${styles.action} ${styles.account}`}>
-      <Avatar
-        size="small"
-        className={styles.avatar}
-        src={currentUser.avatar || userPic1}
-        alt="avatar"
-      />
-      <span className={`${styles.name} anticon`}>{currentUser.userName}</span>
-    </span>
-    // </HeaderDropdown>
+    <HeaderDropdown overlay={overMenu}>
+      <span className={`${styles.action} ${styles.account}`}>
+        <Avatar
+          size="small"
+          className={styles.avatar}
+          src={currentUser.avatar || userPic1}
+          alt="avatar"
+        />
+        <span className={`${styles.name} anticon`}>{currentUser.userName}</span>
+      </span>
+    </HeaderDropdown>
   );
 };
 
