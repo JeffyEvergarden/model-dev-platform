@@ -51,7 +51,7 @@ export const useTableModel = () => {
   const getUserList = async (params?: any) => {
     let res: any = await getModelAnalysts();
 
-    let data = res?.data?.map((item: any) => {
+    let data = res?.result?.map((item: any) => {
       return {
         name: item,
         label: item,
@@ -136,9 +136,9 @@ export const useSummaryModel = () => {
   const getSummaryInfo = async (params?: any) => {
     let res: any = await getSummaryList(params);
     if (res?.status?.code == successCode) {
-      setAllItemNum(res?.data?.allItemNum);
-      setIncompleteNum(res?.data?.incompleteNum);
-      setCompleteNum(res?.data?.completeNum);
+      setAllItemNum(res?.result?.allItemNum);
+      setIncompleteNum(res?.result?.incompleteNum);
+      setCompleteNum(res?.result?.completeNum);
     }
   };
 

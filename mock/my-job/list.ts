@@ -50,7 +50,7 @@ const getSummaryList = (req: any, res: any) => {
   res.json({
     status: { code: successCode, desc: '' },
 
-    data: {
+    result: {
       allItemNum: 10,
       incompleteNum: 7,
       completeNum: 3,
@@ -67,7 +67,7 @@ const normalDeal = (req: any, res: any) => {
 const userList = (req: any, res: any) => {
   res.json({
     status: { code: successCode, desc: '' },
-    data: ['梁山伯', '梁博'],
+    result: ['梁山伯', '梁博'],
   });
 };
 
