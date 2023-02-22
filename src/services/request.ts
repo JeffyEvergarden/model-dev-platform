@@ -20,7 +20,7 @@ const request = extend({
     // 权限无验证 跳转 统一认证页面
     if (error?.response.status === 401) {
       if (!process.env.mock) {
-        window.location.href = `${config.basePath}/login`; // 填写统一认证地址，地址不固定
+        window.location.href = `${config.originPath}/login`; // 填写统一认证地址，地址不固定
       }
     }
     if (error?.type === 'Timeout') {
