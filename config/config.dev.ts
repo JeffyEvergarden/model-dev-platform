@@ -13,7 +13,7 @@ export default defineConfig({
     babelOptions: {},
   },
   define: {
-    // 开启mock
-    'process.env.mock': true,
+    // 开启联调mock
+    'process.env.devmock': process.env.MOCK === 'none',
   },
 });
