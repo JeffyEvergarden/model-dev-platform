@@ -1,5 +1,6 @@
 import { extend } from 'umi-request';
 import { message } from 'antd';
+import config from '../config';
 // import { history } from 'umi';
 
 const request = extend({
@@ -18,7 +19,9 @@ const request = extend({
     // console.log(Object.keys(error).map((it: any) => error[it]));
     // 权限无验证 跳转 统一认证页面
     if (error?.response.status === 401) {
-      window.location.href = `/bgs/login`; // 填写统一认证地址，地址不固定
+      if (!process.env.mock) {
+        window.location.href = `${config.basePath}/login`; // 填写统一认证地址，地址不固定
+      }
     }
     if (error?.type === 'Timeout') {
       message.warning('请求超时');
