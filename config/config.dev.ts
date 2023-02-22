@@ -12,4 +12,7 @@ export default defineConfig({
     babelPlugins: [],
     babelOptions: {},
   },
+  define: {
+    'process.env.mock': true,
+  },
 });

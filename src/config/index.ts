@@ -1,5 +1,5 @@
 export default {
-  basePath: '/modelDev',
+  basePath: process.env.mock ? '/modelDev' : '/dev',
   originPath: '/modelDev',
   successCode: '000',
 };

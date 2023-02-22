@@ -8,24 +8,24 @@
  */
 export default {
   dev: {
-    // '/modelDev': {
-    //   target: 'http://11.221.90.6:18091',
-    //   changeOrigin: true,
-    //   pathRewrite: { '^': '' },
-    // },
-  },
-  test: {
-    '/api/': {
-      target: 'https://proapi.azurewebsites.net',
+    '/dev/': {
+      target: 'http://11.221.90.6:18091',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
+      pathRewrite: { '^/dev': '/modelDev' },
     },
   },
-  pre: {
-    '/api/': {
-      target: 'your pre url',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
+  // test: {
+  //   '/api/': {
+  //     target: 'https://proapi.azurewebsites.net',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^': '' },
+  //   },
+  // },
+  // pre: {
+  //   '/api/': {
+  //     target: 'your pre url',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^': '' },
+  //   },
+  // },
 };
