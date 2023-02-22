@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, Table, Space } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, Table, Space, message } from 'antd';
 import styles from '../style.less';
 import style from './style.less';
 import { useDefineSampleModel } from './model';
@@ -133,6 +133,12 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       return false;
     });
     console.log(submitObj);
+    let flag = timeTest(submitObj);
+    if (!flag) {
+      message.warning('整体分布时间段不能重叠');
+      return;
+    }
+
     if (!submitObj) {
       return;
     }
@@ -154,6 +160,11 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   const _nextFlow = () => {
     form.validateFields().then((value: any) => {
       if (value) {
+        let flag = timeTest(value);
+        if (!flag) {
+          message.warning('整体分布时间段不能重叠');
+          return;
+        }
         nextFlow({ itmModelRegisCode: modelId, ...value }).then((res) => {
           if (res) {
             nextStep();
@@ -180,6 +191,40 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     console.log(formData);
 
     form.setFieldsValue({ ...formData });
+  };
+
+  const timeTest = (obj: any) => {
+    let arr: any = [];
+    Object.values(obj).forEach((item: any) => {
+      if (!item) {
+        return;
+      }
+      if (Array.isArray(item[0])) {
+        item?.forEach((item: any) => {
+          arr.push({
+            s: item[0].startOf('day'),
+            e: item[1].startOf('day'),
+          });
+        });
+      } else {
+        arr.push({
+          s: item[0].startOf('day'),
+          e: item[1].startOf('day'),
+        });
+      }
+    });
+    arr = arr.sort((a: any, b: any) => {
+      return a.s - b.s;
+    });
+    let flag = arr.every((item: any, index: any) => {
+      if (index > 0) {
+        return item.s > arr[index - 1].e;
+      } else {
+        return true;
+      }
+    });
+    console.log(flag);
+    return flag;
   };
 
   return (
@@ -330,7 +375,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             pagination={false}
             dataSource={resultTableList}
             columns={columns2}
-            rowKey="month"
+            rowKey="index"
             loading={resultLoading}
           />
         </div>
