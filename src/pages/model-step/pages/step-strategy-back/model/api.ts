@@ -4,10 +4,10 @@ import config from '@/config/index';
 const baseUrl: string = config.basePath;
 
 //列表
-export async function getStrategyBackList(data?: { [key: string]: any }) {
+export async function getStrategyBackList(params?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/getProcessInfo`, {
-    method: 'POST',
-    data,
+    method: 'GET',
+    params,
   });
 }
 
@@ -20,10 +20,10 @@ export async function backTracking(data?: { [key: string]: any }) {
 }
 
 //查询回溯状态
-export async function getStageStatus(data?: { [key: string]: any }) {
+export async function getStageStatus(params?: { [key: string]: any }) {
   return request(`${baseUrl}/policyBacktrack/getStageStatus`, {
-    method: 'POST',
-    data,
+    method: 'GET',
+    params,
   });
 }
 
