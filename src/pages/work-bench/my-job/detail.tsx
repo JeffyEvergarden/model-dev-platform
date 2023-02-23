@@ -15,7 +15,7 @@ const DetailModal: React.FC<any> = (props: any) => {
     // 问题列表-列
     {
       title: '数据集',
-      dataIndex: 'dataSet',
+      dataIndex: 'tableName',
     },
     {
       title: '存放库',
@@ -55,7 +55,7 @@ const DetailModal: React.FC<any> = (props: any) => {
         scroll={{ y: 500 }}
         dataSource={infoList}
         columns={columns}
-        rowKey="dataSet"
+        rowKey="tableName"
       />
     </Modal>
   );
