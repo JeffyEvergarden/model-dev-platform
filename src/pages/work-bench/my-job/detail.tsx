@@ -7,7 +7,9 @@ import style from './style.less';
 const DetailModal: React.FC<any> = (props: any) => {
   const [visible, setVisible] = useState<any>(false);
   const [title, setTitle] = useState<any>('评分表');
-  const { InfoList, getItemInfo, infoLoading } = useTableModel();
+  // const { InfoList, getItemInfo, infoLoading } = useTableModel();
+  const [infoList, setInfoList] = useState<any>([]);
+
   const { cref } = props;
   const columns: any[] = [
     // 问题列表-列
@@ -35,10 +37,7 @@ const DetailModal: React.FC<any> = (props: any) => {
   const open = (row: any) => {
     setVisible(true);
     setTitle(`${row?.modelName}评分卡`);
-    let reqData: any = {
-      itmModelRegisCode: row?.itmModelRegisCode,
-    };
-    getItemInfo(reqData);
+    setInfoList(row?.hiveTableInfo || []);
   };
   return (
     <Modal
@@ -54,10 +53,9 @@ const DetailModal: React.FC<any> = (props: any) => {
         size="small"
         pagination={{ pageSize: 20 }}
         scroll={{ y: 500 }}
-        dataSource={InfoList}
+        dataSource={infoList}
         columns={columns}
         rowKey="dataSet"
-        loading={infoLoading}
       />
     </Modal>
   );
