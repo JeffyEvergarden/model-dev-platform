@@ -5,7 +5,7 @@ const baseUrl: string = config.basePath;
 
 //列表
 export async function getStrategyBackList(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/policyBacktrack/getProcessInfo`, {
+  return request(`${baseUrl}/strategyBacktrack/getProcessInfo`, {
     method: 'GET',
     params,
   });
@@ -13,7 +13,7 @@ export async function getStrategyBackList(params?: { [key: string]: any }) {
 
 //提交
 export async function backTracking(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/policyBacktrack/backTracking`, {
+  return request(`${baseUrl}/strategyBacktrack/backTracking`, {
     method: 'POST',
     data,
   });
@@ -21,7 +21,7 @@ export async function backTracking(data?: { [key: string]: any }) {
 
 //查询回溯状态
 export async function getStageStatus(params?: { [key: string]: any }) {
-  return request(`${baseUrl}/policyBacktrack/getStageStatus`, {
+  return request(`${baseUrl}/strategyBacktrack/getStageStatus`, {
     method: 'GET',
     params,
   });
@@ -29,7 +29,7 @@ export async function getStageStatus(params?: { [key: string]: any }) {
 
 //跳过，下一流程
 export async function skipCurrentStage(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/policyBacktrack/skipCurrentStage`, {
+  return request(`${baseUrl}/strategyBacktrack/skipCurrentStage`, {
     method: 'POST',
     data,
   });
@@ -37,7 +37,7 @@ export async function skipCurrentStage(data?: { [key: string]: any }) {
 
 //下一流程
 export async function nextStage(data?: { [key: string]: any }) {
-  return request(`${baseUrl}/policyBacktrack/nextStage`, {
+  return request(`${baseUrl}/strategyBacktrack/nextStage`, {
     method: 'POST',
     data,
   });

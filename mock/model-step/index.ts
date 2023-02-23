@@ -170,9 +170,9 @@ export default {
   // [`GET ${baseUrl}/stage/getCurrentStage`]: getWaitResult,
 
   // 策略回溯
-  [`POST ${baseUrl}/policyBacktrack/getProcessInfo`]: getStrategyBackList,
-  [`POST ${baseUrl}/policyBacktrack/getStageStatus`]: getWaitResult,
-  [`POST ${baseUrl}/policyBacktrack/backTracking`]: normalDeal,
-  [`POST ${baseUrl}/policyBacktrack/nextStage`]: normalDeal,
-  [`POST ${baseUrl}/policyBacktrack/skipCurrentStage`]: normalDeal,
+  [`GET ${baseUrl}/strategyBacktrack/getProcessInfo`]: getStrategyBackList,
+  [`GET ${baseUrl}/strategyBacktrack/getStageStatus`]: getWaitResult,
+  [`POST ${baseUrl}/strategyBacktrack/backTracking`]: normalDeal,
+  [`POST ${baseUrl}/strategyBacktrack/nextStage`]: normalDeal,
+  [`POST ${baseUrl}/strategyBacktrack/skipCurrentStage`]: normalDeal,
 };
