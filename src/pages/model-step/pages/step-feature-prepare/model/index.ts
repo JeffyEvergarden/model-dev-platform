@@ -51,13 +51,13 @@ export const useVarSelectModal = () => {
     let res: any = await getVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.data?.tableData || [];
+      let data = res?.result?.tableData || [];
       if (!params?.searchType) {
         setVarList(data);
         setListType('tree');
-        setTotalSize(res?.data?.totalPage || 0);
+        setTotalSize(res?.result?.totalPage || 0);
       }
-      return { data, total: res?.data?.totalPage };
+      return { data, total: res?.result?.totalPage };
     } else {
       if (!params?.searchType) {
         setVarList([]);
@@ -72,11 +72,11 @@ export const useVarSelectModal = () => {
     let res: any = await getKeyVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.data?.tableData || [];
+      let data = res?.result?.tableData || [];
       setVarList(data);
       setListType('search');
-      setTotalSize(res?.data?.totalPage || 0);
-      return { data, total: res?.data?.totalPage };
+      setTotalSize(res?.result?.totalPage || 0);
+      return { data, total: res?.result?.totalPage };
     } else {
       setVarList([]);
       message.warning(res?.resultDesc);
@@ -110,7 +110,7 @@ export const useVarSelectModal = () => {
     let res: any = await getInfo({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.data || {};
+      let data = res?.result || {};
       return data?.featureVOList || [];
     } else {
       message.error(res?.status?.desc || '');

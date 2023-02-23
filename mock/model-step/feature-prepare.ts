@@ -70,7 +70,7 @@ const getVarList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    data: {
+    result: {
       pageSize: req?.pageSize || 10,
       totalPage: 21,
       current: 1,
@@ -92,7 +92,7 @@ const getInfo = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    data: {
+    result: {
       featureVOList: [...list],
     },
   });
