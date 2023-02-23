@@ -5,9 +5,7 @@ import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
 import { useSampleUploadAwaitModel, useSample } from './model';
-
 import { tabSelectColumns, tabSelectColumnsTwo } from './model/config';
-import { getModelStepDetail } from '../../model/api';
 
 const FormItem = Form.Item;
 
@@ -24,8 +22,8 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { processType, awaitResult, startLoop } = useSampleUploadAwaitModel();
-  const { getCurrentDetailRequest } = useSample();
+  const { processType, startLoop } = useSampleUploadAwaitModel();
+  const { getSample } = useSample();
 
   const [detailInfo, setDetailInfo] = useState<any>({});
   const onClick = () => {
@@ -44,8 +42,8 @@ const StepTwo: React.FC<any> = (props: any) => {
       itmModelRegisCode: '',
       stage: '2',
     };
-    let res = await getCurrentDetailRequest(params);
-    setDetailInfo(res?.result?.sampleParam);
+    let res = await getSample(params);
+    setDetailInfo({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
   };
 
   return (

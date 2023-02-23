@@ -6,6 +6,7 @@ import moment from 'moment';
 import FeatureCodeForm from './components/featureCodeForm';
 import { useStepSelectModel } from './model';
 import config from '@/config/index';
+import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
 export const successCode = config.successCode;
 
 const FormItem = Form.Item;
@@ -26,7 +27,7 @@ const BUSINESSTYPE: any[] = [
 // 首页
 const StepOne: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { form, onNext, editData } = props;
+  const { form, onNext, editData, labelList, featureOperatorMap } = props;
 
   const [_form] = Form.useForm(form);
 
@@ -44,6 +45,11 @@ const StepOne: React.FC<any> = (props: any) => {
     setCustCatList,
     custCatSmList,
     setCustCatSmList,
+
+    operationList,
+    setOperationList,
+    getSelectionList,
+    paramList,
 
     originChannelMidList,
     originChannelSmList,
@@ -65,10 +71,34 @@ const StepOne: React.FC<any> = (props: any) => {
       custCat: getFn(editData?.custCat),
       processName: getFn(editData?.processName),
 
-      featureCode: editData?.featureLabel?.featureCode,
-      operator: editData?.featureLabel?.operator,
-      params: editData?.featureLabel?.params,
+      featureCode: editData?.featureCode,
+      operator: editData?.operator,
+      // params: editData?.params,
     });
+    setOperationList(featureOperatorMap?.[editData?.featureType]);
+    getSelectionList({ labelId: editData?.featureCode });
+    if (editData?.featureType == 'number' && inputNumberRangerList.includes(editData?.operator)) {
+      let paramsArr = editData?.params?.split(',');
+      form.setFieldsValue({
+        paramFir: paramsArr?.[0],
+        paramTwo: paramsArr?.[1],
+      });
+    }
+
+    if (editData?.featureType == 'datetime' && DatePickerList.includes(editData?.operator)) {
+      let paramsDate = moment(editData?.params);
+      form.setFieldsValue({
+        params: paramsDate,
+      });
+    }
+
+    if (editData?.featureType == 'datetime' && RangePickerList.includes(editData?.operator)) {
+      let tempArr = editData?.params?.split(',');
+      let paramsRangeTime = [moment(tempArr?.[0]), moment(tempArr?.[1])];
+      form.setFieldsValue({
+        params: paramsRangeTime,
+      });
+    }
   }, [editData]);
 
   const getFn = (str: string) => {
@@ -221,6 +251,7 @@ const StepOne: React.FC<any> = (props: any) => {
 
   const onClick = async () => {
     let val = await form.validateFields();
+    console.log('');
     if (val.date) {
       val.startTime = val.date?.[0]?.format('YYYY-MM-DD');
       val.endTime = val.date?.[1]?.format('YYYY-MM-DD');
@@ -417,7 +448,14 @@ const StepOne: React.FC<any> = (props: any) => {
           </Row>
         </div>
       </Form>
-      <FeatureCodeForm form={_form} />
+      <FeatureCodeForm
+        form={_form}
+        editData={editData}
+        labelList={labelList}
+        featureOperatorMap={featureOperatorMap}
+        operationList={operationList}
+        paramList={paramList}
+      />
       <NextStepButton onClick={onClick} text={'提交'} />
     </div>
   );

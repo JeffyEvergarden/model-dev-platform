@@ -33,7 +33,7 @@ const StepOne: React.FC = (props: any) => {
 
   const [form] = Form.useForm();
 
-  const { getForm, postForm, loading } = useFormSelect();
+  const { getForm, nextStage, saveInfo, loading } = useFormSelect();
 
   const { nextStep } = useNextStep();
 
@@ -70,17 +70,28 @@ const StepOne: React.FC = (props: any) => {
     let _form = await form.validateFields().then((obj) => {
       return {
         ...obj,
+        itmModelRegisCode: modelId,
       };
     });
     let modelDevTime = _form.modelDevTime;
     _form.modelDevStartTime = modelDevTime?.[0]?.format('YYYY-MM-DD');
     _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
 
-    let res = await postForm(_form);
-    // console.log(_form, res)
-    if (res) {
-      // 跳到下一个步骤
-      nextStep();
+    if (doneStep > 3) {
+      let res = await nextStage({ itmModelRegisCode: modelId });
+      // console.log(_form, res)
+      if (res) {
+        // 跳到下一个步骤
+        nextStep();
+      }
+    } else {
+      let res = await saveInfo(_form);
+      if (res?.status?.code == successCode) {
+        message.success(res?.status?.desc);
+        nextStep();
+      } else {
+        message.error(res?.status?.desc);
+      }
     }
   };
 
@@ -88,7 +99,7 @@ const StepOne: React.FC = (props: any) => {
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
         <span>模型概况</span>
-        <TitleStatus index={1}></TitleStatus>
+        <TitleStatus index={1} />
       </div>
 
       <Form form={form} layout="vertical" labelAlign="right">
@@ -105,16 +116,11 @@ const StepOne: React.FC = (props: any) => {
             label="模型名称"
             style={{ width: '400px' }}
           >
-            <Input
-              placeholder="请输入模型名称"
-              maxLength={150}
-              autoComplete="off"
-              disabled={isDisabled}
-            />
+            <Input placeholder="请输入模型名称" maxLength={150} autoComplete="off" disabled />
           </FormItem>
 
           <FormItem
-            // rules={[{ required: true, message: '请输入节点描述' }]}
+            rules={[{ required: true, message: '请输入模型开发目标' }]}
             name="modelDevTarget"
             label="模型开发目标"
             style={{ width: '600px' }}
@@ -128,6 +134,7 @@ const StepOne: React.FC = (props: any) => {
           </FormItem>
 
           <FormItem
+            rules={[{ required: true, message: '请输入现有评分应用现状' }]}
             name="modelPresentSituation"
             label="现有评分应用现状"
             style={{ width: '600px' }}
@@ -140,7 +147,12 @@ const StepOne: React.FC = (props: any) => {
             />
           </FormItem>
 
-          <FormItem name="modelSceneThought" label="模型应用场景和思路" style={{ width: '600px' }}>
+          <FormItem
+            name="modelSceneThought"
+            label="模型应用场景和思路"
+            style={{ width: '600px' }}
+            rules={[{ required: true, message: '请输入模型应用场景和思路' }]}
+          >
             <TextArea
               rows={4}
               placeholder="请输入模型应用场景和思路"
@@ -153,6 +165,7 @@ const StepOne: React.FC = (props: any) => {
             name="modelPerformanceMetrics"
             label="模型主要性能指标"
             style={{ width: '600px' }}
+            rules={[{ required: true, message: '请输入模型主要性能指标' }]}
           >
             <TextArea
               rows={4}
@@ -162,7 +175,12 @@ const StepOne: React.FC = (props: any) => {
             />
           </FormItem>
 
-          <FormItem name="modelInnovation" label="模型主要创新点" style={{ width: '600px' }}>
+          <FormItem
+            name="modelInnovation"
+            label="模型主要创新点"
+            style={{ width: '600px' }}
+            rules={[{ required: true, message: '请输入模型主要创新点' }]}
+          >
             <TextArea
               rows={4}
               placeholder="请输入模型主要创新点"
@@ -171,7 +189,12 @@ const StepOne: React.FC = (props: any) => {
             />
           </FormItem>
 
-          <FormItem name="modelDevTime" label="模型开发时间" style={{ width: '600px' }}>
+          <FormItem
+            name="modelDevTime"
+            label="模型开发时间"
+            style={{ width: '600px' }}
+            rules={[{ required: true, message: '请选择模型开发时间' }]}
+          >
             <RangePicker
               // format="YYYY-MM-DD"
               style={{ width: '400px' }}
@@ -181,17 +204,28 @@ const StepOne: React.FC = (props: any) => {
             />
           </FormItem>
 
-          <FormItem name="modelAnalyst" label="模型开发人" style={{ width: '400px' }}>
-            <Input placeholder="模型开发人" maxLength={150} disabled={isDisabled} />
+          <FormItem
+            name="modelAnalyst"
+            label="模型开发人"
+            style={{ width: '400px' }}
+            rules={[{ required: true, message: '请输入模型开发人' }]}
+          >
+            <Input placeholder="模型开发人" maxLength={150} disabled />
           </FormItem>
 
-          <FormItem name="modelPolicyCounterpart" label="政策对接人" style={{ width: '400px' }}>
+          <FormItem
+            name="modelPolicyCounterpart"
+            label="政策对接人"
+            style={{ width: '400px' }}
+            rules={[{ required: true, message: '请输入政策对接人' }]}
+          >
             <Input placeholder="政策对接人" maxLength={150} disabled={isDisabled} />
           </FormItem>
         </div>
       </Form>
-
+      {/* doneStep>3 ---下一流程  doneStep<3 ---保存*/}
       <NextStepButton
+        text={doneStep > 3 ? '下一流程' : '保存'}
         onClick={submitNextStep}
         loading={loading}
         disabled={isDisabled || isHadBuild}

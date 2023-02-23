@@ -13,6 +13,9 @@ import TabOne from './tab-one';
 import TabTwo from './tab-two';
 import config from '@/config';
 import { useSampleUploadAwaitModel, useSample } from './model';
+import { useModel } from 'umi';
+import { useStepSelectModel } from './model';
+import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
 
 const successCode = config.successCode;
 
@@ -27,9 +30,13 @@ const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
   const confirmModalRef: any = useRef();
 
-  const { processType } = useSampleUploadAwaitModel();
-  const { loading, submitSampleRequest, confirmSunmitRequest, getSampleRequst, sampleNext } =
-    useSample();
+  const { labelListRequest, labelList, featureOperatorMap } = useStepSelectModel();
+
+  const { loading, getSample, submitSampleRequest, confirmSunmitRequest, sampleNext } = useSample();
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   const [form1] = Form.useForm();
 
@@ -39,30 +46,56 @@ const StepOne: React.FC = (props: any) => {
 
   const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
 
-  // 过程id
-  const [processId, setProcessId] = useState<any>('1233');
-
   const [formValTwo, setFormValTwo] = useState<any>({});
   const [batchNo, setBatchNo] = useState<any>('');
   const [editData, setEditData] = useState<any>({});
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    labelListRequest(); //分群建模标签查询
+    getSelectDetail();
+  }, []);
+
+  const getSelectDetail = async () => {
+    let res = await getSample({ itmModelRegisCode: modelId });
+    if (res?.status?.code === successCode) {
+      setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
+    }
+  };
 
   const onChange = (e: any) => {
     setTabType(e.target.value);
   };
 
-  // 下一个步骤
+  // 提交
   const clickNextStep = async (val: any) => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
+      importType: tabType,
       ...val,
     };
     if (tabType == '0') {
+      let tempParams: any;
+      let featureType = '';
+      labelList.map((item: any) => {
+        if (item?.featureCode == val?.featureCode) {
+          featureType = item.featureType;
+        }
+      });
+      if (featureType == 'number' && inputNumberRangerList.includes(val?.operator)) {
+        tempParams = `${val?.paramFir},${val?.paramTwo}`;
+      }
+
+      if (featureType == 'datetime' && RangePickerList.includes(val?.operator)) {
+        tempParams = `${val?.params?.[0]?.format('YYYY-MM-DD HH:mm:ss')},${val?.params?.[1]?.format(
+          'YYYY-MM-DD HH:mm:ss',
+        )}`;
+      }
+      delete params?.params;
       params.featureLabel = {
         featureCode: val?.featureCode,
+        featureType,
         operator: val?.operator,
-        params: val?.params,
+        params: tempParams,
       };
     } else if (tabType == '1') {
       params.featureLabel = {
@@ -87,7 +120,7 @@ const StepOne: React.FC = (props: any) => {
 
   const confirmSunmit = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
       importType: tabType,
       businessType: formValTwo?.businessType,
       tableName: formValTwo?.tableName,
@@ -106,11 +139,11 @@ const StepOne: React.FC = (props: any) => {
   // 重新选取
   const onClickReSelect = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
-    let res = await getSampleRequst(params);
+    let res = await getSample(params);
     if (res?.status?.code == successCode) {
-      setEditData(res?.result?.sampleParam);
+      setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
       setTabType('0');
     } else {
@@ -121,7 +154,7 @@ const StepOne: React.FC = (props: any) => {
   //下一流程
   const nextFlow = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
     let res = await sampleNext(params);
     if (res?.status?.code == successCode) {
@@ -135,7 +168,7 @@ const StepOne: React.FC = (props: any) => {
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
         <span>样本选取</span>
-        <TitleStatus index={2}></TitleStatus>
+        <TitleStatus index={2} />
       </div>
 
       {/* 步骤一 */}
@@ -154,14 +187,25 @@ const StepOne: React.FC = (props: any) => {
         </Condition>
 
         <Condition r-if={tabType == '0'}>
-          <TabOne form={form2} onNext={clickNextStep} editData={editData} />
+          <TabOne
+            form={form2}
+            onNext={clickNextStep}
+            editData={editData}
+            labelList={labelList}
+            featureOperatorMap={featureOperatorMap}
+          />
         </Condition>
       </Condition>
 
       {/* 步骤二 */}
 
       <Condition r-if={stepType === 2}>
-        <TabTwo tabType={tabType} onClickReSelect={onClickReSelect} nextFlow={nextFlow} />
+        <TabTwo
+          tabType={tabType}
+          onClickReSelect={onClickReSelect}
+          nextFlow={nextFlow}
+          loading={loading}
+        />
       </Condition>
       <ConfirmModal cref={confirmModalRef} confirmSunmit={confirmSunmit} loading={loading} />
     </div>
