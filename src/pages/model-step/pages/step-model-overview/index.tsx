@@ -39,24 +39,35 @@ const StepOne: React.FC = (props: any) => {
 
   const _getForm = async () => {
     let res: any = await getForm(modelId);
+    let modelDevTime = undefined;
     if (res) {
-      let modelDevTime = undefined;
       try {
-        modelDevTime = [res.modelDevStartTime, res.modelDevEndTime];
+        modelDevTime = [res?.result?.modelDevStartTime, res.result?.modelDevEndTime];
         // 时间格式化
-        if (typeof modelDevTime[0] === 'string' && typeof modelDevTime[0] === 'string') {
+        if (
+          typeof modelDevTime[0] === 'string' &&
+          typeof modelDevTime[1] === 'string' &&
+          res.result?.modelDevStartTime &&
+          res.modelDevEndTime
+        ) {
           modelDevTime[0] = moment(modelDevTime[0]);
           modelDevTime[1] = moment(modelDevTime[1]);
+          form.setFieldsValue({
+            modelDevTime,
+          });
+        } else {
+          form.setFieldsValue({
+            modelDevTime: [],
+          });
         }
       } catch (e) {
         console.log(e);
         console.warn('获取表单时间格式化错误');
       }
-      form.setFieldsValue({
-        ...res?.result,
-        modelDevTime,
-      });
     }
+    form.setFieldsValue({
+      ...res?.result,
+    });
   };
 
   // 初始化获取表单已填信息
@@ -65,14 +76,7 @@ const StepOne: React.FC = (props: any) => {
   }, []);
 
   const submitNextStep = async () => {
-    // console.log('---------');
-    // ------------------------------
-    let _form = await form.validateFields().then((obj) => {
-      return {
-        ...obj,
-        itmModelRegisCode: modelId,
-      };
-    });
+    let _form = await form.validateFields();
     let modelDevTime = _form.modelDevTime;
     _form.modelDevStartTime = modelDevTime?.[0]?.format('YYYY-MM-DD');
     _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
@@ -85,7 +89,7 @@ const StepOne: React.FC = (props: any) => {
         nextStep();
       }
     } else {
-      let res = await saveInfo(_form);
+      let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });
       if (res?.status?.code == successCode) {
         message.success(res?.status?.desc);
         nextStep();

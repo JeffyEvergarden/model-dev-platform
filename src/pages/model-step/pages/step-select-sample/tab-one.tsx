@@ -58,11 +58,9 @@ const StepOne: React.FC<any> = (props: any) => {
   } = useStepSelectModel();
 
   useEffect(() => {
-    let start = editData?.startTime ? moment(editData.startTime) : null;
-    let end = editData?.endTime ? moment(editData.endTime) : null;
     form.setFieldsValue({
       importType: editData?.importType,
-      date: [start, end],
+
       businessType: editData?.businessType,
       prodCat: getFn(editData?.prodCat),
       channelCatM: getFn(editData?.channelCatM),
@@ -75,6 +73,13 @@ const StepOne: React.FC<any> = (props: any) => {
       operator: editData?.operator,
       // params: editData?.params,
     });
+    if (editData?.startTime && editData?.endTime) {
+      let start = editData?.startTime ? moment(editData.startTime) : undefined;
+      let end = editData?.endTime ? moment(editData.endTime) : undefined;
+      form.setFieldsValue({
+        date: [start, end],
+      });
+    }
     setOperationList(featureOperatorMap?.[editData?.featureType]);
     // setOperationList([])
     if (editData?.featureCode) {
@@ -142,12 +147,13 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeProduct = (val: any, option: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originChannelMidList;
       } else {
         val.map((ele: any) => {
-          let temp: any = productList.find((item: any) => item.value == ele);
-          list = [...list, ...temp?.children];
+          let temp: any = productList.find((item: any) => item.name == ele);
+          let tempChild: any[] = temp?.children ? temp?.children : [];
+          list = [...list, ...tempChild];
         });
       }
       setChannelMidList(list);
@@ -170,13 +176,13 @@ const StepOne: React.FC<any> = (props: any) => {
   };
 
   const onSelect = (value: any, option: any, type: any) => {
-    if (value == 'all') {
+    if (value == '全部') {
       form.setFieldsValue({
-        [type]: 'all',
+        [type]: '全部',
       });
     } else {
       let formval = form.getFieldsValue(type);
-      let temp = formval?.[type]?.filter((item: any) => item !== 'all');
+      let temp = formval?.[type]?.filter((item: any) => item !== '全部');
       form.setFieldsValue({
         [type]: temp,
       });
@@ -186,11 +192,11 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeChannelCatM = (val: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originChannelSmList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = channelMidList.find((item: any) => item.value == ele);
+          let temp: any = channelMidList.find((item: any) => item.name == ele);
           list = [...list, ...temp?.children];
         });
       }
@@ -212,11 +218,11 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeChannelCatS = (val: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originCustCatList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = channelSmList.find((item: any) => item.value == ele);
+          let temp: any = channelSmList.find((item: any) => item.name == ele);
           list = [...list, ...temp?.children];
         });
       }
@@ -235,11 +241,11 @@ const StepOne: React.FC<any> = (props: any) => {
   const changeCustCat = (val: any) => {
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originCustCatSmList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = custCatList.find((item: any) => item.value == ele);
+          let temp: any = custCatList.find((item: any) => item.name == ele);
           list = [...list, ...temp?.children];
         });
       }
