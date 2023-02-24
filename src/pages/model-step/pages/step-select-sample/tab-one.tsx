@@ -145,7 +145,7 @@ const StepOne: React.FC<any> = (props: any) => {
       if (val?.includes('all')) {
         list = originChannelMidList;
       } else {
-        val.forEach((ele: any) => {
+        val.map((ele: any) => {
           let temp: any = productList.find((item: any) => item.value == ele);
           list = [...list, ...temp?.children];
         });

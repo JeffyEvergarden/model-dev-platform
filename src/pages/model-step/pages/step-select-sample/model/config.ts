@@ -36,7 +36,7 @@ export const tabSelectColumns: any[] = [
     key: 'processName',
   },
   {
-    name: '分群建模便签',
+    name: '分群建模标签',
     key: 'featureLabel',
   },
 ];

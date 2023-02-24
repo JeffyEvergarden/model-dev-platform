@@ -122,10 +122,11 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     if (loading) {
       return;
     }
+    getSampleTableList({ currentPage: val, pageSize: pageSize });
     setCurrent(val);
   };
   useEffect(() => {
-    getSampleTableList();
+    getSampleTableList({ currentPage: current, pageSize: pageSize });
   }, []);
 
   const submit = async () => {
@@ -245,8 +246,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
               onChange: onChange,
               total: tableTotal,
               showSizeChanger: true,
-              pageSizeOptions: [5, 10, 20],
               onShowSizeChange: (pn: any, ps: any) => {
+                getSampleTableList({ currentPage: 1, pageSize: ps });
                 setCurrent(1);
                 setPageSize(ps);
               },

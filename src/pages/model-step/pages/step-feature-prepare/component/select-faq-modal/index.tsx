@@ -36,7 +36,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
     getKeyVarInfo,
   } = useVarSelectModal();
 
-  const [classType, setClassType] = useState<string>(''); //选中树
+  const [classType, setClassType] = useState<string>(''); //选中树(path)
+  const [treeName, setTreeName] = useState<string>(''); //选中树
 
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
@@ -89,14 +90,20 @@ const SelectorModal: React.FC<any> = (props: any) => {
         page: val || 1,
         pageSize: 10,
         categoryName: val[0],
+        categoryPath: treeName,
         searchType: '',
       });
     }
   };
 
   const clearSelect = async () => {
+    if (!classType) {
+      message.warning('请选择分类');
+      return;
+    }
     let res: any = await getVarInfo({
       categoryName: classType,
+      categoryPath: treeName,
       searchType: 'all',
     });
 
@@ -114,9 +121,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   const selectAll = async () => {
+    if (!classType) {
+      message.warning('请选择分类');
+      return;
+    }
     console.log(classType);
     let res: any = await getVarInfo({
       categoryName: classType,
+      categoryPath: treeName,
       searchType: 'all',
     });
 
@@ -160,18 +172,26 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   // 选中
-  const onSelect = (val: any) => {
-    console.log(val[0]);
+  const onSelect = (val: any, opt: any) => {
+    console.log(val[0], opt);
+    setTreeName(opt?.node?.title);
+    setClassType(val[0]);
     if (!val[0]) {
+      getKeyVarInfo({
+        page: 1,
+        pageSize: 10,
+        keyword: searchText1,
+        searchMode: searchMode,
+      });
       return;
     }
-    setClassType(val[0]);
     setSearchText1('');
     setCurrent1(1);
     getVarInfo({
       page: 1,
       pageSize: 10,
-      categoryName: val[0],
+      categoryName: opt?.node?.title,
+      categoryPath: val[0],
       searchType: '',
     });
   };
@@ -220,11 +240,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    getVarInfo({
+    getKeyVarInfo({
       page: 1,
       pageSize: 10,
-      categoryName: classType,
-      searchType: '',
+      keyword: searchText1,
+      searchMode: searchMode,
     });
   }, []);
 
