@@ -76,7 +76,10 @@ const StepOne: React.FC<any> = (props: any) => {
       // params: editData?.params,
     });
     setOperationList(featureOperatorMap?.[editData?.featureType]);
-    getSelectionList({ labelId: editData?.featureCode });
+    // setOperationList([])
+    if (editData?.featureCode) {
+      getSelectionList({ labelId: editData?.featureCode });
+    }
     if (editData?.featureType == 'number' && inputNumberRangerList.includes(editData?.operator)) {
       let paramsArr = editData?.params?.split(',');
       form.setFieldsValue({
@@ -251,7 +254,7 @@ const StepOne: React.FC<any> = (props: any) => {
 
   const onClick = async () => {
     let val = await form.validateFields();
-    console.log('');
+    debugger;
     if (val.date) {
       val.startTime = val.date?.[0]?.format('YYYY-MM-DD');
       val.endTime = val.date?.[1]?.format('YYYY-MM-DD');
@@ -320,7 +323,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {productList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
+                      <Option value={item.name} key={index}>
                         {item.name}
                       </Option>
                     );
@@ -344,7 +347,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {channelMidList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
+                      <Option value={item.name} key={index}>
                         {item.name}
                       </Option>
                     );
@@ -368,7 +371,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {channelSmList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
+                      <Option value={item.name} key={index}>
                         {item.name}
                       </Option>
                     );
@@ -392,7 +395,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {custCatList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
+                      <Option value={item.name} key={index}>
                         {item.name}
                       </Option>
                     );
@@ -415,7 +418,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {custCatSmList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
+                      <Option value={item.name} key={index}>
                         {item.name}
                       </Option>
                     );
@@ -437,7 +440,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {processList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={item.value}>
+                      <Option value={item.name} key={item.value}>
                         {item.name}
                       </Option>
                     );
@@ -454,6 +457,7 @@ const StepOne: React.FC<any> = (props: any) => {
         labelList={labelList}
         featureOperatorMap={featureOperatorMap}
         operationList={operationList}
+        setOperationList={setOperationList}
         paramList={paramList}
       />
       <NextStepButton onClick={onClick} text={'提交'} />

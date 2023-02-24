@@ -30,9 +30,9 @@ export default () => {
   };
 
   useEffect(() => {
-    getSummaryDetail(); //模型概况
-    getSampleData(); //样本定义
-    getModelResult(); //入魔变量、评分卡、模型效果
+    // getSummaryDetail(); //模型概况
+    // getSampleData(); //样本定义
+    // getModelResult(); //入魔变量、评分卡、模型效果
   }, []);
 
   const getSummaryDetail = async () => {

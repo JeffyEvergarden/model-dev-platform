@@ -17,16 +17,18 @@ const { Option } = Select;
 const { RangePicker }: any = DatePicker;
 
 export default (props: any) => {
-  const { form, editData, labelList, featureOperatorMap, operationList, paramList } = props;
-
   const {
-    getSelectionList,
-    featureType,
-    setFeatureType,
+    form,
+    editData,
+    labelList,
+    featureOperatorMap,
+    operationList,
     setOperationList,
-    paramType,
-    setParamType,
-  } = useStepSelectModel();
+    paramList,
+  } = props;
+
+  const { getSelectionList, featureType, setFeatureType, paramType, setParamType } =
+    useStepSelectModel();
 
   useEffect(() => {
     getParamVal(editData?.featureType, editData?.operator);

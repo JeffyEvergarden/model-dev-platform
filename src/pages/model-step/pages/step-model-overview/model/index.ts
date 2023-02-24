@@ -7,7 +7,7 @@ export const useFormSelect = () => {
 
   const getForm = async (data: any) => {
     setLoading(true);
-    let res = await getStepOneForm();
+    let res = await getStepOneForm({ itmModelRegisCode: data });
     console.log(process.env.API_SUCCESS_CODE);
     if (res?.status?.code === process.env.API_SUCCESS_CODE) {
       setLoading(false);
