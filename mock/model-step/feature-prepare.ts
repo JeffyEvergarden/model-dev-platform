@@ -15,19 +15,19 @@ const getTreeList = (req: any, res: any) => {
       {
         parentId: 'db_01',
         featureCategoryName: '数据库1',
-        featureCategoryCode: 'db_01',
+        featureCategoryCode: '000db_01',
         categoryPath: '',
         child: [
           {
             parentId: 'db_table_01',
             featureCategoryName: '表_01',
-            featureCategoryCode: 'db_table_01',
+            featureCategoryCode: '000db_table_01',
             categoryPath: '',
           },
           {
             parentId: 'db_table_02',
             featureCategoryName: '表_02',
-            featureCategoryCode: 'db_table_02',
+            featureCategoryCode: '000db_table_02',
             categoryPath: '',
           },
         ],
@@ -35,19 +35,19 @@ const getTreeList = (req: any, res: any) => {
       {
         parentId: 'db_02',
         featureCategoryName: '数据库2',
-        featureCategoryCode: 'db_02',
+        featureCategoryCode: '000db_02',
         categoryPath: '',
         child: [
           {
             parentId: 'db_table_03',
             featureCategoryName: '表_03',
-            featureCategoryCode: 'db_table_03',
+            featureCategoryCode: '000db_table_03',
             categoryPath: '',
           },
           {
             parentId: 'db_table_04',
             featureCategoryName: '表_04',
-            featureCategoryCode: 'db_table_04',
+            featureCategoryCode: '000db_table_04',
             categoryPath: '',
           },
         ],
