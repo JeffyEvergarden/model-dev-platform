@@ -32,12 +32,6 @@ export default [
     ],
   },
   {
-    path: '/report/modelReport',
-    layout: true,
-    name: '模型报告',
-    component: './work-bench/viewReport',
-  },
-  {
     path: '/modelStep',
     layout: true,
     name: '模型详情',
