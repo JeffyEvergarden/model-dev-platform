@@ -293,7 +293,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let res = await getRateList(payLoad);
     if (res?.status?.code === config.successCode) {
       let data: any[] =
-        res?.result?.map((item: any) => ({ ...item, children: item?.monthList })) || [];
+        res?.result?.map?.((item: any) => ({ ...item, children: item?.monthList })) || [];
       let columns: any[] = [
         {
           key: 'name',
@@ -312,17 +312,17 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           label: 'M2',
         },
       ];
-      columns = columns.map((item: any) => {
+      columns = columns?.map((item: any) => {
         return {
           ...item,
-          title: item.label,
-          dataIndex: item.key,
+          title: item?.label,
+          dataIndex: item?.key,
           search: false,
           ellipsis: true,
           width: 120,
-          filteredValue: item.label === '本期状态' ? rateFilter : null,
+          filteredValue: item?.label === '本期状态' ? rateFilter : null,
           filters:
-            item.label === '本期状态'
+            item?.label === '本期状态'
               ? // data?.map(item => ({ text: item?.name, value: item?.name }))
                 [
                   {

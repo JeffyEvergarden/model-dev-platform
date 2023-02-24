@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { Form, Input, DatePicker, Row, Col, Select, InputNumber } from 'antd';
 import Condition from '@/components/Condition';
-import styles from './../style.less';
+import styles from '@/pages/model-step/pages/style.less';
 import { successCode, useStepSelectModel } from '../model';
 import {
   selectList,
@@ -17,28 +17,20 @@ const { Option } = Select;
 const { RangePicker }: any = DatePicker;
 
 export default (props: any) => {
-  const { form } = props;
+  const { form, editData, labelList, featureOperatorMap, operationList, paramList } = props;
 
   const {
-    labelListRequest,
     getSelectionList,
-    labelList,
-    featureOperatorMap,
     featureType,
     setFeatureType,
-    operationList,
     setOperationList,
-    // operationType,
-    // setOperationType,
-    paramList,
-    setParamList,
     paramType,
     setParamType,
   } = useStepSelectModel();
 
   useEffect(() => {
-    labelListRequest(); //分群建模标签查询
-  }, []);
+    getParamVal(editData?.featureType, editData?.operator);
+  }, [editData]);
 
   const changeLabel = async (val: any, opt: any) => {
     if (val) {
@@ -65,13 +57,11 @@ export default (props: any) => {
   const changOperator = async (val: any) => {
     console.log('paramList', paramList);
     if (val) {
-      // setOperationType(val)
       getParamVal(featureType, val);
       form.setFieldsValue({
         params: undefined,
       });
     } else {
-      // setOperationType('')
       form.setFieldsValue({
         operator: '',
         params: undefined,
@@ -224,8 +214,8 @@ export default (props: any) => {
             <span className={styles.labelSpan}>
               <FormItem
                 rules={[{ required: false, message: '请输入' }]}
-                name="paramsFir"
-                label="参数值"
+                name="paramFir"
+                label="参数值1"
               >
                 <InputNumber placeholder="请输入" />
               </FormItem>
@@ -235,8 +225,8 @@ export default (props: any) => {
             <span className={styles.labelSpan}>
               <FormItem
                 rules={[{ required: false, message: '请输入' }]}
-                name="paramsTwo"
-                label="参数值"
+                name="paramTwo"
+                label="参数值2"
               >
                 <InputNumber placeholder="请输入" />
               </FormItem>
@@ -252,7 +242,7 @@ export default (props: any) => {
                 name="params"
                 label="参数值"
               >
-                <DatePicker showTime />
+                <DatePicker showTime format={'YYYY-MM-DD HH:mm:ss'} />
               </FormItem>
             </span>
           </Col>

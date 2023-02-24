@@ -159,9 +159,9 @@ const ModelManagement: React.FC<any> = (props: any) => {
       },
       valueType: 'select',
       initialValue: undefined,
-      // valueEnum: {
-      //   ...listToMap(MODEL_STAGE),
-      // },
+      valueEnum: {
+        ...listToMap(MODEL_STAGE),
+      },
       width: 120,
       render: (_: any, record: any) => {
         return (

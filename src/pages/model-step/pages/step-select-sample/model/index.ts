@@ -3,17 +3,14 @@ import { message } from 'antd';
 import { useState, useRef } from 'react';
 
 import {
-  getDatabaseList,
-  getDatacolumnsList,
   getWaitResult,
   submitSampleRequestApi,
-  getCurrentDetailRequestApi,
   confirmSunmitRequestApi,
-  getSampleRequstApi,
   sampleNextApi,
   labelListApi,
   selectionListApi,
   getparamsApi,
+  getSampleApi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -72,40 +69,40 @@ export const useStepSelectModel = () => {
     return _data;
   };
 
-  const getTreeList = async (params?: any) => {
-    let res: any = await getDatabaseList(params);
-    let list: any[] = res?.result || [];
-    if (!Array.isArray(list)) {
-      list = [];
-    }
-    list = processTreeData(list);
-    console.log('treeList', list);
-    setTreeList(list || []);
-    return true;
-  };
+  // const getTreeList = async (params?: any) => {
+  //   let res: any = await getDatabaseList(params);
+  //   let list: any[] = res?.result || [];
+  //   if (!Array.isArray(list)) {
+  //     list = [];
+  //   }
+  //   list = processTreeData(list);
+  //   console.log('treeList', list);
+  //   setTreeList(list || []);
+  //   return true;
+  // };
 
-  const getTableList = async (params?: any) => {
-    setTableLoading(true);
-    let res: any = await getDatacolumnsList(params);
-    setTableLoading(false);
-    let list: any[] = res.data;
-    let total: any = res.total || 0;
+  // const getTableList = async (params?: any) => {
+  //   setTableLoading(true);
+  //   let res: any = await getDatacolumnsList(params);
+  //   setTableLoading(false);
+  //   let list: any[] = res.data;
+  //   let total: any = res.total || 0;
 
-    if (!Array.isArray(list)) {
-      list = [];
-    }
-    list = list.map((item: any, index: number) => {
-      return {
-        ...item,
-        title: item.name,
-        index,
-      };
-    });
-    // console.log('tableList', datas);
-    setTableList(list || []);
-    setTotal(total);
-    return true;
-  };
+  //   if (!Array.isArray(list)) {
+  //     list = [];
+  //   }
+  //   list = list.map((item: any, index: number) => {
+  //     return {
+  //       ...item,
+  //       title: item.name,
+  //       index,
+  //     };
+  //   });
+  //   // console.log('tableList', datas);
+  //   setTableList(list || []);
+  //   setTotal(total);
+  //   return true;
+  // };
 
   const labelListRequest = async (params?: any) => {
     setTableLoading(true);
@@ -149,14 +146,14 @@ export const useStepSelectModel = () => {
     setTableLoading(false);
     let tempProcessList: any[] = res?.result?.processList;
     tempProcessList.unshift({
-      value: '-1',
+      value: 'all',
       name: '全部',
     });
     setProcessList(tempProcessList);
     if (res.status?.code === successCode) {
       let data: any = deepFormateData(res.result?.prodTree, 1);
       data.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
         children: [],
       });
@@ -185,19 +182,19 @@ export const useStepSelectModel = () => {
       });
 
       channelMidTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
       channelSmTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
       custCatTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
       custCatSmTemp.unshift({
-        value: '-1',
+        value: 'all',
         name: '全部',
       });
 
@@ -221,8 +218,8 @@ export const useStepSelectModel = () => {
     tableLoading,
     opLoading,
     setOpLoading,
-    getTreeList, // 获取表格数据
-    getTableList,
+    // getTreeList, // 获取表格数据
+    // getTableList,
     total,
 
     //分类建群标签
@@ -234,8 +231,6 @@ export const useStepSelectModel = () => {
     operationList,
     setOperationList,
     getSelectionList,
-    // operationType,
-    // setOperationType,
     paramList,
     setParamList,
     paramType,
@@ -314,27 +309,6 @@ export const useSampleUploadAwaitModel = () => {
     }
   };
 
-  const submitSampleRequest = async (params?: any) => {
-    setLoading(true);
-    let res: any = await submitSampleRequestApi(params);
-    setLoading(false);
-    return res;
-  };
-
-  const getCurrentDetailRequest = async (params?: any) => {
-    setLoading(true);
-    let res: any = await getCurrentDetailRequestApi(params);
-    setLoading(false);
-    return res;
-  };
-
-  const confirmSunmitRequest = async (params?: any) => {
-    setLoading(true);
-    let res: any = await confirmSunmitRequestApi(params);
-    setLoading(false);
-    return res;
-  };
-
   return {
     loading,
     processType,
@@ -342,9 +316,6 @@ export const useSampleUploadAwaitModel = () => {
     setProcessType,
     awaitResult,
     startLoop,
-    submitSampleRequest,
-    getCurrentDetailRequest,
-    confirmSunmitRequest,
   };
 };
 
@@ -358,23 +329,9 @@ export const useSample = () => {
     return res;
   };
 
-  const getCurrentDetailRequest = async (params?: any) => {
-    setLoading(true);
-    let res: any = await getCurrentDetailRequestApi(params);
-    setLoading(false);
-    return res;
-  };
-
   const confirmSunmitRequest = async (params?: any) => {
     setLoading(true);
     let res: any = await confirmSunmitRequestApi(params);
-    setLoading(false);
-    return res;
-  };
-
-  const getSampleRequst = async (params?: any) => {
-    setLoading(true);
-    let res: any = await getSampleRequstApi(params);
     setLoading(false);
     return res;
   };
@@ -386,12 +343,18 @@ export const useSample = () => {
     return res;
   };
 
+  const getSample = async (params?: any) => {
+    setLoading(true);
+    let res: any = await getSampleApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
+    getSample,
     submitSampleRequest,
-    getCurrentDetailRequest,
     confirmSunmitRequest,
-    getSampleRequst,
     sampleNext,
   };
 };

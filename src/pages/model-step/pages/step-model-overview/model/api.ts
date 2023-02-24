@@ -17,3 +17,18 @@ export async function submitStepOneForm(data?: Record<string, any>) {
     data,
   });
 }
+//保存信息
+export async function saveInfoApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/summary/saveInfo`, {
+    method: 'POST',
+    data,
+  });
+}
+
+//下一流程
+export async function nextStageApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/summary/nextStageApi`, {
+    method: 'POST',
+    data,
+  });
+}

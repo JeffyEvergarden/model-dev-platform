@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getStepOneForm, submitStepOneForm } from './api';
+import { getStepOneForm, submitStepOneForm, saveInfoApi, nextStageApi } from './api';
 import { message } from 'antd';
 
 export const useFormSelect = () => {
@@ -29,9 +29,25 @@ export const useFormSelect = () => {
     }
   };
 
+  const saveInfo = async (data: any) => {
+    setLoading(true);
+    let res = await saveInfoApi(data);
+    setLoading(false);
+    return res;
+  };
+
+  const nextStage = async (data: any) => {
+    setLoading(true);
+    let res = await nextStageApi(data);
+    setLoading(false);
+    return res;
+  };
+
   return {
     getForm,
     postForm,
+    saveInfo,
+    nextStage,
     loading,
     setLoading,
   };
