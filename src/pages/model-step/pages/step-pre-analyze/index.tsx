@@ -229,7 +229,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               <Option key={''} value="">
                 全选
               </Option>
-              {yearMonth.map((item: any) => {
+              {yearMonth?.map((item: any) => {
                 return (
                   <Option key={item.value} value={item.value}>
                     {item.value}
@@ -312,7 +312,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           label: 'M2',
         },
       ];
-      columns = columns?.map((item: any) => {
+      columns = columns?.map?.((item: any) => {
         return {
           ...item,
           title: item?.label,
@@ -342,7 +342,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         };
       });
 
-      data = data?.filter((item) => filter?.includes(item?.name));
+      data = data?.filter?.((item) => filter?.includes(item?.name));
 
       let total = data?.length || 0;
 
