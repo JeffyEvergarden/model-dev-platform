@@ -273,6 +273,7 @@ const StepOne: React.FC<any> = (props: any) => {
         val[item] = val[item]?.join(',');
       }
     });
+    debugger;
     onNext?.(val);
   };
 

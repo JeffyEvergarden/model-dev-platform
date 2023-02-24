@@ -53,7 +53,7 @@ const StepOne: React.FC = (props: any) => {
         console.warn('获取表单时间格式化错误');
       }
       form.setFieldsValue({
-        ...res,
+        ...res?.result,
         modelDevTime,
       });
     }
