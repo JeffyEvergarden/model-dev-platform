@@ -50,6 +50,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const isStepwise: any = Form.useWatch('isStepwise', form);
   const isVif: any = Form.useWatch('isVif', form);
   const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
+  const varBinningType: any = Form.useWatch('varBinningType', form);
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   const handleClose = (entityValueName: any) => {
     let temp = JSON.parse(JSON.stringify(ruleList));
@@ -62,8 +66,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     setLoading(true);
     let variableNames = ruleList?.join(',');
     let params = {
-      itmModelRegisCode: '',
-      sampleTable: '',
+      itmModelRegisCode: modelId,
       ...formVal,
     };
     params.variableNames = variableNames;
@@ -85,7 +88,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const rebuild = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
     setLoading(true);
     let res = await rebuildModel(params);
@@ -103,7 +106,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const nextFlow = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
     setLoading(true);
     let res = await nextFlowRequest(params);
@@ -135,12 +138,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             c: 1.0,
             lrMaxIter: 100,
             emptySeparate: '否',
-            isStepwise: '是',
+            isStepwise: '1',
             estimator: 'ols',
             direction: 'both',
             criterion: 'aic',
             stepwiseMaxIter: 100,
-            isVif: '是',
+            isVif: '1',
             vifOperator: '=',
           }}
         >
@@ -171,6 +174,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择变量分箱方式' }]}
               >
                 <Select placeholder="请选择变量分箱方式">
+                  <Select.Option key={'等频分箱'} value={'等频分箱'}>
+                    等频分箱
+                  </Select.Option>
+                  <Select.Option key={'等距分箱'} value={'等距分箱'}>
+                    等距分箱
+                  </Select.Option>
                   <Select.Option key={'卡方分箱'} value={'卡方分箱'}>
                     卡方分箱
                   </Select.Option>
@@ -180,6 +189,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 </Select>
               </Form.Item>
             </Col>
+            {varBinningType == '等频分箱' || varBinningType == '等距分箱'}
             <Col span={6}>
               <Form.Item
                 label="箱数"
@@ -196,9 +206,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请输入迭代次数' }]}
               >
                 <InputNumber
-                  step="0.1"
+                  step="0.01"
                   min={0}
                   max={1}
+                  precision={2}
                   style={{ width: '100%' }}
                   placeholder="请输入"
                   stringMode
@@ -220,7 +231,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             <Col span={24}>
               <Form.Item
                 label="选择变量"
-                name="variables"
+                name="variableNames"
                 rules={[{ required: false, message: '请选择' }]}
               >
                 <div className={styles.listBox}>
@@ -366,7 +377,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               <Col span={3}>
                 <span className={styles.balanceVal}>
                   <Form.Item name="vifThreshold" label="衡量值">
-                    <Input placeholder="衡量值" />
+                    <InputNumber placeholder="衡量值" step="0.1" min={0} max={10} precision={1} />
                   </Form.Item>
                 </span>
               </Col>
@@ -413,6 +424,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 label="正则化系数"
                 name="lrc"
                 rules={[{ required: true, message: '请输入正则化系数' }]}
+                initialValue={1.0}
               >
                 <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
               </Form.Item>
@@ -423,7 +435,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 name="lrMaxIter"
                 rules={[{ required: true, message: '请输入迭代次数' }]}
               >
-                <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
+                <InputNumber step="1" min={0} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
           </Row>
@@ -437,13 +449,20 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 name="baseScore"
                 rules={[{ required: true, message: '请输入标准分' }]}
               >
-                <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
+                <InputNumber
+                  step="1"
+                  min={0}
+                  precision={0}
+                  style={{ width: '100%' }}
+                  placeholder="请输入"
+                />
               </Form.Item>
             </Col>
             <Col span={6}>
               <Form.Item label="Pdo" name="Pdo" rules={[{ required: true, message: '请输入Pdo' }]}>
                 <InputNumber
-                  step="0.1"
+                  step="1"
+                  precision={0}
                   min={0}
                   max={1}
                   style={{ width: '100%' }}
@@ -458,7 +477,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请输入Base Odds' }]}
               >
                 <InputNumber
-                  step="0.1"
+                  step="1"
+                  precision={0}
                   min={0}
                   max={1}
                   style={{ width: '100%' }}
@@ -473,7 +493,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请输入Rate' }]}
               >
                 <InputNumber
-                  step="0.1"
+                  step="0.01"
+                  precision={2}
                   min={0}
                   max={1}
                   style={{ width: '100%' }}
@@ -510,6 +531,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 >
                   <InputNumber
                     step="1"
+                    precision={0}
                     min={0}
                     max={20}
                     style={{ width: '100%' }}

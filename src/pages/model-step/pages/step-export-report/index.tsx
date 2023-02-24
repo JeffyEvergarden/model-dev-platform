@@ -22,9 +22,9 @@ const StepExportReport: React.FC<any> = (props: any) => {
   const [modelResult, setModelResult] = useState<any>({});
 
   useEffect(() => {
-    getSampleData();
+    // getSampleData();
     //模型结果
-    getModelResult();
+    // getModelResult();
   }, []);
 
   const getSampleData = async () => {
