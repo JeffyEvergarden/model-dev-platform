@@ -22,7 +22,7 @@ export const useVarSelectModal = () => {
         title: item?.featureCategoryName,
         value: item?.featureCategoryCode,
         path: item?.categoryPath,
-        key: item?.categoryPath,
+        key: item?.featureCategoryCode,
         parent: parent || item.parent || undefined,
         deep: parent?.deep + 1 || 1,
       };

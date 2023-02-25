@@ -2,6 +2,7 @@ import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, Select, Space, Table } from 'antd';
 import { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import { boxList, varList } from './config';
 import { useExportReportModel } from './model';
 import style from './style.less';
@@ -17,6 +18,10 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const [selectReportList, setReportList] = useState<any[]>();
 
   const { loading, tableList, tableInfo, tableTotal, getLostList } = useExportReportModel();
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   const columns: any[] = [
     {
@@ -88,7 +93,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     console.log();
     let formData: any = form.getFieldsValue();
     let reqData = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
       ...formData,
     };
     getLostList(reqData);

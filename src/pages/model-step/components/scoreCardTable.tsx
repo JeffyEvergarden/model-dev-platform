@@ -204,7 +204,7 @@ export default (props: any) => {
     <div className={classnames(styles.relateTable, styles.TableCommonSty)}>
       <ProTable
         headerTitle={headerTitle}
-        rowKey={rowKey}
+        rowKey={'variable'}
         toolBarRender={toolBarRender}
         options={false}
         bordered

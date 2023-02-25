@@ -28,12 +28,12 @@ export const useSearchModel = () => {
     if (!Array.isArray(arr)) {
       return [];
     }
-    arr = arr.map((item: any) => {
-      let children = deepFormateData(item.children, level + 1);
+    arr = arr?.map((item: any) => {
+      let children = deepFormateData(item?.children, level + 1);
 
       return {
-        name: item.key,
-        label: item.label,
+        name: item?.key,
+        label: item?.label,
         children,
       };
     });
@@ -110,7 +110,7 @@ export const usePreAnalyzeModel = () => {
     if (res?.status?.code === successCode) {
       let columns: any[] = res?.result?.head || [];
       let total = res?.result?.data?.length || 0;
-      columns = columns.map((item: any) => {
+      columns = columns?.map((item: any) => {
         return {
           title: item,
           dataIndex: item,
@@ -156,11 +156,11 @@ export const usePreAnalyzeModel = () => {
       let data: any[] = res.data || [];
       let columns: any[] = res.columns || [];
       let total = res.total || 0;
-      columns = columns.map((item: any) => {
+      columns = columns?.map((item: any) => {
         return {
           ...item,
-          title: item.label,
-          dataIndex: item.key,
+          title: item?.label,
+          dataIndex: item?.key,
           search: false,
           ellipsis: true,
           width: 120,

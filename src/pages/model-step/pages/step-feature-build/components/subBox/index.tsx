@@ -1,6 +1,6 @@
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Progress, Select, Table } from 'antd';
-import { boxList } from '../../config';
+import { Button, message, Progress, Select, Table } from 'antd';
+// import { boxList } from '../../config';
 import style from './style.less';
 import styles from '../../../style.less';
 import classnames from 'classnames';
@@ -9,17 +9,29 @@ import { useEffect, useRef, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { changeData } from '@/utils';
 import ScoreCardTable from '@/pages/model-step/components/scoreCardTable';
-import { getVariableListForBinning } from '../../model/api';
+import { getVariableBoxTypeList, getVariableListForBinning } from '../../model/api';
+import { useModel } from 'umi';
+import config from '@/config/index';
 
 const SubBox: React.FC<any> = (props: any) => {
   const { Option } = Select;
   const actionRef = useRef<any>();
   const [tableList, setTableList] = useState<any>([]);
+  const [boxList, setBoxList] = useState<any>([]);
+  const [selectValue, setSelectValue] = useState<any>();
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   const getTableList = async () => {
+    if (!selectValue) {
+      message.warning('请选择分箱方式');
+      return;
+    }
     let reqData = {
-      itmModelRegisCode: '',
-      binningType: '',
+      itmModelRegisCode: modelId,
+      binningType: selectValue,
     };
     await getVariableListForBinning(reqData).then((res) => {
       console.log(res?.result?.variableMetricsList);
@@ -30,6 +42,20 @@ const SubBox: React.FC<any> = (props: any) => {
     });
   };
 
+  const getVariableBoxList = async () => {
+    await getVariableBoxTypeList({}).then((res) => {
+      if (res?.status?.code === config.successCode) {
+        setBoxList(res?.result?.typeList);
+      } else {
+        setBoxList([]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getVariableBoxList();
+  }, []);
+
   return (
     <div className={styles.comparePage}>
       <div style={{ marginBottom: '16px' }}>
@@ -38,10 +64,12 @@ const SubBox: React.FC<any> = (props: any) => {
           placeholder={'请选择分箱方式'}
           allowClear
           style={{ marginRight: '16px', width: 200 }}
+          onChange={setSelectValue}
+          value={selectValue}
         >
           {boxList?.map((item: any) => (
-            <Option key={item.value} value={item.value}>
-              {item.label}
+            <Option key={item.typeCode} value={item.typeCode}>
+              {item.typeName}
             </Option>
           ))}
         </Select>

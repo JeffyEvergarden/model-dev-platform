@@ -60,7 +60,9 @@ const getVarList = (req: any, res: any) => {
   let page = 1;
   let list = new Array(21).fill(1).map((item: any, index: number) => {
     return {
-      featureName: '阿斯拉大' + index,
+      featureName:
+        '阿斯拉大1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111' +
+        index,
       featureCode: index,
     };
   });
