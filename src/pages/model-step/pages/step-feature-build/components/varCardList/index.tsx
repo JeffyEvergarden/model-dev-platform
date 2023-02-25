@@ -1,5 +1,6 @@
 import { Card, Checkbox, Col, Divider, Pagination, Row, Select, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useState } from 'react';
+import { useModel } from 'umi';
 import { useExportReportModel } from '../../model';
 import style from './style.less';
 
@@ -12,6 +13,10 @@ const VarCardList: React.FC<any> = (props: any) => {
     useExportReportModel();
   const [page, setPage] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(50);
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   useEffect(() => {
     getVarTypeList();
@@ -33,7 +38,7 @@ const VarCardList: React.FC<any> = (props: any) => {
   const getList = (params: any) => {
     setPage(1);
     let reqData = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
       ...params,
     };
     getVarCardList(reqData, varType);

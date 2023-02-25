@@ -10,6 +10,7 @@ import NextStepButton from '../../components/nextstep-button';
 import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { useNextStep } from '../../config';
+import { exportExcel } from './model/api';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -156,7 +157,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     getResultTableList(newObj);
   };
 
-  const exportResult = () => {};
+  const exportResult = async () => {
+    await exportExcel({ itmModelRegisCode: modelId });
+  };
 
   const _nextFlow = () => {
     form.validateFields().then((value: any) => {

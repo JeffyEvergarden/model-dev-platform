@@ -68,6 +68,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       },
       dataIndex: 'featureName',
       width: 300,
+      ellipsis: true,
     },
   ];
 
@@ -89,7 +90,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getVarInfo({
         page: val || 1,
         pageSize: 10,
-        categoryName: val[0],
+        categoryName: classType,
         categoryPath: treeName,
         searchType: '',
       });
@@ -175,7 +176,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
   const onSelect = (val: any, opt: any) => {
     console.log(val[0], opt);
     setTreeName(opt?.node?.title);
-    setClassType(val[0]);
+    setClassType(opt?.node?.path);
     if (!val[0]) {
       getKeyVarInfo({
         page: 1,
@@ -191,7 +192,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
       page: 1,
       pageSize: 10,
       categoryName: opt?.node?.title,
-      categoryPath: val[0],
+      categoryPath: opt?.node?.path,
       searchType: '',
     });
   };

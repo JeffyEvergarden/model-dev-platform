@@ -37,3 +37,10 @@ export async function getVariableListForBinning(data?: { [key: string]: any }) {
     data,
   });
 }
+
+export async function getVariableBoxTypeList(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/getVariableTypeList`, {
+    method: 'GET',
+    params: data,
+  });
+}
