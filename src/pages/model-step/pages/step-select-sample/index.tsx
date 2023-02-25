@@ -121,6 +121,7 @@ const StepOne: React.FC = (props: any) => {
     let res = await getSample({ itmModelRegisCode: modelId });
     if (res?.status?.code === successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
+      getparams({ businessType: res?.result?.samplePara?.businessType });
     }
   };
 
@@ -145,12 +146,12 @@ const StepOne: React.FC = (props: any) => {
       });
       if (featureType == 'number' && inputNumberRangerList.includes(val?.operator)) {
         tempParams = `${val?.paramFir},${val?.paramTwo}`;
-      }
-
-      if (featureType == 'datetime' && RangePickerList.includes(val?.operator)) {
+      } else if (featureType == 'datetime' && RangePickerList.includes(val?.operator)) {
         tempParams = `${val?.params?.[0]?.format('YYYY-MM-DD HH:mm:ss')},${val?.params?.[1]?.format(
           'YYYY-MM-DD HH:mm:ss',
         )}`;
+      } else {
+        tempParams = val?.params;
       }
       delete params?.params;
       params.featureLabel = {
@@ -208,7 +209,7 @@ const StepOne: React.FC = (props: any) => {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
       setTabType('0');
-      getparams({ businessType: res?.result?.samplePara?.businessType });
+      getparams({ businessType: res?.result?.sampleParam?.businessType });
       labelListRequest();
     } else {
       message.error(res?.status?.desc || '失败');

@@ -10,7 +10,8 @@ export default (props: any) => {
     {
       title: '序号',
       width: 50,
-      dataIndex: 'sortId',
+      dataIndex: 'index',
+      valueType: 'index',
       // render: (t: any, r: any, index: number) => {
       //   return (Number(pageInfo.pageNum) - 1) * Number(pageInfo.pageSize) + Number(index);
       // },

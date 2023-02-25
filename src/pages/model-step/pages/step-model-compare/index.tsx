@@ -51,7 +51,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
       return;
     }
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
       modelVersionName: values?.modelVersionName,
     };
     setLoading(true);

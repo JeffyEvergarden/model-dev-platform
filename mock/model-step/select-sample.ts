@@ -35,8 +35,8 @@ const getSample = (req: any, res: any) => {
     result: {
       sampleParam: {
         importType: '1',
-        startTime: '',
-        endTime: '',
+        startTime: '2023-12-12',
+        endTime: '2023-12-22',
         businessType: 'SX',
         prodCat: '产品大类,产品大类',
         channelCatM: '渠道中类',

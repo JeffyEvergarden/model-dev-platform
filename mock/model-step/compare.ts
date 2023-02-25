@@ -215,84 +215,18 @@ const getModelBuildResult = (req: any, res: any) => {
           { name: 'fea3', fea1: '0.45', fea2: '0.6', fea3: '1.0' },
         ],
       },
-      //评分卡-计算逻辑
-      scoreCardLogicList: [
-        {
-          variable: '变量名称1',
-          variableName: '变量中文名1',
-          boxList: [
-            {
-              boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
-              boxGroupScore: '64.29', //分箱对应分数
-              trainBadRate: '36.25%', //训练坏比率
-              validBadRate: '36.25%', //验证坏比率
-              trainGroupRate: '36.25%', //训练该箱占比
-              validGroupRate: '36.25%', //验证该箱占比
-            },
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              boxGroupScore: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainGroupRate: '34.89%',
-              validGroupRate: '34.89%',
-            },
-            {
-              boxGroup: '[5.0 ~ inf)',
-              boxGroupScore: '12.28',
-              trainBadRate: '56.92%',
-              validBadRate: '56.92%',
-              trainGroupRate: '56.92%',
-              validGroupRate: '56.92%',
-            },
-          ],
-        },
-        {
-          variable: '变量名称2',
-          variableName: '中文含义2',
-          boxList: [
-            {
-              boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
-              boxGroupScore: '64.29', //分箱对应分数
-              trainBadRate: '36.25%', //训练坏比率
-              validBadRate: '36.25%', //验证坏比率
-              trainGroupRate: '36.25%', //训练该箱占比
-              validGroupRate: '36.25%', //验证该箱占比
-            },
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              boxGroupScore: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainGroupRate: '34.89%',
-              validGroupRate: '34.89%',
-            },
-            {
-              boxGroup: '[5.0 ~ inf)',
-              boxGroupScore: '12.28',
-              trainBadRate: '56.92%',
-              validBadRate: '56.92%',
-              trainGroupRate: '56.92%',
-              validGroupRate: '56.92%',
-            },
-          ],
-        },
-      ],
       //集合KS
-      collectionKsObj: {
-        trainKsValue: '36.25%',
-        validKsValue: '55.25%',
-        otherValidKsList: [
-          { name: '验证集1', value: '23%' },
-          { name: '验证集2', value: '23%' },
-        ],
-      },
+      collectionKsData: [
+        { name: '训练集', value: '36.25%' },
+        { name: '验证集', value: '36.25%' },
+        { name: '其他验证集1', value: '36.25%' },
+        { name: '其他验证集2', value: '36.25%' },
+      ],
       //年月ks
-      monthKsObj: {
-        '2022-01-02': '36.25%',
-        '2022-01-03': '36.25%',
-        '2022-01-04': '36.25%',
-      },
+      monthKsData: [
+        { name: '2021-02', value: '36.25%' },
+        { name: '2021-03', value: '36.25%' },
+      ],
       //数据集分布（训练集分布列表、验证集分布列表
       dataScoreList: [
         {
@@ -397,7 +331,7 @@ const getInputVariableApi = (req: any, res: any) => {
       code: successCode,
       desc: '成功',
     },
-    resullt: {
+    result: {
       current: 1,
       pageSize: 10,
       totalSize: 100,
@@ -539,6 +473,192 @@ const getInputVariableApi = (req: any, res: any) => {
   });
 };
 
+const getModelScoreCalcLogic = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      current: 1,
+      pageSize: 10,
+      totalSize: 100,
+      tableData: [
+        {
+          variable: '变量名称1',
+          variableName: '变量中文名1',
+          scoreItemList: [
+            {
+              boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
+              score: '64.29', //分箱对应分数
+              trainBadRate: '36.25%', //训练坏比率
+              validBadRate: '36.25%', //验证坏比率
+              trainRate: '36.25%', //训练该箱占比
+              validRate: '36.25%', //验证该箱占比
+            },
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              score: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainRate: '34.89%',
+              validRate: '34.89%',
+            },
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              score: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainRate: '34.89%',
+              validRate: '34.89%',
+            },
+          ],
+        },
+        {
+          variable: '变量名称2',
+          variableName: '中文含义2',
+          scoreItemList: [
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              score: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainRate: '34.89%',
+              validRate: '34.89%',
+            },
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              score: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainRate: '34.89%',
+              validRate: '34.89%',
+            },
+            {
+              boxGroup: '[3.0 ~ 5.0)',
+              score: '39.45',
+              trainBadRate: '34.89%',
+              validBadRate: '34.89%',
+              trainRate: '34.89%',
+              validRate: '34.89%',
+            },
+          ],
+        },
+      ],
+    },
+  });
+};
+
+const getModelDatasetDistribution = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      trainDataset: [
+        {
+          scoreRange: '评分区间',
+          sampleTotal: '总样本数',
+          sampleGood: '好样本数',
+          sampleBad: '坏样本数',
+          sampleBadRate: '坏样本率',
+          addupGoodRate: '累计好样本率',
+          addupBadRate: '累计坏样本率',
+          ks: '30.01%',
+          lift: '2.03',
+        },
+      ],
+      validDataset: [
+        {
+          scoreRange: '评分区间',
+          sampleTotal: '总样本数',
+          sampleGood: '好样本数',
+          sampleBad: '坏样本数',
+          sampleBadRate: '坏样本率',
+          addupGoodRate: '累计好样本率',
+          addupBadRate: '累计坏样本率',
+          ks: '30.01%',
+          lift: '2.03',
+        },
+      ],
+    },
+  });
+};
+
+const getModelStability = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      rateHeadList: ['训练集占比', '验证集占比', '其他验证1占比', '其他验证2占比'],
+      psiHeadList: ['PSI_valid', 'PSI_valid1', 'PSI_valid2'],
+      modelStabilityList: [
+        {
+          scoreRange: '(0,100)',
+          训练集占比: '20.01%',
+          验证集占比: '30.01%',
+          其他验证1占比: '40.01%',
+          其他验证2占比: '50.01%',
+          PSI_valid: '0.003',
+          PSI_valid1: '0.002',
+          PSI_valid2: '0.001',
+        },
+        {
+          scoreRange: '(100,200)',
+          训练集占比: '20.01%',
+          验证集占比: '30.01%',
+          其他验证1占比: '40.01%',
+          其他验证2占比: '50.01%',
+          PSI_valid: '0.003',
+          PSI_valid1: '0.002',
+          PSI_valid2: '0.001',
+        },
+        {
+          scoreRange: '基准线1',
+          训练集占比: '-',
+          验证集占比: '-',
+          其他验证1占比: '-',
+          其他验证2占比: '-',
+          PSI_valid: '0.1',
+          PSI_valid1: '0.1',
+          PSI_valid2: '0.1',
+        },
+      ],
+    },
+  });
+};
+
+const getVariableStability = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      psiHeadList: ['PSI_valid', 'PSI_valid1'],
+      current: 1,
+      pageSize: 2,
+      totalSize: 10,
+      tableData: [
+        {
+          variable: 'age',
+          variableName: '年龄',
+          PSI_valid: '0.02',
+          PSI_valid1: '0.04',
+        },
+        {
+          variable: 'sex',
+          variableName: '性别',
+          PSI_valid: '0.02',
+          PSI_valid1: '0.04',
+        },
+      ],
+    },
+  });
+};
 export default {
   [`GET ${baseUrl}/compare/getVersionNameList`]: getVersionNameList,
   [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
@@ -546,4 +666,8 @@ export default {
   [`POST ${baseUrl}/compare/nextStage`]: normalDel,
 
   [`POST ${baseUrl}/compare/getInputVariablee`]: getInputVariableApi,
+  [`POST ${baseUrl}/compare/getModelScoreCalcLogic`]: getModelScoreCalcLogic,
+  [`POST ${baseUrl}/compare/getModelDatasetDistribution`]: getModelDatasetDistribution,
+  [`POST ${baseUrl}/compare/getModelStability`]: getModelStability,
+  [`POST ${baseUrl}/compare/getVariableStability`]: getVariableStability,
 };

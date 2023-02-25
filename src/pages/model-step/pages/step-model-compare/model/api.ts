@@ -36,3 +36,31 @@ export async function getInputVariableApi(data?: Record<string, any>) {
     data,
   });
 }
+
+export async function scoreCardListApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/compare/getModelScoreCalcLogic`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function getModelDatasetDistributionApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/compare/getModelDatasetDistribution`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function getModelStabilityApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/compare/getModelStability`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function getVariableStabilityApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/compare/getVariableStability`, {
+    method: 'POST',
+    data,
+  });
+}

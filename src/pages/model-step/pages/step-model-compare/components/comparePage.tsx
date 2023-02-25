@@ -24,6 +24,7 @@ export default (props: any) => {
     getModelStructureParamRequest,
     getModelResultRequest,
     getInputVariable,
+    scoreCardListReuqest,
   } = useComparePage();
 
   const actionRef = useRef<any>();
@@ -70,6 +71,24 @@ export default (props: any) => {
     };
   };
 
+  //评分卡
+  const scoreCardList = async (payload: any) => {
+    let params = {
+      page: payload?.current,
+      pageSize: payload?.pageSize,
+      itmModelRegisCode: modelId,
+      modelVersion: activeKey,
+    };
+    let res = await scoreCardListReuqest(params);
+    let resultData = togetherData(res?.result?.tableData);
+    return {
+      data: resultData || [],
+      total: res?.result?.totalSize || 0,
+      current: payload?.current || 1,
+      pageSize: payload?.pageSize || 10,
+    };
+  };
+
   const getModelStructureParam = async () => {
     let params = {
       itmModelRegisCode: modelId,
@@ -96,9 +115,6 @@ export default (props: any) => {
     if (res?.status?.code === successCode) {
       setLoading(false);
       let resultData = res.result;
-      if (resultData.scoreCardLogicList) {
-        resultData.scoreCardLogicList = togetherData(resultData.scoreCardLogicList);
-      }
       setModelResult(resultData);
     } else {
       setLoading(false);
@@ -109,18 +125,18 @@ export default (props: any) => {
   const togetherData = (data: any) => {
     let tempArr: any = [];
     data?.map((item: any, index: any) => {
-      item?.boxList?.map((el: any) => {
+      item?.scoreItemList?.map((el: any) => {
         tempArr.push({
           idx: index,
           id: el?.variable,
           variable: item?.variable,
           variableName: item?.variableName,
           boxGroup: el?.boxGroup,
-          boxGroupScore: el?.boxGroupScore,
+          score: el?.score,
           trainBadRate: el?.trainBadRate,
           validBadRate: el?.validBadRate,
-          trainGroupRate: el?.trainGroupRate,
-          validGroupRate: el?.validGroupRate,
+          trainRate: el?.trainRate,
+          validRate: el?.validRate,
         });
       });
     });
@@ -204,16 +220,18 @@ export default (props: any) => {
         <ScoreCardTable
           pageType="compareAndReport"
           headerTitle="评分卡-计算逻辑"
-          rowKey={(record: any) => record.id}
+          rowKey={(record: any, index: any) => record?.id + index}
           toolBarRender={() => []}
           actionRef={actionRef}
-          // request={async (params = {}) => {
-          //   return scoreCardList(params);
-          // }}
-          dataSource={modelResult?.scoreCardLogicList}
+          requestMethod={scoreCardList}
+          // dataSource={modelResult?.scoreCardLogicList}
         />
       </div>
-      <CompareAndReportCommonPage pageType="comparePage" modelResult={modelResult} />
+      <CompareAndReportCommonPage
+        pageType="comparePage"
+        modelResult={modelResult}
+        activeKey={activeKey}
+      />
       <RelateModal
         // columnsRelate={columnsRelate}
         data={modelResult?.variableRelevanceData}

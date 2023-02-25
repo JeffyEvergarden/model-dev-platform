@@ -7,6 +7,10 @@ import {
   getModelResultApi,
   nextStageRequestApi,
   getInputVariableApi,
+  scoreCardListApi,
+  getModelDatasetDistributionApi,
+  getModelStabilityApi,
+  getVariableStabilityApi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -49,6 +53,34 @@ export const useComparePage = () => {
     return res;
   };
 
+  const scoreCardListReuqest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await scoreCardListApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getModelDatasetDistributionRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getModelDatasetDistributionApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getModelStabilityRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getModelStabilityApi(params);
+    setLoading(false);
+    return res;
+  };
+
+  const getVariableStabilityRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getVariableStabilityApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
     setLoading,
@@ -58,5 +90,9 @@ export const useComparePage = () => {
     nextStageRequest,
 
     getInputVariable,
+    scoreCardListReuqest,
+    getModelDatasetDistributionRequest,
+    getModelStabilityRequest,
+    getVariableStabilityRequest,
   };
 };

@@ -6,7 +6,8 @@ import classnames from 'classnames';
 import { changeData } from '@/utils';
 
 export default (props: any) => {
-  const { pageType, headerTitle, rowKey, toolBarRender, actionRef, request, dataSource } = props;
+  const { pageType, headerTitle, rowKey, toolBarRender, actionRef, requestMethod, dataSource } =
+    props;
   const columnsScoreCard: any = [
     {
       title: '变量名称',
@@ -68,10 +69,10 @@ export default (props: any) => {
     },
     {
       title: '分数',
-      dataIndex: 'boxGroupScore',
+      dataIndex: 'score',
       hideInTable: pageType != 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.boxGroupScore}</span>;
+        return <span className={styles.cellSty}>{r.score}</span>;
       },
     },
     {
@@ -114,9 +115,9 @@ export default (props: any) => {
     },
     {
       title: '训练该箱占比',
-      dataIndex: 'trainGroupRate',
+      dataIndex: 'trainRate',
       render: (t: any, r: any, i: any) => {
-        let temp = r?.trainGroupRate?.replace('%', '');
+        let temp = r?.trainRate?.replace('%', '');
         let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
         return (
           <div
@@ -133,9 +134,9 @@ export default (props: any) => {
     },
     {
       title: '验证该箱占比',
-      dataIndex: 'validGroupRate',
+      dataIndex: 'validRate',
       render: (t: any, r: any, i: any) => {
-        let temp = r?.validGroupRate?.replace('%', '');
+        let temp = r?.validRate?.replace('%', '');
         let idxNum = (r.idx + 1) % 2 == 0 ? 'even' : 'odd';
         return (
           <div
@@ -204,7 +205,7 @@ export default (props: any) => {
     <div className={classnames(styles.relateTable, styles.TableCommonSty)}>
       <ProTable
         headerTitle={headerTitle}
-        rowKey={'variable'}
+        rowKey={rowKey?.variable}
         toolBarRender={toolBarRender}
         options={false}
         bordered
@@ -215,10 +216,10 @@ export default (props: any) => {
         scroll={{ x: columnsScoreCard?.length * 120 }}
         search={false}
         columns={columnsScoreCard}
-        // request={async (params = {}, sorter, filter) => {
-        //   return request(params, sorter, filter);
-        // }}
-        dataSource={dataSource}
+        request={async (params = {}, sort, filter) => {
+          return requestMethod({ ...params, sort, filter });
+        }}
+        // dataSource={dataSource}
       />
     </div>
   );

@@ -262,7 +262,6 @@ const StepOne: React.FC<any> = (props: any) => {
 
   const onClick = async () => {
     let val = await form.validateFields();
-
     if (val.date) {
       val.startTime = val.date?.[0]?.format('YYYY-MM-DD');
       val.endTime = val.date?.[1]?.format('YYYY-MM-DD');
