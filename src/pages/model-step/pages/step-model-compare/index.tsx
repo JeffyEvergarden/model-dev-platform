@@ -19,13 +19,17 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   const [tabList, setTabList] = useState<any>([]);
   const [activeKey, setActiveKey] = useState<any>('');
 
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
   useEffect(() => {
     getModelVersionList();
   }, []);
 
   const getModelVersionList = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
     setLoading(true);
     let res = await versionListRequest(params);
@@ -64,7 +68,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
         <span>模型对比</span>
-        <TitleStatus index={9}></TitleStatus>
+        <TitleStatus index={9} />
       </div>
       <Tabs type="card" size="large" onChange={changeTab}>
         {tabList?.map((item: any) => {

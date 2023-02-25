@@ -3,7 +3,7 @@ import { Descriptions, Button, Space, Progress, message } from 'antd';
 import styles from './index.less';
 import { ProTable } from '@ant-design/pro-components';
 import { useComparePage } from './../model';
-import Condition from '@/components/Condition';
+import { useModel, history } from 'umi';
 import classnames from 'classnames';
 import { ZoomInOutlined } from '@ant-design/icons';
 import RelateModal from './relateModal';
@@ -35,6 +35,10 @@ export default (props: any) => {
   //变量相关性
   const [dataSourceRelate, setDataSourceRelate] = useState<any>([]);
   const [columnsRelate, setColumnsRelate] = useState<any>([]);
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
 
   useEffect(() => {
     //模型构建参数

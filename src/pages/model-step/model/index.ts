@@ -1,7 +1,7 @@
 import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
-import { getModelStepInfo, getModelStepDetail } from './api';
+import { getModelStepInfo, getModelStepDetailApi } from './api';
 
 //
 export const useBaseInfoModel = () => {
@@ -24,9 +24,15 @@ export const useBaseInfoModel = () => {
 
   const getModelDetail = () => {};
 
+  const getModelStepDetail = async (params: any) => {
+    let res: any = await getModelStepDetailApi(params);
+    return res;
+  };
+
   return {
     hasDone,
     getModelInfo,
     getModelDetail,
+    getModelStepDetail,
   };
 };

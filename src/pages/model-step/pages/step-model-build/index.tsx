@@ -22,7 +22,7 @@ import { useBuildModel } from './model';
 import TitleStatus from '../../components/title-status';
 import PageStatus from './components/statusPage';
 import { useSample } from './../step-select-sample/model';
-import { getModelStepDetail } from './../../../model-step/model/index';
+import { useBaseInfoModel } from './../../../model-step/model';
 const successCode = config.successCode;
 
 const gutter = { xs: 8, sm: 16, md: 24, lg: 32 };
@@ -40,6 +40,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const { beginBuildModel, rebuildModel, nextFlowRequest, loading, setLoading } = useBuildModel();
   const { getCurrentStageRequest } = useSample();
+  const { getModelStepDetail } = useBaseInfoModel();
 
   const [ruleList, setRulist] = useState<any>([]);
   const [pageType, setPageType] = useState<string>(''); //loading error finish
@@ -49,6 +50,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const isVif: any = Form.useWatch('isVif', form);
   const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
   const varBinningType: any = Form.useWatch('varBinningType', form);
+
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
