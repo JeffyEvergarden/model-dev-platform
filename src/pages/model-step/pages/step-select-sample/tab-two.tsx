@@ -6,6 +6,7 @@ import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
 import { useSampleUploadAwaitModel, useSample } from './model';
 import { tabSelectColumns, tabSelectColumnsTwo } from './model/config';
+import { useModel } from 'umi';
 
 const FormItem = Form.Item;
 
@@ -22,6 +23,10 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
   const { processType, startLoop } = useSampleUploadAwaitModel();
   const { getSample } = useSample();
 
@@ -32,15 +37,14 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     // if (processId) {
-    startLoop({ processId }, 4);
+    startLoop({ itmModelRegisCode: modelId }, 4);
     // }
     getCurrentDetail();
   }, [tabType]);
 
   const getCurrentDetail = async () => {
     let params = {
-      itmModelRegisCode: '',
-      stage: '2',
+      itmModelRegisCode: modelId,
     };
     let res = await getSample(params);
     setDetailInfo({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
