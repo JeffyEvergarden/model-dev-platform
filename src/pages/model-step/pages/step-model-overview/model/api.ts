@@ -27,7 +27,7 @@ export async function saveInfoApi(data?: Record<string, any>) {
 
 //下一流程
 export async function nextStageApi(data?: Record<string, any>) {
-  return request(`${baseUrl}/summary/nextStageApi`, {
+  return request(`${baseUrl}/summary/nextStage`, {
     method: 'POST',
     data,
   });

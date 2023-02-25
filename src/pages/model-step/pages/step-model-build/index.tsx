@@ -22,6 +22,7 @@ import config from '@/config';
 import { useBuildModel } from './model';
 import TitleStatus from '../../components/title-status';
 import PageStatus from './components/statusPage';
+import { useSample } from './../step-select-sample/model';
 
 const successCode = config.successCode;
 
@@ -39,6 +40,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
 
   const { beginBuildModel, rebuildModel, nextFlowRequest, loading, setLoading } = useBuildModel();
+  const { getCurrentStageRequest } = useSample();
 
   const [ruleList, setRulist] = useState<any>([]);
   const [pageType, setPageType] = useState<string>(''); //loading error finish
@@ -54,6 +56,22 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
+
+  useEffect(() => {
+    getCurrentStage();
+  }, []);
+
+  const getCurrentStage = async () => {
+    let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+    let data = res.result || {};
+    if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+      setStepType(2);
+    } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
+      setStepType(2);
+    } else {
+      setStepType(1);
+    }
+  };
 
   const handleClose = (entityValueName: any) => {
     let temp = JSON.parse(JSON.stringify(ruleList));
@@ -74,15 +92,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res.status?.code === successCode) {
       setLoading(false);
       message.success(res.status?.desc || '成功');
-      // setFormVal(formVal);
       setStepType(2);
-      // setPageType('finish');
-      // setTagStatus('success');
     } else {
       setLoading(false);
       message.error(res.status?.desc || '失败');
-      // setPageType('');
-      // setTagStatus('');
     }
   };
 

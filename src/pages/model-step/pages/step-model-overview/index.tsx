@@ -243,9 +243,15 @@ const StepOne: React.FC = (props: any) => {
       <NextStepButton
         btnNode={
           <Space>
-            {doneStep !== 10 && <Button onClick={() => submitNextStep('save')}>保存</Button>}
+            {doneStep !== 10 && (
+              <Button size="large" type="primary" onClick={() => submitNextStep('save')}>
+                保存
+              </Button>
+            )}
             {(doneStep < 1 || doneStep == 1) && isSave == '1' && (
-              <Button onClick={() => submitNextStep('next')}>下一流程</Button>
+              <Button size="large" type="primary" onClick={() => submitNextStep('next')}>
+                下一流程
+              </Button>
             )}
           </Space>
         }
