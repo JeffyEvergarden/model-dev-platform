@@ -40,8 +40,9 @@ const StepOne: React.FC = (props: any) => {
     confirmSunmitRequest,
     sampleNext,
   } = useSample();
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    doneStep: model.doneStep,
   }));
 
   const [form1] = Form.useForm();

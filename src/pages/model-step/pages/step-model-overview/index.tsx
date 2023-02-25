@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Input, DatePicker, message, Space, Button } from 'antd';
 import styles from '../style.less';
 import { useModel, history } from 'umi';
 import { useFormSelect } from './model';
@@ -7,6 +7,7 @@ import { useNextStep } from '../../config';
 import moment from 'moment';
 import NextStepButton from '../../components/nextstep-button';
 import TitleStatus from '../../components/title-status';
+import { useSample } from './../step-select-sample/model/index';
 
 import config from '@/config';
 const successCode = config.successCode;
@@ -21,9 +22,10 @@ const { RangePicker }: any = DatePicker;
 const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { modelId, doneStep, isHadBuild } = useModel('step', (model: any) => ({
+  const { modelId, doneStep, setDoneStep, isHadBuild } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
+    setDoneStep: model.setDoneStep,
     isHadBuild: model.isHadBuild,
     isHadReported: model.isHadReported,
   }));
@@ -35,7 +37,10 @@ const StepOne: React.FC = (props: any) => {
 
   const { getForm, nextStage, saveInfo, loading } = useFormSelect();
 
+  const [isSave, setIsSave] = useState<any>('-1');
+
   const { nextStep } = useNextStep();
+  const { getCurrentStageRequest } = useSample();
 
   const _getForm = async () => {
     let res: any = await getForm(modelId);
@@ -73,26 +78,33 @@ const StepOne: React.FC = (props: any) => {
   // 初始化获取表单已填信息
   useEffect(() => {
     _getForm();
+    getCurrentStage();
   }, []);
 
-  const submitNextStep = async () => {
+  const getCurrentStage = async () => {
+    let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+    let data = res.result || {};
+    setDoneStep(Number(data?.currentStage));
+  };
+
+  const submitNextStep = async (type: any) => {
     let _form = await form.validateFields();
     let modelDevTime = _form.modelDevTime;
     _form.modelDevStartTime = modelDevTime?.[0]?.format('YYYY-MM-DD');
     _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
 
-    if (doneStep > 3) {
+    if (type == 'next') {
       let res = await nextStage({ itmModelRegisCode: modelId });
       // console.log(_form, res)
       if (res) {
-        // 跳到下一个步骤
         nextStep();
       }
-    } else {
+    } else if (type == 'save') {
       let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });
       if (res?.status?.code == successCode) {
         message.success(res?.status?.desc);
-        nextStep();
+        setIsSave('1');
+        // nextStep();
       } else {
         message.error(res?.status?.desc);
       }
@@ -227,10 +239,18 @@ const StepOne: React.FC = (props: any) => {
           </FormItem>
         </div>
       </Form>
-      {/* doneStep>3 ---下一流程  doneStep<3 ---保存*/}
+      {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
       <NextStepButton
-        text={doneStep > 3 ? '下一流程' : '保存'}
-        onClick={submitNextStep}
+        btnNode={
+          <Space>
+            {doneStep !== 10 && <Button onClick={() => submitNextStep('save')}>保存</Button>}
+            {(doneStep < 1 || doneStep == 1) && isSave == '1' && (
+              <Button onClick={() => submitNextStep('next')}>下一流程</Button>
+            )}
+          </Space>
+        }
+        // text={(doneStep > 2 || doneStep == 2) ? '下一流程' : '保存'}
+        // onClick={submitNextStep}
         loading={loading}
         disabled={isDisabled || isHadBuild}
       />
