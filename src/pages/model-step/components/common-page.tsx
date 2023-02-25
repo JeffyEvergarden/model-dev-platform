@@ -80,10 +80,10 @@ const StepTwo: React.FC<any> = (props: any) => {
               }${detailInfo?.featureLabel?.params ?? ''}`;
             }
             if (item.key == 'tableName') {
-              val = `${detailInfo?.featureLabel?.tableName ?? ''}`;
+              val = `${detailInfo?.tableName ?? ''}`;
             }
             if (item.key == 'dimensionField') {
-              val = `${detailInfo?.featureLabel?.dimensionField ?? ''}`;
+              val = `${detailInfo?.dimensionField ?? ''}`;
             }
             return (
               <div className={styles['col-row']} key={index}>

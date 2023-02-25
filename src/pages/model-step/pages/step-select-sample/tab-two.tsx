@@ -27,7 +27,7 @@ const StepTwo: React.FC<any> = (props: any) => {
     modelId: model.modelId,
   }));
 
-  const { processType, startLoop } = useSampleUploadAwaitModel();
+  const { processType, startLoop, desc } = useSampleUploadAwaitModel();
   const { getSample } = useSample();
 
   const [detailInfo, setDetailInfo] = useState<any>({});
@@ -47,7 +47,7 @@ const StepTwo: React.FC<any> = (props: any) => {
       itmModelRegisCode: modelId,
     };
     let res = await getSample(params);
-    setDetailInfo({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
+    setDetailInfo({ ...res?.result?.sampleParam?.featureLabel, ...res?.result?.sampleParam });
   };
 
   return (
@@ -68,11 +68,17 @@ const StepTwo: React.FC<any> = (props: any) => {
         errorContent={
           <>
             <div className={styles['title']}>样本选取失败</div>
-            <div className={styles['desc']}>{}</div>
+            <div className={styles['desc']}>{desc}</div>
           </>
         }
         pageType={processType}
-        columns={tabType == '0' ? tabSelectColumns : tabType == '1' ? tabSelectColumnsTwo : []}
+        columns={
+          detailInfo?.importType == '0'
+            ? tabSelectColumns
+            : detailInfo?.importType == '1'
+            ? tabSelectColumnsTwo
+            : []
+        }
         detailInfo={detailInfo}
       />
       <Condition r-if={processType !== 'loading'}>

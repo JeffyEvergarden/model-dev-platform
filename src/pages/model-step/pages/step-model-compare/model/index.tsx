@@ -6,6 +6,7 @@ import {
   versionListApi,
   getModelResultApi,
   nextStageRequestApi,
+  getInputVariableApi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -41,6 +42,13 @@ export const useComparePage = () => {
     return res;
   };
 
+  const getInputVariable = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getInputVariableApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
     setLoading,
@@ -48,5 +56,7 @@ export const useComparePage = () => {
     getModelStructureParamRequest,
     getModelResultRequest,
     nextStageRequest,
+
+    getInputVariable,
   };
 };

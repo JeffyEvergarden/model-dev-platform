@@ -1,9 +1,10 @@
 import React from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import styles from './style.less';
+import { filter } from 'lodash';
 
 export default (props: any) => {
-  const { headerTitle, rowKey, actionRef, dataSource } = props;
+  const { headerTitle, rowKey, actionRef, requestMethod } = props;
 
   const columns: any[] = [
     {
@@ -76,7 +77,10 @@ export default (props: any) => {
         scroll={{ x: columns?.length * 150 }}
         search={false}
         columns={columns}
-        dataSource={dataSource}
+        request={async (params = {}, sort, filter) => {
+          return requestMethod({ ...params, sort, filter });
+        }}
+        // dataSource={dataSource}
       />
     </div>
   );

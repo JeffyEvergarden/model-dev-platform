@@ -34,19 +34,19 @@ const getSample = (req: any, res: any) => {
     },
     result: {
       sampleParam: {
-        importType: '0',
+        importType: '1',
         startTime: '',
         endTime: '',
-        businessType: '数据维度',
+        businessType: 'SX',
         prodCat: '产品大类,产品大类',
         channelCatM: '渠道中类',
         channelCatS: '渠道小类',
         custCat: '客群大类',
         custCatS: '客群小类',
         processName: '编排',
+        tableName: 'hive表名，importType=1时有值',
+        dimensionField: 'hive维度id字段，importType=1时有值',
         featureLabel: {
-          tableName: 'hive表名，importType=1时有值',
-          dimensionField: 'hive维度id字段，importType=1时有值',
           featureCode: '1',
           // featureType: 'number',
           // operator: 'betweenAnd',

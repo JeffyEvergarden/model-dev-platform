@@ -4,7 +4,6 @@ import styles from '../style.less';
 import NextStepButton from '../../components/nextstep-button';
 import moment from 'moment';
 import FeatureCodeForm from './components/featureCodeForm';
-import { useStepSelectModel } from './model';
 import config from '@/config/index';
 import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
 export const successCode = config.successCode;
@@ -27,11 +26,12 @@ const BUSINESSTYPE: any[] = [
 // 首页
 const StepOne: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { form, onNext, editData, labelList, featureOperatorMap } = props;
-
-  const [_form] = Form.useForm(form);
-
   const {
+    form,
+    onNext,
+    editData,
+    labelList,
+    featureOperatorMap,
     getparams,
     processList,
     setProcessList,
@@ -55,7 +55,9 @@ const StepOne: React.FC<any> = (props: any) => {
     originChannelSmList,
     originCustCatList,
     originCustCatSmList,
-  } = useStepSelectModel();
+  } = props;
+
+  const [_form] = Form.useForm(form);
 
   useEffect(() => {
     form.setFieldsValue({

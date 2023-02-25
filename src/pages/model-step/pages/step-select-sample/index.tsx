@@ -30,7 +30,7 @@ const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
   const confirmModalRef: any = useRef();
 
-  const { labelListRequest, labelList, featureOperatorMap } = useStepSelectModel();
+  const {} = useStepSelectModel();
 
   const {
     loading,
@@ -40,6 +40,36 @@ const StepOne: React.FC = (props: any) => {
     confirmSunmitRequest,
     sampleNext,
   } = useSample();
+
+  const {
+    labelListRequest,
+    labelList,
+    featureOperatorMap,
+
+    getparams,
+    processList,
+    setProcessList,
+    productList,
+    setProductList,
+    channelMidList,
+    setChannelMidList,
+    channelSmList,
+    setChannelSmList,
+    custCatList,
+    setCustCatList,
+    custCatSmList,
+    setCustCatSmList,
+
+    operationList,
+    setOperationList,
+    getSelectionList,
+    paramList,
+
+    originChannelMidList,
+    originChannelSmList,
+    originCustCatList,
+    originCustCatSmList,
+  } = useStepSelectModel();
   const { modelId, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
@@ -178,6 +208,8 @@ const StepOne: React.FC = (props: any) => {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
       setTabType('0');
+      getparams({ businessType: res?.result?.samplePara?.businessType });
+      labelListRequest();
     } else {
       message.error(res?.status?.desc || '失败');
     }
@@ -225,6 +257,27 @@ const StepOne: React.FC = (props: any) => {
             editData={editData}
             labelList={labelList}
             featureOperatorMap={featureOperatorMap}
+            getparams={getparams}
+            processList={processList}
+            setProcessList={setProcessList}
+            productList={productList}
+            setProductList={setProductList}
+            channelMidList={channelMidList}
+            setChannelMidList={setChannelMidList}
+            channelSmList={channelSmList}
+            setChannelSmList={setChannelSmList}
+            custCatList={custCatList}
+            setCustCatList={setCustCatList}
+            custCatSmList={custCatSmList}
+            setCustCatSmList={setCustCatSmList}
+            operationList={operationList}
+            setOperationList={setOperationList}
+            getSelectionList={getSelectionList}
+            paramList={paramList}
+            originChannelMidList={originChannelMidList}
+            originChannelSmList={originChannelSmList}
+            originCustCatList={originCustCatList}
+            originCustCatSmList={originCustCatSmList}
           />
         </Condition>
       </Condition>

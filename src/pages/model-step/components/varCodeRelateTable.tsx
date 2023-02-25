@@ -6,7 +6,7 @@ import classnames from 'classnames';
 //使用前提：dataSource和columns数据字段和格式需要保持一致
 
 export default (props: any) => {
-  const { headerTitle, rowKey, toolBarRender, actionRef, data } = props;
+  const { headerTitle, rowKey, toolBarRender, actionRef, data, request } = props;
 
   // const [dataSourceRelate, setDataSourceRelate] = useState<any>([]);
   const [columnsRelate, setColumnsRelate] = useState<any>([]);

@@ -35,6 +35,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     let res = await versionListRequest(params);
     if (res?.status?.code === successCode) {
       setTabList(res?.result);
+      setActiveKey(res?.result?.[0]);
     } else {
       message.error(res?.status?.desc || '异常');
     }
@@ -74,7 +75,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
         {tabList?.map((item: any) => {
           return (
             <Tabs.TabPane tab={item} key={item}>
-              <ComparePage activeKey={activeKey} />
+              <ComparePage activeKey={activeKey ? activeKey : tabList?.[0]} />
             </Tabs.TabPane>
           );
         })}

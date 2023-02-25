@@ -18,8 +18,13 @@ const successCode = config.successCode;
 export default (props: any) => {
   const { activeKey } = props;
 
-  const { loading, setLoading, getModelStructureParamRequest, getModelResultRequest } =
-    useComparePage();
+  const {
+    loading,
+    setLoading,
+    getModelStructureParamRequest,
+    getModelResultRequest,
+    getInputVariable,
+  } = useComparePage();
 
   const actionRef = useRef<any>();
   const relateModalRef = useRef<any>({});
@@ -44,13 +49,30 @@ export default (props: any) => {
     //模型构建参数
     getModelStructureParam();
 
-    //模型结果
+    //模型结果-变量相关性/集合KS/年月KS
     getModelResult();
   }, [activeKey]);
 
+  //入模变量
+  const inputVariableRequest = async (payload: any) => {
+    let params = {
+      page: payload?.current,
+      pageSize: payload?.pageSize,
+      itmModelRegisCode: modelId,
+      modelVersion: activeKey,
+    };
+    let res = await getInputVariable(params);
+    return {
+      data: res?.result?.tableData || [],
+      total: res?.result?.totalSize || 0,
+      current: payload?.current || 1,
+      pageSize: payload?.pageSize || 10,
+    };
+  };
+
   const getModelStructureParam = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
       modelVersionName: activeKey,
     };
     setLoading(true);
@@ -66,7 +88,7 @@ export default (props: any) => {
 
   const getModelResult = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
       modelVersionName: activeKey,
     };
     setLoading(true);
@@ -151,10 +173,11 @@ export default (props: any) => {
         <span className={styles.tableTitle}>模型结果</span>
         <InputVariableTable
           headerTitle="入模变量"
-          rowKey={(record: any) => record?.name}
+          rowKey={(record: any, index: any) => record?.id + index}
           actionRef={actionRef}
           pageInfo={pageInfo}
-          dataSource={modelResult?.inputVariableList}
+          // dataSource={modelResult?.inputVariableList}
+          requestMethod={inputVariableRequest}
         />
       </div>
       <div className={classnames(styles.relateTable)}>

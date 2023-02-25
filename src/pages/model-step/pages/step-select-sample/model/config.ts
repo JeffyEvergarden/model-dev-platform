@@ -59,14 +59,23 @@ export const tabSelectColumnsTwo: any[] = [
   {
     name: '数据维度',
     key: 'businessType',
+    formate: (val: any) => {
+      return BSNESSTYPE[val];
+    },
   },
   {
     name: '表名称',
     key: 'tableName',
+    formate: (val: any) => {
+      return val;
+    },
   },
   {
     name: '表字段',
     key: 'dimensionField',
+    formate: (val: any) => {
+      return val;
+    },
   },
   {
     name: '创建时间',
