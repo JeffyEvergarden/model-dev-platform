@@ -29,8 +29,8 @@ const getStepOneForm = (req: any, res: any) => {
       modelSceneThought: '模型应用场景和思路',
       modelPerformanceMetrics: '模型主要性能指标',
       modelInnovation: '模型主要创新点',
-      modelDevStartTime: '',
-      modelDevEndTime: '',
+      modelDevStartTime: '2012-12-12',
+      modelDevEndTime: '2012-12-13',
       modelPolicyCounterpart: '政策对接人',
       modelName: '模型名称',
       modelAnalyst: '模型开发人',
@@ -57,7 +57,8 @@ const getWaitResult = (req: any, res: any) => {
     },
     result: {
       currentStage: '10',
-      currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
+      currentStageStatus: '1', //：0：未开始 1：进行中 2：已完成 3：处理失败
+      isCommittedPage: '0',
       currentStageDesc: '1',
       isModelBuild: false,
       reportFilePath: false,

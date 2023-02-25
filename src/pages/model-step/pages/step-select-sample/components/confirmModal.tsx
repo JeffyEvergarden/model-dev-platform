@@ -16,6 +16,7 @@ export default (props: any) => {
   }));
 
   const [visible, setVisible] = useState<boolean>(false);
+
   return (
     <Modal
       width={500}
@@ -25,7 +26,7 @@ export default (props: any) => {
       onCancel={() => setVisible(false)}
       footer={
         <Space>
-          <Button onClick={close}>取消</Button>
+          <Button onClick={() => setVisible(false)}>取消</Button>
           <Button type="primary" onClick={confirmSunmit} disabled={loading}>
             确定
           </Button>

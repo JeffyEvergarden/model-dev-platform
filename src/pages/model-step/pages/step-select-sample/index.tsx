@@ -32,8 +32,14 @@ const StepOne: React.FC = (props: any) => {
 
   const { labelListRequest, labelList, featureOperatorMap } = useStepSelectModel();
 
-  const { loading, getSample, submitSampleRequest, confirmSunmitRequest, sampleNext } = useSample();
-
+  const {
+    loading,
+    getCurrentStageRequest,
+    getSample,
+    submitSampleRequest,
+    confirmSunmitRequest,
+    sampleNext,
+  } = useSample();
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
@@ -51,9 +57,34 @@ const StepOne: React.FC = (props: any) => {
   const [editData, setEditData] = useState<any>({});
 
   useEffect(() => {
-    labelListRequest(); //分群建模标签查询
-    getSelectDetail();
+    {
+      /*进入页面调用状态接口判断该步骤状态
+        页面是否已提交，仅仅适用于有loading页面的阶段。
+        当前阶段状态：0：未开始 1：进行中 2：已完成 3：处理失败
+        因部分阶段有loading页面，所以需要给标识，区分是进入loading页面还是参数选择页面的。
+        只有（当前阶段状态-进行中+isCommittedPage=true）才会进入loading页面。
+
+        当前阶段状态 1 &isCommittedPage=true --进入loading页面 loading 状态
+        当前阶段状态 2 --进入--进入loading页面 完成 状态
+        当前阶段状态 0 3 --进入--进入loading页面 处理失败 状态
+  */
+    }
+    getCurrentStage();
   }, []);
+
+  const getCurrentStage = async () => {
+    let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+    let data = res.result || {};
+    if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+      setStepType(2);
+    } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
+      setStepType(2);
+    } else {
+      setStepType(1);
+      labelListRequest(); //分群建模标签查询
+      getSelectDetail();
+    }
+  };
 
   const getSelectDetail = async () => {
     let res = await getSample({ itmModelRegisCode: modelId });

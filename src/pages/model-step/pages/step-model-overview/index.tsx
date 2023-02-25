@@ -48,7 +48,7 @@ const StepOne: React.FC = (props: any) => {
           typeof modelDevTime[0] === 'string' &&
           typeof modelDevTime[1] === 'string' &&
           res.result?.modelDevStartTime &&
-          res.modelDevEndTime
+          res.result?.modelDevEndTime
         ) {
           modelDevTime[0] = moment(modelDevTime[0]);
           modelDevTime[1] = moment(modelDevTime[1]);

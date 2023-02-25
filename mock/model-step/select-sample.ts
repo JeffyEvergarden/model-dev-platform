@@ -232,5 +232,5 @@ export default {
   [`GET ${baseUrl}/sampleSelection/getModelLabelList`]: getModelLabelList,
   [`GET ${baseUrl}/sampleSelection/getSelectionList`]: getSelectionList,
   [`GET ${baseUrl}/sampleSelection/getParams`]: getParams,
-  [`POST ${baseUrl}/sampleSelection/getSample`]: getSample,
+  [`GET ${baseUrl}/sampleSelection/getSample`]: getSample,
 };

@@ -57,7 +57,6 @@ export default (props: any) => {
   };
 
   const changOperator = async (val: any) => {
-    console.log('paramList', paramList);
     if (val) {
       getParamVal(featureType, val);
       form.setFieldsValue({
@@ -169,15 +168,19 @@ export default (props: any) => {
                 name="params"
                 label="参数值"
               >
-                <Select optionFilterProp="children" allowClear>
-                  {paramList?.map((item: any) => {
-                    return (
-                      <Option key={item?.value} value={item?.value}>
-                        {item?.name}
-                      </Option>
-                    );
-                  })}
-                </Select>
+                {paramList.length > 0 ? (
+                  <Select optionFilterProp="children" allowClear>
+                    {paramList?.map((item: any) => {
+                      return (
+                        <Option key={item?.value} value={item?.value}>
+                          {item?.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                ) : (
+                  <Input placeholder="请输入" />
+                )}
               </FormItem>
             </span>
           </Col>

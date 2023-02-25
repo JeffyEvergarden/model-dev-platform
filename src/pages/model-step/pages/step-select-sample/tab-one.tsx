@@ -178,7 +178,7 @@ const StepOne: React.FC<any> = (props: any) => {
   const onSelect = (value: any, option: any, type: any) => {
     if (value == '全部') {
       form.setFieldsValue({
-        [type]: '全部',
+        [type]: ['全部'],
       });
     } else {
       let formval = form.getFieldsValue(type);
@@ -260,6 +260,7 @@ const StepOne: React.FC<any> = (props: any) => {
 
   const onClick = async () => {
     let val = await form.validateFields();
+
     if (val.date) {
       val.startTime = val.date?.[0]?.format('YYYY-MM-DD');
       val.endTime = val.date?.[1]?.format('YYYY-MM-DD');

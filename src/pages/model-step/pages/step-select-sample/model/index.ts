@@ -350,11 +350,19 @@ export const useSample = () => {
     return res;
   };
 
+  const getCurrentStageRequest = async (params?: any) => {
+    setLoading(true);
+    let res: any = await getWaitResult(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
     getSample,
     submitSampleRequest,
     confirmSunmitRequest,
     sampleNext,
+    getCurrentStageRequest,
   };
 };

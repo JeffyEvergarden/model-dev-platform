@@ -60,7 +60,7 @@ export async function getparamsApi(params?: Record<string, any>) {
 //样本选取-详情
 export async function getSampleApi(params?: Record<string, any>) {
   return request(`${baseUrl}/sampleSelection/getSample`, {
-    method: 'POST',
-    data: params,
+    method: 'GET',
+    params,
   });
 }
