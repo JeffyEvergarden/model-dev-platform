@@ -17,13 +17,12 @@ import styles from '../style.less';
 import { useModel, history } from 'umi';
 import Condition from '@/components/Condition';
 import NextStepButton from '../../components/nextstep-button';
-import CommonPage from '@/pages/model-step/components/common-page';
 import config from '@/config';
 import { useBuildModel } from './model';
 import TitleStatus from '../../components/title-status';
 import PageStatus from './components/statusPage';
 import { useSample } from './../step-select-sample/model';
-
+import { getModelStepDetail } from './../../../model-step/model/index';
 const successCode = config.successCode;
 
 const gutter = { xs: 8, sm: 16, md: 24, lg: 32 };
@@ -44,9 +43,6 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const [ruleList, setRulist] = useState<any>([]);
   const [pageType, setPageType] = useState<string>(''); //loading error finish
-  const [formVal, setFormVal] = useState<any>({});
-  const [tagStatus, setTagStatus] = useState<string>('processing'); //processing success error
-
   const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
 
   const isStepwise: any = Form.useWatch('isStepwise', form);
@@ -59,7 +55,26 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getCurrentStage();
+    getStageInfo();
   }, []);
+
+  const getStageInfo = async () => {
+    let params = {
+      itmModelRegisCode: modelId,
+      stage: '8',
+    };
+    setLoading(true);
+    let res = await getModelStepDetail(params);
+    if (res?.status?.code == successCode) {
+      setLoading(false);
+      form.setFieldsValue(res.result);
+      let temp: any[] = res.result?.variableNames?.split(',');
+      setRulist(temp);
+    } else {
+      setLoading(false);
+      message.error(res.status?.desc || '失败');
+    }
+  };
 
   const getCurrentStage = async () => {
     let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });

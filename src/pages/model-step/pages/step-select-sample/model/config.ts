@@ -3,6 +3,10 @@ const TYPE = {
   '1': '是',
 };
 
+const BSNESSTYPE = {
+  SX: '进件层',
+};
+
 export const tabSelectColumns: any[] = [
   {
     name: '导入数据',
@@ -18,10 +22,13 @@ export const tabSelectColumns: any[] = [
   {
     name: '数据维度',
     key: 'businessType',
+    formate: (val: any) => {
+      return BSNESSTYPE[val];
+    },
   },
   {
     name: '产品大类',
-    key: 'businessType',
+    key: 'prodCat',
   },
   {
     name: '渠道中类',
@@ -63,10 +70,7 @@ export const tabSelectColumnsTwo: any[] = [
   },
   {
     name: '创建时间',
-    key: 'create',
-    formate: () => {
-      return '-';
-    },
+    key: 'createTime',
   },
 ];
 
