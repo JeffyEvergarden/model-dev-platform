@@ -93,8 +93,8 @@ const StepModelCompare: React.FC<any> = (props: any) => {
                 <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>
                   {tabList?.map((item: any) => {
                     return (
-                      <Select.Option key={item} value={item}>
-                        {item}
+                      <Select.Option key={item?.value} value={item?.value}>
+                        {item?.name}
                       </Select.Option>
                     );
                   })}

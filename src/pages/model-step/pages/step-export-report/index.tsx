@@ -9,36 +9,51 @@ import NextStepButton from '../../components/nextstep-button';
 import { useExportReportModel } from './model';
 import { useComparePage } from './../step-model-compare/model';
 import config from '@/config';
+import { useModel } from 'umi';
 import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
 import { changeData } from '@/utils';
 
 const StepExportReport: React.FC<any> = (props: any) => {
-  const { loading, setLoading, getSampleDefineDetail, exportPageRequest } = useExportReportModel();
+  const { loading, setLoading, getOptimalVersionRquest, getSampleDefineDetail, exportPageRequest } =
+    useExportReportModel();
   const { getModelResultRequest } = useComparePage();
 
+  //样本定义
   const [sampleData, setSampleData] = useState<any>([]);
   //模型结果
   const [modelResult, setModelResult] = useState<any>({});
 
+  const [optimalVersion, setOptimalVersion] = useState<any>('');
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
   useEffect(() => {
+    //最优版本查询
+    getOptimalVersion();
     // getSampleData();
     //模型结果
     // getModelResult();
   }, []);
 
-  const getSampleData = async () => {
+  const getOptimalVersion = async () => {
     let params = {
-      itmModelRegisCode: '',
-      modelVersionName: '',
+      itmModelRegisCode: modelId,
+    };
+    let res = await getOptimalVersionRquest(params);
+    if (res?.status?.code === successCode) {
+      setOptimalVersion(res?.result);
+      getSampleData(res?.result);
+    }
+  };
+
+  const getSampleData = async (modelVersionName: any) => {
+    let params = {
+      itmModelRegisCode: modelId,
+      modelVersionName: modelVersionName,
     };
     let res = await getSampleDefineDetail(params);
-    if (res?.result?.prodCatList) {
-      res.result.prodCatList = res.result.prodCatList.join(',');
-    }
-    if (res?.result?.channelCatList) {
-      res.result.channelCatList = res.result.channelCatList.join(',');
-    }
     setSampleData(res?.result);
   };
 
@@ -99,7 +114,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
         <span>生成报告</span>
-        <TitleStatus index={10}></TitleStatus>
+        <TitleStatus index={10} />
       </div>
 
       <Tabs type="card" size="large">
