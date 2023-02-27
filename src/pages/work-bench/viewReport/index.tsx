@@ -46,7 +46,7 @@ export default () => {
   const getSampleData = async () => {
     let params = {
       itmModelRegisCode: '',
-      modelVersionName: '',
+      modelVersion: '',
     };
     let res = await getSampleDefineDetail(params);
     if (res?.result?.prodCatList) {
@@ -85,7 +85,7 @@ export default () => {
   const getModelResult = async () => {
     let params = {
       itmModelRegisCode: '',
-      modelVersionName: '',
+      modelVersion: '',
     };
     let res = await getModelResultRequest(params);
     if (res?.status?.code === successCode) {

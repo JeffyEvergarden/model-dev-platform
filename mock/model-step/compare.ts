@@ -4,157 +4,6 @@ const successCode = config.successCode;
 
 const baseUrl = config.basePath;
 
-const relateCodeListGet = (req: any, res: any) => {
-  res.json({
-    resultCode: successCode,
-    data: {
-      total: 60,
-      pageSize: 10,
-      pageNum: 1,
-      list: [
-        {
-          key: 'row1',
-          name: '变量一',
-          val_1: '1.00',
-          val_2: '0.23',
-          val_3: '0.35',
-          val_4: '0.05',
-          val_5: '0.05',
-          val_6: '0.05',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row2',
-          name: '变量二',
-          val_1: '0.01',
-          val_2: '1.00',
-          val_3: '0.15',
-          val_4: '0.05',
-          val_5: '0.15',
-          val_6: '0.05',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row3',
-          name: '变量三',
-          val_1: '0.02',
-          val_2: '0.14',
-          val_3: '1.00',
-          val_4: '0.05',
-          val_5: '0.45',
-          val_6: '0.15',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row4',
-          name: '变量四',
-          val_1: '0.16',
-          val_2: '-0.02',
-          val_3: '0.05',
-          val_4: '1.00',
-          val_5: '0.05',
-          val_6: '0.05',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row5',
-          name: '变量五',
-          val_1: '0.56',
-          val_2: '0.05',
-          val_3: '0.05',
-          val_4: '0.05',
-          val_5: '1.00',
-          val_6: '0.15',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row7',
-          name: '变量七',
-          val_1: '-0.09',
-          val_2: '-0.52',
-          val_3: '0.05',
-          val_4: '0.05',
-          val_5: '0.05',
-          val_6: '1.00',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row8',
-          name: '变量八',
-          val_1: '-0.09',
-          val_2: '-0.52',
-          val_3: '0.05',
-          val_4: '0.05',
-          val_5: '0.05',
-          val_6: '1.00',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row9',
-          name: '变量九',
-          val_1: '-0.09',
-          val_2: '-0.52',
-          val_3: '0.05',
-          val_4: '0.05',
-          val_5: '0.05',
-          val_6: '1.00',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-        {
-          key: 'row10',
-          name: '变量十',
-          val_1: '-0.09',
-          val_2: '-0.52',
-          val_3: '0.05',
-          val_4: '0.05',
-          val_5: '0.05',
-          val_6: '1.00',
-          val_7: '0.05',
-          val_8: '0.05',
-          val_9: '0.05',
-          val_10: '0.05',
-        },
-      ],
-      columnsRelate: [
-        { name: '变量一', dataIndex: 'val_1' },
-        { name: '变量二', dataIndex: 'val_2' },
-        { name: '变量三', dataIndex: 'val_3' },
-        { name: '变量四', dataIndex: 'val_4' },
-        { name: '变量五', dataIndex: 'val_5' },
-        { name: '变量六', dataIndex: 'val_6' },
-        { name: '变量七', dataIndex: 'val_7' },
-        { name: '变量八', dataIndex: 'val_8' },
-        { name: '变量九', dataIndex: 'val_9' },
-        { name: '变量十', dataIndex: 'val_10' },
-      ],
-    },
-  });
-};
-
 const getVersionNameList = (req: any, res: any) => {
   res.json({
     status: {
@@ -170,7 +19,7 @@ const getVersionNameList = (req: any, res: any) => {
   });
 };
 
-const getModelStructureParam = (req: any, res: any) => {
+const getModelBuildParam = (req: any, res: any) => {
   res.json({
     status: {
       code: successCode,
@@ -221,17 +70,26 @@ const getModelBuildResult = (req: any, res: any) => {
         ],
       },
       //集合KS
-      collectionKsData: [
-        { name: '训练集', value: '36.25%' },
-        { name: '验证集', value: '36.25%' },
-        { name: '其他验证集1', value: '36.25%' },
-        { name: '其他验证集2', value: '36.25%' },
-      ],
+      collectionKsData: {
+        rowList: ['训练集', '验证集', '其他验证集1'], //行标题
+        collectionKsList: [
+          {
+            训练集: '36.25%',
+            验证集: '36.25%',
+            其他验证集1: '36.25%',
+          },
+        ],
+      },
       //年月ks
-      monthKsData: [
-        { name: '2021-02', value: '36.25%' },
-        { name: '2021-03', value: '36.25%' },
-      ],
+      monthKsData: {
+        rowList: ['2021-02', '2021-03'], //行标题
+        monthKsList: [
+          {
+            '2021-03': '36.25%',
+            '2021-02': '36.25%',
+          },
+        ],
+      },
       //数据集分布（训练集分布列表、验证集分布列表
       dataScoreList: [
         {
@@ -664,9 +522,36 @@ const getVariableStability = (req: any, res: any) => {
     },
   });
 };
+
+const getModelSortInfo = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '成功',
+    },
+    result: {
+      rateHeadList: ['训练集', '跨期验证', '其他验证1'],
+      modelSortInfoList: [
+        {
+          scoreRange: '(0,100)',
+          训练集: '23.01%',
+          跨期验证: '33.1%',
+          其他验证1: '34.1%',
+        },
+        {
+          scoreRange: '(100,200)',
+          训练集: '23.01%',
+          跨期验证: '33.1%',
+          其他验证1: '34.1%',
+        },
+      ],
+    },
+  });
+};
+
 export default {
   [`GET ${baseUrl}/compare/getVersionInfoList`]: getVersionNameList,
-  [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
+  [`GET ${baseUrl}/compare/getModelBuildParam`]: getModelBuildParam,
   [`POST ${baseUrl}/compare/getModelBuildResult`]: getModelBuildResult,
   [`POST ${baseUrl}/compare/nextStage`]: normalDel,
 
@@ -675,4 +560,5 @@ export default {
   [`POST ${baseUrl}/compare/getModelDatasetDistribution`]: getModelDatasetDistribution,
   [`POST ${baseUrl}/compare/getModelStability`]: getModelStability,
   [`POST ${baseUrl}/compare/getVariableStability`]: getVariableStability,
+  [`POST ${baseUrl}/compare/getModelSortInfo`]: getModelSortInfo,
 };

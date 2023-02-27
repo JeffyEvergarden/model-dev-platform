@@ -11,6 +11,7 @@ import {
   getModelDatasetDistributionApi,
   getModelStabilityApi,
   getVariableStabilityApi,
+  getModelSortInfoApi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -46,7 +47,7 @@ export const useComparePage = () => {
     return res;
   };
 
-  const getInputVariable = async (params?: any) => {
+  const getInputVariableRequest = async (params?: any) => {
     setLoading(true);
     const res: any = await getInputVariableApi(params);
     setLoading(false);
@@ -81,6 +82,13 @@ export const useComparePage = () => {
     return res;
   };
 
+  const getModelSortInfoRequest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getModelSortInfoApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
     setLoading,
@@ -89,10 +97,11 @@ export const useComparePage = () => {
     getModelResultRequest,
     nextStageRequest,
 
-    getInputVariable,
+    getInputVariableRequest,
     scoreCardListReuqest,
     getModelDatasetDistributionRequest,
     getModelStabilityRequest,
     getVariableStabilityRequest,
+    getModelSortInfoRequest,
   };
 };

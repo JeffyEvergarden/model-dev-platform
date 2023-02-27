@@ -3,7 +3,7 @@ import config from '@/config/index';
 const baseUrl: string = config.basePath;
 
 export async function getModelStructureParamApi(data?: Record<string, any>) {
-  return request(`${baseUrl}/compare/getModelStructureParam`, {
+  return request(`${baseUrl}/compare/getModelBuildParam`, {
     method: 'GET',
     params: data,
   });
@@ -60,6 +60,13 @@ export async function getModelStabilityApi(data?: Record<string, any>) {
 
 export async function getVariableStabilityApi(data?: Record<string, any>) {
   return request(`${baseUrl}/compare/getVariableStability`, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function getModelSortInfoApi(data?: Record<string, any>) {
+  return request(`${baseUrl}/compare/getModelSortInfo`, {
     method: 'POST',
     data,
   });

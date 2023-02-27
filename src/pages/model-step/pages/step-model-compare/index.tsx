@@ -52,7 +52,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     }
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: values?.modelVersionName,
+      modelVersion: values?.modelVersion,
     };
     setLoading(true);
     let res = await nextStageRequest(params);
@@ -86,7 +86,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
             <Form form={form} layout="inline">
               <Form.Item
                 label="选择最优模型"
-                name="modelVersionName"
+                name="modelVersion"
                 rules={[{ required: true, message: '请选择最优模型' }]}
               >
                 <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>

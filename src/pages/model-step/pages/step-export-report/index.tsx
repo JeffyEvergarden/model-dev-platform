@@ -48,34 +48,13 @@ const StepExportReport: React.FC<any> = (props: any) => {
     }
   };
 
-  const getSampleData = async (modelVersionName: any) => {
+  const getSampleData = async (modelVersion: any) => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: modelVersionName,
+      modelVersion: modelVersion,
     };
     let res = await getSampleDefineDetail(params);
     setSampleData(res?.result);
-  };
-
-  const togetherData = (data: any) => {
-    let tempArr: any = [];
-    data?.map((item: any, index: any) => {
-      item?.boxList?.map((el: any) => {
-        tempArr.push({
-          idx: index,
-          id: el?.variable,
-          variable: item?.variable,
-          variableName: item?.variableName,
-          boxGroup: el?.boxGroup,
-          boxGroupScore: el?.boxGroupScore,
-          trainBadRate: el?.trainBadRate,
-          validBadRate: el?.validBadRate,
-          trainGroupRate: el?.trainGroupRate,
-          validGroupRate: el?.validGroupRate,
-        });
-      });
-    });
-    return changeData(tempArr, 'variable');
   };
 
   const getModelResult = async () => {
@@ -86,9 +65,6 @@ const StepExportReport: React.FC<any> = (props: any) => {
     let res = await getModelResultRequest(params);
     if (res?.status?.code === successCode) {
       let resultData = res.result;
-      if (resultData.scoreCardLogicList) {
-        resultData.scoreCardLogicList = togetherData(resultData.scoreCardLogicList);
-      }
       setModelResult(resultData);
     } else {
       message.error(res?.status?.desc || '异常');
@@ -97,7 +73,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
 
   const exportPage = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
     setLoading(true);
     let res = await exportPageRequest(params);
@@ -125,7 +101,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
           <InputVariable modelResult={modelResult} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="评分卡" key={'3'}>
-          <ScoreCard modelResult={modelResult} />
+          <ScoreCard modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="模型效果" key={'4'}>
           <ModelEffect modelResult={modelResult} />

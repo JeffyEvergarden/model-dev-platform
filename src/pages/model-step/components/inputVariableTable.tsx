@@ -5,22 +5,22 @@ import { useModel, history } from 'umi';
 import { useComparePage } from '@/pages/model-step/pages/step-model-compare/model';
 
 export default (props: any) => {
-  const { headerTitle, rowKey, actionRef, optimalVersion } = props;
+  const { headerTitle, rowKey, actionRef, optimalVersion, paramObj } = props;
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
 
-  const { getInputVariable } = useComparePage();
+  const { getInputVariableRequest } = useComparePage();
 
-  const inputVariableRequest = async (payload: any) => {
+  const getInputVariable = async (payload: any) => {
     let params = {
       page: payload?.current,
       pageSize: payload?.pageSize,
       itmModelRegisCode: modelId,
       modelVersion: optimalVersion,
     };
-    let res = await getInputVariable(params);
+    let res = await getInputVariableRequest(params);
     return {
       data: res?.result?.tableData || [],
       total: res?.result?.totalSize || 0,
@@ -101,8 +101,9 @@ export default (props: any) => {
         scroll={{ x: columns?.length * 150 }}
         search={false}
         columns={columns}
+        // params={paramObj}
         request={async (params = {}, sort, filter) => {
-          return inputVariableRequest({ ...params, sort, filter });
+          return getInputVariable({ ...params, sort, filter });
         }}
         // dataSource={dataSource}
       />
