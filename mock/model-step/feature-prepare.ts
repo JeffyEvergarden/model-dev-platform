@@ -74,7 +74,7 @@ const getVarList = (req: any, res: any) => {
     },
     result: {
       pageSize: req?.pageSize || 10,
-      totalPage: 21,
+      totalSize: 21,
       current: 1,
       tableData: [...list],
     },

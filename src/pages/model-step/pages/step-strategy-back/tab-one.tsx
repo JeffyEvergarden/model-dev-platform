@@ -66,7 +66,7 @@ const SelectorTable: React.FC<any> = (props: any) => {
       message.warning('请选择需要回溯的编排');
     } else {
       console.log(selectedKeys);
-      let reqData = { itmModelRegisCode: modelId, backtrackProcessName: selectedKeys };
+      let reqData = { itmModelRegisCode: modelId, backtrackProcessName: selectedKeys?.join() };
       await submitProcess(reqData).then((res: any) => {
         if (res) {
           onNext?.(selectedKeys);
