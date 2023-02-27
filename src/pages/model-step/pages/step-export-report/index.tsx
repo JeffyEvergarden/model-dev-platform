@@ -33,8 +33,8 @@ const StepExportReport: React.FC<any> = (props: any) => {
     //最优版本查询
     getOptimalVersion();
     // getSampleData();
-    //模型结果
-    // getModelResult();
+    //模型结果-变量相关性/集合KS/年月KS
+    getModelResult();
   }, []);
 
   const getOptimalVersion = async () => {
@@ -80,8 +80,8 @@ const StepExportReport: React.FC<any> = (props: any) => {
 
   const getModelResult = async () => {
     let params = {
-      itmModelRegisCode: '',
-      modelVersionName: '',
+      itmModelRegisCode: modelId,
+      modelVersion: optimalVersion,
     };
     let res = await getModelResultRequest(params);
     if (res?.status?.code === successCode) {
