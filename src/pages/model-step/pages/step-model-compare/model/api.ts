@@ -18,8 +18,8 @@ export async function versionListApi(data?: Record<string, any>) {
 
 export async function getModelResultApi(data?: Record<string, any>) {
   return request(`${baseUrl}/compare/getModelBuildResult`, {
-    method: 'GET',
-    params: data,
+    method: 'POST',
+    data,
   });
 }
 
@@ -31,7 +31,7 @@ export async function nextStageRequestApi(data?: Record<string, any>) {
 }
 
 export async function getInputVariableApi(data?: Record<string, any>) {
-  return request(`${baseUrl}/compare/getInputVariablee`, {
+  return request(`${baseUrl}/compare/getInputVariable`, {
     method: 'POST',
     data,
   });

@@ -667,10 +667,10 @@ const getVariableStability = (req: any, res: any) => {
 export default {
   [`GET ${baseUrl}/compare/getVersionInfoList`]: getVersionNameList,
   [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
-  [`GET ${baseUrl}/compare/getModelBuildResult`]: getModelBuildResult,
+  [`POST ${baseUrl}/compare/getModelBuildResult`]: getModelBuildResult,
   [`POST ${baseUrl}/compare/nextStage`]: normalDel,
 
-  [`POST ${baseUrl}/compare/getInputVariablee`]: getInputVariableApi,
+  [`POST ${baseUrl}/compare/getInputVariable`]: getInputVariableApi,
   [`POST ${baseUrl}/compare/getModelScoreCalcLogic`]: getModelScoreCalcLogic,
   [`POST ${baseUrl}/compare/getModelDatasetDistribution`]: getModelDatasetDistribution,
   [`POST ${baseUrl}/compare/getModelStability`]: getModelStability,

@@ -10,18 +10,18 @@ export default (props: any) => {
   const columnsSample: any[] = [
     {
       title: '样本类型',
-      dataIndex: 'dataSetType',
-      key: 'dataSetType',
+      dataIndex: 'sampleType',
+      key: 'sampleType',
     },
     {
       title: '好样本',
-      dataIndex: 'goodCount',
-      key: 'goodCount',
+      dataIndex: 'goodSample',
+      key: 'goodSample',
     },
     {
       title: '坏样本',
-      dataIndex: 'badCount',
-      key: 'badCount',
+      dataIndex: 'badSample',
+      key: 'badSample',
     },
     {
       title: '坏样本率',
@@ -30,8 +30,8 @@ export default (props: any) => {
     },
     {
       title: '总计',
-      dataIndex: 'totalNum',
-      key: 'totalNum',
+      dataIndex: 'total',
+      key: 'total',
     },
     // {
     //   title: '中间客户',
@@ -53,13 +53,13 @@ export default (props: any) => {
     },
     {
       title: '好样本',
-      dataIndex: 'goodCount',
-      key: 'goodCount',
+      dataIndex: 'goodSample',
+      key: 'goodSample',
     },
     {
       title: '坏样本',
-      dataIndex: 'badCount',
-      key: 'badCount',
+      dataIndex: 'badSample',
+      key: 'badSample',
     },
     {
       title: '坏样本率',
@@ -68,13 +68,13 @@ export default (props: any) => {
     },
     {
       title: '总计',
-      dataIndex: 'totalNum',
-      key: 'totalNum',
+      dataIndex: 'total',
+      key: 'total',
     },
     {
       title: '中间客户',
-      dataIndex: 'midCount',
-      key: 'midCount',
+      dataIndex: 'midSample',
+      key: 'midSample',
     },
     {
       title: '中间样本占比',
@@ -86,8 +86,8 @@ export default (props: any) => {
   return (
     <div className={styles.sampleDefinationPage}>
       <Descriptions title="样本定义" bordered column={2}>
-        <Descriptions.Item label="产品">{sampleData?.prodCatList}</Descriptions.Item>
-        <Descriptions.Item label="渠道">{sampleData?.channelCatList}</Descriptions.Item>
+        <Descriptions.Item label="产品">{sampleData?.prodCat}</Descriptions.Item>
+        <Descriptions.Item label="渠道">{sampleData?.channelCat}</Descriptions.Item>
         <Descriptions.Item label="训练集">{sampleData?.training}</Descriptions.Item>
         <Descriptions.Item label="验证集">{sampleData?.validation}</Descriptions.Item>
         <Descriptions.Item label="表现期">{sampleData?.performance}</Descriptions.Item>
@@ -98,7 +98,7 @@ export default (props: any) => {
         <span className={styles.tableTitle}>样本划分</span>
         <ProTable
           headerTitle="整体分部"
-          rowKey={(record: any) => record.dataSetType}
+          rowKey={(record: any, index) => record.sampleType + index}
           toolBarRender={() => []}
           options={false}
           // bordered
@@ -106,7 +106,7 @@ export default (props: any) => {
           pagination={false}
           search={false}
           columns={columnsSample}
-          dataSource={sampleData?.dataSetList}
+          dataSource={sampleData?.totalSetList}
         />
       </div>
       <div className={styles.tableBox}>

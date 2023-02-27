@@ -2,7 +2,7 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
 
-import { getSampleDefineDetailApi, exportPageRequestApi } from './api';
+import { getOptimalVersionApi, getSampleDefineDetailApi, exportPageRequestApi } from './api';
 
 export const successCode = config.successCode;
 
@@ -23,9 +23,17 @@ export const useExportReportModel = () => {
     return res;
   };
 
+  const getOptimalVersionRquest = async (params?: any) => {
+    setLoading(true);
+    const res: any = await getOptimalVersionApi(params);
+    setLoading(false);
+    return res;
+  };
+
   return {
     loading,
     setLoading,
+    getOptimalVersionRquest,
     getSampleDefineDetail,
     exportPageRequest,
   };

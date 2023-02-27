@@ -16,3 +16,10 @@ export async function exportPageRequestApi(params?: Record<string, any>) {
     data: params,
   });
 }
+
+export async function getOptimalVersionApi(params?: Record<string, any>) {
+  return request(`${baseUrl}/reporting/getOptimalVersion`, {
+    method: 'GET',
+    params,
+  });
+}
