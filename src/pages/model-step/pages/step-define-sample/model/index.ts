@@ -23,7 +23,7 @@ export const useDefineSampleModel = () => {
     setLoading(false);
     // 策略分析
     if (res?.status?.code === successCode) {
-      let data: any[] = res?.result || [];
+      let data: any[] = res?.result?.sampleMonthDistributionList || [];
       setTableTotal(res?.totalSize || 0);
       setTableList(data);
     }

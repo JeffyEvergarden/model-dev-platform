@@ -54,7 +54,7 @@ const monthDistributionList = (req: any, res: any) => {
     current: 1,
     pageSize: 10,
     totalSize: 11,
-    result: list,
+    result: { sampleMonthDistributionList: list },
   });
 };
 
