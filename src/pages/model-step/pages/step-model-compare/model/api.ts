@@ -10,7 +10,7 @@ export async function getModelStructureParamApi(data?: Record<string, any>) {
 }
 
 export async function versionListApi(data?: Record<string, any>) {
-  return request(`${baseUrl}/compare/getVersionNameList`, {
+  return request(`${baseUrl}/compare/getVersionInfoList`, {
     method: 'GET',
     params: data,
   });

@@ -145,14 +145,14 @@ export const useStepSelectModel = () => {
     let res: any = await getparamsApi(params);
     setTableLoading(false);
     let tempProcessList: any[] = res?.result?.processList;
-    tempProcessList.unshift({
+    tempProcessList?.unshift({
       value: 'all',
       name: '全部',
     });
     setProcessList(tempProcessList);
     if (res.status?.code === successCode) {
       let data: any = deepFormateData(res.result?.prodTree, 1);
-      data.unshift({
+      data?.unshift({
         value: 'all',
         name: '全部',
         children: [],
@@ -181,19 +181,19 @@ export const useStepSelectModel = () => {
         }
       });
 
-      channelMidTemp.unshift({
+      channelMidTemp?.unshift({
         value: 'all',
         name: '全部',
       });
-      channelSmTemp.unshift({
+      channelSmTemp?.unshift({
         value: 'all',
         name: '全部',
       });
-      custCatTemp.unshift({
+      custCatTemp?.unshift({
         value: 'all',
         name: '全部',
       });
-      custCatSmTemp.unshift({
+      custCatSmTemp?.unshift({
         value: 'all',
         name: '全部',
       });
@@ -304,9 +304,10 @@ export const useSampleUploadAwaitModel = () => {
       fake.current.timeFn = setTimeout(async () => {
         startLoop(params, time + 2);
       }, time * 1000);
-    } else {
-      message.error(res?.resultMsg || '未知系统异常');
     }
+    // else {
+    //   message.error(res?.status?.desc);
+    // }
   };
 
   return {

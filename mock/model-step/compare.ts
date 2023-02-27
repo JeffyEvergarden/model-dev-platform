@@ -161,7 +161,12 @@ const getVersionNameList = (req: any, res: any) => {
       code: successCode,
       desc: '成功',
     },
-    result: ['model1-1', 'model1-2', 'model1-3', 'model1-4'],
+    result: [
+      { name: 'model1-1', value: '1' },
+      { name: 'model1-2', value: '2' },
+      { name: 'model1-3', value: '3' },
+      { name: 'model1-4', value: '4' },
+    ],
   });
 };
 
@@ -660,7 +665,7 @@ const getVariableStability = (req: any, res: any) => {
   });
 };
 export default {
-  [`GET ${baseUrl}/compare/getVersionNameList`]: getVersionNameList,
+  [`GET ${baseUrl}/compare/getVersionInfoList`]: getVersionNameList,
   [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
   [`GET ${baseUrl}/compare/getModelBuildResult`]: getModelBuildResult,
   [`POST ${baseUrl}/compare/nextStage`]: normalDel,
