@@ -28,10 +28,10 @@ export default (props: any) => {
     getModelStability();
   }, []);
 
-  const getCollectColumns = (data: any) => {
+  const getCollectColumns = (data: any, type: string) => {
     let tempColumn: any[] = [
       {
-        title: '集合',
+        title: `${type}`,
         dataIndex: 'KS',
         key: 'KS',
         width: 100,
@@ -260,7 +260,7 @@ export default (props: any) => {
           bordered
           pagination={false}
           search={false}
-          columns={getCollectColumns(modelResult?.collectionKsData)}
+          columns={getCollectColumns(modelResult?.collectionKsData, '集合')}
           dataSource={modelResult?.collectionKsData}
           scroll={{ y: 500 }}
         />
@@ -274,7 +274,7 @@ export default (props: any) => {
           bordered
           pagination={false}
           search={false}
-          columns={getCollectColumns(modelResult?.monthKsData)}
+          columns={getCollectColumns(modelResult?.monthKsData, '年月')}
           dataSource={modelResult?.monthKsData}
           scroll={{ y: 500 }}
         />

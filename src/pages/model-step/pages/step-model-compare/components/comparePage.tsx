@@ -92,9 +92,10 @@ export default (props: any) => {
   const getModelStructureParam = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: activeKey,
+      modelVersion: activeKey,
     };
     setLoading(true);
+    getModelResult;
     let res = await getModelStructureParamRequest(params);
     if (res?.status?.code === successCode) {
       setLoading(false);
@@ -108,7 +109,7 @@ export default (props: any) => {
   const getModelResult = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: activeKey,
+      modelVersion: activeKey,
     };
     setLoading(true);
     let res = await getModelResultRequest(params);

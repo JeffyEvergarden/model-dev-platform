@@ -35,14 +35,13 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     let res = await versionListRequest(params);
     if (res?.status?.code === successCode) {
       setTabList(res?.result);
-      setActiveKey(res?.result?.[0]);
+      setActiveKey(res?.result?.[0]?.value);
     } else {
       message.error(res?.status?.desc || '异常');
     }
   };
 
   const changeTab = (key: any) => {
-    debugger;
     setActiveKey(key);
   };
 
