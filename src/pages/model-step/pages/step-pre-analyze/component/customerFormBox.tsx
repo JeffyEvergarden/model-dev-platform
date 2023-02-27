@@ -18,7 +18,7 @@ const formDom = (ruleClips: string, option: any) => {
             return (
               <Fragment>
                 <div>
-                  {fields.map(({ key, name, ...restField }, index) => (
+                  {fields?.map?.(({ key, name, ...restField }, index) => (
                     <div key={index} className={styles.formListBox}>
                       <Condition r-if={index != 0}>
                         <Form.Item
@@ -49,7 +49,7 @@ const formDom = (ruleClips: string, option: any) => {
                         style={{ width: '330px' }}
                       >
                         <Select placeholder="请选择">
-                          {option?.map((item: any) => {
+                          {option?.map?.((item: any) => {
                             return (
                               <Select.Option key={item} value={item}>
                                 {item}
@@ -66,7 +66,7 @@ const formDom = (ruleClips: string, option: any) => {
                         style={{ width: '100px' }}
                       >
                         <Select placeholder="请选择">
-                          {operatorOption?.map((item) => {
+                          {operatorOption?.map?.((item) => {
                             return (
                               <Select.Option key={item.value} value={item.value}>
                                 {item.label}

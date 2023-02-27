@@ -9,23 +9,43 @@ export const BUSSINESS_CODE = [
 
 export const listToMap = (list: any[]) => {
   let obj: any = {};
-  list.forEach((item: any, index: number) => {
-    obj[item.name] = { text: item.label };
+  list?.forEach((item: any, index: number) => {
+    if (item.label) {
+      obj[item.name] = { text: item.label };
+    }
   });
   return obj;
 };
 
 export const genColumns = (extra: any[], config: any) => {
+  console.log(config);
+
   const _columns: any[] = [
     {
+      title: '数据维度',
+      dataIndex: 'dimension',
+      valueEnum: {
+        SX: '进件层',
+      },
+      fieldProps: {
+        placeholder: '请选择数据维度',
+        onChange: (e: any) => {
+          console.log('数据维度:----', e);
+          config.changeDimension(e);
+        },
+      },
+      hideInTable: true,
+    },
+    {
       title: '产品大类',
-      dataIndex: 'productClass',
+      dataIndex: 'prodCat',
       fieldProps: {
         placeholder: '请选择产品大类',
         onChange: (e: any) => {
           console.log('产品大类:----', e);
           config.changeProductClass(e);
         },
+        mode: 'multiple',
       },
       valueType: 'select',
       valueEnum: {
@@ -35,13 +55,14 @@ export const genColumns = (extra: any[], config: any) => {
     },
     {
       title: '渠道中类',
-      dataIndex: 'channelMidClass',
+      dataIndex: 'channelCatM',
       fieldProps: {
         placeholder: '请选择渠道中类',
         onChange: (e: any) => {
           console.log('渠道中类:----', e);
           config.changeChannelMid(e);
         },
+        mode: 'multiple',
       },
       valueType: 'select',
       initialValue: undefined,
@@ -52,9 +73,14 @@ export const genColumns = (extra: any[], config: any) => {
     },
     {
       title: '渠道小类',
-      dataIndex: 'channelSmClass',
+      dataIndex: 'channelCatS',
       fieldProps: {
         placeholder: '请选择渠道小类',
+        mode: 'multiple',
+        onChange: (e: any) => {
+          console.log('渠道中类:----', e);
+          config.changeChannelS(e);
+        },
       },
       valueType: 'select',
       initialValue: undefined,
@@ -65,25 +91,25 @@ export const genColumns = (extra: any[], config: any) => {
     },
     {
       title: '客群大类',
-      dataIndex: 'customerClass',
-      valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+      fieldProps: {
+        placeholder: '请选择客群大类',
+        mode: 'multiple',
+        onChange: (e: any) => {
+          console.log('渠道中类:----', e);
+          config.changeCustCatL(e);
+        },
       },
-      hideInTable: true,
-    },
-    {
-      title: '数据纬度',
-      dataIndex: 'dataClass',
+      dataIndex: 'custCatL',
       valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+        ...listToMap(config.custCatList),
       },
       hideInTable: true,
     },
     {
       title: '汇总指标',
-      dataIndex: 'overviewMetics',
+      dataIndex: 'indexList',
       valueEnum: {
-        ...listToMap(BUSSINESS_CODE),
+        ...listToMap(config.indexList),
       },
       hideInTable: true,
     },
