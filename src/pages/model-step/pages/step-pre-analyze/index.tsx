@@ -107,6 +107,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     modelId: model.modelId,
   }));
   const { nextStep } = useNextStep();
+
   //维度
   const changeDimension = (val: any) => {
     getparams({ businessType: val });
@@ -125,15 +126,20 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   };
 
   //大类
-  const changeProductClass = (val: any) => {
-    console.log(val);
+  const changeProductClass = (arr: any) => {
+    let val: any = arr;
+    if (arr[arr.length - 1] == 'all') {
+      val = ['all'];
+    } else {
+      val = val.filter((item: any) => item != 'all');
+    }
 
+    console.log(val);
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
       if (val?.includes('all')) {
         list = originChannelMidList;
-        obj.prodCat = ['all'];
       } else {
         val?.map((ele: any) => {
           let temp: any = productList?.find((item: any) => item.name == ele);
@@ -141,6 +147,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           list = [...list, ...tempChild];
         });
       }
+      obj.prodCat = val;
       setChannelMidList(list);
       setChannelSmList([]);
       setCustCatList([]);
@@ -158,19 +165,25 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   };
 
   //中类
-  const changeChannelMid = (val: any) => {
+  const changeChannelMid = (arr: any) => {
+    let val: any = arr;
+    if (arr[arr.length - 1] == 'all') {
+      val = ['all'];
+    } else {
+      val = val.filter((item: any) => item != 'all');
+    }
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
       if (val?.includes('all')) {
         list = originChannelSmList;
-        obj.channelCatM = ['all'];
       } else {
         val.forEach((ele: any) => {
           let temp: any = channelMidList.find((item: any) => item.name == ele);
           list = [...list, ...temp?.children];
         });
       }
+      obj.channelCatM = val;
       setChannelSmList(list);
       setCustCatList([]);
     } else {
@@ -185,19 +198,25 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   };
 
   //小类
-  const changeChannelS = (val: any) => {
+  const changeChannelS = (arr: any) => {
+    let val: any = arr;
+    if (arr[arr.length - 1] == 'all') {
+      val = ['all'];
+    } else {
+      val = val.filter((item: any) => item != 'all');
+    }
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
       if (val?.includes('all')) {
         list = originCustCatList;
-        obj.channelCatS = ['all'];
       } else {
         val.forEach((ele: any) => {
           let temp: any = channelSmList.find((item: any) => item.name == ele);
           list = [...list, ...temp?.children];
         });
       }
+      obj.channelCatS = val;
       setCustCatList(list);
     } else {
       setCustCatList([]);
@@ -208,14 +227,16 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     });
   };
 
-  const changeCustCatL = (val: any) => {
+  const changeCustCatL = (arr: any) => {
+    let val: any = arr;
+    if (arr[arr.length - 1] == 'all') {
+      val = ['all'];
+    } else {
+      val = val.filter((item: any) => item != 'all');
+    }
     let obj: any = {};
     if (val.length > 0) {
-      let list: any[] = [];
-      if (val?.includes('all')) {
-        list = originCustCatList;
-        obj.custCatL = ['all'];
-      }
+      obj.custCatL = val;
     }
     formRef?.current?.setFieldsValue({
       ...obj,

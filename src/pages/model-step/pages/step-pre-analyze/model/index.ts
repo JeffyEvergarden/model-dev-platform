@@ -200,8 +200,16 @@ export const usePreAnalyzeModel = () => {
   const [midList, setMidList] = useState<any[]>([]);
 
   const getVintageList = async (params?: any) => {
+    console.log(params);
+    let reqData = {
+      ...params,
+      prodCat: params?.prodCat?.join(),
+      channelCatM: params?.channelCatM?.join(),
+      channelCatS: params?.channelCatS?.join(),
+      custCatL: params?.custCatL?.join(),
+    };
     setVLoading(true);
-    const res: any = await getPreAnalyzeVintageList(params);
+    const res: any = await getPreAnalyzeVintageList(reqData);
     setVLoading(false);
     // 策略分析
     if (res?.status?.code === successCode) {
