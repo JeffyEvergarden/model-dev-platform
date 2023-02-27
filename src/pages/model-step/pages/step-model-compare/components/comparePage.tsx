@@ -205,7 +205,7 @@ export default (props: any) => {
       <CompareAndReportCommonPage
         pageType="comparePage"
         modelResult={modelResult}
-        activeKey={activeKey}
+        optimalVersion={activeKey}
       />
       <RelateModal
         // columnsRelate={columnsRelate}

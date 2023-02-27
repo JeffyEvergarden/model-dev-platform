@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import { Tabs, message } from 'antd';
 import styles from './index.less';
 import ModelBasic from './components/modelBasic';
-import PreAnalysis from './components/preAnalysis';
+// import PreAnalysis from './components/preAnalysis';
+import PreAnalysis from '@/pages/model-step/pages/step-pre-analyze'
 import DefineSample from './components/defineSample';
 import InputVariable from '@/pages/model-step/pages/step-export-report/components/InputVariable';
 import ScoreCardPage from './components/scoreCardPage';
@@ -25,18 +26,22 @@ export default () => {
   const [sampleData, setSampleData] = useState<any>([]);
   const [modelResult, setModelResult] = useState<any>({});
 
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
   const onClickBreadcrumb = (route: any) => {
     history.push(route.path);
   };
 
   useEffect(() => {
-    // getSummaryDetail(); //模型概况
+    getSummaryDetail(); //模型概况
     // getSampleData(); //样本定义
     // getModelResult(); //入魔变量、评分卡、模型效果
   }, []);
 
   const getSummaryDetail = async () => {
-    let params = { itmModelRegisCode: '' };
+    let params = { itmModelRegisCode: modelId };
     let res = await getStepOneForm(params);
     if (res?.status?.code === successCode) {
       setModelDetail(res?.result);
