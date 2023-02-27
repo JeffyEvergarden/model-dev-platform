@@ -90,8 +90,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getVarInfo({
         page: val || 1,
         pageSize: 10,
-        categoryName: classType,
-        categoryPath: treeName,
+        categoryName: treeName,
+        categoryPath: classType,
         searchType: '',
       });
     }
@@ -103,8 +103,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
       return;
     }
     let res: any = await getVarInfo({
-      categoryName: classType,
-      categoryPath: treeName,
+      categoryName: treeName,
+      categoryPath: classType,
       searchType: 'all',
     });
 

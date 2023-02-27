@@ -38,7 +38,7 @@ export const useTableModel = () => {
     });
     // console.log('tableList', datas);
     setTableList(list || []);
-    return { data: list, total: totalPage };
+    return { data: list, total: totalSize };
   };
 
   const getItemInfo = async (params?: any) => {
