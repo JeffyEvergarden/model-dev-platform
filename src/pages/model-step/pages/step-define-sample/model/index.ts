@@ -12,6 +12,7 @@ export const successCode = config.successCode;
 export const useDefineSampleModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
   const [tableTotal, setTableTotal] = useState<number>(0);
+  const [tableResultTotal, setTableResultTotal] = useState<number>(0);
   const [resultTableList, setResultTableList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [resultLoading, setResultLoading] = useState<boolean>(false);
@@ -35,6 +36,7 @@ export const useDefineSampleModel = () => {
     // 策略分析
     if (res?.status?.code === successCode) {
       let data: any[] = res?.result || [];
+      setTableResultTotal(res?.totalSize || 0);
       setResultTableList(data);
     }
   };
@@ -56,6 +58,7 @@ export const useDefineSampleModel = () => {
     tableList,
     resultTableList,
     tableTotal,
+    tableResultTotal,
     getSampleTableList,
     getResultTableList,
     nextFlow,

@@ -102,6 +102,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     resultLoading,
     tableList,
     tableTotal,
+    tableResultTotal,
     resultTableList,
     getSampleTableList,
     getResultTableList,
@@ -110,7 +111,10 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   // 页码, 分页相关
   const [current, setCurrent] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(10);
+
+  const [current2, setCurrent2] = useState<number>(1);
+  const [pageSize2, setPageSize2] = useState<number>(10);
 
   const { nextStep } = useNextStep();
 
@@ -123,14 +127,22 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     if (loading) {
       return;
     }
-    getSampleTableList({ currentPage: val, pageSize: pageSize });
+    getSampleTableList({ currentPage: val, pageSize: pageSize, itmModelRegisCode: modelId });
     setCurrent(val);
   };
+
+  const onResultChange = (val: any) => {
+    if (loading) {
+      return;
+    }
+    submit({ currentPage: val });
+    setCurrent2(val);
+  };
   useEffect(() => {
-    getSampleTableList({ currentPage: current, pageSize: pageSize });
+    getSampleTableList({ currentPage: current, pageSize: pageSize, itmModelRegisCode: modelId });
   }, []);
 
-  const submit = async () => {
+  const submit = async (obj: any) => {
     const submitObj: any = await form.validateFields().catch((e) => {
       return false;
     });
@@ -145,6 +157,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       return;
     }
     const newObj: any = {
+      currentPage: obj.currentPage || current2,
+      pageSize: obj.pageSize || pageSize2,
+      itmModelRegisCode: modelId,
       trainingTime: submitObj?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
       intertemporalTime: submitObj?.intertemporalTime?.map?.((item: any) =>
         item?.format?.('YYYY-MM-DD'),
@@ -376,7 +391,18 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       <div className={styles['page-table']} style={{ paddingBottom: '16px' }}>
         <div className={style['table-box']}>
           <Table
-            pagination={false}
+            pagination={{
+              current: current2,
+              pageSize: pageSize2,
+              onChange: onResultChange,
+              total: tableResultTotal,
+              showSizeChanger: true,
+              onShowSizeChange: (pn: any, ps: any) => {
+                submit({ currentPage: 1, pageSize: ps });
+                setCurrent2(1);
+                setPageSize2(ps);
+              },
+            }}
             dataSource={resultTableList}
             columns={columns2}
             rowKey="index"
