@@ -24,6 +24,7 @@ const getList = (req: any, res: any) => {
     status: { code: successCode, desc: '' },
     result: {
       totalPage: 7,
+      totalSize: 7,
       pageSize: 10,
       current: 1,
       tableData: list,
