@@ -119,7 +119,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
 
       <Tabs type="card" size="large">
         <Tabs.TabPane tab="样本定义" key={'1'}>
-          <SampleDefination sampleData={sampleData} />
+          <SampleDefination sampleData={sampleData} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="入模变量" key={'2'}>
           <InputVariable modelResult={modelResult} />

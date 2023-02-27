@@ -1,10 +1,33 @@
 import React from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import styles from './style.less';
-import { filter } from 'lodash';
+import { useModel, history } from 'umi';
+import { useComparePage } from '@/pages/model-step/pages/step-model-compare/model';
 
 export default (props: any) => {
-  const { headerTitle, rowKey, actionRef, requestMethod } = props;
+  const { headerTitle, rowKey, actionRef, optimalVersion } = props;
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
+  const { getInputVariable } = useComparePage();
+
+  const inputVariableRequest = async (payload: any) => {
+    let params = {
+      page: payload?.current,
+      pageSize: payload?.pageSize,
+      itmModelRegisCode: modelId,
+      modelVersion: optimalVersion,
+    };
+    let res = await getInputVariable(params);
+    return {
+      data: res?.result?.tableData || [],
+      total: res?.result?.totalSize || 0,
+      current: payload?.current || 1,
+      pageSize: payload?.pageSize || 10,
+    };
+  };
 
   const columns: any[] = [
     {
@@ -79,7 +102,7 @@ export default (props: any) => {
         search={false}
         columns={columns}
         request={async (params = {}, sort, filter) => {
-          return requestMethod({ ...params, sort, filter });
+          return inputVariableRequest({ ...params, sort, filter });
         }}
         // dataSource={dataSource}
       />
