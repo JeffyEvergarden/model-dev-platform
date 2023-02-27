@@ -72,11 +72,11 @@ export const useVarSelectModal = () => {
     let res: any = await getKeyVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.result?.tableData || [];
+      let data = res?.result?.tableData || res?.result || [];
       setVarList(data);
       setListType('search');
-      setTotalSize(res?.result?.totalSize || 0);
-      return { data, total: res?.result?.totalSize };
+      setTotalSize(res?.result?.totalSize || data?.length || 0);
+      return { data, total: res?.result?.totalSize || data?.length };
     } else {
       setVarList([]);
       message.warning(res?.resultDesc);
