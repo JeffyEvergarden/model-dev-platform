@@ -23,7 +23,7 @@ export default (props: any) => {
     setLoading,
     getModelStructureParamRequest,
     getModelResultRequest,
-    getInputVariable,
+    getInputVariableRequest,
     scoreCardListReuqest,
   } = useComparePage();
 
@@ -36,12 +36,6 @@ export default (props: any) => {
   //模型结果
   const [modelResult, setModelResult] = useState<any>({});
 
-  const [pageInfo, setPageInfo] = useState<any>([]);
-
-  //变量相关性
-  const [dataSourceRelate, setDataSourceRelate] = useState<any>([]);
-  const [columnsRelate, setColumnsRelate] = useState<any>([]);
-
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
@@ -53,23 +47,6 @@ export default (props: any) => {
     //模型结果-变量相关性/集合KS/年月KS
     getModelResult();
   }, [activeKey]);
-
-  //入模变量
-  const inputVariableRequest = async (payload: any) => {
-    let params = {
-      page: payload?.current,
-      pageSize: payload?.pageSize,
-      itmModelRegisCode: modelId,
-      modelVersion: activeKey,
-    };
-    let res = await getInputVariable(params);
-    return {
-      data: res?.result?.tableData || [],
-      total: res?.result?.totalSize || 0,
-      current: payload?.current || 1,
-      pageSize: payload?.pageSize || 10,
-    };
-  };
 
   //评分卡
   const scoreCardList = async (payload: any) => {
@@ -92,7 +69,7 @@ export default (props: any) => {
   const getModelStructureParam = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: activeKey,
+      modelVersion: activeKey,
     };
     setLoading(true);
     let res = await getModelStructureParamRequest(params);
@@ -108,7 +85,7 @@ export default (props: any) => {
   const getModelResult = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: activeKey,
+      modelVersion: activeKey,
     };
     setLoading(true);
     let res = await getModelResultRequest(params);
@@ -191,9 +168,7 @@ export default (props: any) => {
           headerTitle="入模变量"
           rowKey={(record: any, index: any) => record?.id + index}
           actionRef={actionRef}
-          pageInfo={pageInfo}
-          // dataSource={modelResult?.inputVariableList}
-          requestMethod={inputVariableRequest}
+          optimalVersion={activeKey}
         />
       </div>
       <div className={classnames(styles.relateTable)}>

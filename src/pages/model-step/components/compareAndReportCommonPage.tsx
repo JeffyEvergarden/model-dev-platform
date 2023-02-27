@@ -5,7 +5,7 @@ import { useComparePage } from './../pages/step-model-compare/model';
 import { useModel, history } from 'umi';
 
 export default (props: any) => {
-  const { pageType, modelResult, activeKey } = props;
+  const { pageType, modelResult, optimalVersion } = props;
 
   const actionRef = useRef<any>();
 
@@ -13,10 +13,12 @@ export default (props: any) => {
     getModelDatasetDistributionRequest,
     getModelStabilityRequest,
     getVariableStabilityRequest,
+    getModelSortInfoRequest,
   } = useComparePage();
 
   const [trateAndVerifyData, setTrateAndVerifyData] = useState<any>({});
   const [modelStabilityList, setModelStabilityList] = useState<any>({});
+  const [sortData, setSortData] = useState<any>({});
   const [psiHeadList, setPsiHeadList] = useState<any>([]);
 
   const { modelId } = useModel('step', (model: any) => ({
@@ -26,12 +28,13 @@ export default (props: any) => {
   useEffect(() => {
     getModelDatasetDistribution();
     getModelStability();
+    getSortData();
   }, []);
 
-  const getCollectColumns = (data: any) => {
+  const getCollectColumns = (data: any, type: string) => {
     let tempColumn: any[] = [
       {
-        title: '集合',
+        title: `${type}`,
         dataIndex: 'KS',
         key: 'KS',
         width: 100,
@@ -52,12 +55,27 @@ export default (props: any) => {
     ];
     data?.map((item: any) => {
       tempColumn.push({
-        title: item?.name,
-        dataIndex: item?.name,
-        key: item?.value,
-        render: (t: any, r: any, i: any) => {
-          return <Fragment>{item?.value}</Fragment>;
-        },
+        title: item,
+        dataIndex: item,
+        key: item,
+      });
+    });
+    return tempColumn;
+  };
+
+  const getSortColums = (data: any) => {
+    let tempColumn: any[] = [
+      {
+        title: `评分区间`,
+        dataIndex: 'scoreRange',
+        key: 'scoreRange',
+      },
+    ];
+    data?.map((item: any) => {
+      tempColumn.push({
+        title: item,
+        dataIndex: item,
+        key: item,
       });
     });
     return tempColumn;
@@ -165,7 +183,7 @@ export default (props: any) => {
   const getModelDatasetDistribution = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getModelDatasetDistributionRequest(params);
     setTrateAndVerifyData(res?.result);
@@ -175,7 +193,7 @@ export default (props: any) => {
   const getModelStability = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getModelStabilityRequest(params);
     setModelStabilityList(res?.result);
@@ -187,7 +205,7 @@ export default (props: any) => {
       page: payload?.current,
       pageSize: payload?.pageSize,
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getVariableStabilityRequest(params);
     setPsiHeadList(res?.result?.psiHeadList);
@@ -197,6 +215,16 @@ export default (props: any) => {
       current: payload?.current || 1,
       pageSize: payload?.pageSize || 10,
     };
+  };
+
+  //12.9 模型排序性
+  const getSortData = async () => {
+    let params = {
+      itmModelRegisCode: modelId,
+      modelVersion: optimalVersion,
+    };
+    let res = await getModelSortInfoRequest(params);
+    setSortData(res?.result);
   };
 
   const columnsTrate: any = [
@@ -260,8 +288,8 @@ export default (props: any) => {
           bordered
           pagination={false}
           search={false}
-          columns={getCollectColumns(modelResult?.collectionKsData)}
-          dataSource={modelResult?.collectionKsData}
+          columns={getCollectColumns(modelResult?.collectionKsData?.rowList, '集合')}
+          dataSource={modelResult?.collectionKsData?.collectionKsList}
           scroll={{ y: 500 }}
         />
       </div>
@@ -274,8 +302,8 @@ export default (props: any) => {
           bordered
           pagination={false}
           search={false}
-          columns={getCollectColumns(modelResult?.monthKsData)}
-          dataSource={modelResult?.monthKsData}
+          columns={getCollectColumns(modelResult?.monthKsData?.rowList, '年月')}
+          dataSource={modelResult?.monthKsData?.monthKsList}
           scroll={{ y: 500 }}
         />
       </div>
@@ -308,6 +336,22 @@ export default (props: any) => {
           scroll={{ y: 500 }}
         />
       </div>
+      {pageType == 'modelEffect' && (
+        <div className={styles.tableBox}>
+          <ProTable
+            headerTitle={<span style={{ fontWeight: 700 }}>模型排序性</span>}
+            rowKey={(record: any) => record?.id}
+            toolBarRender={() => []}
+            options={false}
+            bordered
+            pagination={false}
+            search={false}
+            columns={getSortColums(sortData?.rateHeadList)}
+            dataSource={sortData?.modelSortInfoList}
+            scroll={{ y: 500 }}
+          />
+        </div>
+      )}
       <div className={styles.tableBox}>
         <ProTable
           headerTitle={

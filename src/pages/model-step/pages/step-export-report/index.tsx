@@ -9,7 +9,7 @@ import NextStepButton from '../../components/nextstep-button';
 import { useExportReportModel } from './model';
 import { useComparePage } from './../step-model-compare/model';
 import config from '@/config';
-import { useModel } from 'umi';
+import { useModel, history } from 'umi';
 import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
 import { changeData } from '@/utils';
@@ -33,8 +33,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     //最优版本查询
     getOptimalVersion();
     // getSampleData();
-    //模型结果
-    // getModelResult();
+    //模型结果-变量相关性/集合KS/年月KS
   }, []);
 
   const getOptimalVersion = async () => {
@@ -45,50 +44,27 @@ const StepExportReport: React.FC<any> = (props: any) => {
     if (res?.status?.code === successCode) {
       setOptimalVersion(res?.result);
       getSampleData(res?.result);
+      getModelResult(res?.result);
     }
   };
 
-  const getSampleData = async (modelVersionName: any) => {
+  const getSampleData = async (modelVersion: any) => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: modelVersionName,
+      modelVersion: modelVersion,
     };
     let res = await getSampleDefineDetail(params);
     setSampleData(res?.result);
   };
 
-  const togetherData = (data: any) => {
-    let tempArr: any = [];
-    data?.map((item: any, index: any) => {
-      item?.boxList?.map((el: any) => {
-        tempArr.push({
-          idx: index,
-          id: el?.variable,
-          variable: item?.variable,
-          variableName: item?.variableName,
-          boxGroup: el?.boxGroup,
-          boxGroupScore: el?.boxGroupScore,
-          trainBadRate: el?.trainBadRate,
-          validBadRate: el?.validBadRate,
-          trainGroupRate: el?.trainGroupRate,
-          validGroupRate: el?.validGroupRate,
-        });
-      });
-    });
-    return changeData(tempArr, 'variable');
-  };
-
-  const getModelResult = async () => {
+  const getModelResult = async (optimalVersion: any) => {
     let params = {
-      itmModelRegisCode: '',
-      modelVersionName: '',
+      itmModelRegisCode: modelId,
+      modelVersion: optimalVersion,
     };
     let res = await getModelResultRequest(params);
     if (res?.status?.code === successCode) {
       let resultData = res.result;
-      if (resultData.scoreCardLogicList) {
-        resultData.scoreCardLogicList = togetherData(resultData.scoreCardLogicList);
-      }
       setModelResult(resultData);
     } else {
       message.error(res?.status?.desc || '异常');
@@ -97,12 +73,13 @@ const StepExportReport: React.FC<any> = (props: any) => {
 
   const exportPage = async () => {
     let params = {
-      itmModelRegisCode: '',
+      itmModelRegisCode: modelId,
     };
     setLoading(true);
     let res = await exportPageRequest(params);
     if (res?.status?.code == successCode) {
       setLoading(false);
+      history.push('/work-bench/viewReport');
       message.success(res?.status?.desc || '成功');
     } else {
       setLoading(false);
@@ -122,13 +99,13 @@ const StepExportReport: React.FC<any> = (props: any) => {
           <SampleDefination sampleData={sampleData} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="入模变量" key={'2'}>
-          <InputVariable modelResult={modelResult} />
+          <InputVariable modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="评分卡" key={'3'}>
-          <ScoreCard modelResult={modelResult} />
+          <ScoreCard modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="模型效果" key={'4'}>
-          <ModelEffect modelResult={modelResult} />
+          <ModelEffect modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
       </Tabs>
       <NextStepButton

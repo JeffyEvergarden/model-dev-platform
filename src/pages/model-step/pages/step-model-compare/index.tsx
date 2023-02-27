@@ -7,7 +7,7 @@ import ComparePage from './components/comparePage';
 import NextStepButton from '../../components/nextstep-button';
 import TitleStatus from '../../components/title-status';
 import { useComparePage } from './model';
-
+import { useExportReportModel } from '@/pages/model-step/pages/step-export-report/model';
 import config from '@/config';
 const successCode = config.successCode;
 // 首页
@@ -19,13 +19,28 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   const [tabList, setTabList] = useState<any>([]);
   const [activeKey, setActiveKey] = useState<any>('');
 
+  const { getOptimalVersionRquest } = useExportReportModel();
+
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
 
   useEffect(() => {
     getModelVersionList();
+    getOptimalVersion();
   }, []);
+
+  const getOptimalVersion = async () => {
+    let params = {
+      itmModelRegisCode: modelId,
+    };
+    let res = await getOptimalVersionRquest(params);
+    if (res?.status?.code === successCode) {
+      form.setFieldsValue({
+        modelVersion: res?.result,
+      });
+    }
+  };
 
   const getModelVersionList = async () => {
     let params = {
@@ -35,14 +50,13 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     let res = await versionListRequest(params);
     if (res?.status?.code === successCode) {
       setTabList(res?.result);
-      setActiveKey(res?.result?.[0]);
+      setActiveKey(res?.result?.[0]?.value);
     } else {
       message.error(res?.status?.desc || '异常');
     }
   };
 
   const changeTab = (key: any) => {
-    debugger;
     setActiveKey(key);
   };
 
@@ -53,7 +67,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     }
     let params = {
       itmModelRegisCode: modelId,
-      modelVersionName: values?.modelVersionName,
+      modelVersion: values?.modelVersion,
     };
     setLoading(true);
     let res = await nextStageRequest(params);
@@ -87,7 +101,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
             <Form form={form} layout="inline">
               <Form.Item
                 label="选择最优模型"
-                name="modelVersionName"
+                name="modelVersion"
                 rules={[{ required: true, message: '请选择最优模型' }]}
               >
                 <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>

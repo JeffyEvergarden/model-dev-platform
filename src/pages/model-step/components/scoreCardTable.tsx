@@ -6,8 +6,7 @@ import classnames from 'classnames';
 import { changeData } from '@/utils';
 
 export default (props: any) => {
-  const { pageType, headerTitle, rowKey, toolBarRender, actionRef, requestMethod, dataSource } =
-    props;
+  const { pageType, headerTitle, rowKey, toolBarRender, actionRef, requestMethod } = props;
   const columnsScoreCard: any = [
     {
       title: '变量名称',
