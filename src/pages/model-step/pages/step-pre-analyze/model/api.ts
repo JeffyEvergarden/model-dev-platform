@@ -51,3 +51,10 @@ export async function nextStage(data?: Record<string, any>) {
     data,
   });
 }
+
+export async function queryProdChannelList(data?: Record<string, any>) {
+  return request(`${baseUrl}/preanalysis/prodChannelList`, {
+    method: 'GET',
+    data,
+  });
+}

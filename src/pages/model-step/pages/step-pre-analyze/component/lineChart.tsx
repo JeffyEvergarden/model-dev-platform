@@ -80,12 +80,12 @@ const LineChart: React.FC<any> = (props: any) => {
     data?.forEach((item: any) => {
       x.push(item[0]);
     });
-    const series: any = col?.map((item: any, index: any) => {
+    const series: any = col?.map?.((item: any, index: any) => {
       // x.push(data[index + 1][0])
       return {
         name: item,
         type: 'line',
-        data: data?.map((item: any, index: any) => {
+        data: data?.map?.((item: any, index: any) => {
           return parseFloat(item[index + 1]) || 0;
         }),
       };

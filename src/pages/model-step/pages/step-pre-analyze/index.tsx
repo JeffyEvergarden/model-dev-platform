@@ -8,7 +8,7 @@ import TitleStatus from '../../components/title-status';
 import 'moment/locale/zh-cn';
 
 import { genColumns } from './model/config';
-import { usePreAnalyzeModel, useSearchModel } from './model';
+import { successCode, usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
 import Item from 'antd/lib/list/Item';
 import { useNextStep } from '../../config';
@@ -86,67 +86,139 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     productList,
     channelMidList,
     channelSmList,
+    custCatList,
+    indexList,
+
+    setProductList,
     setChannelMidList,
     setChannelSmList,
+    setCustCatList,
+
+    getparams,
     getConditionList,
     getYaerMonthRequest,
+    getProdChannelList,
     originChannelMidList,
     originChannelSmList,
+    originCustCatList,
   } = useSearchModel();
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
   const { nextStep } = useNextStep();
+  //维度
+  const changeDimension = (val: any) => {
+    getparams({ businessType: val });
 
-  const changeProductClass = (val: any) => {
-    if (val) {
-      let item: any = productList.find((item) => item.name === val);
-      let list: any[] = item.children || [];
-      let subList: any[] = [];
-      list.forEach((subitem) => {
-        if (subitem.children) {
-          subList.push(...subitem.children);
-        }
-      });
-      setChannelMidList(list);
-      setChannelSmList(subList);
-    } else {
-      // 参数置空
-      setChannelMidList(originChannelMidList);
-      setChannelSmList(originChannelSmList);
-    }
-    (formRef.current as any).setFieldsValue({
-      channelMidClass: undefined,
-      channelSmClass: undefined,
+    setProductList([]);
+    setChannelMidList([]);
+    setChannelSmList([]);
+    setCustCatList([]);
+
+    formRef?.current?.setFieldsValue({
+      prodCat: undefined,
+      channelCatM: undefined,
+      channelCatS: undefined,
+      custCatL: undefined,
     });
   };
 
-  const changeChannelMid = (val: any) => {
-    const formVal: any = (formRef.current as any).getFieldsValue();
-    const _val = formVal?.productClass;
-    if (val) {
-      let item: any = channelMidList.find((item) => item.name === val);
-      let list: any[] = item.children || [];
-      setChannelSmList(list);
-    } else {
-      if (_val) {
-        // 如果一级筛选有值
-        let item: any = productList.find((item) => item.name === _val);
-        let list: any[] = item?.children || [];
-        let subList: any[] = [];
-        list.forEach((subitem) => {
-          if (subitem.children) {
-            subList.push(...subitem.children);
-          }
-        });
-        setChannelSmList(subList);
+  //大类
+  const changeProductClass = (val: any) => {
+    console.log(val);
+
+    let obj: any = {};
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('all')) {
+        list = originChannelMidList;
+        obj.prodCat = ['all'];
       } else {
-        setChannelSmList(originChannelSmList);
+        val?.map((ele: any) => {
+          let temp: any = productList?.find((item: any) => item.name == ele);
+          let tempChild: any[] = temp?.children ? temp?.children : [];
+          list = [...list, ...tempChild];
+        });
+      }
+      setChannelMidList(list);
+      setChannelSmList([]);
+      setCustCatList([]);
+    } else {
+      setChannelMidList([]);
+      setChannelSmList([]);
+      setCustCatList([]);
+    }
+    formRef?.current?.setFieldsValue({
+      channelCatM: undefined,
+      channelCatS: undefined,
+      custCatL: undefined,
+      ...obj,
+    });
+  };
+
+  //中类
+  const changeChannelMid = (val: any) => {
+    let obj: any = {};
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('all')) {
+        list = originChannelSmList;
+        obj.channelCatM = ['all'];
+      } else {
+        val.forEach((ele: any) => {
+          let temp: any = channelMidList.find((item: any) => item.name == ele);
+          list = [...list, ...temp?.children];
+        });
+      }
+      setChannelSmList(list);
+      setCustCatList([]);
+    } else {
+      setChannelSmList([]);
+      setCustCatList([]);
+    }
+    formRef?.current?.setFieldsValue({
+      channelCatS: undefined,
+      custCatL: undefined,
+      ...obj,
+    });
+  };
+
+  //小类
+  const changeChannelS = (val: any) => {
+    let obj: any = {};
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('all')) {
+        list = originCustCatList;
+        obj.channelCatS = ['all'];
+      } else {
+        val.forEach((ele: any) => {
+          let temp: any = channelSmList.find((item: any) => item.name == ele);
+          list = [...list, ...temp?.children];
+        });
+      }
+      setCustCatList(list);
+    } else {
+      setCustCatList([]);
+    }
+    formRef?.current?.setFieldsValue({
+      custCatL: undefined,
+      ...obj,
+    });
+  };
+
+  const changeCustCatL = (val: any) => {
+    let obj: any = {};
+    if (val.length > 0) {
+      let list: any[] = [];
+      if (val?.includes('all')) {
+        list = originCustCatList;
+        obj.custCatL = ['all'];
       }
     }
-    (formRef.current as any).setFieldsValue({
-      channelSmClass: undefined,
+    formRef?.current?.setFieldsValue({
+      ...obj,
     });
   };
 
@@ -156,10 +228,15 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         productList,
         channelMidList,
         channelSmList,
+        custCatList,
+        indexList,
         changeProductClass,
         changeChannelMid,
+        changeChannelS,
+        changeCustCatL,
+        changeDimension,
       }),
-    [vColumns, productList, channelMidList, channelSmList],
+    [vColumns, productList, channelMidList, channelSmList, custCatList, indexList],
   );
 
   const onSelect = (val: any, type: string) => {
@@ -229,7 +306,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               <Option key={''} value="">
                 全选
               </Option>
-              {yearMonth?.map((item: any) => {
+              {yearMonth?.map?.((item: any) => {
                 return (
                   <Option key={item.value} value={item.value}>
                     {item.value}
@@ -277,8 +354,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getConditionList();
-    // console.log(formRef);
     getYaerMonth();
+    getProdChannelList({ itmModelRegisCode: modelId }).then((res) => {
+      if (res?.status?.code == successCode) {
+        formRef?.current?.setFieldsValue({
+          ...res?.result?.defaultSelection,
+        });
+      }
+    });
   }, []);
 
   const getYaerMonth = async () => {
