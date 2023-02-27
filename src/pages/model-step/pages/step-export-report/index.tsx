@@ -12,7 +12,6 @@ import config from '@/config';
 import { useModel, history } from 'umi';
 import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
-import { changeData } from '@/utils';
 
 const StepExportReport: React.FC<any> = (props: any) => {
   const { loading, setLoading, getOptimalVersionRquest, getSampleDefineDetail, exportPageRequest } =

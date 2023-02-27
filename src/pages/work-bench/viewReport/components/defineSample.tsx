@@ -10,23 +10,23 @@ export default (props: any) => {
   const columnsTrate: any = [
     {
       title: '样本类型',
-      dataIndex: 'dataSetType',
-      key: 'dataSetType',
+      dataIndex: 'sampleType',
+      key: 'sampleType',
     },
     {
       title: '好样本',
-      dataIndex: 'goodCount',
-      key: 'goodCount',
+      dataIndex: 'goodSample',
+      key: 'goodSample',
     },
     {
       title: '坏样本',
-      dataIndex: 'badCount',
-      key: 'badCount',
+      dataIndex: 'badSample',
+      key: 'badSample',
     },
     {
       title: '总计',
-      dataIndex: 'totalNum',
-      key: 'totalNum',
+      dataIndex: 'total',
+      key: 'total',
     },
     {
       title: '坏样本率',
@@ -43,18 +43,18 @@ export default (props: any) => {
     },
     {
       title: '好样本',
-      dataIndex: 'goodCount',
-      key: 'goodCount',
+      dataIndex: 'goodSample',
+      key: 'goodSample',
     },
     {
       title: '坏样本',
-      dataIndex: 'badCount',
-      key: 'badCount',
+      dataIndex: 'badSample',
+      key: 'badSample',
     },
     {
       title: '总计',
-      dataIndex: 'totalNum',
-      key: 'totalNum',
+      dataIndex: 'total',
+      key: 'total',
     },
     {
       title: '坏样本率',
@@ -63,8 +63,8 @@ export default (props: any) => {
     },
     {
       title: '中间样本',
-      dataIndex: 'midCount',
-      key: 'midCount',
+      dataIndex: 'midSample',
+      key: 'midSample',
     },
     {
       title: '中间样本占比',
@@ -75,10 +75,10 @@ export default (props: any) => {
   return (
     <div className={styles.tableBox}>
       <Descriptions bordered column={2} title={<span style={{ fontWeight: 700 }}>样本定义</span>}>
-        <Descriptions.Item label="产品">{sampleData?.prodCatList}</Descriptions.Item>
-        <Descriptions.Item label="渠道">{sampleData?.channelCatList}</Descriptions.Item>
+        <Descriptions.Item label="产品">{sampleData?.prodCat}</Descriptions.Item>
+        <Descriptions.Item label="渠道">{sampleData?.channelCat}</Descriptions.Item>
         <Descriptions.Item label="训练集">{sampleData?.training}</Descriptions.Item>
-        <Descriptions.Item label="跨期验证">2020-01~2020-12</Descriptions.Item>
+        <Descriptions.Item label="跨期验证">{sampleData?.validation}</Descriptions.Item>
         <Descriptions.Item label="其他验证" span={2}>
           {sampleData?.otherValidList}
         </Descriptions.Item>
@@ -98,7 +98,7 @@ export default (props: any) => {
         pagination={false}
         search={false}
         columns={columnsTrate}
-        dataSource={sampleData?.dataSetList}
+        dataSource={sampleData?.totalSetList}
         scroll={{ y: 500 }}
       />
       <ProTable
