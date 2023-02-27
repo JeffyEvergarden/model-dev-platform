@@ -667,7 +667,7 @@ const getVariableStability = (req: any, res: any) => {
 export default {
   [`GET ${baseUrl}/compare/getVersionInfoList`]: getVersionNameList,
   [`GET ${baseUrl}/compare/getModelStructureParam`]: getModelStructureParam,
-  [`GET ${baseUrl}/compare/getModelBuildResult`]: getModelBuildResult,
+  [`POST ${baseUrl}/compare/getModelBuildResult`]: getModelBuildResult,
   [`POST ${baseUrl}/compare/nextStage`]: normalDel,
 
   [`POST ${baseUrl}/compare/getInputVariable`]: getInputVariableApi,

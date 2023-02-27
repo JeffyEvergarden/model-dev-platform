@@ -18,8 +18,8 @@ export async function versionListApi(data?: Record<string, any>) {
 
 export async function getModelResultApi(data?: Record<string, any>) {
   return request(`${baseUrl}/compare/getModelBuildResult`, {
-    method: 'GET',
-    params: data,
+    method: 'POST',
+    data,
   });
 }
 
