@@ -203,13 +203,13 @@ const ModelManagement: React.FC<any> = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createDate',
+      dataIndex: 'createTime',
       hideInSearch: true,
       width: 200,
     },
     {
       title: '创建时间',
-      dataIndex: 'createDate',
+      dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true,
       search: {
