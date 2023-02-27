@@ -28,6 +28,8 @@
   flex-shrink: 0;
   width: 260px;
   min-height: 400px;
+  max-height: 472px;
+  overflow: auto;
   border: 1px solid #f0f0f0;
 }
 
@@ -86,12 +88,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  height: 100px;
+  overflow: auto;
 }
 
 .select-item {
   display: flex;
   align-items: center;
-  margin-right: 36px;
+  margin-right: 32px;
 
   .label {
     width: 220px;
