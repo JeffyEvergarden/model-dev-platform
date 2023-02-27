@@ -121,7 +121,9 @@ const StepOne: React.FC = (props: any) => {
     let res = await getSample({ itmModelRegisCode: modelId });
     if (res?.status?.code === successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
-      getparams({ businessType: res?.result?.samplePara?.businessType });
+      if (res?.result?.samplePara?.businessType) {
+        getparams({ businessType: res?.result?.samplePara?.businessType });
+      }
     }
   };
 
@@ -150,6 +152,8 @@ const StepOne: React.FC = (props: any) => {
         tempParams = `${val?.params?.[0]?.format('YYYY-MM-DD HH:mm:ss')},${val?.params?.[1]?.format(
           'YYYY-MM-DD HH:mm:ss',
         )}`;
+      } else if (featureType == 'datetime' && DatePickerList.includes(val?.operator)) {
+        tempParams = val?.params?.format('YYYY-MM-DD HH:mm:ss');
       } else {
         tempParams = val?.params;
       }

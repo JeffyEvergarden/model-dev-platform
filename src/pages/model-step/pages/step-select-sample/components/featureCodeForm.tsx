@@ -129,7 +129,12 @@ export default (props: any) => {
             name="featureCode"
             label="分群建模标签"
           >
-            <Select placeholder="请选择" allowClear onChange={(val, opt) => changeLabel(val, opt)}>
+            <Select
+              placeholder="请选择"
+              allowClear
+              onChange={(val, opt) => changeLabel(val, opt)}
+              optionFilterProp="children"
+            >
               {labelList?.map((item: any, index: number) => {
                 return (
                   <Option value={item.featureCode} key={item.featureCode} opt={item}>
@@ -147,7 +152,12 @@ export default (props: any) => {
               name="operator"
               label="操作符"
             >
-              <Select placeholder="请选择" allowClear onChange={changOperator}>
+              <Select
+                placeholder="请选择"
+                allowClear
+                onChange={changOperator}
+                optionFilterProp="children"
+              >
                 {operationList?.map((item: any, index: number) => {
                   return (
                     <Option value={item.value} key={item.value}>

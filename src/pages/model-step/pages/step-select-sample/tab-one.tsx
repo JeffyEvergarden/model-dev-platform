@@ -443,6 +443,7 @@ const StepOne: React.FC<any> = (props: any) => {
                   placeholder="请选择编排调度"
                   mode="multiple"
                   allowClear
+                  optionFilterProp="children"
                   onSelect={(value, opt) => onSelect(value, opt, 'processName')}
                 >
                   {processList.map((item: any, index: number) => {

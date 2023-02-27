@@ -44,7 +44,7 @@ export const tabSelectColumns: any[] = [
   },
   {
     name: '分群建模标签',
-    key: 'featureLabel',
+    key: 'featureLabelZH',
   },
 ];
 

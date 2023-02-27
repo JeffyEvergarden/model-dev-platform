@@ -42,6 +42,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   };
 
   const changeTab = (key: any) => {
+    debugger;
     setActiveKey(key);
   };
 
@@ -74,8 +75,8 @@ const StepModelCompare: React.FC<any> = (props: any) => {
       <Tabs type="card" size="large" onChange={changeTab}>
         {tabList?.map((item: any) => {
           return (
-            <Tabs.TabPane tab={item} key={item}>
-              <ComparePage activeKey={activeKey ? activeKey : tabList?.[0]} />
+            <Tabs.TabPane tab={item?.name} key={item?.value}>
+              <ComparePage activeKey={activeKey ? activeKey : tabList?.[0]?.value} />
             </Tabs.TabPane>
           );
         })}
