@@ -4,8 +4,8 @@ const baseUrl: string = config.basePath;
 
 export async function getModelStructureParamApi(data?: Record<string, any>) {
   return request(`${baseUrl}/compare/getModelBuildParam`, {
-    method: 'GET',
-    params: data,
+    method: 'POST',
+    data,
   });
 }
 

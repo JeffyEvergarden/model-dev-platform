@@ -7,7 +7,7 @@ import ComparePage from './components/comparePage';
 import NextStepButton from '../../components/nextstep-button';
 import TitleStatus from '../../components/title-status';
 import { useComparePage } from './model';
-
+import { useExportReportModel } from '@/pages/model-step/pages/step-export-report/model';
 import config from '@/config';
 const successCode = config.successCode;
 // 首页
@@ -19,13 +19,28 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   const [tabList, setTabList] = useState<any>([]);
   const [activeKey, setActiveKey] = useState<any>('');
 
+  const { getOptimalVersionRquest } = useExportReportModel();
+
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
 
   useEffect(() => {
     getModelVersionList();
+    getOptimalVersion();
   }, []);
+
+  const getOptimalVersion = async () => {
+    let params = {
+      itmModelRegisCode: modelId,
+    };
+    let res = await getOptimalVersionRquest(params);
+    if (res?.status?.code === successCode) {
+      form.setFieldsValue({
+        modelVersion: res?.result,
+      });
+    }
+  };
 
   const getModelVersionList = async () => {
     let params = {

@@ -9,7 +9,7 @@ import NextStepButton from '../../components/nextstep-button';
 import { useExportReportModel } from './model';
 import { useComparePage } from './../step-model-compare/model';
 import config from '@/config';
-import { useModel } from 'umi';
+import { useModel, history } from 'umi';
 import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
 import { changeData } from '@/utils';
@@ -34,7 +34,6 @@ const StepExportReport: React.FC<any> = (props: any) => {
     getOptimalVersion();
     // getSampleData();
     //模型结果-变量相关性/集合KS/年月KS
-    getModelResult();
   }, []);
 
   const getOptimalVersion = async () => {
@@ -45,6 +44,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     if (res?.status?.code === successCode) {
       setOptimalVersion(res?.result);
       getSampleData(res?.result);
+      getModelResult(res?.result);
     }
   };
 
@@ -57,7 +57,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     setSampleData(res?.result);
   };
 
-  const getModelResult = async () => {
+  const getModelResult = async (optimalVersion: any) => {
     let params = {
       itmModelRegisCode: modelId,
       modelVersion: optimalVersion,
@@ -79,6 +79,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     let res = await exportPageRequest(params);
     if (res?.status?.code == successCode) {
       setLoading(false);
+      history.push('/work-bench/viewReport');
       message.success(res?.status?.desc || '成功');
     } else {
       setLoading(false);
@@ -98,13 +99,13 @@ const StepExportReport: React.FC<any> = (props: any) => {
           <SampleDefination sampleData={sampleData} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="入模变量" key={'2'}>
-          <InputVariable modelResult={modelResult} />
+          <InputVariable modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="评分卡" key={'3'}>
           <ScoreCard modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="模型效果" key={'4'}>
-          <ModelEffect modelResult={modelResult} />
+          <ModelEffect modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
       </Tabs>
       <NextStepButton

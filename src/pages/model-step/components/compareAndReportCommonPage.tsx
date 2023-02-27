@@ -5,7 +5,7 @@ import { useComparePage } from './../pages/step-model-compare/model';
 import { useModel, history } from 'umi';
 
 export default (props: any) => {
-  const { pageType, modelResult, activeKey } = props;
+  const { pageType, modelResult, optimalVersion } = props;
 
   const actionRef = useRef<any>();
 
@@ -183,7 +183,7 @@ export default (props: any) => {
   const getModelDatasetDistribution = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getModelDatasetDistributionRequest(params);
     setTrateAndVerifyData(res?.result);
@@ -193,7 +193,7 @@ export default (props: any) => {
   const getModelStability = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getModelStabilityRequest(params);
     setModelStabilityList(res?.result);
@@ -205,7 +205,7 @@ export default (props: any) => {
       page: payload?.current,
       pageSize: payload?.pageSize,
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getVariableStabilityRequest(params);
     setPsiHeadList(res?.result?.psiHeadList);
@@ -221,7 +221,7 @@ export default (props: any) => {
   const getSortData = async () => {
     let params = {
       itmModelRegisCode: modelId,
-      modelVersion: activeKey,
+      modelVersion: optimalVersion,
     };
     let res = await getModelSortInfoRequest(params);
     setSortData(res?.result);

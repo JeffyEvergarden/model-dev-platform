@@ -61,8 +61,8 @@ export default (props: any) => {
       ellipsis: true,
     },
     {
-      title: 'coef_',
-      dataIndex: 'coef_',
+      title: 'coef',
+      dataIndex: 'coef',
       ellipsis: true,
     },
     {
