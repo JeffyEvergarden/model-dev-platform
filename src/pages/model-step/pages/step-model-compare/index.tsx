@@ -9,6 +9,7 @@ import TitleStatus from '../../components/title-status';
 import { useComparePage } from './model';
 import { useExportReportModel } from '@/pages/model-step/pages/step-export-report/model';
 import config from '@/config';
+import { useNextStep } from '@/pages/model-step/config';
 const successCode = config.successCode;
 // 首页
 const StepModelCompare: React.FC<any> = (props: any) => {
@@ -20,6 +21,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   const [activeKey, setActiveKey] = useState<any>('');
 
   const { getOptimalVersionRquest } = useExportReportModel();
+  const { nextStep } = useNextStep();
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -73,7 +75,8 @@ const StepModelCompare: React.FC<any> = (props: any) => {
     let res = await nextStageRequest(params);
     if (res?.status?.code == successCode) {
       setLoading(false);
-      history.push('/modelStep/exportReport');
+      // history.push('/modelStep/exportReport');
+      nextStep();
     } else {
       setLoading(false);
       message.error(res?.status?.desc);

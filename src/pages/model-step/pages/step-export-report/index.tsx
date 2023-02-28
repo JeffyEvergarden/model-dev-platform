@@ -12,11 +12,13 @@ import config from '@/config';
 import { useModel, history } from 'umi';
 import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
+import { useNextStep } from '@/pages/model-step/config';
 
 const StepExportReport: React.FC<any> = (props: any) => {
   const { loading, setLoading, getOptimalVersionRquest, getSampleDefineDetail, exportPageRequest } =
     useExportReportModel();
   const { getModelResultRequest } = useComparePage();
+  const { nextStep } = useNextStep();
 
   //样本定义
   const [sampleData, setSampleData] = useState<any>([]);
@@ -78,8 +80,9 @@ const StepExportReport: React.FC<any> = (props: any) => {
     let res = await exportPageRequest(params);
     if (res?.status?.code == successCode) {
       setLoading(false);
-      history.push(`/workBench/viewReport`);
+      // history.push(`/workBench/viewReport`);
       message.success(res?.status?.desc || '成功');
+      nextStep();
     } else {
       setLoading(false);
       message.error(res?.status?.desc || '异常');

@@ -16,6 +16,7 @@ import { useSampleUploadAwaitModel, useSample } from './model';
 import { useModel } from 'umi';
 import { useStepSelectModel } from './model';
 import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
+import { useNextStep } from '@/pages/model-step/config';
 
 const successCode = config.successCode;
 
@@ -70,9 +71,13 @@ const StepOne: React.FC = (props: any) => {
     originCustCatList,
     originCustCatSmList,
   } = useStepSelectModel();
-  const { modelId, doneStep } = useModel('step', (model: any) => ({
+
+  const { nextStep } = useNextStep();
+
+  const { modelId, doneStep, curStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
+    curStep: model.curStep,
   }));
 
   const [form1] = Form.useForm();
@@ -89,31 +94,31 @@ const StepOne: React.FC = (props: any) => {
 
   useEffect(() => {
     {
-      /*进入页面调用状态接口判断该步骤状态
-        页面是否已提交，仅仅适用于有loading页面的阶段。
-        当前阶段状态：0：未开始 1：进行中 2：已完成 3：处理失败
-        因部分阶段有loading页面，所以需要给标识，区分是进入loading页面还是参数选择页面的。
-        只有（当前阶段状态-进行中+isCommittedPage=true）才会进入loading页面。
-
-        当前阶段状态 1 &isCommittedPage=true --进入loading页面 loading 状态
-        当前阶段状态 2 --进入--进入loading页面 完成 状态
-        当前阶段状态 0 3 --进入--进入loading页面 处理失败 状态
+      /*
+      1、curStep<doneStep:直接进入状态页面
+      2、curStep==doneStep ：调用getCurrentStage 如下
+      ①currentStageStatus==1且isCommittedPage == '1'进入状态页面，
+      ②currentStageStatus == '2'||currentStageStatus == '3'(已完成和失败)进入状态页面
   */
     }
     getCurrentStage();
   }, []);
 
   const getCurrentStage = async () => {
-    let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
-    let data = res.result || {};
-    if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+    if (curStep < doneStep) {
       setStepType(2);
-    } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
-      setStepType(2);
-    } else {
-      setStepType(1);
-      labelListRequest(); //分群建模标签查询
-      getSelectDetail();
+    } else if (curStep == doneStep) {
+      let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+      let data = res.result || {};
+      if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+        setStepType(2);
+      } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
+        setStepType(2);
+      } else {
+        setStepType(1);
+        labelListRequest(); //分群建模标签查询
+        getSelectDetail();
+      }
     }
   };
 
@@ -227,7 +232,8 @@ const StepOne: React.FC = (props: any) => {
     };
     let res = await sampleNext(params);
     if (res?.status?.code == successCode) {
-      history.push('/modelStep/strategyBack');
+      nextStep();
+      // history.push('/modelStep/strategyBack');
     } else {
       message.error(res?.status?.desc || '失败');
     }

@@ -52,5 +52,6 @@ const rebuild = (req: any, res: any) => {
 export default {
   [`POST ${baseUrl}/modelBuild/build`]: normalDeal,
   [`POST ${baseUrl}/modelBuild/rebuild`]: rebuild,
+  [`POST ${baseUrl}/stage/getDetailInfo`]: rebuild,
   [`POST ${baseUrl}/modelBuild/nextProcess`]: normalDeal,
 };

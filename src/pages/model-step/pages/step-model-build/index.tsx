@@ -24,6 +24,7 @@ import PageStatus from './components/statusPage';
 import { useSample } from './../step-select-sample/model';
 import { useBaseInfoModel } from './../../../model-step/model';
 const successCode = config.successCode;
+import { useNextStep } from '@/pages/model-step/config';
 
 const gutter = { xs: 8, sm: 16, md: 24, lg: 32 };
 
@@ -41,6 +42,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const { beginBuildModel, rebuildModel, nextFlowRequest, loading, setLoading } = useBuildModel();
   const { getCurrentStageRequest } = useSample();
   const { getModelStepDetail } = useBaseInfoModel();
+  const { nextStep } = useNextStep();
 
   const [ruleList, setRulist] = useState<any>([]);
   const [pageType, setPageType] = useState<string>(''); //loading error finish
@@ -51,8 +53,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
   const varBinningType: any = Form.useWatch('varBinningType', form);
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, curStep, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    doneStep: model.doneStep,
+    curStep: model.curStep,
   }));
 
   useEffect(() => {
@@ -142,7 +146,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     let res = await nextFlowRequest(params);
     if (res.status?.code === successCode) {
       setLoading(false);
-      history.push('/modelStep/modelCompare');
+      // history.push('/modelStep/modelCompare');
+      nextStep();
     } else {
       setLoading(false);
       message.error(res.status?.desc || '失败');

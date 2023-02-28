@@ -179,7 +179,7 @@ const Myjob: React.FC<any> = (props: any) => {
       return;
     }
     // 设置当前显示步骤
-    setCurStep(val);
+    setCurStep(val + 1);
     // 跳转
     let key: any = stepItem?.name;
     if (configMap[key]) {
