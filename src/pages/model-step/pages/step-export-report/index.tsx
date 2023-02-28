@@ -78,7 +78,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     let res = await exportPageRequest(params);
     if (res?.status?.code == successCode) {
       setLoading(false);
-      history.push('/work-bench/viewReport');
+      history.push(`/workBench/viewReport`);
       message.success(res?.status?.desc || '成功');
     } else {
       setLoading(false);
