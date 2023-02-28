@@ -3,6 +3,7 @@ import { Form, Input, DatePicker, Row, Col, Select } from 'antd';
 import styles from '../style.less';
 import NextStepButton from '../../components/nextstep-button';
 import moment from 'moment';
+import { useModel, history } from 'umi';
 import FeatureCodeForm from './components/featureCodeForm';
 import config from '@/config/index';
 import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
@@ -56,6 +57,11 @@ const StepOne: React.FC<any> = (props: any) => {
     originCustCatList,
     originCustCatSmList,
   } = props;
+
+  const { isHadBuild, isHadReported } = useModel('step', (model: any) => ({
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
+  }));
 
   const [_form] = Form.useForm(form);
 
@@ -468,7 +474,11 @@ const StepOne: React.FC<any> = (props: any) => {
         setOperationList={setOperationList}
         paramList={paramList}
       />
-      <NextStepButton onClick={onClick} text={'提交'} />
+      <NextStepButton
+        onClick={onClick}
+        text={'提交'}
+        disabled={isHadBuild == '1' || isHadReported == '1'}
+      />
     </div>
   );
 };

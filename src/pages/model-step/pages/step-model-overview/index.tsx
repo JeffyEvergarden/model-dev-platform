@@ -22,13 +22,16 @@ const { RangePicker }: any = DatePicker;
 const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { modelId, doneStep, setDoneStep, isHadBuild } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    doneStep: model.doneStep,
-    setDoneStep: model.setDoneStep,
-    isHadBuild: model.isHadBuild,
-    isHadReported: model.isHadReported,
-  }));
+  const { modelId, doneStep, setDoneStep, isHadBuild, isHadReported } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      setDoneStep: model.setDoneStep,
+      isHadBuild: model.isHadBuild,
+      isHadReported: model.isHadReported,
+    }),
+  );
 
   // 表单是否可以编辑
   const isDisabled = isHadBuild || false;
@@ -244,7 +247,12 @@ const StepOne: React.FC = (props: any) => {
         btnNode={
           <Space>
             {doneStep !== 10 && (
-              <Button size="large" type="primary" onClick={() => submitNextStep('save')}>
+              <Button
+                size="large"
+                type="primary"
+                disabled={isHadReported == '1'}
+                onClick={() => submitNextStep('save')}
+              >
                 保存
               </Button>
             )}

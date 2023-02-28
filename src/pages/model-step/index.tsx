@@ -74,15 +74,15 @@ const Myjob: React.FC<any> = (props: any) => {
       goToUrl(codeToName(_index), _modelId || modelId);
       setCurStep(_index - 1);
       // --------
-      setIsHadBuild(typeof res.isModelBuild === 'boolean' ? res.isModelBuild : false);
-      setIsHadReported(typeof res.reportFilePath === 'boolean' ? res.isModelBuild : false);
+      setIsHadBuild(res.modelBuildStatus);
+      setIsHadReported(res.isModelBuild ? '1' : '');
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');
       goToUrl('model_overview', _modelId || modelId);
       setCurStep(0);
-      setIsHadBuild(false);
-      setIsHadReported(false);
+      setIsHadBuild('-1');
+      setIsHadReported('');
     }
   };
 
@@ -179,7 +179,7 @@ const Myjob: React.FC<any> = (props: any) => {
       return;
     }
     // 设置当前显示步骤
-    setCurStep(val + 1);
+    setCurStep(val);
     // 跳转
     let key: any = stepItem?.name;
     if (configMap[key]) {

@@ -26,8 +26,9 @@ const StepExportReport: React.FC<any> = (props: any) => {
   const [modelResult, setModelResult] = useState<any>({});
 
   const [optimalVersion, setOptimalVersion] = useState<any>('');
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, setIsHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    setIsHadReported: model.setIsHadReported,
   }));
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     if (res?.status?.code == successCode) {
       setLoading(false);
       // history.push(`/workBench/viewReport`);
+      setIsHadReported('1');
       message.success(res?.status?.desc || '成功');
       nextStep();
     } else {

@@ -53,11 +53,16 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
   const varBinningType: any = Form.useWatch('varBinningType', form);
 
-  const { modelId, curStep, doneStep } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    doneStep: model.doneStep,
-    curStep: model.curStep,
-  }));
+  const { modelId, curStep, doneStep, setIsHadBuild, isHadReported } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      curStep: model.curStep,
+      setIsHadBuild: model.setIsHadBuild,
+      isHadReported: model.isHadReported,
+    }),
+  );
 
   useEffect(() => {
     getCurrentStage();
@@ -83,14 +88,18 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   };
 
   const getCurrentStage = async () => {
-    let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
-    let data = res.result || {};
-    if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+    if (curStep + 1 < doneStep) {
       setStepType(2);
-    } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
-      setStepType(2);
-    } else {
-      setStepType(1);
+    } else if (curStep + 1 == doneStep) {
+      let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+      let data = res.result || {};
+      if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+        setStepType(2);
+      } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
+        setStepType(2);
+      } else {
+        setStepType(1);
+      }
     }
   };
 
@@ -147,6 +156,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res.status?.code === successCode) {
       setLoading(false);
       // history.push('/modelStep/modelCompare');
+      setIsHadBuild('1');
       nextStep();
     } else {
       setLoading(false);
@@ -578,7 +588,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           </Row>
         </Form>
         <Condition r-if={pageType == ''}>
-          <NextStepButton onClick={beginBuild} text={'开始建模'} loading={loading} />
+          <NextStepButton
+            onClick={beginBuild}
+            text={'开始建模'}
+            loading={loading}
+            disabled={isHadReported == '1'}
+          />
         </Condition>
       </Condition>
     </div>
