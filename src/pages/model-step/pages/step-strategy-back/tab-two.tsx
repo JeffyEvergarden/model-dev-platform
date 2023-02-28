@@ -29,7 +29,7 @@ const TabTwo: React.FC<any> = (props: any) => {
     modelId: model.modelId,
   }));
 
-  const { processType, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
+  const { processType, dataList, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
   const { nextStep } = useNextStep();
 
   const onClick = () => {
@@ -71,7 +71,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         pageType={processType}
         columns={[{ key: 'backtrackProcessName', name: '回溯编排' }]}
         detailInfo={{
-          backtrackProcessName: selectedKeys?.join('，'),
+          backtrackProcessName: selectedKeys?.join('，') || dataList?.join('，'),
         }}
       />
       <Condition r-if={processType === 'finish' || processType === 'error'}>

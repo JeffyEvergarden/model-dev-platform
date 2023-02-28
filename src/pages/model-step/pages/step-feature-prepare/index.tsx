@@ -4,13 +4,19 @@ import Condition from '@/components/Condition';
 import SelectModal from './tab-one';
 import TabTwo from './tab-two';
 import TitleStatus from '../../components/title-status';
+import { getWaitResult } from '../step-select-sample/model/api';
+import { useModel } from 'umi';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const [tabType, setTabType] = useState<any>(1); // 导入数据类型 0、1  // 0 -> 是， 1 -> 否
 
   const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
-
+  const { modelId, doneStep, curStep } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    doneStep: model.doneStep,
+    curStep: model.curStep,
+  }));
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
 
@@ -23,6 +29,34 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
 
   const reset = () => {
     setStepType(1);
+  };
+
+  useEffect(() => {
+    {
+      /*
+      1、curStep<doneStep:直接进入状态页面
+      2、curStep==doneStep ：调用getCurrentStage 如下
+      ①currentStageStatus==1且isCommittedPage == '1'进入状态页面，
+      ②currentStageStatus == '2'||currentStageStatus == '3'(已完成和失败)进入状态页面
+  */
+    }
+    getCurrentStage();
+  }, []);
+
+  const getCurrentStage = async () => {
+    if (curStep + 1 < doneStep) {
+      setStepType(2);
+    } else if (curStep == doneStep) {
+      let res = await getWaitResult({ itmModelRegisCode: modelId });
+      let data = res.result || {};
+      if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
+        setStepType(2);
+      } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
+        setStepType(2);
+      } else {
+        setStepType(1);
+      }
+    }
   };
 
   return (

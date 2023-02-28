@@ -25,7 +25,8 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { errorMsg, processType, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
+  const { errorMsg, processType, dataList, startLoop, nextFlow } =
+    useStrategyBackUploadAwaitModel();
   const { nextStep } = useNextStep();
 
   const { modelId } = useModel('step', (model: any) => ({
@@ -42,10 +43,9 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     console.log(selectList);
-
-    if (processId) {
-      startLoop({ processId }, 4);
-    }
+    // if (processId) {
+    startLoop({ processId }, 4);
+    // }
   }, [processId]);
 
   return (
@@ -72,7 +72,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         pageType={processType}
         columns={[]}
         detailInfo={{}}
-        dataList={selectList?.map((item: any) => item?.featureName || item)}
+        dataList={selectList?.map((item: any) => item?.featureName || item) || dataList || []}
       />
       <Condition r-if={processType === 'finish'}>
         <NextStepButton

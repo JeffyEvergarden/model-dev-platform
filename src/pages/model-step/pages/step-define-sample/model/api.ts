@@ -22,6 +22,7 @@ export async function exportExcel(data?: { [key: string]: any }) {
   return request(`${baseUrl}/sampleDefinition/exportExcel`, {
     method: 'POST',
     data,
+    responseType: 'blob',
   });
 }
 

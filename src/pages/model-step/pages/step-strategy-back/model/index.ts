@@ -49,6 +49,7 @@ export const useStrategyBackModel = () => {
 export const useStrategyBackUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
   const [errorMsg, setErrorMsg] = useState<any>('');
+  const [dataList, setDataList] = useState<any>([]);
 
   const fake = useRef<any>({});
 
@@ -88,13 +89,14 @@ export const useStrategyBackUploadAwaitModel = () => {
   const awaitResult = async (params?: any) => {
     let res: any = await getStageStatus(params);
     let data = res?.result || {};
+    setDataList(res?.backtrackProcessName?.split(',') || []);
     if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
     } else if (StageStatus[data?.currentStageStatus] === 'loading') {
       setProcessType('loading');
       return 'loading';
-    } else {
+    } else if (StageStatus[data?.currentStageStatus] === 'error') {
       setErrorMsg(res?.status?.code || '未知错误');
       setProcessType('error');
       return 'error';
@@ -116,7 +118,7 @@ export const useStrategyBackUploadAwaitModel = () => {
       // 439 待机回调中
       fake.current.timeFn = setTimeout(async () => {
         startLoop(params, time + 2);
-      }, time * 1000);
+      }, 20 * 1000);
     } else {
       message.error(res?.resultMsg || '未知系统异常');
     }
@@ -125,6 +127,7 @@ export const useStrategyBackUploadAwaitModel = () => {
   return {
     processType,
     errorMsg,
+    dataList,
     awaitResult,
     startLoop,
     submitProcess,
