@@ -35,7 +35,7 @@ export const useDefineSampleModel = () => {
     setResultLoading(false);
     // 策略分析
     if (res?.status?.code === successCode) {
-      let data: any[] = res?.result || [];
+      let data: any[] = res?.result?.sampleTotalDistributionList || [];
       setTableResultTotal(res?.totalSize || 0);
       setResultTableList(data);
     }
