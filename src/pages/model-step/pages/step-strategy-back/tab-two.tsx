@@ -42,9 +42,9 @@ const TabTwo: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    if (processId) {
-      startLoop({ itmModelRegisCode: modelId }, 2);
-    }
+    // if (processId) {
+    startLoop({ itmModelRegisCode: modelId }, 2);
+    // }
   }, [processId]);
 
   return (

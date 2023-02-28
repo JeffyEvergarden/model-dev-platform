@@ -56,8 +56,10 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
     let data = res.result || {};
     if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
       setStepType(2);
+      setSelectedKeys(data?.backtrackProcessName?.split(',') || []);
     } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
       setStepType(2);
+      setSelectedKeys(data?.backtrackProcessName?.split(',') || []);
     } else {
       setStepType(1);
     }
