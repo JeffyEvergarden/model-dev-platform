@@ -33,7 +33,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
 
   const { tableList, getTableList, tableLoading, userList, getUserList } = useTableModel();
 
-  const { opLoading, deleteModel, addNewModel } = useOpModel();
+  const { opLoading, deleteModel, exportData } = useOpModel();
 
   const [modelType, setModelType] = useState<any>(undefined);
 
@@ -74,13 +74,13 @@ const ModelManagement: React.FC<any> = (props: any) => {
   }));
 
   const deleteRow = async (row: any) => {
-    if (row?.status == 0) {
-      message.warning('请先停用该机器人');
-      return;
-    }
+    // if (row?.status == 0) {
+    //   message.warning('请先停用');
+    //   return;
+    // }
 
     let params: any = {
-      id: row.id,
+      itmModelRegisCode: row?.itmModelRegisCode,
     };
     let res: any = await deleteModel(params);
     if (res) {
@@ -93,7 +93,23 @@ const ModelManagement: React.FC<any> = (props: any) => {
   };
 
   const viewReport = (row: any) => {
-    history.push('/workBench/viewReport');
+    history.push(`/workBench/viewReport`);
+  };
+
+  const exportFile = (row: any) => {
+    const paramData = {
+      itmModelRegisCode: row?.itmModelRegisCode,
+    };
+    exportData(paramData).then((res: any) => {
+      const _a = document.createElement('a');
+      // _a.download = `模型报告${modelFullName}-${moment().format('YYYYMMDD')}.xlsx`;
+      _a.href = URL.createObjectURL(res);
+      const evt = document.createEvent('MouseEvents');
+      evt.initEvent('click', false, false);
+      _a.dispatchEvent(evt);
+
+      // _a.click();
+    });
   };
 
   const columns: any[] = [
@@ -240,7 +256,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 查看
               </Button>
 
-              <Button type="text" className={style['btn-success']} onClick={() => {}}>
+              <Button type="text" className={style['btn-success']} onClick={() => exportFile(row)}>
                 下载
               </Button>
 
@@ -327,7 +343,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
         toolBarRender={() => []}
       />
 
-      <DetailModal cref={detailRef}></DetailModal>
+      <DetailModal cref={detailRef} />
     </div>
   );
 };

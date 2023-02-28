@@ -8,6 +8,7 @@ import {
   getModelInfo,
   getModelList,
   getSummaryList,
+  exportDataRrequest,
 } from './api';
 
 export const successCode = config.successCode;
@@ -119,11 +120,19 @@ export const useOpModel = () => {
     }
   };
 
+  const exportData = async (datas: any) => {
+    setLoading(true);
+    let res: any = await exportDataRrequest(datas);
+    setLoading(false);
+    return res;
+  };
+
   return {
-    deleteModel: _deleteModel, // 删除机器人接口
-    addNewModel: _addNewModel, // 添加机器人
+    deleteModel: _deleteModel, // 删除
+    addNewModel: _addNewModel, // 添加
     opLoading: loading,
     getInfo,
+    exportData,
   };
 };
 
