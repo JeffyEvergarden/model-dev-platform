@@ -7,6 +7,8 @@ import TabTwo from './tab-two';
 import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { getWaitResult } from '../step-select-sample/model/api';
+import { reBack } from './model/api';
+import { successCode } from './model';
 
 // 首页
 const StepStrategyBack: React.FC<any> = (props: any) => {
@@ -31,8 +33,12 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
     setSelectedKeys(key);
   };
 
-  const again = () => {
-    setStepType(1);
+  const again = async () => {
+    await reBack({ itmModelRegisCode: modelId }).then((res: any) => {
+      if (res?.status?.code == successCode) {
+        setStepType(1);
+      }
+    });
   };
 
   useEffect(() => {
