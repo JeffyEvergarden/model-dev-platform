@@ -49,3 +49,10 @@ export async function getWaitResult(params?: { [key: string]: any }) {
     params,
   });
 }
+
+export async function reBack(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/strategyBacktrack/retryBackTracking`, {
+    method: 'POST',
+    data,
+  });
+}

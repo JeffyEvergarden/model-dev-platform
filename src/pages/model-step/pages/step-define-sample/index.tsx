@@ -22,7 +22,7 @@ const columns1: any[] = [
   // 问题列表-列
   {
     title: '放款年月',
-    dataIndex: 'advMonth',
+    dataIndex: 'month',
     width: 200,
   },
   {
@@ -123,20 +123,23 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   }));
 
   // 切换分页
-  const onChange = (val: any) => {
+  const onChange = (val: any, ps: any) => {
     if (loading) {
       return;
     }
-    getSampleTableList({ currentPage: val, pageSize: pageSize, itmModelRegisCode: modelId });
+    getSampleTableList({ currentPage: val, pageSize: ps, itmModelRegisCode: modelId });
     setCurrent(val);
+    setPageSize(ps);
   };
 
-  const onResultChange = (val: any) => {
+  const onResultChange = (val: any, ps: any) => {
+    console.log(val, ps);
     if (loading) {
       return;
     }
-    submit({ currentPage: val });
+    submit({ currentPage: val, pageSize: ps });
     setCurrent2(val);
+    setPageSize2(ps);
   };
   useEffect(() => {
     getSampleTableList({ currentPage: current, pageSize: pageSize, itmModelRegisCode: modelId });
@@ -157,8 +160,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       return;
     }
     const newObj: any = {
-      currentPage: obj.currentPage || current2,
-      pageSize: obj.pageSize || pageSize2,
+      currentPage: obj.currentPage ? obj.currentPage : current2,
+      pageSize: obj.pageSize ? obj.pageSize : pageSize2,
       itmModelRegisCode: modelId,
       trainingTime: submitObj?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
       intertemporalTime: submitObj?.intertemporalTime?.map?.((item: any) =>
@@ -173,7 +176,23 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   };
 
   const exportResult = async () => {
-    await exportExcel({ itmModelRegisCode: modelId });
+    await exportExcel({ itmModelRegisCode: modelId })
+      .then((res) => {
+        const blob: any = res;
+        const reader = new FileReader(blob);
+        reader.readAsDataURL(blob);
+        reader.onload = (e: any) => {
+          const a = document.createElement('a');
+          a.download = `样本定义.${'xls'}`;
+          a.href = e.target.result;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const _nextFlow = () => {
@@ -184,7 +203,12 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           message.warning('整体分布时间段不能重叠');
           return;
         }
-        nextFlow({ itmModelRegisCode: modelId, ...value }).then((res) => {
+        nextFlow({
+          itmModelRegisCode: modelId,
+          ...value,
+          sampleTotalDistributionList: tableList || [],
+          sampleMonthDistributionList: resultTableList || [],
+        }).then((res) => {
           if (res) {
             nextStep();
           }
@@ -264,15 +288,15 @@ const StepDefineSample: React.FC<any> = (props: any) => {
               onChange: onChange,
               total: tableTotal,
               showSizeChanger: true,
-              onShowSizeChange: (pn: any, ps: any) => {
-                getSampleTableList({ currentPage: 1, pageSize: ps });
-                setCurrent(1);
-                setPageSize(ps);
-              },
+              // onShowSizeChange: (pn: any, ps: any) => {
+              //   getSampleTableList({ itmModelRegisCode: modelId, currentPage: 1, pageSize: ps });
+              //   setCurrent(1);
+              //   setPageSize(ps);
+              // },
             }}
             dataSource={tableList}
             columns={columns1}
-            rowKey="advMonth"
+            rowKey="month"
             loading={loading}
           />
         </div>
@@ -397,11 +421,6 @@ const StepDefineSample: React.FC<any> = (props: any) => {
               onChange: onResultChange,
               total: tableResultTotal,
               showSizeChanger: true,
-              onShowSizeChange: (pn: any, ps: any) => {
-                submit({ currentPage: 1, pageSize: ps });
-                setCurrent2(1);
-                setPageSize2(ps);
-              },
             }}
             dataSource={resultTableList}
             columns={columns2}

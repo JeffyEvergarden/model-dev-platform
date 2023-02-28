@@ -73,7 +73,7 @@ const totalDistributionList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: list,
+    result: { sampleTotalDistributionList: list },
   });
 };
 

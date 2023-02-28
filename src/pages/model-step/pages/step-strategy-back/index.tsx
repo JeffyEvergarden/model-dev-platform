@@ -7,6 +7,8 @@ import TabTwo from './tab-two';
 import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { getWaitResult } from '../step-select-sample/model/api';
+import { reBack } from './model/api';
+import { successCode } from './model';
 
 // 首页
 const StepStrategyBack: React.FC<any> = (props: any) => {
@@ -31,8 +33,12 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
     setSelectedKeys(key);
   };
 
-  const again = () => {
-    setStepType(1);
+  const again = async () => {
+    await reBack({ itmModelRegisCode: modelId }).then((res: any) => {
+      if (res?.status?.code == successCode) {
+        setStepType(1);
+      }
+    });
   };
 
   useEffect(() => {
@@ -56,8 +62,10 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
     let data = res.result || {};
     if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
       setStepType(2);
+      setSelectedKeys(data?.backtrackProcessName?.split(',') || []);
     } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
       setStepType(2);
+      setSelectedKeys(data?.backtrackProcessName?.split(',') || []);
     } else {
       setStepType(1);
     }
