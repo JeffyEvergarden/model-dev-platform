@@ -209,9 +209,7 @@ export default (props: any) => {
         options={false}
         bordered
         actionRef={actionRef}
-        pagination={{
-          pageSize: 10,
-        }}
+        pagination={{}}
         scroll={{ x: columnsScoreCard?.length * 120 }}
         search={false}
         columns={columnsScoreCard}

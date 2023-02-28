@@ -17,7 +17,7 @@ export default (props: any) => {
   const scoreCardList = async (payload: any) => {
     let params = {
       page: payload?.current,
-      pageSize: payload?.pageSize,
+      pageSize: 10,
       itmModelRegisCode: modelId,
       modelVersion: optimalVersion,
     };
