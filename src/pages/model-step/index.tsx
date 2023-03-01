@@ -27,6 +27,7 @@ const Myjob: React.FC<any> = (props: any) => {
   const {
     modelId,
     setModelId,
+    modelName,
     setModelName,
     doneStep,
     setDoneStep,
@@ -41,6 +42,7 @@ const Myjob: React.FC<any> = (props: any) => {
   } = useModel('step' as any, (model: any) => ({
     modelId: model.modelId,
     setModelId: model.setModelId,
+    modelName: model.modelName,
     setModelName: model.setModelName,
     doneStep: model.doneStep,
     setDoneStep: model.setDoneStep,
@@ -195,7 +197,7 @@ const Myjob: React.FC<any> = (props: any) => {
   return (
     <PageContainer
       header={{
-        title: '自由高达',
+        title: modelName,
         ghost: true,
         breadcrumb: {
           itemRender: (route: any, params: any, routes: any, paths: any[]) => {
@@ -212,11 +214,11 @@ const Myjob: React.FC<any> = (props: any) => {
           },
           routes: [
             {
-              path: '/myjob',
+              path: '/workBench/moy-job',
               breadcrumbName: '我的工作台',
             },
             {
-              path: '/modelStep',
+              path: `/workBench/exportReport?id=${modelId}`,
               breadcrumbName: '模型详情',
             },
           ],

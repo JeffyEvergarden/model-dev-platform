@@ -363,10 +363,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         dataIndex: 'dimention',
         fieldProps: {
           placeholder: '请选择数据维度',
+          defaultValue: '进件层',
         },
         valueType: 'select',
         valueEnum: {
-          账户层: '账户层',
+          进件层: '进件层',
           借据层: '借据层',
         },
         hideInTable: true,
@@ -375,7 +376,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         title: '汇总指标',
         dataIndex: 'index',
         fieldProps: {
-          placeholder: '请选择数据维度',
+          placeholder: '请选择汇总指标',
+          defaultValue: '账户数',
         },
         valueType: 'select',
         valueEnum: {

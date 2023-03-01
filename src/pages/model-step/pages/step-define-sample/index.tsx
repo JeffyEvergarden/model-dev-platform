@@ -176,23 +176,44 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   };
 
   const exportResult = async () => {
-    await exportExcel({ itmModelRegisCode: modelId })
-      .then((res) => {
-        const blob: any = res;
-        const reader = new FileReader(blob);
-        reader.readAsDataURL(blob);
-        reader.onload = (e: any) => {
-          const a = document.createElement('a');
-          a.download = `样本定义.${'xls'}`;
-          a.href = e.target.result;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+    form.validateFields().then(async (value: any) => {
+      if (value) {
+        let flag = timeTest(value);
+        if (!flag) {
+          message.warning('整体分布时间段不能重叠');
+          return;
+        }
+        let reqData = {
+          itmModelRegisCode: modelId,
+          trainingTime: value?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
+          intertemporalTime: value?.intertemporalTime?.map?.((item: any) =>
+            item?.format?.('YYYY-MM-DD'),
+          ),
+          other: value?.other?.map?.((item: any) => {
+            return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
+          }),
+          sampleTotalDistributionList: tableList || [],
+          sampleMonthDistributionList: resultTableList || [],
         };
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        await exportExcel(reqData)
+          .then((res) => {
+            const blob: any = res;
+            const reader = new FileReader(blob);
+            reader.readAsDataURL(blob);
+            reader.onload = (e: any) => {
+              const a = document.createElement('a');
+              a.download = `样本定义.${'xls'}`;
+              a.href = e.target.result;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            };
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
   const _nextFlow = () => {
@@ -205,7 +226,13 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         }
         nextFlow({
           itmModelRegisCode: modelId,
-          ...value,
+          trainingTime: value?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
+          intertemporalTime: value?.intertemporalTime?.map?.((item: any) =>
+            item?.format?.('YYYY-MM-DD'),
+          ),
+          other: value?.other?.map?.((item: any) => {
+            return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
+          }),
           sampleTotalDistributionList: tableList || [],
           sampleMonthDistributionList: resultTableList || [],
         }).then((res) => {

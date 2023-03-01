@@ -105,6 +105,7 @@ const LineChart: React.FC<any> = (props: any) => {
   }, []);
 
   useEffect(() => {
+    console.log(columns, data);
     if (!first) {
       // console.log('重新绘制-------：', lineChart.current);
       initMap();
