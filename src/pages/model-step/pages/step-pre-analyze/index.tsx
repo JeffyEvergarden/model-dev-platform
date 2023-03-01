@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useState, Fragment, Children } from 'react';
-import { Form, Input, DatePicker, Divider, Select, Button, Space } from 'antd';
+import { Form, Input, DatePicker, Divider, Select, Button, Space, Descriptions } from 'antd';
 import styles from '../style.less';
 import ProTable from '@ant-design/pro-table';
 import CustomerFormBox from './component/customerFormBox';
@@ -27,6 +27,7 @@ const { RangePicker }: any = DatePicker;
 // 首页
 const StepPreAnalyze: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
+  const { pageType } = props;
   const formRef = useRef<any>({});
   const [form] = Form.useForm();
   const tableRef = useRef<any>({});
@@ -489,10 +490,12 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   return (
     <div className={styles['step-page']}>
-      <div className={styles['step-title']}>
-        <span>前期分析</span>
-        <TitleStatus index={4}></TitleStatus>
-      </div>
+      {pageType !== 'viewReport' && (
+        <div className={styles['step-title']}>
+          <span>前期分析</span>
+          <TitleStatus index={4} />
+        </div>
+      )}
       <p className={styles.commonTitle}>VINTAGE分析</p>
       <div className={styles.commonTable}>
         <ProTable<any>
@@ -549,19 +552,21 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           tableStyle={{ display: tableType ? 'block' : 'none' }}
         />
         <Condition r-show={!tableType}>
-          <LineChart
-            base={base}
-            tableType={tableType}
-            columns={vChartColumns}
-            data={vintageList}
-          ></LineChart>
+          <LineChart base={base} tableType={tableType} columns={vChartColumns} data={vintageList} />
         </Condition>
       </div>
-      <Form form={form} layout="vertical">
-        <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
-          <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
-        </FormItem>
-      </Form>
+      {pageType !== 'viewReport' && (
+        <Form form={form} layout="vertical">
+          <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
+            <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
+          </FormItem>
+        </Form>
+      )}
+      {pageType == 'viewReport' && (
+        <Descriptions bordered column={2}>
+          <Descriptions.Item label="VINTAGE分析结论">{}</Descriptions.Item>
+        </Descriptions>
+      )}
       <Divider />
       <p className={styles.commonTitle}>滚动率分析</p>
       <div className={styles.commonTable}>
@@ -584,26 +589,35 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           onChange={rateTableChange}
         />
       </div>
-      <Form form={form} layout="vertical">
-        <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
-          <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
-        </FormItem>
-      </Form>
-      <Divider />
-      <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
-      <CustomerFormBox customerFormRef={customerFormRef} />
-      <NextStepButton
-        btnNode={
-          <Space>
-            <Button onClick={exportResult} size="large">
-              导出结果
-            </Button>
-            <Button onClick={onClick} size="large" type="primary">
-              下一流程
-            </Button>
-          </Space>
-        }
-      />
+      {pageType !== 'viewReport' && (
+        <Fragment>
+          <Form form={form} layout="vertical">
+            <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
+              <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
+            </FormItem>
+          </Form>
+          <Divider />
+          <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
+          <CustomerFormBox customerFormRef={customerFormRef} />
+          <NextStepButton
+            btnNode={
+              <Space>
+                <Button onClick={exportResult} size="large">
+                  导出结果
+                </Button>
+                <Button onClick={onClick} size="large" type="primary">
+                  下一流程
+                </Button>
+              </Space>
+            }
+          />
+        </Fragment>
+      )}
+      {pageType == 'viewReport' && (
+        <Descriptions bordered column={2}>
+          <Descriptions.Item label="滚动率分析结论">{}</Descriptions.Item>
+        </Descriptions>
+      )}
     </div>
   );
 };

@@ -149,7 +149,7 @@ export default () => {
             <ModelBasic modelDetail={modelDetail} optimalVersion={optimalVersion} />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'前期分析'} key={'2'}>
-            <PreAnalysis />
+            <PreAnalysis pageType={'viewReport'} />
           </Tabs.TabPane>
           <Tabs.TabPane tab={'样本定义'} key={'3'}>
             <DefineSample sampleData={sampleData} optimalVersion={optimalVersion} />
