@@ -66,3 +66,11 @@ export async function queryVintageLoanTerms(params?: Record<string, any>) {
     params,
   });
 }
+
+export async function exportExcel(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/preanalysis/export`, {
+    method: 'POST',
+    data,
+    responseType: 'blob',
+  });
+}

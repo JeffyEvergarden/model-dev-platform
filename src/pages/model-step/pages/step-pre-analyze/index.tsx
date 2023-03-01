@@ -19,7 +19,8 @@ import LineChart from './component/lineChart';
 import { throttle } from '../utils/util';
 import { getWaitResult } from '../step-select-sample/model/api';
 import { getModelStepDetailApi } from '../../model/api';
-import { queryVintageLoanTerms } from './model/api';
+import { exportExcel, queryVintageLoanTerms } from './model/api';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -133,17 +134,17 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   //大类
   const changeProductClass = (arr: any) => {
     let val: any = arr;
-    if (arr[arr.length - 1] == 'all') {
-      val = ['all'];
+    if (arr[arr.length - 1] == '全部') {
+      val = ['全部'];
     } else {
-      val = val.filter((item: any) => item != 'all');
+      val = val.filter((item: any) => item != '全部');
     }
 
     console.log(val);
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originChannelMidList;
       } else {
         val?.map((ele: any) => {
@@ -172,15 +173,15 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   //中类
   const changeChannelMid = (arr: any) => {
     let val: any = arr;
-    if (arr[arr.length - 1] == 'all') {
-      val = ['all'];
+    if (arr[arr.length - 1] == '全部') {
+      val = ['全部'];
     } else {
-      val = val.filter((item: any) => item != 'all');
+      val = val.filter((item: any) => item != '全部');
     }
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originChannelSmList;
       } else {
         val.forEach((ele: any) => {
@@ -205,15 +206,15 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   //小类
   const changeChannelS = (arr: any) => {
     let val: any = arr;
-    if (arr[arr.length - 1] == 'all') {
-      val = ['all'];
+    if (arr[arr.length - 1] == '全部') {
+      val = ['全部'];
     } else {
-      val = val.filter((item: any) => item != 'all');
+      val = val.filter((item: any) => item != '全部');
     }
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
-      if (val?.includes('all')) {
+      if (val?.includes('全部')) {
         list = originCustCatList;
       } else {
         val.forEach((ele: any) => {
@@ -234,10 +235,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   const changeCustCatL = (arr: any) => {
     let val: any = arr;
-    if (arr[arr.length - 1] == 'all') {
-      val = ['all'];
+    if (arr[arr.length - 1] == '全部') {
+      val = ['全部'];
     } else {
-      val = val.filter((item: any) => item != 'all');
+      val = val.filter((item: any) => item != '全部');
     }
     let obj: any = {};
     if (val.length > 0) {
@@ -310,6 +311,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               style={{ maxWidth: '400px', minWidth: '120px' }}
               picker="month"
               placeholder={['开始时间', '结束时间']}
+              format={'YYYY-MM'}
             />
           );
         },
@@ -322,11 +324,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           return (
             <Select
               style={{ maxWidth: '400px', minWidth: '120px' }}
-              // onSelect={(val) => onSelect(val, 'loadTerm')}
-              // onDeselect={(val) => onDeselect(val, 'loadTerm')}
               onChange={(arr: any) => {
-                console.log(arr);
-
                 let val: any = arr;
                 if (arr?.length) {
                   if (val[val.length - 1] == '全部') {
@@ -335,15 +333,16 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
                     val = val.filter((item: any) => item != '全部');
                   }
                 }
-                setLimitTimeData(val);
-                formRef?.current?.setFieldsValue({
+                // setLimitTimeData(val);
+                formRef2?.current?.setFieldsValue({
                   loadTerm: val,
                 });
               }}
               mode="multiple"
               allowClear
               maxTagCount={2}
-              value={limitTimeData}
+              defaultValue={['全部']}
+              // value={limitTimeData}
             >
               <Option key={'全部'} value={'全部'}>
                 {'全部'}
@@ -397,6 +396,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   useEffect(() => {
     getConditionList();
     getYaerMonth();
+    //回显默认
     getProdChannelList({ itmModelRegisCode: modelId }).then((res) => {
       if (res?.status?.code == successCode) {
         formRef?.current?.setFieldsValue({
@@ -405,7 +405,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       }
     });
     //回显
-    getModelStepDetailApi({ itmModelRegisCode: modelId }).then((res) => {
+    getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId }).then((res) => {
       if (res.status.code == successCode) {
         let data = res?.result;
         // itmModelRegisCode: modelId,
@@ -505,9 +505,27 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     setRateFilter(filter?.name || []);
   };
 
-  const exportResult = () => {
+  const exportResult = async () => {
     customerFormRef.validateFields().then((value: any) => {
-      console.log('value', value);
+      if (value) {
+        exportExcel({ itmModelRegisCode: modelId })
+          .then((res) => {
+            const blob: any = res;
+            const reader = new FileReader(blob);
+            reader.readAsDataURL(blob);
+            reader.onload = (e: any) => {
+              const a = document.createElement('a');
+              a.download = `前期分析.${'xls'}`;
+              a.href = e.target.result;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            };
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     });
   };
 
@@ -629,7 +647,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           pagination={false}
           columns={_rateColumns}
           request={async (params = {}, sort, filter) => {
-            return getRateListArr({ page: params.current, ...params }, rateFilter);
+            let reqData = {
+              paymentTime: params?.paymentTime
+                ?.map((item: any) => moment(item).format('YYYY-MM'))
+                ?.join(),
+              loadTerm: params?.loadTerm?.join(),
+            };
+
+            return getRateListArr({ page: params.current, ...params, ...reqData }, rateFilter);
           }}
           onChange={rateTableChange}
         />

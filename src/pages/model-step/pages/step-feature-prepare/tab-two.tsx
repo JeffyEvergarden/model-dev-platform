@@ -72,7 +72,11 @@ const TabTwo: React.FC<any> = (props: any) => {
         pageType={processType}
         columns={[]}
         detailInfo={{}}
-        dataList={selectList?.map((item: any) => item?.featureName || item) || dataList || []}
+        dataList={
+          selectList?.map((item: any) => item?.featureName || item) ||
+          dataList?.map((item: any) => item?.featureName || item) ||
+          []
+        }
       />
       <Condition r-if={processType === 'finish'}>
         <NextStepButton

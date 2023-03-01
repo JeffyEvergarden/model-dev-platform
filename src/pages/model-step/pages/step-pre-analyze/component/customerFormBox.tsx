@@ -81,7 +81,7 @@ const formDom = (ruleClips: string, option: any) => {
                         style={{ width: '100px' }}
                         rules={[{ required: true, message: '衡量值为整数' }]}
                       >
-                        <InputNumber placeholder="衡量值" precision={0} />
+                        <InputNumber placeholder="衡量值" precision={0} min={0} />
                       </FormItem>
                       <Condition r-if={index != 0}>
                         <MinusCircleOutlined

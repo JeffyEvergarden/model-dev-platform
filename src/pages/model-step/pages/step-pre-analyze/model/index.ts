@@ -37,7 +37,7 @@ export const useSearchModel = () => {
     let res: any = await getparamsApi(params);
     let tempProcessList: any[] = res?.result?.processList;
     tempProcessList?.unshift({
-      value: 'all',
+      value: '全部',
       name: '全部',
     });
     setProcessList(tempProcessList);
@@ -46,7 +46,7 @@ export const useSearchModel = () => {
       let data: any = deepFormateData(res.result?.prodTree, 1);
 
       data?.unshift({
-        name: 'all',
+        name: '全部',
         label: '全部',
         children: [],
       });
@@ -76,15 +76,15 @@ export const useSearchModel = () => {
       });
 
       channelMidTemp?.unshift({
-        name: 'all',
+        name: '全部',
         label: '全部',
       });
       channelSmTemp?.unshift({
-        name: 'all',
+        name: '全部',
         label: '全部',
       });
       custCatTemp?.unshift({
-        name: 'all',
+        name: '全部',
         label: '全部',
       });
       // custCatSmTemp?.unshift({
@@ -113,7 +113,7 @@ export const useSearchModel = () => {
       let children = deepFormateData(item.children, level + 1);
       return {
         label: item.name,
-        name: item.id,
+        name: item.name,
         children,
       };
     });
