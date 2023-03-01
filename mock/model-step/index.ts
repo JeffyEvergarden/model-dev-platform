@@ -176,4 +176,5 @@ export default {
   [`POST ${baseUrl}/strategyBacktrack/backTracking`]: normalDeal,
   [`POST ${baseUrl}/strategyBacktrack/nextStage`]: normalDeal,
   [`POST ${baseUrl}/strategyBacktrack/skipCurrentStage`]: normalDeal,
+  [`POST ${baseUrl}/strategyBacktrack/retryBackTracking`]: normalDeal,
 };

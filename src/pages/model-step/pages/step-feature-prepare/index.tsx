@@ -46,7 +46,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const getCurrentStage = async () => {
     if (curStep + 1 < doneStep) {
       setStepType(2);
-    } else if (curStep == doneStep) {
+    } else if (curStep + 1 == doneStep) {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       let data = res.result || {};
       if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {

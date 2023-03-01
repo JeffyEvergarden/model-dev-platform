@@ -49,7 +49,7 @@ export const useStrategyBackModel = () => {
 export const useStrategyBackUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
   const [errorMsg, setErrorMsg] = useState<any>('');
-  const [dataList, setDataList] = useState<any>([]);
+  const [dataList, setDataList] = useState<any>('');
 
   const fake = useRef<any>({});
 
@@ -89,7 +89,9 @@ export const useStrategyBackUploadAwaitModel = () => {
   const awaitResult = async (params?: any) => {
     let res: any = await getStageStatus(params);
     let data = res?.result || {};
-    setDataList(res?.backtrackProcessName?.split(',') || []);
+    console.log(data);
+
+    setDataList(data?.backtrackProcessName || '');
     if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';

@@ -47,6 +47,10 @@ const TabTwo: React.FC<any> = (props: any) => {
     // }
   }, [processId]);
 
+  useEffect(() => {
+    console.log(dataList);
+  }, [dataList]);
+
   return (
     <div>
       <CommonPage
@@ -71,7 +75,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         pageType={processType}
         columns={[{ key: 'backtrackProcessName', name: '回溯编排' }]}
         detailInfo={{
-          backtrackProcessName: selectedKeys?.join('，') || dataList?.join('，'),
+          backtrackProcessName: selectedKeys?.join(',') || dataList,
         }}
       />
       <Condition r-if={processType === 'finish' || processType === 'error'}>
