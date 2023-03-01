@@ -34,7 +34,7 @@ const StepOne: React.FC = (props: any) => {
   );
 
   // 表单是否可以编辑
-  const isDisabled = isHadBuild || false;
+  const isDisabled = isHadReported == '1' ? true : false;
 
   const [form] = Form.useForm();
 
@@ -243,31 +243,30 @@ const StepOne: React.FC = (props: any) => {
         </div>
       </Form>
       {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
-      <NextStepButton
-        btnNode={
-          <Space>
-            {doneStep !== 10 && (
-              <Button
-                size="large"
-                type="primary"
-                disabled={isHadReported == '1'}
-                onClick={() => submitNextStep('save')}
-              >
-                保存
-              </Button>
-            )}
-            {(doneStep < 1 || doneStep == 1) && isSave == '1' && (
-              <Button size="large" type="primary" onClick={() => submitNextStep('next')}>
-                下一流程
-              </Button>
-            )}
-          </Space>
-        }
-        // text={(doneStep > 2 || doneStep == 2) ? '下一流程' : '保存'}
-        // onClick={submitNextStep}
-        loading={loading}
-        disabled={isDisabled || isHadBuild}
-      />
+      {isDisabled == false && (
+        <NextStepButton
+          btnNode={
+            <Space>
+              {doneStep !== 10 && (
+                <Button
+                  size="large"
+                  type="primary"
+                  disabled={isHadReported == '1'}
+                  onClick={() => submitNextStep('save')}
+                >
+                  保存
+                </Button>
+              )}
+              {(doneStep < 1 || doneStep == 1) && isSave == '1' && (
+                <Button size="large" type="primary" onClick={() => submitNextStep('next')}>
+                  下一流程
+                </Button>
+              )}
+            </Space>
+          }
+          loading={loading}
+        />
+      )}
     </div>
   );
 };

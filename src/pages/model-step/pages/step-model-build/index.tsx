@@ -587,12 +587,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             </Condition>
           </Row>
         </Form>
-        <Condition r-if={pageType == ''}>
+        <Condition r-if={isHadReported !== '1'}>
           <NextStepButton
             onClick={beginBuild}
             text={'开始建模'}
             loading={loading}
-            disabled={isHadReported == '1'}
+            // disabled={isHadReported == '1'}
           />
         </Condition>
       </Condition>

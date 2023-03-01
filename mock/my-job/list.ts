@@ -79,7 +79,7 @@ export default {
   [`POST ${baseUrl}/myWorkbench/getModelInfoList`]: getList, // 获取模型管理列表
   [`POST ${baseUrl}/myWorkbench/myModelInfoSummary`]: getSummaryList,
   [`POST ${baseUrl}/model/add`]: normalDeal,
-  [`POST ${baseUrl}/model/delete`]: normalDeal,
+  [`POST ${baseUrl}/myWorkbench/deleteModelReport`]: normalDeal,
   [`GET ${baseUrl}/myWorkbench/getModelStageInfo`]: getInfo,
   [`GET ${baseUrl}/myWorkbench/getModelAnalysts`]: userList,
 };

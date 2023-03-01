@@ -23,8 +23,9 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   const { getOptimalVersionRquest } = useExportReportModel();
   const { nextStep } = useNextStep();
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadReported: model.isHadReported,
   }));
 
   useEffect(() => {
@@ -98,36 +99,38 @@ const StepModelCompare: React.FC<any> = (props: any) => {
           );
         })}
       </Tabs>
-      <NextStepButton
-        extra={
-          <div className={styles.compareForm}>
-            <Form form={form} layout="inline">
-              <Form.Item
-                label="选择最优模型"
-                name="modelVersion"
-                rules={[{ required: true, message: '请选择最优模型' }]}
-              >
-                <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>
-                  {tabList?.map((item: any) => {
-                    return (
-                      <Select.Option key={item?.value} value={item?.value}>
-                        {item?.name}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
-            </Form>
-          </div>
-        }
-        btnNode={
-          <Space>
-            <Button onClick={nextFlow} size="large" type="primary" loading={loading}>
-              下一流程
-            </Button>
-          </Space>
-        }
-      />
+      <Condition r-if={isHadReported !== '1'}>
+        <NextStepButton
+          extra={
+            <div className={styles.compareForm}>
+              <Form form={form} layout="inline">
+                <Form.Item
+                  label="选择最优模型"
+                  name="modelVersion"
+                  rules={[{ required: true, message: '请选择最优模型' }]}
+                >
+                  <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>
+                    {tabList?.map((item: any) => {
+                      return (
+                        <Select.Option key={item?.value} value={item?.value}>
+                          {item?.name}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              </Form>
+            </div>
+          }
+          btnNode={
+            <Space>
+              <Button onClick={nextFlow} size="large" type="primary" loading={loading}>
+                下一流程
+              </Button>
+            </Space>
+          }
+        />
+      </Condition>
     </div>
   );
 };

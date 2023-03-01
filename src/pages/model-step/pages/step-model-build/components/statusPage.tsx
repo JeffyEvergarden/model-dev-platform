@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Button, Space } from 'antd';
 import styles from './index.less';
+import { useModel, history } from 'umi';
 import NextStepButton from '@/pages/model-step/components/nextstep-button';
 import CommonPage from '@/pages/model-step/components/common-page';
 import Condition from '@/components/Condition';
@@ -14,6 +15,10 @@ const StepTwo: React.FC<any> = (props: any) => {
   const [_form] = Form.useForm(form);
 
   const { processType, startLoop, desc } = useSampleUploadAwaitModel();
+
+  const { isHadReported } = useModel('step', (model: any) => ({
+    isHadReported: model.isHadReported,
+  }));
 
   const onClick = () => {
     onNext?.();
@@ -48,7 +53,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         }
         pageType={processType}
       />
-      <Condition r-if={processType !== 'loading'}>
+      <Condition r-if={processType !== 'loading' && isHadReported !== '1'}>
         <NextStepButton
           btnNode={
             processType == 'error' ? (

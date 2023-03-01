@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm, Select, Space, Tag } from 'antd';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { history, useModel } from 'umi';
+import moment from 'moment';
 
 import { useTableModel, useOpModel } from './model';
 
@@ -79,10 +80,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
     //   return;
     // }
 
-    let params: any = {
-      itmModelRegisCode: row?.itmModelRegisCode,
-    };
-    let res: any = await deleteModel(params);
+    let res: any = await deleteModel(row?.itmModelRegisCode);
     if (res) {
       console.log('删除接口');
       message.success('删除成功');
@@ -102,7 +100,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
     };
     exportData(paramData).then((res: any) => {
       const _a = document.createElement('a');
-      // _a.download = `模型报告${modelFullName}-${moment().format('YYYYMMDD')}.xlsx`;
+      _a.download = `模型报告-${moment().format('YYYYMMDD')}.xlsx`;
       _a.href = URL.createObjectURL(res);
       const evt = document.createEvent('MouseEvents');
       evt.initEvent('click', false, false);

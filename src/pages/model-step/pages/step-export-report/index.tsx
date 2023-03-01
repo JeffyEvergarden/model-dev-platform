@@ -13,6 +13,7 @@ import { useModel, history } from 'umi';
 import TitleStatus from '../../components/title-status';
 const successCode = config.successCode;
 import { useNextStep } from '@/pages/model-step/config';
+import Condition from '@/components/Condition';
 
 const StepExportReport: React.FC<any> = (props: any) => {
   const { loading, setLoading, getOptimalVersionRquest, getSampleDefineDetail, exportPageRequest } =
@@ -26,9 +27,10 @@ const StepExportReport: React.FC<any> = (props: any) => {
   const [modelResult, setModelResult] = useState<any>({});
 
   const [optimalVersion, setOptimalVersion] = useState<any>('');
-  const { modelId, setIsHadReported } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported, setIsHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     setIsHadReported: model.setIsHadReported,
+    isHadReported: model.isHadReported,
   }));
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     let res = await exportPageRequest(params);
     if (res?.status?.code == successCode) {
       setLoading(false);
-      // history.push(`/workBench/viewReport`);
+      history.push(`/workBench/viewReport`);
       setIsHadReported('1');
       message.success(res?.status?.desc || '成功');
       nextStep();
@@ -112,15 +114,17 @@ const StepExportReport: React.FC<any> = (props: any) => {
           <ModelEffect modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
       </Tabs>
-      <NextStepButton
-        btnNode={
-          <Space>
-            <Button onClick={exportPage} size="large" type="primary" loading={loading}>
-              生成报告
-            </Button>
-          </Space>
-        }
-      />
+      <Condition r-if={isHadReported !== '1'}>
+        <NextStepButton
+          btnNode={
+            <Space>
+              <Button onClick={exportPage} size="large" type="primary" loading={loading}>
+                生成报告
+              </Button>
+            </Space>
+          }
+        />
+      </Condition>
     </div>
   );
 };

@@ -474,11 +474,13 @@ const StepOne: React.FC<any> = (props: any) => {
         setOperationList={setOperationList}
         paramList={paramList}
       />
-      <NextStepButton
-        onClick={onClick}
-        text={'提交'}
-        disabled={isHadBuild == '1' || isHadReported == '1'}
-      />
+      {isHadBuild !== '1' && isHadReported !== '1' && (
+        <NextStepButton
+          onClick={onClick}
+          text={'提交'}
+          // disabled={isHadBuild == '1' || isHadReported == '1'}
+        />
+      )}
     </div>
   );
 };

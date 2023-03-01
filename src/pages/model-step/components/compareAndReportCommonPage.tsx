@@ -129,9 +129,15 @@ export default (props: any) => {
         title: item,
         dataIndex: item,
         key: item,
-        // render: (t: any, r: any, i: any) => {
-        //   return <span style={{ color: item == '合计' ? 'red' : '' }}>{data?.[modelStabilityList]?.[index]?.[item]}</span>;
-        // },
+        render: (t: any, r: any, i: any) => {
+          return (
+            <span
+              style={{ color: r.scoreRange == '总计' && pageType == 'comparePage' ? 'red' : '' }}
+            >
+              {t}
+            </span>
+          );
+        },
       });
     });
     return tempColumn;

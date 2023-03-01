@@ -23,8 +23,10 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadBuild, isHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
   }));
 
   const { processType, startLoop, desc } = useSampleUploadAwaitModel();
@@ -81,7 +83,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         }
         detailInfo={detailInfo}
       />
-      <Condition r-if={processType !== 'loading'}>
+      <Condition r-if={processType !== 'loading' && isHadBuild !== '1' && isHadReported !== '1'}>
         <NextStepButton
           btnNode={
             processType == 'error' ? (
