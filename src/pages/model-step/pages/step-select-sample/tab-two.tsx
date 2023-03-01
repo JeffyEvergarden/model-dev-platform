@@ -23,12 +23,16 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, isHadBuild, isHadReported, doneStep } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    doneStep: model.doneStep,
-    isHadBuild: model.isHadBuild,
-    isHadReported: model.isHadReported,
-  }));
+  const { modelId, isHadBuild, isHadReported, doneStep, curStep } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      curStep: model.curStep,
+      isHadBuild: model.isHadBuild,
+      isHadReported: model.isHadReported,
+    }),
+  );
 
   const { processType, startLoop, desc, fake } = useSampleUploadAwaitModel();
   const { getSample } = useSample();
@@ -39,7 +43,7 @@ const StepTwo: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    if (2 < doneStep) {
+    if (curStep + 1 < doneStep) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
       startLoop({ itmModelRegisCode: modelId }, 4);
