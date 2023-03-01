@@ -36,6 +36,7 @@ const Myjob: React.FC<any> = (props: any) => {
     setCurStep,
     isHadBuild,
     setIsHadBuild,
+    currentStep,
     isHadReported,
     setIsHadReported,
   } = useModel('step' as any, (model: any) => ({
@@ -48,6 +49,7 @@ const Myjob: React.FC<any> = (props: any) => {
     setDoneStepStatus: model.setDoneStepStatus,
     curStep: model.curStep,
     setCurStep: model.setCurStep,
+    currentStep: model.currentStep,
     isHadBuild: model.isHadBuild,
     setIsHadBuild: model.setIsHadBuild,
     isHadReported: model.isHadReported,
@@ -185,10 +187,11 @@ const Myjob: React.FC<any> = (props: any) => {
     }
     // 设置当前显示步骤
     setCurStep(val);
+    // currentStep.current.currentStep = val + 1
     // 跳转
     let key: any = stepItem?.name;
     if (configMap[key]) {
-      history.push(configMap[key] + '?id=' + `${_modelId || modelId}`);
+      setTimeout(() => history.push(configMap[key] + '?id=' + `${_modelId || modelId}`), 500);
     }
   };
 

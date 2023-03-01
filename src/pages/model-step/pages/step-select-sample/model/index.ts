@@ -282,7 +282,7 @@ export const useSampleUploadAwaitModel = () => {
     }
   };
 
-  const startLoop = async (params: any, time: any) => {
+  const startLoop = async (params: any, time: any, status?: any) => {
     // if (time > 10) {
     //   // 当这次查询时长超过20s取消
     //   setProcessType('error');
@@ -295,7 +295,10 @@ export const useSampleUploadAwaitModel = () => {
     //   message.warning('获取不到异步请求信号id');
     //   return;
     // }
-
+    if (status == 'finish') {
+      setProcessType('finish');
+      return 'finish';
+    }
     let res: any = await awaitResult(params);
     if (res == 'finish') {
       clearTimeout(fake.current.timeFn);
@@ -314,6 +317,7 @@ export const useSampleUploadAwaitModel = () => {
     loading,
     processType,
     desc,
+    fake,
     setProcessType,
     awaitResult,
     startLoop,

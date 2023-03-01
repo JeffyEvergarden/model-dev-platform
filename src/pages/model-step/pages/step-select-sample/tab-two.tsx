@@ -23,13 +23,14 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, isHadBuild, isHadReported } = useModel('step', (model: any) => ({
+  const { modelId, isHadBuild, isHadReported, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    doneStep: model.doneStep,
     isHadBuild: model.isHadBuild,
     isHadReported: model.isHadReported,
   }));
 
-  const { processType, startLoop, desc } = useSampleUploadAwaitModel();
+  const { processType, startLoop, desc, fake } = useSampleUploadAwaitModel();
   const { getSample } = useSample();
 
   const [detailInfo, setDetailInfo] = useState<any>({});
@@ -38,10 +39,13 @@ const StepTwo: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    // if (processId) {
-    startLoop({ itmModelRegisCode: modelId }, 4);
-    // }
+    if (2 < doneStep) {
+      startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+    } else {
+      startLoop({ itmModelRegisCode: modelId }, 4);
+    }
     getCurrentDetail();
+    return () => clearInterval(fake?.current?.timeFn);
   }, [tabType]);
 
   const getCurrentDetail = async () => {

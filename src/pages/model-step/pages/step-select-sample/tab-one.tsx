@@ -120,8 +120,6 @@ const StepOne: React.FC<any> = (props: any) => {
     }
     labelListRequest();
     setTimeout(() => {
-      let temp = featureOperatorMap?.[editData?.featureType];
-      debugger;
       setOperationList(featureOperatorMap?.[editData?.featureType]);
     }, 500);
   }, [editData]);

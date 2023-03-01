@@ -99,38 +99,38 @@ const StepModelCompare: React.FC<any> = (props: any) => {
           );
         })}
       </Tabs>
-      <Condition r-if={isHadReported !== '1'}>
-        <NextStepButton
-          extra={
-            <div className={styles.compareForm}>
-              <Form form={form} layout="inline">
-                <Form.Item
-                  label="选择最优模型"
-                  name="modelVersion"
-                  rules={[{ required: true, message: '请选择最优模型' }]}
-                >
-                  <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>
-                    {tabList?.map((item: any) => {
-                      return (
-                        <Select.Option key={item?.value} value={item?.value}>
-                          {item?.name}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                </Form.Item>
-              </Form>
-            </div>
-          }
-          btnNode={
-            <Space>
+      <NextStepButton
+        extra={
+          <div className={styles.compareForm}>
+            <Form form={form} layout="inline">
+              <Form.Item
+                label="选择最优模型"
+                name="modelVersion"
+                rules={[{ required: true, message: '请选择最优模型' }]}
+              >
+                <Select placeholder="请选择模型" style={{ width: '200px' }} allowClear>
+                  {tabList?.map((item: any) => {
+                    return (
+                      <Select.Option key={item?.value} value={item?.value}>
+                        {item?.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Form>
+          </div>
+        }
+        btnNode={
+          <Space>
+            {isHadReported !== '1' && (
               <Button onClick={nextFlow} size="large" type="primary" loading={loading}>
                 下一流程
               </Button>
-            </Space>
-          }
-        />
-      </Condition>
+            )}
+          </Space>
+        }
+      />
     </div>
   );
 };
