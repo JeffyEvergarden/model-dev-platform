@@ -6,6 +6,8 @@ import TabTwo from './tab-two';
 import TitleStatus from '../../components/title-status';
 import { getWaitResult } from '../step-select-sample/model/api';
 import { useModel } from 'umi';
+import { resetPrepare } from './model/api';
+import { successCode } from '../step-strategy-back/model';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
@@ -27,8 +29,12 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     setStepType(2);
   };
 
-  const reset = () => {
-    setStepType(1);
+  const reset = async () => {
+    await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
+      if (res?.status?.code == successCode) {
+        setStepType(1);
+      }
+    });
   };
 
   useEffect(() => {

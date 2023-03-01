@@ -7,6 +7,7 @@ import Condition from '@/components/Condition';
 import { useStrategyBackUploadAwaitModel } from '../step-strategy-back/model';
 import { useNextStep } from '../../config';
 import { useModel } from 'umi';
+import { useVarSelectModal } from './model';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -25,8 +26,7 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { errorMsg, processType, dataList, startLoop, nextFlow } =
-    useStrategyBackUploadAwaitModel();
+  const { errorMsg, processType, dataList, startLoop, nextFlow } = useVarSelectModal();
   const { nextStep } = useNextStep();
 
   const { modelId } = useModel('step', (model: any) => ({
@@ -72,18 +72,28 @@ const TabTwo: React.FC<any> = (props: any) => {
         pageType={processType}
         columns={[]}
         detailInfo={{}}
-        dataList={selectList?.map((item: any) => item?.featureName || item) || dataList || []}
+        dataList={
+          selectList?.map((item: any) => item?.featureName || item) ||
+          dataList?.map((item: any) => item?.featureName || item) ||
+          []
+        }
       />
-      <Condition r-if={processType === 'finish'}>
+      <Condition r-if={processType === 'finish' || processType === 'error'}>
         <NextStepButton
           btnNode={
             <Space>
-              <Button onClick={reset} size="large">
+              <Button
+                onClick={reset}
+                size="large"
+                type={processType === 'error' ? 'primary' : undefined}
+              >
                 重新匹配
               </Button>
-              <Button onClick={onClick} size="large" type="primary">
-                下一流程
-              </Button>
+              <Condition r-if={processType !== 'error'}>
+                <Button onClick={onClick} size="large" type="primary">
+                  下一流程
+                </Button>
+              </Condition>
             </Space>
           }
         />

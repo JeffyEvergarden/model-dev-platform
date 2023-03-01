@@ -27,6 +27,7 @@ const Myjob: React.FC<any> = (props: any) => {
   const {
     modelId,
     setModelId,
+    setModelName,
     doneStep,
     setDoneStep,
     doneStepStatus,
@@ -40,6 +41,7 @@ const Myjob: React.FC<any> = (props: any) => {
   } = useModel('step' as any, (model: any) => ({
     modelId: model.modelId,
     setModelId: model.setModelId,
+    setModelName: model.setModelName,
     doneStep: model.doneStep,
     setDoneStep: model.setDoneStep,
     doneStepStatus: model.doneStepStatus,
@@ -63,6 +65,9 @@ const Myjob: React.FC<any> = (props: any) => {
   // 获取模型详情
   const _getInfo = async () => {
     let res = await getModelInfo(_modelId || modelId);
+    if (res?.modelName) {
+      setModelName(res?.modelName);
+    }
 
     if (typeof res === 'object') {
       // 设置全局状态

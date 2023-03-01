@@ -99,7 +99,7 @@ export const useStrategyBackUploadAwaitModel = () => {
       setProcessType('loading');
       return 'loading';
     } else if (StageStatus[data?.currentStageStatus] === 'error') {
-      setErrorMsg(res?.status?.code || '未知错误');
+      setErrorMsg(data?.currentStageDesc || '未知错误');
       setProcessType('error');
       return 'error';
     }

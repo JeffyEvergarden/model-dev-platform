@@ -29,7 +29,8 @@ const TabTwo: React.FC<any> = (props: any) => {
     modelId: model.modelId,
   }));
 
-  const { processType, dataList, startLoop, nextFlow } = useStrategyBackUploadAwaitModel();
+  const { processType, dataList, errorMsg, startLoop, nextFlow } =
+    useStrategyBackUploadAwaitModel();
   const { nextStep } = useNextStep();
 
   const onClick = () => {
@@ -69,7 +70,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         errorContent={
           <>
             <div className={styles['title']}>策略回溯失败</div>
-            <div className={styles['desc']}></div>
+            <div className={styles['desc']}>失败原因：{errorMsg}</div>
           </>
         }
         pageType={processType}
