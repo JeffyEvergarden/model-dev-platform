@@ -1,6 +1,6 @@
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, message, Progress, Select, Table } from 'antd';
-// import { boxList } from '../../config';
+import { boxList } from '../../config';
 import style from './style.less';
 import styles from '../../../style.less';
 import classnames from 'classnames';
@@ -17,7 +17,7 @@ const SubBox: React.FC<any> = (props: any) => {
   const { Option } = Select;
   const actionRef = useRef<any>();
   const [tableList, setTableList] = useState<any>([]);
-  const [boxList, setBoxList] = useState<any>([]);
+  // const [boxList, setBoxList] = useState<any>([]);
   const [selectValue, setSelectValue] = useState<any>();
 
   const { modelId } = useModel('step', (model: any) => ({
@@ -42,19 +42,19 @@ const SubBox: React.FC<any> = (props: any) => {
     });
   };
 
-  const getVariableBoxList = async () => {
-    await getVariableBoxTypeList({}).then((res) => {
-      if (res?.status?.code === config.successCode) {
-        setBoxList(res?.result?.typeList);
-      } else {
-        setBoxList([]);
-      }
-    });
-  };
+  // const getVariableBoxList = async () => {
+  //   await getVariableBoxTypeList({}).then((res) => {
+  //     if (res?.status?.code === config.successCode) {
+  //       setBoxList(res?.result?.typeList);
+  //     } else {
+  //       setBoxList([]);
+  //     }
+  //   });
+  // };
 
-  useEffect(() => {
-    getVariableBoxList();
-  }, []);
+  // useEffect(() => {
+  //   getVariableBoxList();
+  // }, []);
 
   return (
     <div className={styles.comparePage}>
@@ -68,8 +68,8 @@ const SubBox: React.FC<any> = (props: any) => {
           value={selectValue}
         >
           {boxList?.map((item: any) => (
-            <Option key={item.typeCode} value={item.typeCode}>
-              {item.typeName}
+            <Option key={item.label} value={item.label}>
+              {item.label}
             </Option>
           ))}
         </Select>

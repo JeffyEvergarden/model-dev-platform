@@ -50,11 +50,13 @@ const TabThree: React.FC<any> = (props: any) => {
     await passBackStep(reqData).then((res: any) => {
       if (res.status?.code == successCode) {
         if (res?.result?.skipCurrentStageStatus == '1') {
+          fake.current.timeFn = null;
           //跳到下一流程
           nextStep();
-        }
-        if (res?.result?.skipCurrentStageStatus == '0') {
-          //跳到下一流程
+        } else {
+          setTimeout(async () => {
+            getskip();
+          }, 5 * 1000);
         }
       }
     });
