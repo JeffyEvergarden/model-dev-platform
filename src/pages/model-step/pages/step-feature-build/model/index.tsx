@@ -53,7 +53,7 @@ export const useExportReportModel = () => {
     const res: any = await getVariableTypeList(params);
     // 策略分析
     if (res?.status?.code === successCode) {
-      let data: any[] = res?.result?.typeList || [];
+      let data: any[] = res?.result || [];
       setVarTypeList(data);
     }
   };

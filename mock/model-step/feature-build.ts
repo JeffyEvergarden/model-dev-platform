@@ -75,9 +75,7 @@ const getVariableTypeList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: {
-      typeList: [...list],
-    },
+    result: [...list],
   });
 };
 
