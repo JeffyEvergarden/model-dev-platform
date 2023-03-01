@@ -11,6 +11,9 @@ export const useVarSelectModal = () => {
   const [listType, setListType] = useState<any>('tree'); // tree search
   const [totalSize, setTotalSize] = useState<number>(0);
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
+  const [dataList, setDataList] = useState<any[]>([]);
+  const [errorMsg, setErrorMsg] = useState<any>('');
+
   const fake = useRef<any>({});
 
   const processTreeData = (data: any[], parent?: any) => {
@@ -121,13 +124,17 @@ export const useVarSelectModal = () => {
   const awaitResult = async (params?: any) => {
     let res: any = await getInfo(params);
     let data = res?.result || {};
+    console.log(data);
+
+    setDataList(data?.featureVOList || '');
     if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
     } else if (StageStatus[data?.currentStageStatus] === 'loading') {
       setProcessType('loading');
       return 'loading';
-    } else {
+    } else if (StageStatus[data?.currentStageStatus] === 'error') {
+      setErrorMsg(res?.status?.desc || '未知错误');
       setProcessType('error');
       return 'error';
     }
@@ -160,11 +167,15 @@ export const useVarSelectModal = () => {
     varList,
     totalSize,
     listType,
+    processType,
+    dataList,
+    errorMsg,
     nextFlow,
     getTreeList,
     getVarInfo,
     getKeyVarInfo,
     submitFeature,
     getModelStageInfo,
+    startLoop,
   };
 };

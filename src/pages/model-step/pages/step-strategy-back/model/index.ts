@@ -91,7 +91,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     let data = res?.result || {};
     console.log(data);
 
-    setDataList(data?.featureVOList || '');
+    setDataList(data?.backtrackProcessName || '');
     if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
