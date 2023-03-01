@@ -17,7 +17,7 @@ const columns1: any[] = [
 ];
 
 const SelectorTable: React.FC<any> = (props: any) => {
-  const { cref, confirm, type = 'checkbox', onNext } = props;
+  const { cref, confirm, type = 'checkbox', onNext, skip } = props;
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -32,8 +32,6 @@ const SelectorTable: React.FC<any> = (props: any) => {
 
   // 选中key值
   const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
-
-  const { nextStep } = useNextStep();
 
   // 勾选筛选设置
   const rowSelection = {
@@ -80,9 +78,9 @@ const SelectorTable: React.FC<any> = (props: any) => {
     await passBackStep(reqData).then((res: any) => {
       if (res) {
         //跳到下一流程
-        nextStep();
       }
     });
+    skip();
   };
 
   return (

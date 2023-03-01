@@ -8,7 +8,8 @@ import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { getWaitResult } from '../step-select-sample/model/api';
 import { reBack } from './model/api';
-import { successCode } from './model';
+import { successCode, useStrategyBackUploadAwaitModel } from './model';
+import TabThree from './tab-three';
 
 // 首页
 const StepStrategyBack: React.FC<any> = (props: any) => {
@@ -20,10 +21,11 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
 
-  const { modelId, doneStep, curStep } = useModel('step', (model: any) => ({
+  const { modelId, doneStep, curStep, setDoneStepStatus } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
     curStep: model.curStep,
+    setDoneStepStatus: model.setDoneStepStatus,
   }));
 
   // 过程id
@@ -37,9 +39,14 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   const again = async () => {
     await reBack({ itmModelRegisCode: modelId }).then((res: any) => {
       if (res?.status?.code == successCode) {
+        setDoneStepStatus('loading');
         setStepType(1);
       }
     });
+  };
+
+  const skip = async () => {
+    setStepType(3);
   };
 
   useEffect(() => {
@@ -55,9 +62,9 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   }, []);
 
   const getCurrentStage = async () => {
-    if (curStep + 1 < doneStep) {
+    if (3 < doneStep) {
       setStepType(2);
-    } else if (curStep + 1 == doneStep) {
+    } else if (3 == doneStep) {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       let data = res.result || {};
       if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
@@ -81,7 +88,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
       {/* 步骤一 */}
       <Condition r-if={stepType === 1}>
-        <TabOne onNext={onNext} />
+        <TabOne onNext={onNext} skip={skip} />
       </Condition>
 
       {/* 步骤二 */}
@@ -93,6 +100,10 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
           selectedKeys={selectedKeys}
           again={again}
         ></TabTwo>
+      </Condition>
+
+      <Condition r-if={stepType === 3}>
+        <TabThree></TabThree>
       </Condition>
     </div>
   );
