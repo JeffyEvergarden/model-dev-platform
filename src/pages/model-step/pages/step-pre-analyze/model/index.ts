@@ -303,9 +303,9 @@ export const usePreAnalyzeModel = () => {
   const getCustomerList = async (params?: any) => {
     const res: any = await getCustomerDefinitionOptions(params);
     if (res?.status?.code == successCode) {
-      setGoodList(res?.good || []);
-      setBadList(res?.bad || []);
-      setMidList(res?.mid || []);
+      setGoodList(res?.result || []);
+      setBadList(res?.result || []);
+      setMidList(res?.result || []);
     }
   };
 

@@ -44,7 +44,7 @@ const TabTwo: React.FC<any> = (props: any) => {
   useEffect(() => {
     console.log(selectList);
     // if (processId) {
-    startLoop({ processId }, 4);
+    startLoop({ itmModelRegisCode: modelId }, 4);
     // }
   }, [processId]);
 
