@@ -296,7 +296,10 @@ export default (props: any) => {
           search={false}
           columns={getCollectColumns(modelResult?.collectionKsData?.rowList, '集合')}
           dataSource={modelResult?.collectionKsData?.collectionKsList}
-          scroll={{ y: 500 }}
+          scroll={{
+            y: 500,
+            x: getCollectColumns(modelResult?.collectionKsData?.rowList, '集合')?.length * 150,
+          }}
         />
       </div>
       <div className={styles.tableBox}>
@@ -310,7 +313,10 @@ export default (props: any) => {
           search={false}
           columns={getCollectColumns(modelResult?.monthKsData?.rowList, '年月')}
           dataSource={modelResult?.monthKsData?.monthKsList}
-          scroll={{ y: 500 }}
+          scroll={{
+            y: 500,
+            x: getCollectColumns(modelResult?.monthKsData?.rowList, '年月')?.length * 150,
+          }}
         />
       </div>
 
