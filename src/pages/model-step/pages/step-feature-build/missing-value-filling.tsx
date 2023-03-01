@@ -173,11 +173,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             <div className={style['title']}>
               <div>
                 变量数量：
-                <span className={style['titleSpan']}>{tableInfo?.variableNum || '-'}</span>
+                <span className={style['titleSpan']}>{tableInfo?.variableNum ?? '-'}</span>
                 <Divider type="vertical" />
-                数值型：<span className={style['titleSpan']}>{tableInfo?.numTypeNum || '-'}</span>
+                数值型：<span className={style['titleSpan']}>{tableInfo?.numTypeNum ?? '-'}</span>
                 <Divider type="vertical" />
-                类别型：<span className={style['titleSpan']}>{tableInfo?.otherTypeNum || '-'}</span>
+                类别型：<span className={style['titleSpan']}>{tableInfo?.otherTypeNum ?? '-'}</span>
               </div>
               <Button type="link" icon={<DownloadOutlined />}>
                 下载

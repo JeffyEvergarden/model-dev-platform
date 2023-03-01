@@ -160,9 +160,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   // faq列表触发查询
   const onSearch1 = (val: any) => {
-    if (!treeName && !classType) {
-      return;
-    }
+    // if (!treeName && !classType) {
+    //   return;
+    // }
     setCurrent1(1);
     getKeyVarInfo({
       page: 1,
