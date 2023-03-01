@@ -241,11 +241,17 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 onClick={() => {
                   viewReport(row);
                 }}
+                disabled={row?.reportFileOperable == '0'}
               >
                 查看
               </Button>
 
-              <Button type="text" className={style['btn-success']} onClick={() => exportFile(row)}>
+              <Button
+                disabled={row?.reportFileOperable == '0'}
+                type="text"
+                className={style['btn-success']}
+                onClick={() => exportFile(row)}
+              >
                 下载
               </Button>
 
@@ -256,9 +262,9 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 onConfirm={() => {
                   deleteRow(row);
                 }}
-                disabled={row?.operate == 'scan'}
+                disabled={row?.reportFileOperable == '0'}
               >
-                <Button type="link" danger disabled={row?.operate == 'scan'}>
+                <Button type="link" danger disabled={row?.reportFileOperable == '0'}>
                   删除
                 </Button>
               </Popconfirm>

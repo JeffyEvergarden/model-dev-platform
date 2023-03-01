@@ -45,9 +45,9 @@ const TabThree: React.FC<any> = (props: any) => {
     });
   };
 
-  const getskip = () => {
+  const getskip = async () => {
     let reqData = { itmModelRegisCode: modelId };
-    passBackStep(reqData).then((res: any) => {
+    await passBackStep(reqData).then((res: any) => {
       if (res.status?.code == successCode) {
         if (res?.result?.skipCurrentStageStatus == '1') {
           //跳到下一流程

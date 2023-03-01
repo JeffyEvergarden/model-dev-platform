@@ -140,22 +140,26 @@ export const useVarSelectModal = () => {
     }
   };
 
-  const startLoop = async (params: any, time: any) => {
-    if (time > 10) {
-      // 当这次查询时长超过20s取消
-      setProcessType('error');
-      message.warning('查询超时异常');
-      return;
-    }
+  const startLoop = async (params: any, time: any, status?: any) => {
+    // if (time > 10) {
+    //   // 当这次查询时长超过20s取消
+    //   setProcessType('error');
+    //   message.warning('查询超时异常');
+    //   return;
+    // }
 
     let res: any = await awaitResult(params);
+    if (status == 'finish') {
+      setProcessType('finish');
+      return 'finish';
+    }
     if (res == 'finish') {
       clearTimeout(fake.current.timeFn);
     } else if (res == 'loading') {
       // 439 待机回调中
       fake.current.timeFn = setTimeout(async () => {
         startLoop(params, time + 2);
-      }, time * 1000);
+      }, 10 * 1000);
     } else {
       message.error(res?.resultMsg || '未知系统异常');
     }

@@ -13,6 +13,9 @@ const normalDeal = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
+    result: {
+      skipCurrentStageStatus: '1',
+    },
   });
 };
 

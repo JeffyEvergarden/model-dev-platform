@@ -29,8 +29,10 @@ const TabTwo: React.FC<any> = (props: any) => {
   const { errorMsg, processType, dataList, startLoop, nextFlow } = useVarSelectModal();
   const { nextStep } = useNextStep();
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, curStep, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    curStep: model.curStep,
+    doneStep: model.doneStep,
   }));
 
   const onClick = () => {
@@ -44,7 +46,11 @@ const TabTwo: React.FC<any> = (props: any) => {
   useEffect(() => {
     console.log(selectList);
     // if (processId) {
-    startLoop({ itmModelRegisCode: modelId }, 4);
+    if (curStep + 1 < doneStep) {
+      startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+    } else {
+      startLoop({ itmModelRegisCode: modelId }, 4);
+    }
     // }
   }, [processId]);
 

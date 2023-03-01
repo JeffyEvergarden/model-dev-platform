@@ -25,8 +25,10 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, curStep, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    curStep: model.curStep,
+    doneStep: model.doneStep,
   }));
 
   const { processType, dataList, errorMsg, startLoop, nextFlow } =
@@ -44,7 +46,11 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     // if (processId) {
-    startLoop({ itmModelRegisCode: modelId }, 2);
+    if (curStep + 1 < doneStep) {
+      startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+    } else {
+      startLoop({ itmModelRegisCode: modelId }, 4);
+    }
     // }
   }, [processId]);
 
