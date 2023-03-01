@@ -74,10 +74,11 @@ const StepOne: React.FC = (props: any) => {
 
   const { nextStep } = useNextStep();
 
-  const { modelId, doneStep, curStep } = useModel('step', (model: any) => ({
+  const { modelId, doneStep, curStep, setDoneStepStatus } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
     curStep: model.curStep,
+    setDoneStepStatus: model.setDoneStepStatus,
   }));
 
   const [form1] = Form.useForm();
@@ -217,6 +218,7 @@ const StepOne: React.FC = (props: any) => {
     if (res?.status?.code == successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
+      setDoneStepStatus('processing');
       setTabType(res?.result?.sampleParam?.importType);
       getparams({ businessType: res?.result?.sampleParam?.businessType });
     } else {

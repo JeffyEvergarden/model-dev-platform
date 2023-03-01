@@ -53,7 +53,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
   const varBinningType: any = Form.useWatch('varBinningType', form);
 
-  const { modelId, curStep, doneStep, setIsHadBuild, isHadReported } = useModel(
+  const { modelId, curStep, doneStep, setIsHadBuild, isHadReported, setDoneStepStatus } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
@@ -61,6 +61,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       curStep: model.curStep,
       setIsHadBuild: model.setIsHadBuild,
       isHadReported: model.isHadReported,
+      setDoneStepStatus: model.setDoneStepStatus,
     }),
   );
 
@@ -138,6 +139,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res.status?.code === successCode) {
       setLoading(false);
       setStepType(1);
+      setDoneStepStatus('processing');
       form.setFieldsValue(res.result);
       let temp: any[] = res.result?.variableNames?.split(',');
       setRulist(temp);
