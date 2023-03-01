@@ -26,9 +26,9 @@ const DetailModal: React.FC<any> = (props: any) => {
       title: '生成阶段',
       dataIndex: 'modelStage',
       width: 200,
-      render: (_: any, record: any) => {
-        return MODEL_STAGE?.find((item: any) => item.name == record?.modelStage)?.label;
-      },
+      // render: (_: any, record: any) => {
+      //   return MODEL_STAGE?.find((item: any) => item.name == record?.modelStage)?.label;
+      // },
     },
   ];
   useImperativeHandle(cref, () => ({
