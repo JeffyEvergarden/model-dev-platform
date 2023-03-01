@@ -31,6 +31,7 @@ const StepOne: React.FC<any> = (props: any) => {
     form,
     onNext,
     editData,
+    labelListRequest,
     labelList,
     featureOperatorMap,
     getparams,
@@ -88,33 +89,41 @@ const StepOne: React.FC<any> = (props: any) => {
         date: [start, end],
       });
     }
-    setOperationList(featureOperatorMap?.[editData?.featureType]);
-    // setOperationList([])
-    if (editData?.featureCode) {
-      getSelectionList({ labelId: editData?.featureCode });
-    }
     if (editData?.featureType == 'number' && inputNumberRangerList.includes(editData?.operator)) {
       let paramsArr = editData?.params?.split(',');
       form.setFieldsValue({
         paramFir: paramsArr?.[0],
         paramTwo: paramsArr?.[1],
       });
-    }
-
-    if (editData?.featureType == 'datetime' && DatePickerList.includes(editData?.operator)) {
+    } else if (editData?.featureType == 'datetime' && DatePickerList.includes(editData?.operator)) {
       let paramsDate = moment(editData?.params);
       form.setFieldsValue({
         params: paramsDate,
       });
-    }
-
-    if (editData?.featureType == 'datetime' && RangePickerList.includes(editData?.operator)) {
+    } else if (
+      editData?.featureType == 'datetime' &&
+      RangePickerList.includes(editData?.operator)
+    ) {
       let tempArr = editData?.params?.split(',');
       let paramsRangeTime = [moment(tempArr?.[0]), moment(tempArr?.[1])];
       form.setFieldsValue({
         params: paramsRangeTime,
       });
+    } else {
+      form.setFieldsValue({
+        params: editData?.params,
+      });
     }
+
+    if (editData?.featureCode) {
+      getSelectionList({ labelId: editData?.featureCode });
+    }
+    labelListRequest();
+    setTimeout(() => {
+      let temp = featureOperatorMap?.[editData?.featureType];
+      debugger;
+      setOperationList(featureOperatorMap?.[editData?.featureType]);
+    }, 500);
   }, [editData]);
 
   const getFn = (str: string) => {

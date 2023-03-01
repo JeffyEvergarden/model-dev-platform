@@ -217,9 +217,8 @@ const StepOne: React.FC = (props: any) => {
     if (res?.status?.code == successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
-      setTabType('0');
+      setTabType(res?.result?.sampleParam?.importType);
       getparams({ businessType: res?.result?.sampleParam?.businessType });
-      labelListRequest();
     } else {
       message.error(res?.status?.desc || '失败');
     }
@@ -266,6 +265,7 @@ const StepOne: React.FC = (props: any) => {
             form={form2}
             onNext={clickNextStep}
             editData={editData}
+            labelListRequest={labelListRequest}
             labelList={labelList}
             featureOperatorMap={featureOperatorMap}
             getparams={getparams}

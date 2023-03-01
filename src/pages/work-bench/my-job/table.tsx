@@ -102,7 +102,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
     };
     exportData(paramData).then((res: any) => {
       const _a = document.createElement('a');
-      _a.download = `模型报告-${moment().format('YYYYMMDD')}.xlsx`;
+      _a.download = `${row?.modelName}-${row?.itmModelRegisCode}.xlsx`;
       _a.href = URL.createObjectURL(res);
       const evt = document.createEvent('MouseEvents');
       evt.initEvent('click', false, false);

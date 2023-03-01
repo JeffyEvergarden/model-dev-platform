@@ -34,7 +34,7 @@ const getSample = (req: any, res: any) => {
     },
     result: {
       sampleParam: {
-        importType: '1',
+        importType: '0',
         startTime: '2023-12-12',
         endTime: '2023-12-22',
         businessType: 'SX',
