@@ -134,7 +134,7 @@ export const useVarSelectModal = () => {
       setProcessType('loading');
       return 'loading';
     } else if (StageStatus[data?.currentStageStatus] === 'error') {
-      setErrorMsg(res?.status?.desc || '未知错误');
+      setErrorMsg(res?.modelStageDesc || '未知错误');
       setProcessType('error');
       return 'error';
     }
