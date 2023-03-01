@@ -36,10 +36,10 @@ export async function getModelInfo(params?: Record<string, any>) {
 }
 
 /** 删除模型 **/
-export async function deleteModel(id?: Record<string, any>) {
-  return request(`${baseUrl}/myWorkbench/deleteModelReport?itmModelRegisCode=${id}`, {
+export async function deleteModel(data?: Record<string, any>) {
+  return request(`${baseUrl}/myWorkbench/deleteModelReport`, {
     method: 'POST',
-    // data,
+    data,
   });
 }
 

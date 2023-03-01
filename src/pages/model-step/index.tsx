@@ -75,7 +75,7 @@ const Myjob: React.FC<any> = (props: any) => {
       setCurStep(_index - 1);
       // --------
       setIsHadBuild(res.modelBuildStatus);
-      setIsHadReported(res.isModelBuild ? '1' : '');
+      setIsHadReported(res.reportFilePath ? '1' : '');
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');

@@ -79,8 +79,10 @@ const ModelManagement: React.FC<any> = (props: any) => {
     //   message.warning('请先停用');
     //   return;
     // }
-
-    let res: any = await deleteModel(row?.itmModelRegisCode);
+    let parmas = {
+      itmModelRegisCode: row?.itmModelRegisCode,
+    };
+    let res: any = await deleteModel(parmas);
     if (res) {
       console.log('删除接口');
       message.success('删除成功');
