@@ -52,9 +52,17 @@ export async function nextStage(data?: Record<string, any>) {
   });
 }
 
-export async function queryProdChannelList(data?: Record<string, any>) {
+export async function queryProdChannelList(params?: Record<string, any>) {
   return request(`${baseUrl}/preanalysis/prodChannelList`, {
     method: 'GET',
-    data,
+    params,
+  });
+}
+
+//滚动率贷款枚举
+export async function queryVintageLoanTerms(params?: Record<string, any>) {
+  return request(`${baseUrl}/preanalysis/vintageLoanTerms`, {
+    method: 'GET',
+    params,
   });
 }

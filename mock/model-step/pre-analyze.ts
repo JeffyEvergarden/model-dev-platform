@@ -237,7 +237,7 @@ const getRateListRequest = (req: any, res: any) => {
 const getYaerMonthApi = (req: any, res: any) => {
   res.json({
     resultCode: successCode,
-    data: [{ value: '2023-01' }, { value: '2023-02' }, { value: '2023-03' }],
+    result: ['1', '2', '3'],
   });
 };
 
@@ -247,9 +247,7 @@ const getCustomerList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    good: ['good1', 'good2', 'good3'],
-    bad: ['bad1', 'bad2'],
-    mid: ['mid1', 'mid2'],
+    result: [{ featureCode: '11', featureName: '22' }],
   });
 };
 
@@ -260,7 +258,7 @@ export default {
   [`POST ${baseUrl}/modelStep/preAnalyze/scroll/list`]: getList,
   [`POST ${baseUrl}/preanalysis/rollRateResult`]: getRateListRequest,
   [`GET ${baseUrl}/modelStep/preAnalyze/condition/list`]: getConditionList,
-  [`POST ${baseUrl}/modelStep/preAnalyze/scroll/getYaerMonthApi`]: getYaerMonthApi,
+  [`GET ${baseUrl}/preanalysis/vintageLoanTerms`]: getYaerMonthApi,
   [`GET ${baseUrl}/preanalysis/customerDefinitionOptions`]: getCustomerList,
   [`POST ${baseUrl}/preanalysis/nextStage`]: normalDeal,
 };

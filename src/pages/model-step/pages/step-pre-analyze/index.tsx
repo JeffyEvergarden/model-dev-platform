@@ -17,6 +17,9 @@ import { AreaChartOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
 import LineChart from './component/lineChart';
 import { throttle } from '../utils/util';
+import { getWaitResult } from '../step-select-sample/model/api';
+import { getModelStepDetailApi } from '../../model/api';
+import { queryVintageLoanTerms } from './model/api';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -29,6 +32,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
   const { pageType } = props;
   const formRef = useRef<any>({});
+  const formRef2 = useRef<any>({});
   const [form] = Form.useForm();
   const tableRef = useRef<any>({});
   const rateRef = useRef<any>({});
@@ -36,7 +40,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const [rateColumns, setRateColumns] = useState<any[]>([]);
   const [yearMonth, setYearMonth] = useState<any[]>([]);
   const [useTimeData, setUseTimeData] = useState<any>('');
-  const [limitTimeData, setLimitTimeData] = useState<any>('');
+  const [limitTimeData, setLimitTimeData] = useState<any>(['全部']);
 
   const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2']);
   const [tableType, setTableType] = useState<any>(true);
@@ -262,7 +266,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   );
 
   const onSelect = (val: any, type: string) => {
-    if (type === 'useTime') {
+    if (type === 'paymentTime') {
       if (val !== '') {
         let temp = [...useTimeData];
         temp = temp.filter((item: any) => item !== '');
@@ -271,7 +275,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       } else if (val == '') {
         setUseTimeData('');
       }
-    } else if (type === 'limitTime') {
+    } else if (type === 'loadTerm') {
       if (val !== '') {
         let temp = [...limitTimeData];
         temp = temp.filter((item: any) => item !== '');
@@ -286,9 +290,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const onDeselect = (val: any, type: string) => {
     let temp = [...useTimeData];
     temp = temp.filter((item: any) => item !== val);
-    if (type === 'useTime') {
+    if (type === 'paymentTime') {
       setUseTimeData(temp);
-    } else if (type === 'limitTime') {
+    } else if (type === 'loadTerm') {
       setLimitTimeData(temp);
     }
   };
@@ -297,7 +301,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let _columns: any[] = [
       {
         title: '用款年月',
-        dataIndex: 'useTime',
+        dataIndex: 'paymentTime',
         hideInTable: true,
         renderFormItem: (t: any, r: any, i: any) => {
           return (
@@ -312,26 +316,42 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       },
       {
         title: '贷款期限',
-        dataIndex: 'limitTime',
+        dataIndex: 'loadTerm',
         hideInTable: true,
         renderFormItem: (t: any, r: any, i: any) => {
           return (
             <Select
               style={{ maxWidth: '400px', minWidth: '120px' }}
-              onSelect={(val) => onSelect(val, 'limitTime')}
-              onDeselect={(val) => onDeselect(val, 'limitTime')}
+              // onSelect={(val) => onSelect(val, 'loadTerm')}
+              // onDeselect={(val) => onDeselect(val, 'loadTerm')}
+              onChange={(arr: any) => {
+                console.log(arr);
+
+                let val: any = arr;
+                if (arr?.length) {
+                  if (val[val.length - 1] == '全部') {
+                    val = ['全部'];
+                  } else {
+                    val = val.filter((item: any) => item != '全部');
+                  }
+                }
+                setLimitTimeData(val);
+                formRef?.current?.setFieldsValue({
+                  loadTerm: val,
+                });
+              }}
               mode="multiple"
               allowClear
               maxTagCount={2}
               value={limitTimeData}
             >
-              <Option key={''} value="">
-                全选
+              <Option key={'全部'} value={'全部'}>
+                {'全部'}
               </Option>
               {yearMonth?.map?.((item: any) => {
                 return (
-                  <Option key={item.value} value={item.value}>
-                    {item.value}
+                  <Option key={item} value={item}>
+                    {item}
                   </Option>
                 );
               })}
@@ -341,7 +361,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       },
       {
         title: '数据维度',
-        dataIndex: 'dataDimension',
+        dataIndex: 'dimention',
         fieldProps: {
           placeholder: '请选择数据维度',
         },
@@ -354,7 +374,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       },
       {
         title: '汇总指标',
-        dataIndex: 'summary',
+        dataIndex: 'index',
         fieldProps: {
           placeholder: '请选择数据维度',
         },
@@ -384,12 +404,28 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         });
       }
     });
+    //回显
+    getModelStepDetailApi({ itmModelRegisCode: modelId }).then((res) => {
+      if (res.status.code == successCode) {
+        let data = res?.result;
+        // itmModelRegisCode: modelId,
+        // customerDefinition: value,
+        //   ...formData,
+        formRef?.current?.setFieldsValue(data?.preanalysisCondition || {});
+        formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
+        form?.setFieldsValue({
+          vintageConclusion: data?.vintageConclusion,
+          rollRateConclusion: data?.rollRateConclusion,
+        });
+        customerFormRef?.setFieldsValue(data?.customerDefinition || {});
+      }
+    });
   }, []);
 
   const getYaerMonth = async () => {
     let params = {};
-    let res = await getYaerMonthRequest(params);
-    setYearMonth(res?.data);
+    let res = await queryVintageLoanTerms(params);
+    setYearMonth(res?.result);
   };
 
   const [customerFormRef] = Form.useForm();
@@ -477,9 +513,17 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   const onClick = () => {
     customerFormRef.validateFields().then((value: any) => {
-      console.log('value', value);
+      let formData = form.getFieldsValue();
       if (value) {
-        nextFlow({ itmModelRegisCode: modelId }).then((res) => {
+        let reqData = {
+          itmModelRegisCode: modelId,
+          customerDefinition: value,
+          ...formData,
+          preanalysisCondition: formRef?.current?.getFieldsValue(),
+          preanalysisRollRateCondition: formRef2?.current?.getFieldsValue(),
+        };
+        console.log(reqData);
+        nextFlow(reqData).then((res) => {
           if (res) {
             nextStep();
           }
@@ -572,6 +616,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       <div className={styles.commonTable}>
         <ProTable
           actionRef={rateRef}
+          formRef={formRef2}
           headerTitle="滚动率分析结果"
           rowKey={(r) => r.key}
           toolBarRender={() => []}

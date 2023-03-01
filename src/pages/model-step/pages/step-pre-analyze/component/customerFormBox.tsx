@@ -51,8 +51,8 @@ const formDom = (ruleClips: string, option: any) => {
                         <Select placeholder="请选择">
                           {option?.map?.((item: any) => {
                             return (
-                              <Select.Option key={item} value={item}>
-                                {item}
+                              <Select.Option key={item.featureCode} value={item.featureCode}>
+                                {item.featureName}
                               </Select.Option>
                             );
                           })}
