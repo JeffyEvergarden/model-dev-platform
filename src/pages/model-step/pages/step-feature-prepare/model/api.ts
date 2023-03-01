@@ -49,3 +49,11 @@ export async function nextStage(data?: { [key: string]: any }) {
     data,
   });
 }
+
+// 下一流程
+export async function resetPrepare(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featurePrepare/reset`, {
+    method: 'POST',
+    data,
+  });
+}

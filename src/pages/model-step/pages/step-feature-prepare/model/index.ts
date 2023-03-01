@@ -127,13 +127,13 @@ export const useVarSelectModal = () => {
     console.log(data);
 
     setDataList(data?.featureVOList || '');
-    if (StageStatus[data?.currentStageStatus] === 'finish') {
+    if (StageStatus[data?.modelStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
-    } else if (StageStatus[data?.currentStageStatus] === 'loading') {
+    } else if (StageStatus[data?.modelStageStatus] === 'loading') {
       setProcessType('loading');
       return 'loading';
-    } else if (StageStatus[data?.currentStageStatus] === 'error') {
+    } else if (StageStatus[data?.modelStageStatus] === 'error') {
       setErrorMsg(res?.modelStageDesc || '未知错误');
       setProcessType('error');
       return 'error';

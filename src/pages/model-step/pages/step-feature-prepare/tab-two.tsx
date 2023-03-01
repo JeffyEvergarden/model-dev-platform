@@ -78,16 +78,22 @@ const TabTwo: React.FC<any> = (props: any) => {
           []
         }
       />
-      <Condition r-if={processType === 'finish'}>
+      <Condition r-if={processType === 'finish' || processType === 'error'}>
         <NextStepButton
           btnNode={
             <Space>
-              <Button onClick={reset} size="large">
+              <Button
+                onClick={reset}
+                size="large"
+                type={processType === 'error' ? 'primary' : undefined}
+              >
                 重新匹配
               </Button>
-              <Button onClick={onClick} size="large" type="primary">
-                下一流程
-              </Button>
+              <Condition r-if={processType !== 'error'}>
+                <Button onClick={onClick} size="large" type="primary">
+                  下一流程
+                </Button>
+              </Condition>
             </Space>
           }
         />

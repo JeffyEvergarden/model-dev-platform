@@ -40,10 +40,9 @@ const ModelManagement: React.FC<any> = (props: any) => {
 
   const { initialState } = useModel('@@initialState');
 
-  // const { info, setInfo } = useModel('gundam' as any, (model: any) => ({
-  //   info: model.info,
-  //   setInfo: model.setInfo,
-  // }));
+  const { setModelName } = useModel('step' as any, (model: any) => ({
+    setModelName: model.setModelName,
+  }));
 
   const { updatePage } = useUpdateModel();
 
@@ -52,17 +51,6 @@ const ModelManagement: React.FC<any> = (props: any) => {
   const detailRef = useRef<any>({});
 
   const modalRef = useRef<any>({});
-
-  // 下钻系统
-  const goToNewSystem = (row: any) => {
-    if (!row.id) {
-      message.warning('获取不到机器人ID');
-      return null;
-    }
-    history.push(`/gundamPages/mainDraw?id=${row.id}`);
-    localStorage.setItem('robot_id', row.id);
-    sessionStorage.setItem('robot_id', row.id);
-  };
 
   useImperativeHandle(cref, () => ({
     setModelType: (val: any) => {
@@ -130,6 +118,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
             <a
               style={{ color: '#1890ff !important' }}
               onClick={() => {
+                setModelName(row?.modelName || '');
                 history?.push(`/modelStep/exportReport?id=${row?.itmModelRegisCode}`);
               }}
             >{`${row?.modelName}`}</a>
