@@ -63,8 +63,8 @@ const getWaitResult = (req: any, res: any) => {
       currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
       isCommittedPage: '1',
       currentStageDesc: '1',
-      modelBuildStatus: '',
-      reportFilePath: '123',
+      modelBuildStatus: '1',
+      reportFilePath: '',
       backtrackProcessName: '编排1,编排2',
       operate: 'EDIT',
     },

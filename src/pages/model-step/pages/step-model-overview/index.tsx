@@ -35,7 +35,7 @@ const StepOne: React.FC = (props: any) => {
   );
 
   // 表单是否可以编辑
-  const isDisabled = !isHadReported && !isReadonly;
+  const isDisabled = isHadReported || isReadonly;
 
   const [form] = Form.useForm();
 
