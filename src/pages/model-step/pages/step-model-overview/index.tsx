@@ -100,7 +100,6 @@ const StepOne: React.FC = (props: any) => {
     if (type == 'next') {
       let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });
       if (res?.status?.code == successCode) {
-        message.success(res?.status?.desc);
         let resNext = await nextStage({ itmModelRegisCode: modelId });
         if (resNext?.status?.code == successCode) {
           message.success(res?.status?.desc);
