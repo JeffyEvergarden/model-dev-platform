@@ -16,12 +16,20 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const { processType, startLoop, desc, fake } = useSampleUploadAwaitModel();
 
-  const { modelId, isHadReported, doneStep, curStep } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    doneStep: model.doneStep,
-    curStep: model.curStep,
-    isHadReported: model.isHadReported,
-  }));
+  const { modelId, isHadReported, isReadonly, isHadBuild, doneStep, curStep } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      curStep: model.curStep,
+      isHadReported: model.isHadReported,
+      isReadonly: model.isReadonly,
+      isHadBuild: model.isHadBuild,
+    }),
+  );
+
+  // 表单是否可以编辑
+  const isDisabled = isHadReported || isReadonly || isHadBuild;
 
   const onClick = () => {
     onNext?.();
@@ -59,7 +67,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         }
         pageType={processType}
       />
-      <Condition r-if={processType !== 'loading' && isHadReported !== '1'}>
+      <Condition r-if={processType !== 'loading' && !isDisabled}>
         <NextStepButton
           btnNode={
             processType == 'error' ? (

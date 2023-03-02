@@ -23,10 +23,14 @@ const StepModelCompare: React.FC<any> = (props: any) => {
   const { getOptimalVersionRquest } = useExportReportModel();
   const { nextStep } = useNextStep();
 
-  const { modelId, isHadReported } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported, isReadonly } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     isHadReported: model.isHadReported,
+    isReadonly: model.isReadonly,
   }));
+
+  // 表单是否可以编辑
+  const isDisabled = isHadReported || isReadonly;
 
   useEffect(() => {
     getModelVersionList();
@@ -123,7 +127,7 @@ const StepModelCompare: React.FC<any> = (props: any) => {
         }
         btnNode={
           <Space>
-            {isHadReported !== '1' && (
+            {!isDisabled && (
               <Button onClick={nextFlow} size="large" type="primary" loading={loading}>
                 下一流程
               </Button>

@@ -23,7 +23,7 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, isHadBuild, isHadReported, doneStep, curStep } = useModel(
+  const { modelId, isHadBuild, isHadReported, isReadonly, doneStep, curStep } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
@@ -31,9 +31,12 @@ const StepTwo: React.FC<any> = (props: any) => {
       curStep: model.curStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
+      isReadonly: model.isReadonly,
     }),
   );
 
+  // 表单是否可以编辑
+  const isDisabled = isHadReported || isReadonly || isReadonly;
   const { processType, startLoop, desc, fake } = useSampleUploadAwaitModel();
   const { getSample } = useSample();
 
@@ -49,6 +52,10 @@ const StepTwo: React.FC<any> = (props: any) => {
       startLoop({ itmModelRegisCode: modelId }, 4);
     }
     getCurrentDetail();
+    console.log('isHadReported', isHadReported);
+    console.log('isReadonly', isReadonly);
+    console.log('isHadBuild', isHadBuild);
+    console.log('isDisabled', isDisabled);
     return () => clearInterval(fake?.current?.timeFn);
   }, [tabType]);
 
@@ -91,7 +98,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         }
         detailInfo={detailInfo}
       />
-      <Condition r-if={processType !== 'loading' && isHadBuild !== '1' && isHadReported !== '1'}>
+      <Condition r-if={processType !== 'loading' && !isDisabled}>
         <NextStepButton
           btnNode={
             processType == 'error' ? (

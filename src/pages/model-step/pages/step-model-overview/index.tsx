@@ -22,7 +22,7 @@ const { RangePicker }: any = DatePicker;
 const StepOne: React.FC = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { modelId, doneStep, setDoneStep, isHadBuild, isHadReported } = useModel(
+  const { modelId, doneStep, setDoneStep, isHadBuild, isHadReported, isReadonly } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
@@ -30,11 +30,12 @@ const StepOne: React.FC = (props: any) => {
       setDoneStep: model.setDoneStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
+      isReadonly: model.isReadonly,
     }),
   );
 
   // 表单是否可以编辑
-  const isDisabled = isHadReported == '1' ? true : false;
+  const isDisabled = isHadReported || isReadonly;
 
   const [form] = Form.useForm();
 
@@ -251,7 +252,7 @@ const StepOne: React.FC = (props: any) => {
       {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
       {/* doneStep>3 保存  doneStep<=3 下一流程*/}
 
-      {isDisabled == false && (
+      {!isDisabled && (
         <NextStepButton
           btnNode={
             <Space>

@@ -88,8 +88,8 @@ const Myjob: React.FC<any> = (props: any) => {
       goToUrl(codeToName(_index), _modelId || modelId);
       setCurStep(_index - 1);
       // --------
-      setIsHadBuild(res.modelBuildStatus);
-      setIsHadReported(res.reportFilePath ? '1' : '');
+      setIsHadBuild(res.modelBuildStatus === '1');
+      setIsHadReported(!!res.reportFilePath);
       //是否有编辑权限
       setOperate(res?.operate);
     } else {
@@ -97,8 +97,8 @@ const Myjob: React.FC<any> = (props: any) => {
       setDoneStepStatus('process');
       goToUrl('model_overview', _modelId || modelId);
       setCurStep(0);
-      setIsHadBuild('-1');
-      setIsHadReported('');
+      setIsHadBuild(false);
+      setIsHadReported(false);
     }
   };
 

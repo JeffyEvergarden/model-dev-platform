@@ -27,11 +27,18 @@ const StepExportReport: React.FC<any> = (props: any) => {
   const [modelResult, setModelResult] = useState<any>({});
 
   const [optimalVersion, setOptimalVersion] = useState<any>('');
-  const { modelId, isHadReported, setIsHadReported } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    setIsHadReported: model.setIsHadReported,
-    isHadReported: model.isHadReported,
-  }));
+  const { modelId, isHadReported, isReadonly, setIsHadReported } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      setIsHadReported: model.setIsHadReported,
+      isHadReported: model.isHadReported,
+      isReadonly: model.isReadonly,
+    }),
+  );
+
+  // 表单是否可以编辑
+  const isDisabled = isHadReported || isReadonly;
 
   useEffect(() => {
     //最优版本查询
@@ -84,7 +91,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     if (res?.status?.code == successCode) {
       setLoading(false);
       history.push(`/workBench/viewReport`);
-      setIsHadReported('1');
+      setIsHadReported(true);
       message.success(res?.status?.desc || '成功');
       nextStep();
     } else {
@@ -114,7 +121,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
           <ModelEffect modelResult={modelResult} optimalVersion={optimalVersion} />
         </Tabs.TabPane>
       </Tabs>
-      <Condition r-if={isHadReported !== '1'}>
+      <Condition r-if={!isDisabled}>
         <NextStepButton
           btnNode={
             <Space>

@@ -60,6 +60,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     setDoneStep,
     setIsHadBuild,
     isHadReported,
+    isReadonly,
     setDoneStepStatus,
   } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -68,8 +69,12 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     curStep: model.curStep,
     setIsHadBuild: model.setIsHadBuild,
     isHadReported: model.isHadReported,
+    isReadonly: model.isReadonly,
     setDoneStepStatus: model.setDoneStepStatus,
   }));
+
+  // 表单是否可以编辑
+  const isDisabled = isHadReported || isReadonly;
 
   useEffect(() => {
     getCurrentStage();
@@ -168,7 +173,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res.status?.code === successCode) {
       setLoading(false);
       // history.push('/modelStep/modelCompare');
-      setIsHadBuild('1');
+      setIsHadBuild(true);
       nextStep();
     } else {
       setLoading(false);
@@ -599,7 +604,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
             </Condition>
           </Row>
         </Form>
-        <Condition r-if={isHadReported !== '1'}>
+        <Condition r-if={!isDisabled}>
           <NextStepButton
             onClick={beginBuild}
             text={'开始建模'}
