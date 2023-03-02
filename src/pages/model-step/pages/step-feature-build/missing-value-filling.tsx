@@ -1,7 +1,7 @@
 import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, Input, Select, Space, Table } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Divider, Form, Input, InputNumber, Select, Space, Table } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { boxList, varList } from './config';
 import { useExportReportModel } from './model';
@@ -15,6 +15,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const { Item: FormItem, List: FormList } = Form;
   const { Option } = Select;
 
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchSelect = useRef<any>(null);
+  const searchInputNumber = useRef<any>(null);
+
   const [selectReportList, setReportList] = useState<any[]>();
 
   const { loading, tableList, tableInfo, tableTotal, getLostList } = useExportReportModel();
@@ -22,7 +27,56 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
-
+  const tbFilter = (dataIndex: any) => {
+    return {
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }: any) => (
+        <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex' }}>
+            <Select
+              style={{ marginBottom: 8, flex: 1, marginRight: 6 }}
+              ref={searchSelect}
+              onChange={(e) => {
+                console.log(e);
+              }}
+              value={selectedKeys[0]}
+            >
+              <Select.Option key={'='} value={'='}>
+                {'='}
+              </Select.Option>
+              <Select.Option key={'≠'} value={'!='}>
+                {'≠'}
+              </Select.Option>
+              <Select.Option key={'>='} value={'>='}>
+                {'>='}
+              </Select.Option>
+              <Select.Option key={'>'} value={'>'}>
+                {'>'}
+              </Select.Option>
+              <Select.Option key={'<='} value={'<='}>
+                {'<='}
+              </Select.Option>
+              <Select.Option key={'<'} value={'<'}>
+                {'<'}
+              </Select.Option>
+            </Select>
+            <InputNumber
+              placeholder={'衡量值'}
+              value={selectedKeys[1]}
+              style={{ marginBottom: 8, flex: 1 }}
+            ></InputNumber>
+          </div>
+          <Space>
+            <Button type="link" size="small" style={{ width: 90 }}>
+              重置
+            </Button>
+            <Button size="small" style={{ width: 90 }} type="primary">
+              确定
+            </Button>
+          </Space>
+        </div>
+      ),
+    };
+  };
   const columns: any[] = [
     {
       title: '变量名称',
@@ -46,6 +100,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       dataIndex: 'trainMissRate',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.trainMissRate) - parseFloat(b.trainMissRate),
+      ...tbFilter('trainMissRate'),
     },
     {
       title: '缺失率_valid',
