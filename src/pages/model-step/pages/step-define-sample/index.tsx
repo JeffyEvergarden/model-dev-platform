@@ -11,6 +11,7 @@ import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { useNextStep } from '../../config';
 import { exportExcel } from './model/api';
+import { getModelStepDetailApi } from '../../model/api';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -143,6 +144,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   };
   useEffect(() => {
     getSampleTableList({ currentPage: current, pageSize: pageSize, itmModelRegisCode: modelId });
+    getModelStepDetailApi({ stage: '5', itmModelRegisCode: modelId }).then((res) => {
+      console.log(res);
+    });
   }, []);
 
   const submit = async (obj: any) => {
@@ -192,8 +196,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           other: value?.other?.map?.((item: any) => {
             return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
           }),
-          sampleTotalDistributionList: tableList || [],
-          sampleMonthDistributionList: resultTableList || [],
+          sampleMonthDistributionList: tableList || [],
+          sampleTotalDistributionList: resultTableList || [],
         };
         await exportExcel(reqData)
           .then((res) => {
@@ -233,8 +237,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           other: value?.other?.map?.((item: any) => {
             return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
           }),
-          sampleTotalDistributionList: tableList || [],
-          sampleMonthDistributionList: resultTableList || [],
+          sampleMonthDistributionList: tableList || [],
+          sampleTotalDistributionList: resultTableList || [],
         }).then((res) => {
           if (res) {
             nextStep();
