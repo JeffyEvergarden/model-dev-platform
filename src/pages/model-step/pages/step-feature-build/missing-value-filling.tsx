@@ -45,41 +45,49 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       title: '缺失率_train',
       dataIndex: 'trainMissRate',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainMissRate) - parseFloat(b.trainMissRate),
     },
     {
       title: '缺失率_valid',
       dataIndex: 'validMissRate',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validMissRate) - parseFloat(b.validMissRate),
     },
     {
       title: 'KS_train',
       dataIndex: 'trainKs',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainKs) - parseFloat(b.trainKs),
     },
     {
       title: 'KS_valid',
       dataIndex: 'validKs',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validKs) - parseFloat(b.validKs),
     },
     {
       title: 'IV_train',
       dataIndex: 'trainIv',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainIv) - parseFloat(b.trainIv),
     },
     {
       title: 'IV_valid',
       dataIndex: 'validIv',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validIv) - parseFloat(b.validIv),
     },
     {
       title: 'PSI_train',
       dataIndex: 'trainPsi',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainPsi) - parseFloat(b.trainPsi),
     },
     {
       title: 'PSI_valid',
       dataIndex: 'validPsi',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validPsi) - parseFloat(b.validPsi),
     },
   ];
 

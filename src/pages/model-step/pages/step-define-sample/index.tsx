@@ -119,8 +119,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
   const { nextStep } = useNextStep();
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadReported: model.isHadReported,
   }));
 
   // 切换分页
@@ -460,25 +461,26 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           />
         </div>
       </div>
-
-      <NextStepButton
-        btnNode={
-          <Space>
-            <Button onClick={exportResult} size="large">
-              导出结果
-            </Button>
-            <Button
-              onClick={() => {
-                _nextFlow();
-              }}
-              size="large"
-              type="primary"
-            >
-              下一流程
-            </Button>
-          </Space>
-        }
-      />
+      <Condition r-if={isHadReported != '1'}>
+        <NextStepButton
+          btnNode={
+            <Space>
+              <Button onClick={exportResult} size="large">
+                导出结果
+              </Button>
+              <Button
+                onClick={() => {
+                  _nextFlow();
+                }}
+                size="large"
+                type="primary"
+              >
+                下一流程
+              </Button>
+            </Space>
+          }
+        />
+      </Condition>
     </div>
   );
 };
