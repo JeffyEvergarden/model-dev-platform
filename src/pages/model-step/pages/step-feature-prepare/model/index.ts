@@ -55,13 +55,13 @@ export const useVarSelectModal = () => {
     let res: any = await getVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.result?.tableData || [];
+      let data = res?.result || [];
       if (!params?.searchType) {
         setVarList(data);
         setListType('tree');
-        setTotalSize(res?.result?.totalSize || 0);
+        setTotalSize(data.length || 0);
       }
-      return { data, total: res?.result?.totalSize };
+      return { data, total: data.length };
     } else {
       if (!params?.searchType) {
         setVarList([]);
@@ -76,7 +76,7 @@ export const useVarSelectModal = () => {
     let res: any = await getKeyVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.result?.tableData || [];
+      let data = res?.result || [];
       setVarList(data);
       setListType('search');
       setTotalSize(res?.result?.totalSize || data?.length || 0);
