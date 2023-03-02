@@ -15,7 +15,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const { Item: FormItem, List: FormList } = Form;
   const { Option } = Select;
 
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState<any>([]);
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchSelect = useRef<any>(null);
   const searchInputNumber = useRef<any>(null);
@@ -35,9 +35,16 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             <Select
               style={{ marginBottom: 8, flex: 1, marginRight: 6 }}
               ref={searchSelect}
-              onChange={(e) => {
-                console.log(e);
+              onChange={(val) => {
+                if (selectedKeys[1]) {
+                  setSelectedKeys([val, selectedKeys[1]]);
+                  setSearchText([val, searchText[1]]);
+                } else {
+                  setSelectedKeys([val]);
+                  setSearchText([val]);
+                }
               }}
+              placeholder={'请选择'}
               value={selectedKeys[0]}
             >
               <Select.Option key={'='} value={'='}>
@@ -63,18 +70,66 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               placeholder={'衡量值'}
               value={selectedKeys[1]}
               style={{ marginBottom: 8, flex: 1 }}
+              precision={2}
+              onChange={(val) => {
+                setSelectedKeys([selectedKeys[0], val]);
+                setSearchText([searchText[0], val]);
+              }}
             ></InputNumber>
           </div>
           <Space>
-            <Button type="link" size="small" style={{ width: 90 }}>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                clearFilters();
+                setSearchText([]);
+              }}
+              style={{ width: 90 }}
+            >
               重置
             </Button>
-            <Button size="small" style={{ width: 90 }} type="primary">
+            <Button
+              size="small"
+              style={{ width: 90 }}
+              type="primary"
+              onClick={() => {
+                console.log(selectedKeys);
+                confirm();
+                setSearchText(selectedKeys);
+                setSearchedColumn(dataIndex);
+              }}
+            >
               确定
             </Button>
           </Space>
         </div>
       ),
+      onFilter: (value: any, record: any) => {
+        console.log(searchText);
+
+        if (searchText?.length && searchText[0]) {
+          if (searchText[0] == '=') {
+            return parseFloat(record[dataIndex]) == searchText[1];
+          }
+          if (searchText[0] == '!=') {
+            return parseFloat(record[dataIndex]) != searchText[1];
+          }
+          if (searchText[0] == '>=') {
+            return parseFloat(record[dataIndex]) >= searchText[1];
+          }
+          if (searchText[0] == '>') {
+            return parseFloat(record[dataIndex]) > searchText[1];
+          }
+          if (searchText[0] == '<=') {
+            return parseFloat(record[dataIndex]) <= searchText[1];
+          }
+          if (searchText[0] == '<') {
+            return parseFloat(record[dataIndex]) < searchText[1];
+          }
+        }
+        return record[dataIndex];
+      },
     };
   };
   const columns: any[] = [
@@ -107,42 +162,49 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       dataIndex: 'validMissRate',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.validMissRate) - parseFloat(b.validMissRate),
+      ...tbFilter('validMissRate'),
     },
     {
       title: 'KS_train',
       dataIndex: 'trainKs',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.trainKs) - parseFloat(b.trainKs),
+      ...tbFilter('trainKs'),
     },
     {
       title: 'KS_valid',
       dataIndex: 'validKs',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.validKs) - parseFloat(b.validKs),
+      ...tbFilter('validKs'),
     },
     {
       title: 'IV_train',
       dataIndex: 'trainIv',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.trainIv) - parseFloat(b.trainIv),
+      ...tbFilter('trainIv'),
     },
     {
       title: 'IV_valid',
       dataIndex: 'validIv',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.validIv) - parseFloat(b.validIv),
+      ...tbFilter('validIv'),
     },
     {
       title: 'PSI_train',
       dataIndex: 'trainPsi',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.trainPsi) - parseFloat(b.trainPsi),
+      ...tbFilter('trainPsi'),
     },
     {
       title: 'PSI_valid',
       dataIndex: 'validPsi',
       width: 200,
       sorter: (a: any, b: any) => parseFloat(a.validPsi) - parseFloat(b.validPsi),
+      ...tbFilter('validPsi'),
     },
   ];
 
