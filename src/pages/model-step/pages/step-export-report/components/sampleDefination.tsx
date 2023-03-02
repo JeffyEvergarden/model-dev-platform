@@ -97,7 +97,7 @@ export default (props: any) => {
       <div className={styles.tableBox}>
         <span className={styles.tableTitle}>样本划分</span>
         <ProTable
-          headerTitle="整体分部"
+          headerTitle="整体分布"
           rowKey={(record: any, index) => record.sampleType + index}
           toolBarRender={() => []}
           options={false}

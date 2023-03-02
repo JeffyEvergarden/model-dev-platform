@@ -80,6 +80,7 @@ const StepOne: React.FC<any> = (props: any) => {
 
       featureCode: editData?.featureCode,
       operator: editData?.operator,
+
       // params: editData?.params,
     });
     if (editData?.startTime && editData?.endTime) {
