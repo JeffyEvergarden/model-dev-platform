@@ -36,7 +36,7 @@ const StepTwo: React.FC<any> = (props: any) => {
   );
 
   // 表单是否可以编辑
-  const isDisabled = isHadReported || isReadonly || isReadonly;
+  const isDisabled = isHadReported && isHadBuild && isReadonly;
   const { processType, startLoop, desc, fake } = useSampleUploadAwaitModel();
   const { getSample } = useSample();
 

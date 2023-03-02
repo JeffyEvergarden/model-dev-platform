@@ -64,7 +64,7 @@ const getWaitResult = (req: any, res: any) => {
       isCommittedPage: '1',
       currentStageDesc: '1',
       modelBuildStatus: '',
-      reportFilePath: '',
+      reportFilePath: '123',
       backtrackProcessName: '编排1,编排2',
       operate: 'EDIT',
     },
