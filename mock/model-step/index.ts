@@ -66,6 +66,7 @@ const getWaitResult = (req: any, res: any) => {
       modelBuildStatus: '',
       reportFilePath: '',
       backtrackProcessName: '编排1,编排2',
+      operate: 'EDIT',
     },
   });
 };

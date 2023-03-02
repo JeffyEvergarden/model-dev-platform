@@ -128,8 +128,8 @@ const SelectorModal: React.FC<any> = (props: any) => {
     }
     console.log(classType);
     let res: any = await getVarInfo({
-      categoryName: classType,
-      categoryPath: treeName,
+      categoryName: treeName,
+      categoryPath: classType,
       searchType: 'all',
     });
 

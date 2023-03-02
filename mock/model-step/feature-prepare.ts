@@ -72,12 +72,7 @@ const getVarList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: {
-      pageSize: req?.pageSize || 10,
-      totalSize: 21,
-      current: 1,
-      tableData: [...list],
-    },
+    result: [...list],
   });
 };
 
@@ -108,4 +103,5 @@ export default {
   [`POST ${baseUrl}/featurePrepare/findFeature`]: getVarList,
   [`POST ${baseUrl}/featurePrepare/submit`]: getVarList,
   [`GET ${baseUrl}/featurePrepare/getModelStageInfo`]: getInfo,
+  [`post ${baseUrl}/featurePrepare/reset`]: getInfo,
 };
