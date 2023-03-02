@@ -7,6 +7,7 @@ import Condition from '@/components/Condition';
 import { useStrategyBackUploadAwaitModel } from './model';
 import { useNextStep } from '../../config';
 import { useModel } from 'umi';
+import { getWaitResult } from './model/api';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -50,8 +51,14 @@ const TabTwo: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
+    let data: any = {};
+    (async () => {
+      let res = await getWaitResult({ itmModelRegisCode: modelId });
+      data = res.result || {};
+    })();
     // if (processId) {
-    if (curStep + 1 < doneStep) {
+
+    if (curStep + 1 < data.currentStage) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
       startLoop({ itmModelRegisCode: modelId }, 4);

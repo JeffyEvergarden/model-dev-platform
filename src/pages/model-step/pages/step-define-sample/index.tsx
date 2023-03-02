@@ -152,9 +152,18 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     }).then((res) => {
       //回显整体
       form.setFieldsValue({
-        trainingTime: res?.trainingTime?.map((item: any) => moment?.(item)),
-        intertemporalTime: res?.intertemporalTime?.map((item: any) => moment?.(item)),
-        other: res?.other?.map((item: any) => item.map((ite: any) => moment?.(ite))),
+        trainingTime: [
+          moment?.(res?.trainingTime?.startTime),
+          moment?.(res?.trainingTime?.endTime),
+        ],
+        intertemporalTime: [
+          moment?.(res?.intertemporalTime?.startTime),
+          moment?.(res?.intertemporalTime?.endTime),
+        ],
+        other: res?.otherTimeList?.map((item: any) => [
+          moment?.(item?.startTime),
+          moment?.(item?.endTime),
+        ]),
       });
     });
     getModelStepDetailApi({ stage: '5', itmModelRegisCode: modelId }).then((res) => {
@@ -202,12 +211,26 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         }
         let reqData = {
           itmModelRegisCode: modelId,
-          trainingTime: value?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
-          intertemporalTime: value?.intertemporalTime?.map?.((item: any) =>
-            item?.format?.('YYYY-MM-DD'),
-          ),
-          other: value?.other?.map?.((item: any) => {
-            return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
+          // trainingTime: value?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
+          // intertemporalTime: value?.intertemporalTime?.map?.((item: any) =>
+          //   item?.format?.('YYYY-MM-DD'),
+          // ),
+          // other: value?.other?.map?.((item: any) => {
+          //   return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
+          // }),
+          trainingTime: {
+            startTime: value?.trainingTime[0]?.format?.('YYYY-MM-DD'),
+            endTime: value?.trainingTime[1]?.format?.('YYYY-MM-DD'),
+          },
+          intertemporalTime: {
+            startTime: value?.intertemporalTime[0]?.format?.('YYYY-MM-DD'),
+            endTime: value?.intertemporalTime[1]?.format?.('YYYY-MM-DD'),
+          },
+          otherTimeList: value?.other?.map?.((item: any) => {
+            return {
+              startTime: item?.[0]?.format?.('YYYY-MM-DD'),
+              endTime: item?.[1]?.format?.('YYYY-MM-DD'),
+            };
           }),
           sampleMonthDistributionList: tableList || [],
           sampleTotalDistributionList: resultTableList || [],
@@ -243,12 +266,19 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         }
         nextFlow({
           itmModelRegisCode: modelId,
-          trainingTime: value?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
-          intertemporalTime: value?.intertemporalTime?.map?.((item: any) =>
-            item?.format?.('YYYY-MM-DD'),
-          ),
-          other: value?.other?.map?.((item: any) => {
-            return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
+          trainingTime: {
+            startTime: value?.trainingTime[0]?.format?.('YYYY-MM-DD'),
+            endTime: value?.trainingTime[1]?.format?.('YYYY-MM-DD'),
+          },
+          intertemporalTime: {
+            startTime: value?.intertemporalTime[0]?.format?.('YYYY-MM-DD'),
+            endTime: value?.intertemporalTime[1]?.format?.('YYYY-MM-DD'),
+          },
+          otherTimeList: value?.other?.map?.((item: any) => {
+            return {
+              startTime: item?.[0]?.format?.('YYYY-MM-DD'),
+              endTime: item?.[1]?.format?.('YYYY-MM-DD'),
+            };
           }),
           sampleMonthDistributionList: tableList || [],
           sampleTotalDistributionList: resultTableList || [],

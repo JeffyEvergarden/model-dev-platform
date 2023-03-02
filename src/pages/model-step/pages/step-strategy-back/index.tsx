@@ -21,12 +21,16 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
 
-  const { modelId, doneStep, curStep, setDoneStepStatus } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    doneStep: model.doneStep,
-    curStep: model.curStep,
-    setDoneStepStatus: model.setDoneStepStatus,
-  }));
+  const { modelId, doneStep, curStep, setDoneStepStatus, setDoneStep } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      curStep: model.curStep,
+      setDoneStepStatus: model.setDoneStepStatus,
+      setDoneStep: model.setDoneStep,
+    }),
+  );
 
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
@@ -42,6 +46,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
     await reBack({ itmModelRegisCode: modelId }).then((res: any) => {
       if (res?.status?.code == successCode) {
         setDoneStepStatus('loading');
+        setDoneStep(3);
         setStepType(1);
       }
     });
@@ -64,7 +69,11 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   }, []);
 
   const getCurrentStage = async () => {
-    if (3 < doneStep) {
+    let res = await getWaitResult({ itmModelRegisCode: modelId });
+    let data = res.result || {};
+
+    setDoneStep(data.currentStage);
+    if (3 < data.currentStage) {
       getStrategyTableList({ itmModelRegisCode: modelId }).then((res) => {
         if (res.isSkipCurrentStage) {
           setStepType(1); //如果跳过后回来
@@ -72,9 +81,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
           setStepType(2);
         }
       });
-    } else if (3 == doneStep) {
-      let res = await getWaitResult({ itmModelRegisCode: modelId });
-      let data = res.result || {};
+    } else if (3 == data.currentStage) {
       if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
         setStepType(2);
         setSelectedKeys(data?.backtrackProcessName?.split(',') || []);
