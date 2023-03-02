@@ -25,6 +25,8 @@ export default function useStepModel() {
   const { initialState } = useModel('@@initialState');
 
   const { userAuth = [] }: any = initialState || {};
+  // 当前用户是否有权限修改
+  const [operate, setOperate] = useState<any>(''); // EDIT编辑   SCAN只读
 
   //模型详情-步骤条当前点击的步骤
   let currentStep: any = useRef();
@@ -46,5 +48,7 @@ export default function useStepModel() {
     modelName,
     setModelName,
     isLeaderDisabled: userAuth?.includes('RISK_MANAGER'),
+    operate,
+    setOperate,
   };
 }

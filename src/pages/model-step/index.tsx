@@ -41,6 +41,7 @@ const Myjob: React.FC<any> = (props: any) => {
     currentStep,
     isHadReported,
     setIsHadReported,
+    setOperate,
   } = useModel('step' as any, (model: any) => ({
     modelId: model.modelId,
     setModelId: model.setModelId,
@@ -57,6 +58,7 @@ const Myjob: React.FC<any> = (props: any) => {
     setIsHadBuild: model.setIsHadBuild,
     isHadReported: model.isHadReported,
     setIsHadReported: model.setIsHadReported,
+    setOperate: model.setOperate,
   }));
 
   const { hasDone, getModelInfo, getModelDetail } = useBaseInfoModel();
@@ -88,6 +90,8 @@ const Myjob: React.FC<any> = (props: any) => {
       // --------
       setIsHadBuild(res.modelBuildStatus);
       setIsHadReported(res.reportFilePath ? '1' : '');
+      //是否有编辑权限
+      setOperate(res?.operate);
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');
