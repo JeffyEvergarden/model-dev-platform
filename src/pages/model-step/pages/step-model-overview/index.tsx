@@ -243,6 +243,8 @@ const StepOne: React.FC = (props: any) => {
         </div>
       </Form>
       {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
+      {/* doneStep>3 保存  doneStep<3 下一流程*/}
+
       {isDisabled == false && (
         <NextStepButton
           btnNode={
@@ -257,7 +259,7 @@ const StepOne: React.FC = (props: any) => {
               </Button>
               {(doneStep < 1 || doneStep == 1) && isSave == '1' && (
                 <Button size="large" type="primary" onClick={() => submitNextStep('next')}>
-                  下一流程{doneStep}
+                  下一流程
                 </Button>
               )}
             </Space>
