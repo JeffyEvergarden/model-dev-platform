@@ -11,9 +11,10 @@ import { useModel } from 'umi';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
-  const { modelId, isHadReported } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     isHadReported: model.isHadReported,
+    operate: model.operate,
   }));
   return (
     <div className={styles['step-page']}>
@@ -25,7 +26,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
       <MissingValueFilling />
       <Divider></Divider>
       <VariableSubBox />
-      <Condition r-if={isHadReported != '1'}>
+      <Condition r-if={operate == 'EDIT' && isHadReported != '1'}>
         <NextStepButton
           btnNode={
             <Space>

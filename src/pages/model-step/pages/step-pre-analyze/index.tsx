@@ -109,9 +109,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     originCustCatList,
   } = useSearchModel();
 
-  const { modelId, isHadReported } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     isHadReported: model.isHadReported,
+    operate: model.operate,
   }));
   const { nextStep } = useNextStep();
 
@@ -672,7 +673,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           <Divider />
           <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
           <CustomerFormBox customerFormRef={customerFormRef} />
-          <Condition r-if={isHadReported != '1'}>
+          <Condition r-if={operate == 'EDIT' && isHadReported != '1'}>
             <NextStepButton
               btnNode={
                 <Space>

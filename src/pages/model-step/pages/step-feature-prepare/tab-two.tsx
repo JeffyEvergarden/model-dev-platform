@@ -29,7 +29,7 @@ const TabTwo: React.FC<any> = (props: any) => {
   const { errorMsg, processType, dataList, startLoop, nextFlow, clearTime } = useVarSelectModal();
   const { nextStep } = useNextStep();
 
-  const { modelId, curStep, doneStep, isHadBuild, isHadReported } = useModel(
+  const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
@@ -37,6 +37,7 @@ const TabTwo: React.FC<any> = (props: any) => {
       doneStep: model.doneStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
+      operate: model.operate,
     }),
   );
 
@@ -94,6 +95,7 @@ const TabTwo: React.FC<any> = (props: any) => {
       />
       <Condition
         r-if={
+          operate == 'EDIT' &&
           (processType === 'finish' || processType === 'error') &&
           isHadBuild !== '1' &&
           isHadReported !== '1'

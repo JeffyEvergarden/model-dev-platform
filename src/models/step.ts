@@ -20,6 +20,9 @@ export default function useStepModel() {
   // 是否已经生成报告 // 生成报告后 都不能再编辑 报告路径不为空【1】的时候所有步骤都不能编辑
   const [isHadReported, setIsHadReported] = useState<any>('');
 
+  // 当前用户是否有权限修改
+  const [operate, setOperate] = useState<any>(''); // EDIT编辑   SCAN只读
+
   //模型详情-步骤条当前点击的步骤
   let currentStep: any = useRef();
 
@@ -39,5 +42,7 @@ export default function useStepModel() {
     setIsHadReported,
     modelName,
     setModelName,
+    operate,
+    setOperate,
   };
 }

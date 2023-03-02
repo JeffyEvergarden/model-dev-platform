@@ -150,7 +150,6 @@ const ModelManagement: React.FC<any> = (props: any) => {
         placeholder: '请选择模型类型',
       },
       valueType: 'select',
-
       valueEnum: {
         ...listToMap(MODEL_TYPE),
       },
@@ -216,6 +215,9 @@ const ModelManagement: React.FC<any> = (props: any) => {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateRange',
+      fieldProps: {
+        placeholder: ['开始时间', '结束时间'],
+      },
       hideInTable: true,
       search: {
         transform: (value: any) => {
@@ -332,6 +334,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
         form={{}}
         pagination={{
           pageSize: 10,
+          showSizeChanger: true,
         }}
         dateFormatter="string"
         headerTitle=""

@@ -120,9 +120,10 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
   const { nextStep } = useNextStep();
 
-  const { modelId, isHadReported } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     isHadReported: model.isHadReported,
+    operate: model.operate,
   }));
 
   // 切换分页
@@ -503,7 +504,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           />
         </div>
       </div>
-      <Condition r-if={isHadReported != '1'}>
+      <Condition r-if={operate == 'EDIT' && isHadReported != '1'}>
         <NextStepButton
           btnNode={
             <Space>
