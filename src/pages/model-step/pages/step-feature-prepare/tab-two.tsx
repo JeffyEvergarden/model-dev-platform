@@ -29,11 +29,16 @@ const TabTwo: React.FC<any> = (props: any) => {
   const { errorMsg, processType, dataList, startLoop, nextFlow } = useVarSelectModal();
   const { nextStep } = useNextStep();
 
-  const { modelId, curStep, doneStep } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    curStep: model.curStep,
-    doneStep: model.doneStep,
-  }));
+  const { modelId, curStep, doneStep, isHadBuild, isHadReported } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      curStep: model.curStep,
+      doneStep: model.doneStep,
+      isHadBuild: model.isHadBuild,
+      isHadReported: model.isHadReported,
+    }),
+  );
 
   const onClick = () => {
     nextFlow({ itmModelRegisCode: modelId }).then((res) => {
@@ -84,7 +89,13 @@ const TabTwo: React.FC<any> = (props: any) => {
           []
         }
       />
-      <Condition r-if={processType === 'finish' || processType === 'error'}>
+      <Condition
+        r-if={
+          (processType === 'finish' || processType === 'error') &&
+          isHadBuild !== '1' &&
+          isHadReported !== '1'
+        }
+      >
         <NextStepButton
           btnNode={
             <Space>
