@@ -26,7 +26,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
       <MissingValueFilling />
       <Divider></Divider>
       <VariableSubBox />
-      <Condition r-if={operate == 'EDIT' && isHadReported != '1'}>
+      <Condition r-if={operate == 'EDIT' && !isHadReported}>
         <NextStepButton
           btnNode={
             <Space>

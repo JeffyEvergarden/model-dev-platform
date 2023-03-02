@@ -101,8 +101,8 @@ const TabTwo: React.FC<any> = (props: any) => {
         r-if={
           operate == 'EDIT' &&
           (processType === 'finish' || processType === 'error') &&
-          isHadBuild !== '1' &&
-          isHadReported !== '1'
+          !isHadBuild &&
+          !isHadReported
         }
       >
         <NextStepButton

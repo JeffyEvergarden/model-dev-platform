@@ -54,12 +54,11 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
 
   const getCurrentStage = async () => {
     console.log(curStep, doneStep);
-
-    if (6 < doneStep) {
+    let res = await getWaitResult({ itmModelRegisCode: modelId });
+    let data = res.result || {};
+    if (6 < data.currentStage) {
       setStepType(2);
-    } else if (6 == doneStep) {
-      let res = await getWaitResult({ itmModelRegisCode: modelId });
-      let data = res.result || {};
+    } else if (6 == data.currentStage) {
       if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
         setStepType(2);
       } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {

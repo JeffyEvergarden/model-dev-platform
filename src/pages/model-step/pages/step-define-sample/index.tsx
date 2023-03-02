@@ -504,7 +504,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           />
         </div>
       </div>
-      <Condition r-if={operate == 'EDIT' && isHadReported != '1'}>
+      <Condition r-if={operate == 'EDIT' && !isHadReported}>
         <NextStepButton
           btnNode={
             <Space>
