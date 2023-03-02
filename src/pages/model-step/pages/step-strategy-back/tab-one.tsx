@@ -73,13 +73,7 @@ const SelectorTable: React.FC<any> = (props: any) => {
     }
   };
 
-  const skipBackStep = async () => {
-    let reqData = { itmModelRegisCode: modelId };
-    await passBackStep(reqData).then((res: any) => {
-      if (res) {
-        //跳到下一流程
-      }
-    });
+  const skipBackStep = () => {
     skip();
   };
 

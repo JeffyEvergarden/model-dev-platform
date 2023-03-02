@@ -54,7 +54,15 @@ const monthDistributionList = (req: any, res: any) => {
     current: 1,
     pageSize: 10,
     totalSize: 11,
-    result: { sampleMonthDistributionList: list },
+    result: {
+      sampleMonthDistributionList: list,
+      other: [
+        ['2022-01-01', '2022-01-02'],
+        ['2022-01-03', '2022-01-04'],
+      ],
+      intertemporalTime: ['2022-02-01', '2022-02-02'],
+      trainingTime: ['2022-03-01', '2022-03-02'],
+    },
   });
 };
 

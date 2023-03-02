@@ -12,6 +12,7 @@ import { useModel } from 'umi';
 import { useNextStep } from '../../config';
 import { exportExcel } from './model/api';
 import { getModelStepDetailApi } from '../../model/api';
+import moment from 'moment';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -144,7 +145,18 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     setPageSize2(ps);
   };
   useEffect(() => {
-    getSampleTableList({ currentPage: current, pageSize: pageSize, itmModelRegisCode: modelId });
+    getSampleTableList({
+      currentPage: current,
+      pageSize: pageSize,
+      itmModelRegisCode: modelId,
+    }).then((res) => {
+      //回显整体
+      form.setFieldsValue({
+        trainingTime: res?.trainingTime?.map((item: any) => moment?.(item)),
+        intertemporalTime: res?.intertemporalTime?.map((item: any) => moment?.(item)),
+        other: res?.other?.map((item: any) => item.map((ite: any) => moment?.(ite))),
+      });
+    });
     getModelStepDetailApi({ stage: '5', itmModelRegisCode: modelId }).then((res) => {
       console.log(res);
     });
