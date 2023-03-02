@@ -61,7 +61,7 @@ const getSummaryList = (req: any, res: any) => {
 
 const normalDeal = (req: any, res: any) => {
   res.json({
-    code: successCode,
+    status: { code: successCode, desc: '' },
     desc: '成功',
   });
 };

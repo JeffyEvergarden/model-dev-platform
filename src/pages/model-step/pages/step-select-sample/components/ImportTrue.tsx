@@ -10,8 +10,8 @@ export default (props: any) => {
   useEffect(() => {
     form.setFieldsValue({
       businessType: editData?.businessType,
-      tableName: editData?.featureLabel?.tableName,
-      dimensionField: editData?.featureLabel?.dimensionField,
+      tableName: editData?.tableName,
+      dimensionField: editData?.dimensionField,
     });
   }, [editData]);
 
