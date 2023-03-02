@@ -8,7 +8,7 @@ import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { getWaitResult } from '../step-select-sample/model/api';
 import { reBack } from './model/api';
-import { successCode, useStrategyBackUploadAwaitModel } from './model';
+import { successCode, useStrategyBackModel, useStrategyBackUploadAwaitModel } from './model';
 import TabThree from './tab-three';
 
 // 首页
@@ -30,6 +30,8 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
+
+  const { getStrategyTableList } = useStrategyBackModel();
 
   const onNext = (key: any) => {
     setStepType(2);
@@ -63,7 +65,13 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   const getCurrentStage = async () => {
     if (3 < doneStep) {
-      setStepType(2);
+      getStrategyTableList({ itmModelRegisCode: modelId }).then((res) => {
+        if (res.isSkipCurrentStage) {
+          setStepType(1); //如果跳过后回来
+        } else {
+          setStepType(2);
+        }
+      });
     } else if (3 == doneStep) {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       let data = res.result || {};

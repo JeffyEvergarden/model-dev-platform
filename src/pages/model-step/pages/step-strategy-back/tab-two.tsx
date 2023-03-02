@@ -25,13 +25,18 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, curStep, doneStep } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    curStep: model.curStep,
-    doneStep: model.doneStep,
-  }));
+  const { modelId, curStep, doneStep, isHadBuild, isHadReported } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      curStep: model.curStep,
+      doneStep: model.doneStep,
+      isHadBuild: model.isHadBuild,
+      isHadReported: model.isHadReported,
+    }),
+  );
 
-  const { processType, dataList, errorMsg, startLoop, nextFlow } =
+  const { processType, dataList, errorMsg, startLoop, nextFlow, clearTime } =
     useStrategyBackUploadAwaitModel();
   const { nextStep } = useNextStep();
 
@@ -52,6 +57,9 @@ const TabTwo: React.FC<any> = (props: any) => {
       startLoop({ itmModelRegisCode: modelId }, 4);
     }
     // }
+    return () => {
+      clearTime();
+    };
   }, [processId]);
 
   return (
@@ -81,7 +89,13 @@ const TabTwo: React.FC<any> = (props: any) => {
           backtrackProcessName: selectedKeys?.join(',') || dataList,
         }}
       />
-      <Condition r-if={processType === 'finish' || processType === 'error'}>
+      <Condition
+        r-if={
+          (processType === 'finish' || processType === 'error') &&
+          isHadBuild !== '1' &&
+          isHadReported !== '1'
+        }
+      >
         <NextStepButton
           btnNode={
             <Space>

@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { useRef, useState } from 'react';
 import { successCode } from '../../step-model-compare/model';
+import { getWaitResult } from '../../step-select-sample/model/api';
 import { StageStatus } from '../../step-strategy-back/model';
 import { getDatabaseList, getInfo, getKeyVarList, getVarList, nextStage, saveFeature } from './api';
 export const useVarSelectModal = () => {
@@ -122,7 +123,7 @@ export const useVarSelectModal = () => {
   };
 
   const awaitResult = async (params?: any) => {
-    let res: any = await getInfo(params);
+    let res: any = await getWaitResult(params);
     let data = res?.result || {};
     console.log(data);
 
@@ -165,6 +166,10 @@ export const useVarSelectModal = () => {
     }
   };
 
+  const clearTime = () => {
+    clearTimeout(fake.current.timeFn);
+  };
+
   return {
     loading,
     treeList,
@@ -174,6 +179,7 @@ export const useVarSelectModal = () => {
     processType,
     dataList,
     errorMsg,
+    clearTime,
     nextFlow,
     getTreeList,
     getVarInfo,

@@ -49,7 +49,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   */
     }
 
-    // getCurrentStage();
+    getCurrentStage();
   }, []);
 
   const getCurrentStage = async () => {

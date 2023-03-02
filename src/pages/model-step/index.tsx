@@ -16,6 +16,7 @@ import {
 import Condition from '@/components/Condition';
 import { useBaseInfoModel } from './model';
 import { isBoolean } from 'lodash';
+import user from 'mock/user';
 
 const Step = Steps.Step;
 
@@ -61,6 +62,8 @@ const Myjob: React.FC<any> = (props: any) => {
   const { hasDone, getModelInfo, getModelDetail } = useBaseInfoModel();
 
   const [pageLoad, setPageLoad] = useState<boolean>(false);
+
+  const rightContentRef: any = useRef<any>();
 
   const query: any = history.location.query || {};
 
@@ -193,7 +196,13 @@ const Myjob: React.FC<any> = (props: any) => {
     // 跳转
     let key: any = stepItem?.name;
     if (configMap[key]) {
-      setTimeout(() => history.push(configMap[key] + '?id=' + `${_modelId || modelId}`), 500);
+      setTimeout(() => {
+        history.push(configMap[key] + '?id=' + `${_modelId || modelId}`);
+        console.log(rightContentRef.current);
+        if (rightContentRef.current) {
+          rightContentRef.current.scrollTop = 0;
+        }
+      }, 300);
     }
   };
 
@@ -229,7 +238,7 @@ const Myjob: React.FC<any> = (props: any) => {
       }}
     >
       <Condition r-if={modelId && pageLoad}>
-        <div className={style['zy-row']}>
+        <div className={style['zy-row']} ref={rightContentRef}>
           <div className={style['left-content']}>
             <Steps direction="vertical" current={curStep} onChange={onChange}>
               {_stepItems.map((item: any, index: number) => {

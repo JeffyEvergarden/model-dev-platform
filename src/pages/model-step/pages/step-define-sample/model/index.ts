@@ -26,6 +26,10 @@ export const useDefineSampleModel = () => {
       let data: any[] = res?.result?.sampleMonthDistributionList || [];
       setTableTotal(res?.totalSize || 0);
       setTableList(data);
+      //回显整体
+      setResultTableList(res?.sampleTotalDistributionList || []);
+      setTableResultTotal(res?.sampleTotalDistributionList?.length || 0);
+      return res?.result || {};
     }
   };
 
@@ -38,6 +42,10 @@ export const useDefineSampleModel = () => {
       let data: any[] = res?.result?.sampleTotalDistributionList || [];
       setTableResultTotal(res?.totalSize || 0);
       setResultTableList(data);
+    } else {
+      setTableResultTotal(0);
+      setResultTableList([]);
+      message.error(res?.status?.desc);
     }
   };
 

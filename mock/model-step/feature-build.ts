@@ -10,14 +10,14 @@ const getLostList = (req: any, res: any) => {
       variable: '变量名称' + index,
       variableName: '中文名称' + index,
       variableType: index + 1 * 100,
-      trainMissRate: '',
-      validMissRate: '',
-      trainKs: '',
-      validKs: '',
-      trainIv: '',
-      validIv: '',
-      trainPsi: '',
-      validPsi: '',
+      trainMissRate: (Math.random() * 100).toFixed(2) + '%',
+      validMissRate: (Math.random() * 100).toFixed(2) + '%',
+      trainKs: (Math.random() * 100).toFixed(2) + '%',
+      validKs: (Math.random() * 100).toFixed(2) + '%',
+      trainIv: (Math.random() * 100).toFixed(2) + '%',
+      validIv: (Math.random() * 100).toFixed(2) + '%',
+      trainPsi: (Math.random() * 100).toFixed(2) + '%',
+      validPsi: (Math.random() * 100).toFixed(2) + '%',
     };
   });
 

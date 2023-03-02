@@ -11,6 +11,8 @@ import TitleStatus from '../../components/title-status';
 import { useModel } from 'umi';
 import { useNextStep } from '../../config';
 import { exportExcel } from './model/api';
+import { getModelStepDetailApi } from '../../model/api';
+import moment from 'moment';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -118,8 +120,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
   const { nextStep } = useNextStep();
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadReported: model.isHadReported,
   }));
 
   // 切换分页
@@ -142,7 +145,21 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     setPageSize2(ps);
   };
   useEffect(() => {
-    getSampleTableList({ currentPage: current, pageSize: pageSize, itmModelRegisCode: modelId });
+    getSampleTableList({
+      currentPage: current,
+      pageSize: pageSize,
+      itmModelRegisCode: modelId,
+    }).then((res) => {
+      //回显整体
+      form.setFieldsValue({
+        trainingTime: res?.trainingTime?.map((item: any) => moment?.(item)),
+        intertemporalTime: res?.intertemporalTime?.map((item: any) => moment?.(item)),
+        other: res?.other?.map((item: any) => item.map((ite: any) => moment?.(ite))),
+      });
+    });
+    getModelStepDetailApi({ stage: '5', itmModelRegisCode: modelId }).then((res) => {
+      console.log(res);
+    });
   }, []);
 
   const submit = async (obj: any) => {
@@ -192,8 +209,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           other: value?.other?.map?.((item: any) => {
             return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
           }),
-          sampleTotalDistributionList: tableList || [],
-          sampleMonthDistributionList: resultTableList || [],
+          sampleMonthDistributionList: tableList || [],
+          sampleTotalDistributionList: resultTableList || [],
         };
         await exportExcel(reqData)
           .then((res) => {
@@ -233,8 +250,8 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           other: value?.other?.map?.((item: any) => {
             return item?.map?.((subitem: any) => subitem?.format?.('YYYY-MM-DD'));
           }),
-          sampleTotalDistributionList: tableList || [],
-          sampleMonthDistributionList: resultTableList || [],
+          sampleMonthDistributionList: tableList || [],
+          sampleTotalDistributionList: resultTableList || [],
         }).then((res) => {
           if (res) {
             nextStep();
@@ -456,25 +473,26 @@ const StepDefineSample: React.FC<any> = (props: any) => {
           />
         </div>
       </div>
-
-      <NextStepButton
-        btnNode={
-          <Space>
-            <Button onClick={exportResult} size="large">
-              导出结果
-            </Button>
-            <Button
-              onClick={() => {
-                _nextFlow();
-              }}
-              size="large"
-              type="primary"
-            >
-              下一流程
-            </Button>
-          </Space>
-        }
-      />
+      <Condition r-if={isHadReported != '1'}>
+        <NextStepButton
+          btnNode={
+            <Space>
+              <Button onClick={exportResult} size="large">
+                导出结果
+              </Button>
+              <Button
+                onClick={() => {
+                  _nextFlow();
+                }}
+                size="large"
+                type="primary"
+              >
+                下一流程
+              </Button>
+            </Space>
+          }
+        />
+      </Condition>
     </div>
   );
 };

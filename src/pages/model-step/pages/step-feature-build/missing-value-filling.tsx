@@ -1,7 +1,7 @@
 import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, Input, Select, Space, Table } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Divider, Form, Input, InputNumber, Select, Space, Table } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { boxList, varList } from './config';
 import { useExportReportModel } from './model';
@@ -15,6 +15,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const { Item: FormItem, List: FormList } = Form;
   const { Option } = Select;
 
+  const [searchText, setSearchText] = useState<any>([]);
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchSelect = useRef<any>(null);
+  const searchInputNumber = useRef<any>(null);
+
   const [selectReportList, setReportList] = useState<any[]>();
 
   const { loading, tableList, tableInfo, tableTotal, getLostList } = useExportReportModel();
@@ -22,7 +27,111 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
+  const tbFilter = (dataIndex: any) => {
+    return {
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }: any) => (
+        <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex' }}>
+            <Select
+              style={{ marginBottom: 8, flex: 1, marginRight: 6 }}
+              ref={searchSelect}
+              onChange={(val) => {
+                if (selectedKeys[1]) {
+                  setSelectedKeys([val, selectedKeys[1]]);
+                  setSearchText([val, searchText[1]]);
+                } else {
+                  setSelectedKeys([val]);
+                  setSearchText([val]);
+                }
+              }}
+              placeholder={'请选择'}
+              value={selectedKeys[0]}
+            >
+              <Select.Option key={'='} value={'='}>
+                {'='}
+              </Select.Option>
+              <Select.Option key={'≠'} value={'!='}>
+                {'≠'}
+              </Select.Option>
+              <Select.Option key={'>='} value={'>='}>
+                {'>='}
+              </Select.Option>
+              <Select.Option key={'>'} value={'>'}>
+                {'>'}
+              </Select.Option>
+              <Select.Option key={'<='} value={'<='}>
+                {'<='}
+              </Select.Option>
+              <Select.Option key={'<'} value={'<'}>
+                {'<'}
+              </Select.Option>
+            </Select>
+            <InputNumber
+              placeholder={'衡量值'}
+              value={selectedKeys[1]}
+              style={{ marginBottom: 8, flex: 1 }}
+              precision={2}
+              onChange={(val) => {
+                setSelectedKeys([selectedKeys[0], val]);
+                setSearchText([searchText[0], val]);
+              }}
+            ></InputNumber>
+          </div>
+          <Space>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                clearFilters();
+                setSearchText([]);
+              }}
+              style={{ width: 90 }}
+            >
+              重置
+            </Button>
+            <Button
+              size="small"
+              style={{ width: 90 }}
+              type="primary"
+              onClick={() => {
+                console.log(selectedKeys);
+                confirm();
+                setSearchText(selectedKeys);
+                setSearchedColumn(dataIndex);
+              }}
+            >
+              确定
+            </Button>
+          </Space>
+        </div>
+      ),
+      onFilter: (value: any, record: any) => {
+        console.log(searchText);
 
+        if (searchText?.length && searchText[0]) {
+          if (searchText[0] == '=') {
+            return parseFloat(record[dataIndex]) == searchText[1];
+          }
+          if (searchText[0] == '!=') {
+            return parseFloat(record[dataIndex]) != searchText[1];
+          }
+          if (searchText[0] == '>=') {
+            return parseFloat(record[dataIndex]) >= searchText[1];
+          }
+          if (searchText[0] == '>') {
+            return parseFloat(record[dataIndex]) > searchText[1];
+          }
+          if (searchText[0] == '<=') {
+            return parseFloat(record[dataIndex]) <= searchText[1];
+          }
+          if (searchText[0] == '<') {
+            return parseFloat(record[dataIndex]) < searchText[1];
+          }
+        }
+        return record[dataIndex];
+      },
+    };
+  };
   const columns: any[] = [
     {
       title: '变量名称',
@@ -45,41 +154,57 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       title: '缺失率_train',
       dataIndex: 'trainMissRate',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainMissRate) - parseFloat(b.trainMissRate),
+      ...tbFilter('trainMissRate'),
     },
     {
       title: '缺失率_valid',
       dataIndex: 'validMissRate',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validMissRate) - parseFloat(b.validMissRate),
+      ...tbFilter('validMissRate'),
     },
     {
       title: 'KS_train',
       dataIndex: 'trainKs',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainKs) - parseFloat(b.trainKs),
+      ...tbFilter('trainKs'),
     },
     {
       title: 'KS_valid',
       dataIndex: 'validKs',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validKs) - parseFloat(b.validKs),
+      ...tbFilter('validKs'),
     },
     {
       title: 'IV_train',
       dataIndex: 'trainIv',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainIv) - parseFloat(b.trainIv),
+      ...tbFilter('trainIv'),
     },
     {
       title: 'IV_valid',
       dataIndex: 'validIv',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validIv) - parseFloat(b.validIv),
+      ...tbFilter('validIv'),
     },
     {
       title: 'PSI_train',
       dataIndex: 'trainPsi',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.trainPsi) - parseFloat(b.trainPsi),
+      ...tbFilter('trainPsi'),
     },
     {
       title: 'PSI_valid',
       dataIndex: 'validPsi',
       width: 200,
+      sorter: (a: any, b: any) => parseFloat(a.validPsi) - parseFloat(b.validPsi),
+      ...tbFilter('validPsi'),
     },
   ];
 

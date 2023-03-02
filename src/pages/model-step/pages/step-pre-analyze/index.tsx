@@ -109,8 +109,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     originCustCatList,
   } = useSearchModel();
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadReported } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadReported: model.isHadReported,
   }));
   const { nextStep } = useNextStep();
 
@@ -671,18 +672,20 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           <Divider />
           <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
           <CustomerFormBox customerFormRef={customerFormRef} />
-          <NextStepButton
-            btnNode={
-              <Space>
-                <Button onClick={exportResult} size="large">
-                  导出结果
-                </Button>
-                <Button onClick={onClick} size="large" type="primary">
-                  下一流程
-                </Button>
-              </Space>
-            }
-          />
+          <Condition r-if={isHadReported != '1'}>
+            <NextStepButton
+              btnNode={
+                <Space>
+                  <Button onClick={exportResult} size="large">
+                    导出结果
+                  </Button>
+                  <Button onClick={onClick} size="large" type="primary">
+                    下一流程
+                  </Button>
+                </Space>
+              }
+            />
+          </Condition>
         </Fragment>
       )}
       {pageType == 'viewReport' && (

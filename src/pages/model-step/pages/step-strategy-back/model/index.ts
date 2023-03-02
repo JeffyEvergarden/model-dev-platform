@@ -130,10 +130,15 @@ export const useStrategyBackUploadAwaitModel = () => {
     }
   };
 
+  const clearTime = () => {
+    clearTimeout(fake.current.timeFn);
+  };
+
   return {
     processType,
     errorMsg,
     dataList,
+    clearTime,
     awaitResult,
     startLoop,
     submitProcess,
