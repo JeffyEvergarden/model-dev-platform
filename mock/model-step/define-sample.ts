@@ -56,12 +56,12 @@ const monthDistributionList = (req: any, res: any) => {
     totalSize: 11,
     result: {
       sampleMonthDistributionList: list,
-      other: [
-        ['2022-01-01', '2022-01-02'],
-        ['2022-01-03', '2022-01-04'],
+      otherTimeList: [
+        { startTime: '2022-02-01', endTime: '2022-02-02' },
+        { startTime: '2022-02-03', endTime: '2022-02-04' },
       ],
-      intertemporalTime: ['2022-02-01', '2022-02-02'],
-      trainingTime: ['2022-03-01', '2022-03-02'],
+      intertemporalTime: { startTime: '2022-03-01', endTime: '2022-03-02' },
+      trainingTime: { startTime: '2022-04-01', endTime: '2022-04-02' },
     },
   });
 };
