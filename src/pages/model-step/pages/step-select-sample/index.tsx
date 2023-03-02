@@ -74,12 +74,16 @@ const StepOne: React.FC = (props: any) => {
 
   const { nextStep } = useNextStep();
 
-  const { modelId, doneStep, curStep, setDoneStepStatus } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    doneStep: model.doneStep,
-    curStep: model.curStep,
-    setDoneStepStatus: model.setDoneStepStatus,
-  }));
+  const { modelId, doneStep, setDoneStep, curStep, setDoneStepStatus } = useModel(
+    'step',
+    (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      setDoneStep: model.setDoneStep,
+      curStep: model.curStep,
+      setDoneStepStatus: model.setDoneStepStatus,
+    }),
+  );
 
   const [form1] = Form.useForm();
 
@@ -180,7 +184,10 @@ const StepOne: React.FC = (props: any) => {
     if (res?.status?.code == successCode) {
       message.success(res?.status?.desc || '成功');
       if (tabType == '0') {
-        setStepType(2);
+        let resobj = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+        let data = resobj.result || {};
+        setDoneStep(data?.currentStage);
+        setTimeout(() => setStepType(2), 500);
       } else if (tabType == '1') {
         confirmModalRef?.current?.open(res?.result?.prepareSql);
         setFormValTwo(val);

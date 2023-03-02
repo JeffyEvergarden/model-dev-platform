@@ -53,17 +53,23 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const scoreBinningType: any = Form.useWatch('scoreBinningType', form);
   const varBinningType: any = Form.useWatch('varBinningType', form);
 
-  const { modelId, curStep, doneStep, setIsHadBuild, isHadReported, setDoneStepStatus } = useModel(
-    'step',
-    (model: any) => ({
-      modelId: model.modelId,
-      doneStep: model.doneStep,
-      curStep: model.curStep,
-      setIsHadBuild: model.setIsHadBuild,
-      isHadReported: model.isHadReported,
-      setDoneStepStatus: model.setDoneStepStatus,
-    }),
-  );
+  const {
+    modelId,
+    curStep,
+    doneStep,
+    setDoneStep,
+    setIsHadBuild,
+    isHadReported,
+    setDoneStepStatus,
+  } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    doneStep: model.doneStep,
+    setDoneStep: model.setDoneStep,
+    curStep: model.curStep,
+    setIsHadBuild: model.setIsHadBuild,
+    isHadReported: model.isHadReported,
+    setDoneStepStatus: model.setDoneStepStatus,
+  }));
 
   useEffect(() => {
     getCurrentStage();
@@ -123,6 +129,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res.status?.code === successCode) {
       setLoading(false);
       message.success(res.status?.desc || '成功');
+      let resobj = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+      let data = resobj.result || {};
+      setDoneStep(data?.currentStage);
+      setTimeout(() => setStepType(2), 500);
       setStepType(2);
     } else {
       setLoading(false);
