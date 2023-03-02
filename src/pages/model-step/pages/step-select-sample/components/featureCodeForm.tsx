@@ -40,6 +40,7 @@ export default (props: any) => {
       let res = await getSelectionList(params);
       setOperationList(featureOperatorMap?.[opt?.opt?.featureType]);
       setFeatureType(opt?.opt?.featureType);
+      debugger;
       form.setFieldsValue({
         operator: '',
         // params: '',
@@ -57,6 +58,7 @@ export default (props: any) => {
   };
 
   const changOperator = async (val: any) => {
+    debugger;
     if (val) {
       getParamVal(featureType, val);
       form.setFieldsValue({
@@ -134,6 +136,7 @@ export default (props: any) => {
               allowClear
               onChange={(val, opt) => changeLabel(val, opt)}
               optionFilterProp="children"
+              showSearch
             >
               {labelList?.map((item: any, index: number) => {
                 return (
@@ -157,6 +160,7 @@ export default (props: any) => {
                 allowClear
                 onChange={changOperator}
                 optionFilterProp="children"
+                showSearch
               >
                 {operationList?.map((item: any, index: number) => {
                   return (
@@ -179,7 +183,7 @@ export default (props: any) => {
                 label="参数值"
               >
                 {paramList.length > 0 ? (
-                  <Select optionFilterProp="children" allowClear>
+                  <Select optionFilterProp="children" allowClear showSearch>
                     {paramList?.map((item: any) => {
                       return (
                         <Option key={item?.value} value={item?.value}>
