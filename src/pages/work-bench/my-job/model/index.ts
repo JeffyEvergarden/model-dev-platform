@@ -101,10 +101,10 @@ export const useOpModel = () => {
     setLoading(true);
     let res: any = await deleteModel(datas);
     setLoading(false);
-    if (res.resultCode === successCode) {
+    if (res?.status?.code === successCode) {
       return true;
     } else {
-      message.error(res?.resultDesc || '未知系统异常');
+      message.error(res?.status?.desc || '未知系统异常');
     }
   };
 
