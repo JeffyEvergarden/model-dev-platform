@@ -36,7 +36,7 @@ const TabTwo: React.FC<any> = (props: any) => {
     }),
   );
 
-  const { processType, dataList, errorMsg, startLoop, nextFlow } =
+  const { processType, dataList, errorMsg, startLoop, nextFlow, clearTime } =
     useStrategyBackUploadAwaitModel();
   const { nextStep } = useNextStep();
 
@@ -57,6 +57,9 @@ const TabTwo: React.FC<any> = (props: any) => {
       startLoop({ itmModelRegisCode: modelId }, 4);
     }
     // }
+    return () => {
+      clearTime();
+    };
   }, [processId]);
 
   return (

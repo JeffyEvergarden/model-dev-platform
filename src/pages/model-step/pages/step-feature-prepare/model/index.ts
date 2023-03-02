@@ -165,6 +165,10 @@ export const useVarSelectModal = () => {
     }
   };
 
+  const clearTime = () => {
+    clearTimeout(fake.current.timeFn);
+  };
+
   return {
     loading,
     treeList,
@@ -174,6 +178,7 @@ export const useVarSelectModal = () => {
     processType,
     dataList,
     errorMsg,
+    clearTime,
     nextFlow,
     getTreeList,
     getVarInfo,
