@@ -13,5 +13,6 @@ export default function useAuthModel() {
     isLeader: userAuth?.includes('RISK_MANAGER'),
     isDeveloper: userAuth?.includes('RISK_MODEL_DEVELOPER'),
     userAuth,
+    isLeaderDisabled: userAuth?.includes('RISK_MANAGER'),
   };
 }

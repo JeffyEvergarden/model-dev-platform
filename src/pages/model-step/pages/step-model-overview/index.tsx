@@ -97,17 +97,23 @@ const StepOne: React.FC = (props: any) => {
     _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
 
     if (type == 'next') {
-      let res = await nextStage({ itmModelRegisCode: modelId });
-      // console.log(_form, res)
-      if (res) {
-        nextStep();
+      let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });
+      if (res?.status?.code == successCode) {
+        message.success(res?.status?.desc);
+        let resNext = await nextStage({ itmModelRegisCode: modelId });
+        if (resNext?.status?.code == successCode) {
+          message.success(res?.status?.desc);
+          nextStep();
+        } else {
+          message.error(res?.status?.desc);
+        }
+      } else {
+        message.error(res?.status?.desc);
       }
     } else if (type == 'save') {
       let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });
       if (res?.status?.code == successCode) {
         message.success(res?.status?.desc);
-        setIsSave('1');
-        // nextStep();
       } else {
         message.error(res?.status?.desc);
       }
@@ -243,21 +249,18 @@ const StepOne: React.FC = (props: any) => {
         </div>
       </Form>
       {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
-      {/* doneStep>3 保存  doneStep<3 下一流程*/}
+      {/* doneStep>3 保存  doneStep<=3 下一流程*/}
 
       {isDisabled == false && (
         <NextStepButton
           btnNode={
             <Space>
-              <Button
-                size="large"
-                type="primary"
-                disabled={isHadReported == '1'}
-                onClick={() => submitNextStep('save')}
-              >
-                保存
-              </Button>
-              {(doneStep < 1 || doneStep == 1) && isSave == '1' && (
+              {doneStep !== 1 && (
+                <Button size="large" type="primary" onClick={() => submitNextStep('save')}>
+                  保存
+                </Button>
+              )}
+              {doneStep == 1 && (
                 <Button size="large" type="primary" onClick={() => submitNextStep('next')}>
                   下一流程
                 </Button>

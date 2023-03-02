@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useModel } from 'umi';
 
 export default function useStepModel() {
   // 模型ID
@@ -20,6 +21,11 @@ export default function useStepModel() {
   // 是否已经生成报告 // 生成报告后 都不能再编辑 报告路径不为空【1】的时候所有步骤都不能编辑
   const [isHadReported, setIsHadReported] = useState<any>('');
 
+  //是否管理员
+  const { initialState } = useModel('@@initialState');
+
+  const { userAuth = [] }: any = initialState || {};
+
   //模型详情-步骤条当前点击的步骤
   let currentStep: any = useRef();
 
@@ -39,5 +45,6 @@ export default function useStepModel() {
     setIsHadReported,
     modelName,
     setModelName,
+    isLeaderDisabled: userAuth?.includes('RISK_MANAGER'),
   };
 }
