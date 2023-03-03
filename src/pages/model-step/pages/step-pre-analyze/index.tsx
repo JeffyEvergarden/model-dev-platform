@@ -527,8 +527,31 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   const exportResult = async () => {
     customerFormRef.validateFields().then((value: any) => {
+      let formData = form.getFieldsValue();
       if (value) {
-        exportExcel({ itmModelRegisCode: modelId })
+        let reqData = {
+          itmModelRegisCode: modelId,
+          customerDefinition: value,
+          ...formData,
+          preanalysisCondition: formRef?.current?.getFieldsValue(),
+          preanalysisRollRateCondition: formRef2?.current?.getFieldsValue(),
+        };
+
+        reqData.preanalysisRollRateCondition.paymentTime =
+          reqData?.preanalysisRollRateCondition?.paymentTime
+            ?.map((item: any) => moment(item)?.format?.('YYYY-MM'))
+            ?.join?.();
+        reqData.preanalysisRollRateCondition.loadTerm =
+          reqData?.preanalysisRollRateCondition?.loadTerm?.join();
+
+        reqData.preanalysisCondition.prodCat = reqData?.preanalysisCondition?.prodCat?.join();
+        reqData.preanalysisCondition.channelCatM =
+          reqData?.preanalysisCondition?.channelCatM?.join();
+        reqData.preanalysisCondition.channelCatS =
+          reqData?.preanalysisCondition?.channelCatS?.join();
+        reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
+
+        exportExcel(reqData)
           .then((res) => {
             const blob: any = res;
             const reader = new FileReader(blob);
@@ -545,6 +568,40 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           .catch((err) => {
             console.log(err);
           });
+      }
+    });
+
+    customerFormRef.validateFields().then((value: any) => {
+      let formData = form.getFieldsValue();
+      if (value) {
+        let reqData = {
+          itmModelRegisCode: modelId,
+          customerDefinition: value,
+          ...formData,
+          preanalysisCondition: formRef?.current?.getFieldsValue(),
+          preanalysisRollRateCondition: formRef2?.current?.getFieldsValue(),
+        };
+
+        reqData.preanalysisRollRateCondition.paymentTime =
+          reqData?.preanalysisRollRateCondition?.paymentTime
+            ?.map((item: any) => moment(item)?.format?.('YYYY-MM'))
+            ?.join?.();
+        reqData.preanalysisRollRateCondition.loadTerm =
+          reqData?.preanalysisRollRateCondition?.loadTerm?.join();
+
+        reqData.preanalysisCondition.prodCat = reqData?.preanalysisCondition?.prodCat?.join();
+        reqData.preanalysisCondition.channelCatM =
+          reqData?.preanalysisCondition?.channelCatM?.join();
+        reqData.preanalysisCondition.channelCatS =
+          reqData?.preanalysisCondition?.channelCatS?.join();
+        reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
+
+        console.log(reqData);
+        nextFlow(reqData).then((res) => {
+          if (res) {
+            nextStep();
+          }
+        });
       }
     });
   };
