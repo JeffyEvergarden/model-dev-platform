@@ -61,9 +61,9 @@ const getWaitResult = (req: any, res: any) => {
     result: {
       currentStage: '10',
       currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
-      isCommittedPage: '1',
-      currentStageDesc: '1',
-      modelBuildStatus: '1',
+      isCommittedPage: '0',
+      currentStageDesc: '0',
+      modelBuildStatus: '0',
       reportFilePath: '',
       backtrackProcessName: '编排1,编排2',
       operate: 'EDIT',

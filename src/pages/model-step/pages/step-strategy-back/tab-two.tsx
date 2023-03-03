@@ -58,14 +58,17 @@ const TabTwo: React.FC<any> = (props: any) => {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       data = res.result || {};
     })();
-    setDoneStep(data.currentStage);
+    setDoneStep(data.currentStage || 3);
     // if (processId) {
 
-    if (curStep + 1 < data.currentStage) {
+    if (curStep + 1 < (data.currentStage || 3)) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
       startLoop({ itmModelRegisCode: modelId }, 4);
     }
+
+    console.log(operate, processType, isHadBuild, isHadReported);
+
     // }
     return () => {
       clearTime();

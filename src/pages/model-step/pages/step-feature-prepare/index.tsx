@@ -8,6 +8,7 @@ import { getWaitResult } from '../step-select-sample/model/api';
 import { useModel } from 'umi';
 import { resetPrepare } from './model/api';
 import { successCode } from '../step-strategy-back/model';
+import { formateStatus } from '../../config';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
@@ -33,7 +34,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const reset = async () => {
     await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
       if (res?.status?.code == successCode) {
-        setDoneStepStatus('loading');
+        // setDoneStepStatus(formateStatus(Number(2)));
         setStepType(1);
       }
     });
