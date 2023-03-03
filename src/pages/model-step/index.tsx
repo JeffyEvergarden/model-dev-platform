@@ -15,8 +15,6 @@ import {
 } from './config';
 import Condition from '@/components/Condition';
 import { useBaseInfoModel } from './model';
-import { isBoolean, isNumber } from 'lodash';
-import user from 'mock/user';
 
 const Step = Steps.Step;
 
@@ -123,10 +121,7 @@ const Myjob: React.FC<any> = (props: any) => {
 
   const modelMapToValue = (cur: number, fs: number, i: number, doneStepStatus: any) => {
     // 点击完成步骤之前的
-    let status: any = formateStatus(doneStepStatus);
-    if (!isNaN(status)) {
-      status = formateStatus(status);
-    }
+    let status: any = isNaN(doneStepStatus) ? doneStepStatus : formateStatus(doneStepStatus);
     if (i <= fs) {
       // 选中菜单
       if (cur === i && fs === i) {
@@ -159,10 +154,7 @@ const Myjob: React.FC<any> = (props: any) => {
         return 'process';
       }
       if (i === fs) {
-        let status: any = formateStatus(doneStepStatus);
-        if (!isNaN(status)) {
-          status = formateStatus(status);
-        }
+        let status: any = isNaN(doneStepStatus) ? doneStepStatus : formateStatus(doneStepStatus);
         if (status === 'error') {
           return 'error';
         } else {
@@ -172,6 +164,8 @@ const Myjob: React.FC<any> = (props: any) => {
       return 'finish';
     } else if (i > fs) {
       return 'wait';
+    } else {
+      return 'wait'; // 等待
     }
   };
 
