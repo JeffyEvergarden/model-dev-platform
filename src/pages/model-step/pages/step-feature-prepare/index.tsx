@@ -34,7 +34,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const reset = async () => {
     await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
       if (res?.status?.code == successCode) {
-        // setDoneStepStatus(formateStatus(Number(2)));
+        setDoneStepStatus(formateStatus(Number(2)));
         setStepType(1);
       }
     });
