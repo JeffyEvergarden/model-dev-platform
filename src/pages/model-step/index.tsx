@@ -119,13 +119,20 @@ const Myjob: React.FC<any> = (props: any) => {
     history.push(route.path);
   };
 
+  // 前端页面所处步骤 、 目前后端记录的最新步骤、 步骤序号、  目前后端记录的最新步骤的状态
   const modelMapToValue = (cur: number, fs: number, i: number, doneStepStatus: any) => {
-    // 点击完成步骤之前的
+    // 点击完成步骤之前的处理成  wait process finish error
     let status: any = isNaN(doneStepStatus) ? doneStepStatus : formateStatus(doneStepStatus);
     if (i <= fs) {
-      // 选中菜单
+      // 处在最新步骤
       if (cur === i && fs === i) {
-        return '进行中';
+        if (status === 'error') {
+          return '已失败';
+        } else if (status !== 'finish') {
+          return '进行中';
+        } else {
+          return '已完成';
+        }
       }
       if (i === fs) {
         if (status === 'error') {
@@ -140,7 +147,7 @@ const Myjob: React.FC<any> = (props: any) => {
     } else if (i > fs) {
       return '未完成';
     } else {
-      return `状态设置错误: ${i} - ${fs}
+      return `状态设置错误:
       ${doneStepStatus} - ${status}`;
     }
   };
@@ -150,16 +157,18 @@ const Myjob: React.FC<any> = (props: any) => {
     // 点击完成步骤之前的
     if (i <= fs) {
       // 选中菜单
-      if (cur === i) {
-        return 'process';
-      }
       if (i === fs) {
         let status: any = isNaN(doneStepStatus) ? doneStepStatus : formateStatus(doneStepStatus);
         if (status === 'error') {
           return 'error';
+        } else if (status === 'finish') {
+          return 'finish';
         } else {
           return 'process';
         }
+      }
+      if (cur === i) {
+        return 'process';
       }
       return 'finish';
     } else if (i > fs) {

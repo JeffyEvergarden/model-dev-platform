@@ -72,7 +72,7 @@ const getVarList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: [...list],
+    result: { tableData: [...list] },
   });
 };
 

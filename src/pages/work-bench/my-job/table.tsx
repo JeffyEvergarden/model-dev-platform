@@ -314,7 +314,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
         columns={columns}
         actionRef={tableRef}
         formRef={formRef}
-        scroll={{ x: columns.length * 200 }}
+        scroll={{ x: columns.length * 200, y: 350 }}
         request={async (params = {}, sort, filter) => {
           return getTableList({ page: params.current, ...params });
         }}
@@ -333,7 +333,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
         }}
         form={{}}
         pagination={{
-          pageSize: 10,
+          pageSize: 20,
           showSizeChanger: true,
         }}
         dateFormatter="string"

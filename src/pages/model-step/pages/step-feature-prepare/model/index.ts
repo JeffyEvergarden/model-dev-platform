@@ -21,7 +21,7 @@ export const useVarSelectModal = () => {
     if (!Array.isArray(data)) {
       return [];
     }
-    let _data = data.map((item: any) => {
+    let _data = data?.map?.((item: any) => {
       let obj: any = {
         title: item?.featureCategoryName,
         value: item?.featureCategoryCode,
@@ -41,7 +41,7 @@ export const useVarSelectModal = () => {
   const getTreeList = async (params?: any) => {
     let res: any = await getDatabaseList(params);
     let list: any[] = res?.result || [];
-    if (!Array.isArray(list)) {
+    if (!Array?.isArray(list)) {
       list = [];
     }
     list = processTreeData(list);
@@ -55,10 +55,15 @@ export const useVarSelectModal = () => {
     let res: any = await getVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.result || [];
+      let data = [];
       if (!params?.searchType) {
+        data = res?.result?.tableData;
         setVarList(data);
         setListType('tree');
+        setTotalSize(data.length || 0);
+      } else {
+        data = res?.result;
+        setVarList(data);
         setTotalSize(data.length || 0);
       }
       return { data, total: data.length };
@@ -76,7 +81,7 @@ export const useVarSelectModal = () => {
     let res: any = await getKeyVarList({ ...params });
     setLoading(false);
     if (res?.status?.code === successCode) {
-      let data = res?.result || [];
+      let data = res?.result?.tableData || [];
       setVarList(data);
       setListType('search');
       setTotalSize(res?.result?.totalSize || data?.length || 0);
