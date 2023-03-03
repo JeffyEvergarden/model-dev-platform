@@ -41,8 +41,6 @@ const StepOne: React.FC = (props: any) => {
 
   const { getForm, nextStage, saveInfo, loading } = useFormSelect();
 
-  const [isSave, setIsSave] = useState<any>('-1');
-
   const { nextStep } = useNextStep();
   const { getCurrentStageRequest } = useSample();
 
@@ -96,6 +94,7 @@ const StepOne: React.FC = (props: any) => {
     let modelDevTime = _form.modelDevTime;
     _form.modelDevStartTime = modelDevTime?.[0]?.format('YYYY-MM-DD');
     _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
+    delete _form.modelDevTime;
 
     if (type == 'next') {
       let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });

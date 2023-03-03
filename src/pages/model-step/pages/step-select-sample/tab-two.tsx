@@ -57,9 +57,9 @@ const StepTwo: React.FC<any> = (props: any) => {
   }, [tabType]);
 
   //状态改变时重新请求详情--更新创建时间字段
-  useEffect(() => {
-    getCurrentDetail();
-  }, [processType]);
+  // useEffect(() => {
+  //   (processType == 'finish' || 'error') && getCurrentDetail();
+  // }, [processType]);
 
   const getCurrentDetail = async () => {
     let params = {
