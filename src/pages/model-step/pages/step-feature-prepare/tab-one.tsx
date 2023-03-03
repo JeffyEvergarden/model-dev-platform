@@ -23,7 +23,7 @@ const SelectModal: React.FC<any> = (props: any) => {
 
   // 打开选择FAQ/意图模态框
   const openSelectFaqModal = (row: any) => {
-    tmpRef.current.row = selectList;
+    tmpRef.current.row = selectList || [];
     let questionTypeList: any[] = selectList || [];
 
     questionTypeList = Array.isArray(questionTypeList) ? [...questionTypeList] : [];

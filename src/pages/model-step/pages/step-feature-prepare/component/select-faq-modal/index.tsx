@@ -209,7 +209,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     open: (obj: any) => {
-      getTreeList(info.id); // 获取faq列表
+      getTreeList({}); // 获取faq列表
       setSelectedRowKeys(obj?.selectList?.map((item: any) => item.featureCode) || []);
       setSelectList(obj?.selectList || []);
       // 显示

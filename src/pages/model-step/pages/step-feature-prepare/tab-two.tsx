@@ -58,7 +58,7 @@ const TabTwo: React.FC<any> = (props: any) => {
       data = res.result || {};
     })();
     // if (processId) {
-    if (curStep + 1 < data.currentStage) {
+    if (curStep + 1 < data.currentStage || 6) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
       startLoop({ itmModelRegisCode: modelId }, 4);

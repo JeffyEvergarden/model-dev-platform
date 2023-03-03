@@ -5,7 +5,7 @@ const successCode = config.successCode;
 const baseUrl = config.basePath;
 
 const getList = (req: any, res: any) => {
-  let list = new Array(11).fill(1).map((item: any, index: number) => {
+  let list = new Array(57).fill(1).map((item: any, index: number) => {
     return {
       modelName: '阿斯拉大' + index,
       itmModelRegisCode: 100 + index,
@@ -23,8 +23,8 @@ const getList = (req: any, res: any) => {
   res.json({
     status: { code: successCode, desc: '' },
     result: {
-      totalPage: 7,
-      totalSize: 7,
+      totalPage: 57,
+      totalSize: 57,
       pageSize: 10,
       current: 1,
       tableData: list,
