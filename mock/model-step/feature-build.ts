@@ -53,12 +53,11 @@ const getVarList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: {
+    result:
       // pageSize: req?.pageSize || 10,
       // totalPage: 21,
       // current: 1,
-      variableList: [...list],
-    },
+      [...list],
   });
 };
 

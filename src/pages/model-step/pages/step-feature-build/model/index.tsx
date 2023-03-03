@@ -39,7 +39,7 @@ export const useExportReportModel = () => {
     console.log(res, type);
     // 策略分析
     if (res?.status?.code === successCode) {
-      let data: any[] = res?.result?.variableList || [];
+      let data: any[] = res?.result || [];
       if (type) {
         data = data.filter((item) => item?.variableType == type);
       }
