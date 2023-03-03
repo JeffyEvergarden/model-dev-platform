@@ -46,7 +46,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   const again = async () => {
     await reBack({ itmModelRegisCode: modelId }).then((res: any) => {
       if (res?.status?.code == successCode) {
-        setDoneStepStatus(formateStatus(Number(2)));
+        setDoneStepStatus(formateStatus(Number(1)));
         setDoneStep(3);
         setStepType(1);
       }

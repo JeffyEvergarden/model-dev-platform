@@ -207,13 +207,13 @@ const ModelManagement: React.FC<any> = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createDate',
       hideInSearch: true,
       width: 200,
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createDate',
       valueType: 'dateRange',
       fieldProps: {
         placeholder: ['开始时间', '结束时间'],
