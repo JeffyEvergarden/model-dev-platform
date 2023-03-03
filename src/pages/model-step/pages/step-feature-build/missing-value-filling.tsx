@@ -240,7 +240,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         reader.readAsDataURL(blob);
         reader.onload = (e: any) => {
           const a = document.createElement('a');
-          a.download = `样本定义.${'xls'}`;
+          a.download = `特征工程.${'xls'}`;
           a.href = e.target.result;
           document.body.appendChild(a);
           a.click();

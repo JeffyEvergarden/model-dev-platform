@@ -207,13 +207,13 @@ const ModelManagement: React.FC<any> = (props: any) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createDate',
       hideInSearch: true,
       width: 200,
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createDate',
       valueType: 'dateRange',
       fieldProps: {
         placeholder: ['开始时间', '结束时间'],
@@ -258,7 +258,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
               </Button>
 
               <Popconfirm
-                title="删除将不可恢复，确认删除？"
+                title="你确定要删除这个报告吗？"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={() => {

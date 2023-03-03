@@ -27,8 +27,8 @@ export const useDefineSampleModel = () => {
       setTableTotal(res?.totalSize || 0);
       setTableList(data);
       //回显整体
-      setResultTableList(res?.sampleTotalDistributionList || []);
-      setTableResultTotal(res?.sampleTotalDistributionList?.length || 0);
+      setResultTableList(res?.result?.sampleTotalDistributionList || []);
+      setTableResultTotal(res?.result?.sampleTotalDistributionList?.length || 0);
       return res?.result || {};
     }
   };

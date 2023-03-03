@@ -15,8 +15,6 @@ import {
 } from './config';
 import Condition from '@/components/Condition';
 import { useBaseInfoModel } from './model';
-import { isBoolean } from 'lodash';
-import user from 'mock/user';
 
 const Step = Steps.Step;
 
@@ -81,17 +79,20 @@ const Myjob: React.FC<any> = (props: any) => {
     if (typeof res === 'object') {
       // 设置全局状态
       let _index = Number(res.currentStage) || 1;
+      let _status = formateStatus(Number(res.currentStageStatus));
       setDoneStep(Number(_index));
-      setDoneStepStatus(formateStatus(Number(res.currentStageStatus)));
+      setDoneStepStatus(_status);
       // 进行页面跳转
       setPageLoad(true);
       goToUrl(codeToName(_index), _modelId || modelId);
       setCurStep(_index - 1);
       // --------
       setIsHadBuild(res.modelBuildStatus === '1');
-      setIsHadReported(!!res.reportFilePath);
+      // 步骤大于10 且 已完成
+      setIsHadReported(_index >= 10 && _status === 'finish');
       //是否有编辑权限
-      setOperate(res?.operate);
+      // setOperate(res?.operate);
+      setOperate('EDIT'); //暂时先开启
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');
@@ -120,13 +121,13 @@ const Myjob: React.FC<any> = (props: any) => {
 
   const modelMapToValue = (cur: number, fs: number, i: number, doneStepStatus: any) => {
     // 点击完成步骤之前的
+    let status: any = isNaN(doneStepStatus) ? doneStepStatus : formateStatus(doneStepStatus);
     if (i <= fs) {
       // 选中菜单
       if (cur === i && fs === i) {
         return '进行中';
       }
       if (i === fs) {
-        let status = formateStatus(doneStepStatus);
         if (status === 'error') {
           return '已失败';
         } else if (status === 'finish') {
@@ -138,6 +139,9 @@ const Myjob: React.FC<any> = (props: any) => {
       return '已完成';
     } else if (i > fs) {
       return '未完成';
+    } else {
+      return `状态设置错误: ${i} - ${fs}
+      ${doneStepStatus} - ${status}`;
     }
   };
 
@@ -150,7 +154,7 @@ const Myjob: React.FC<any> = (props: any) => {
         return 'process';
       }
       if (i === fs) {
-        let status = formateStatus(doneStepStatus);
+        let status: any = isNaN(doneStepStatus) ? doneStepStatus : formateStatus(doneStepStatus);
         if (status === 'error') {
           return 'error';
         } else {
@@ -160,6 +164,8 @@ const Myjob: React.FC<any> = (props: any) => {
       return 'finish';
     } else if (i > fs) {
       return 'wait';
+    } else {
+      return 'wait'; // 等待
     }
   };
 

@@ -10,6 +10,7 @@ import { getWaitResult } from '../step-select-sample/model/api';
 import { reBack } from './model/api';
 import { successCode, useStrategyBackModel, useStrategyBackUploadAwaitModel } from './model';
 import TabThree from './tab-three';
+import { formateStatus } from '../../config';
 
 // 首页
 const StepStrategyBack: React.FC<any> = (props: any) => {
@@ -45,7 +46,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   const again = async () => {
     await reBack({ itmModelRegisCode: modelId }).then((res: any) => {
       if (res?.status?.code == successCode) {
-        setDoneStepStatus('loading');
+        setDoneStepStatus(formateStatus(Number(1)));
         setDoneStep(3);
         setStepType(1);
       }
@@ -71,9 +72,10 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   const getCurrentStage = async () => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
     let data = res.result || {};
+    let dStep = data.currentStage || 3;
 
-    setDoneStep(data.currentStage);
-    if (3 < data.currentStage) {
+    setDoneStep(dStep);
+    if (3 < dStep) {
       getStrategyTableList({ itmModelRegisCode: modelId }).then((res) => {
         if (res.isSkipCurrentStage) {
           setStepType(1); //如果跳过后回来
@@ -81,7 +83,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
           setStepType(2);
         }
       });
-    } else if (3 == data.currentStage) {
+    } else if (3 == dStep) {
       if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
         setStepType(2);
         setSelectedKeys(data?.backtrackProcessName?.split(',') || []);

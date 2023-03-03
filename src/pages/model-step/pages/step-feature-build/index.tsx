@@ -8,6 +8,9 @@ import TitleStatus from '../../components/title-status';
 import Condition from '@/components/Condition';
 import NextStepButton from '../../components/nextstep-button';
 import { useModel } from 'umi';
+import { nextProcess } from './model/api';
+import { successCode } from '../step-model-compare/model';
+import { useNextStep } from '../../config';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
@@ -16,6 +19,22 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     isHadReported: model.isHadReported,
     operate: model.operate,
   }));
+
+  const { nextStep } = useNextStep();
+
+  const _nextFlow = async () => {
+    let reqData = {
+      itmModelRegisCode: modelId,
+      featureMetricsResult: '',
+      featureBinningResults: '',
+    };
+    await nextProcess(reqData).then((res) => {
+      if (res.status.code == successCode) {
+        nextStep();
+      }
+    });
+  };
+
   return (
     <div className={styles['step-page']}>
       <div className={styles['step-title']}>
@@ -32,7 +51,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
             <Space>
               <Button
                 onClick={() => {
-                  // _nextFlow();
+                  _nextFlow();
                 }}
                 size="large"
                 type="primary"

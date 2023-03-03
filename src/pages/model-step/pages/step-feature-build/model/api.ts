@@ -44,7 +44,7 @@ export async function getVariableBoxTypeList(data?: { [key: string]: any }) {
     params: data,
   });
 }
-
+//缺失下载
 export async function lostExport(data?: { [key: string]: any }) {
   return request(`${baseUrl}/featureEngineering/downloadMissReport`, {
     method: 'POST',
@@ -52,11 +52,19 @@ export async function lostExport(data?: { [key: string]: any }) {
     responseType: 'blob',
   });
 }
-
+//分箱下载
 export async function boxExport(data?: { [key: string]: any }) {
   return request(`${baseUrl}/featureEngineering/downloadBinningReport`, {
     method: 'POST',
     data,
     responseType: 'blob',
+  });
+}
+
+//下一流程
+export async function nextProcess(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/nextStage`, {
+    method: 'POST',
+    data,
   });
 }

@@ -56,7 +56,7 @@ const TabThree: React.FC<any> = (props: any) => {
         } else {
           setTimeout(async () => {
             getskip();
-          }, 5 * 1000);
+          }, 2 * 1000);
         }
       }
     });
@@ -65,7 +65,7 @@ const TabThree: React.FC<any> = (props: any) => {
   useEffect(() => {
     fake.current.timeFn = setTimeout(async () => {
       getskip();
-    }, 5 * 1000);
+    }, 2 * 1000);
     return () => {
       fake.current.timeFn = null;
     };

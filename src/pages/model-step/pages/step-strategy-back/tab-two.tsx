@@ -7,7 +7,7 @@ import Condition from '@/components/Condition';
 import { useStrategyBackUploadAwaitModel } from './model';
 import { useNextStep } from '../../config';
 import { useModel } from 'umi';
-import { getWaitResult } from './model/api';
+import { getWaitResult } from '../step-select-sample/model/api';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -26,12 +26,13 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate } = useModel(
+  const { modelId, curStep, doneStep, setDoneStep, isHadBuild, isHadReported, operate } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
       curStep: model.curStep,
       doneStep: model.doneStep,
+      setDoneStep: model.setDoneStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
       operate: model.operate,
@@ -57,13 +58,17 @@ const TabTwo: React.FC<any> = (props: any) => {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       data = res.result || {};
     })();
+    setDoneStep(data.currentStage || 3);
     // if (processId) {
 
-    if (curStep + 1 < data.currentStage) {
+    if (curStep + 1 < (data.currentStage || 3)) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
       startLoop({ itmModelRegisCode: modelId }, 4);
     }
+
+    console.log(operate, processType, isHadBuild, isHadReported);
+
     // }
     return () => {
       clearTime();
