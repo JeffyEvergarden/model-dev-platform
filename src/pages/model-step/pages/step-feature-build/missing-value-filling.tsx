@@ -1,10 +1,11 @@
 import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, Input, InputNumber, Select, Space, Table } from 'antd';
+import { Button, Divider, Form, Input, InputNumber, message, Select, Space, Table } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { boxList, varList } from './config';
 import { useExportReportModel } from './model';
+import { lostExport } from './model/api';
 import style from './style.less';
 
 const MissingValueFilling: React.FC<any> = (props: any) => {
@@ -224,6 +225,33 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     getLostList(reqData);
   };
 
+  const exportLost = async () => {
+    if (!tableList?.length) {
+      message.warning('列表暂无数据');
+      return;
+    }
+    let reqData = {
+      ...tableInfo,
+    };
+    await lostExport(reqData)
+      .then((res) => {
+        const blob: any = res;
+        const reader = new FileReader(blob);
+        reader.readAsDataURL(blob);
+        reader.onload = (e: any) => {
+          const a = document.createElement('a');
+          a.download = `样本定义.${'xls'}`;
+          a.href = e.target.result;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <div style={{ fontWeight: 'bold', fontSize: '16px' }}>缺失值填充</div>
@@ -304,7 +332,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
                 <Divider type="vertical" />
                 类别型：<span className={style['titleSpan']}>{tableInfo?.otherTypeNum ?? '-'}</span>
               </div>
-              <Button type="link" icon={<DownloadOutlined />}>
+              <Button type="link" icon={<DownloadOutlined />} onClick={exportLost}>
                 下载
               </Button>
             </div>

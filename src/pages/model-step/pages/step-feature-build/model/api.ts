@@ -44,3 +44,19 @@ export async function getVariableBoxTypeList(data?: { [key: string]: any }) {
     params: data,
   });
 }
+
+export async function lostExport(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/downloadMissReport`, {
+    method: 'POST',
+    data,
+    responseType: 'blob',
+  });
+}
+
+export async function boxExport(data?: { [key: string]: any }) {
+  return request(`${baseUrl}/featureEngineering/downloadBinningReport`, {
+    method: 'POST',
+    data,
+    responseType: 'blob',
+  });
+}
