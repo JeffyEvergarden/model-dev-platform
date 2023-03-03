@@ -37,6 +37,8 @@ const StepOne: React.FC = (props: any) => {
   // 表单是否可以编辑
   const isDisabled = isHadReported || isReadonly;
 
+  console.log(isHadReported, isReadonly);
+
   const [form] = Form.useForm();
 
   const { getForm, nextStage, saveInfo, loading } = useFormSelect();
@@ -250,7 +252,7 @@ const StepOne: React.FC = (props: any) => {
       </Form>
       {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
       {/* doneStep>3 保存  doneStep<=3 下一流程*/}
-
+      {isDisabled ? 'true' : 'false'}
       {!isDisabled && (
         <NextStepButton
           btnNode={
