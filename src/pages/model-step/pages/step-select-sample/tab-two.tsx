@@ -87,7 +87,7 @@ const StepTwo: React.FC<any> = (props: any) => {
         errorContent={
           <>
             <div className={styles['title']}>样本选取失败</div>
-            <div className={styles['desc']}>{desc}</div>
+            <div className={styles['desc']}>失败原因：{desc}</div>
           </>
         }
         pageType={processType}

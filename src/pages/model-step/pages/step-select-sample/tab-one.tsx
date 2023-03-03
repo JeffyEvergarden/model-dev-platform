@@ -449,12 +449,12 @@ const StepOne: React.FC<any> = (props: any) => {
             </Col>
             <Col span={8}>
               <FormItem
-                rules={[{ required: true, message: '请选择编排调度' }]}
+                rules={[{ required: true, message: '请选择编排维度' }]}
                 name="processName"
-                label="编排调度"
+                label="编排维度"
               >
                 <Select
-                  placeholder="请选择编排调度"
+                  placeholder="请选择编排维度"
                   mode="multiple"
                   allowClear
                   optionFilterProp="children"

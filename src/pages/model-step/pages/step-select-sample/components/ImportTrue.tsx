@@ -39,18 +39,18 @@ export default (props: any) => {
             <FormItem
               label={'表名称'}
               name="tableName"
-              rules={[{ required: true, message: '请输入表名称' }]}
+              rules={[{ required: true, message: '请输入导入表名称' }]}
             >
-              <Input placeholder="请输入表名称" />
+              <Input placeholder="请输入导入表名称" />
             </FormItem>
           </Col>
           <Col span={8}>
             <FormItem
               label={'表字段'}
               name="dimensionField"
-              rules={[{ required: true, message: '请输入表字段' }]}
+              rules={[{ required: true, message: '请输入导入字段名称' }]}
             >
-              <Input placeholder="请输入表字段" />
+              <Input placeholder="请输入导入字段名称" />
             </FormItem>
           </Col>
         </Row>

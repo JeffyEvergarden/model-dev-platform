@@ -15,5 +15,5 @@ const normalDeal = (req: any, res: any) => {
 
 export default {
   [`POST ${baseUrl}/summary/saveInfo`]: normalDeal,
-  [`POST ${baseUrl}/summary/nextStageApi`]: normalDeal,
+  [`POST ${baseUrl}/summary/nextStage`]: normalDeal,
 };
