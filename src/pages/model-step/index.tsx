@@ -91,7 +91,8 @@ const Myjob: React.FC<any> = (props: any) => {
       setIsHadBuild(res.modelBuildStatus === '1');
       setIsHadReported(!!res.reportFilePath);
       //是否有编辑权限
-      setOperate(res?.operate);
+      // setOperate(res?.operate);
+      setOperate('EDIT'); //暂时先开启
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');

@@ -7,7 +7,7 @@ import Condition from '@/components/Condition';
 import { useStrategyBackUploadAwaitModel } from './model';
 import { useNextStep } from '../../config';
 import { useModel } from 'umi';
-import { getWaitResult } from './model/api';
+import { getWaitResult } from '../step-select-sample/model/api';
 
 // import { tabSelectColumns } from './model/config';
 
