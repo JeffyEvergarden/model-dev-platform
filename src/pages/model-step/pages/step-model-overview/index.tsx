@@ -153,7 +153,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型开发目标"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -167,7 +167,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入现有评分应用现状"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -181,7 +181,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型应用场景和思路"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -195,7 +195,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型主要性能指标"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -209,7 +209,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型主要创新点"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
