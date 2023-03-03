@@ -26,12 +26,13 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate } = useModel(
+  const { modelId, curStep, doneStep, setDoneStep, isHadBuild, isHadReported, operate } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
       curStep: model.curStep,
       doneStep: model.doneStep,
+      setDoneStep: model.setDoneStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
       operate: model.operate,
@@ -57,6 +58,7 @@ const TabTwo: React.FC<any> = (props: any) => {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       data = res.result || {};
     })();
+    setDoneStep(data.currentStage);
     // if (processId) {
 
     if (curStep + 1 < data.currentStage) {
