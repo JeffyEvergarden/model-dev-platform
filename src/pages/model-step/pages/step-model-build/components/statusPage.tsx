@@ -29,7 +29,7 @@ const StepTwo: React.FC<any> = (props: any) => {
   );
 
   // 表单是否可以编辑
-  const isDisabled = isHadReported || isReadonly || isHadBuild;
+  const isDisabled = isHadReported || isReadonly;
 
   const onClick = () => {
     onNext?.();

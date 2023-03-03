@@ -43,8 +43,6 @@ const StepOne: React.FC = (props: any) => {
 
   const { getForm, nextStage, saveInfo, loading } = useFormSelect();
 
-  const [isSave, setIsSave] = useState<any>('-1');
-
   const { nextStep } = useNextStep();
   const { getCurrentStageRequest } = useSample();
 
@@ -98,6 +96,7 @@ const StepOne: React.FC = (props: any) => {
     let modelDevTime = _form.modelDevTime;
     _form.modelDevStartTime = modelDevTime?.[0]?.format('YYYY-MM-DD');
     _form.modelDevEndTime = modelDevTime?.[1]?.format('YYYY-MM-DD');
+    delete _form.modelDevTime;
 
     if (type == 'next') {
       let res = await saveInfo({ ..._form, itmModelRegisCode: modelId });
@@ -155,7 +154,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型开发目标"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -169,7 +168,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入现有评分应用现状"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -183,7 +182,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型应用场景和思路"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -197,7 +196,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型主要性能指标"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -211,7 +210,7 @@ const StepOne: React.FC = (props: any) => {
             <TextArea
               rows={4}
               placeholder="请输入模型主要创新点"
-              maxLength={150}
+              maxLength={500}
               disabled={isDisabled}
             />
           </FormItem>
@@ -250,9 +249,6 @@ const StepOne: React.FC = (props: any) => {
           </FormItem>
         </div>
       </Form>
-      {/*当前阶段>=2的时候，下一流程可以去掉，只有保存按钮， <=1的是展示保存按钮和下一流程按钮 doneStep*/}
-      {/* doneStep>3 保存  doneStep<=3 下一流程*/}
-      {isDisabled ? 'true' : 'false'}
       {!isDisabled && (
         <NextStepButton
           btnNode={
