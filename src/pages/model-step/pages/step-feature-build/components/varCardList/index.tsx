@@ -66,7 +66,7 @@ const VarCardList: React.FC<any> = (props: any) => {
         <Checkbox.Group style={{ width: '100%' }} onChange={() => {}}>
           <Row gutter={[0, 16]}>
             {varList?.map?.((item: any, index: any) => {
-              if (index > (page - 1) * pageSize && index <= page * pageSize)
+              if (index >= (page - 1) * pageSize && index < page * pageSize)
                 //分页
                 return (
                   <Col span={4} key={index} style={{ marginRight: '3%' }}>

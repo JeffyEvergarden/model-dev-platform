@@ -21,7 +21,7 @@ export const useVarSelectModal = () => {
     if (!Array.isArray(data)) {
       return [];
     }
-    let _data = data.map((item: any) => {
+    let _data = data?.map?.((item: any) => {
       let obj: any = {
         title: item?.featureCategoryName,
         value: item?.featureCategoryCode,
@@ -41,7 +41,7 @@ export const useVarSelectModal = () => {
   const getTreeList = async (params?: any) => {
     let res: any = await getDatabaseList(params);
     let list: any[] = res?.result || [];
-    if (!Array.isArray(list)) {
+    if (!Array?.isArray(list)) {
       list = [];
     }
     list = processTreeData(list);

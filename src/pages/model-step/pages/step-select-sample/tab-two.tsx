@@ -50,15 +50,16 @@ const StepTwo: React.FC<any> = (props: any) => {
     if (curStep + 1 < doneStep) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
-      startLoop({ itmModelRegisCode: modelId }, 4);
+      startLoop({ itmModelRegisCode: modelId }, 4, '');
     }
     getCurrentDetail();
-    console.log('isHadReported', isHadReported);
-    console.log('isReadonly', isReadonly);
-    console.log('isHadBuild', isHadBuild);
-    console.log('isDisabled', isDisabled);
     return () => clearInterval(fake?.current?.timeFn);
   }, [tabType]);
+
+  //状态改变时重新请求详情--更新创建时间字段
+  // useEffect(() => {
+  //   (processType == 'finish' || 'error') && getCurrentDetail();
+  // }, [processType]);
 
   const getCurrentDetail = async () => {
     let params = {
