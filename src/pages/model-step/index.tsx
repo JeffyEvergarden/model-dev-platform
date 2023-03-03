@@ -81,15 +81,17 @@ const Myjob: React.FC<any> = (props: any) => {
     if (typeof res === 'object') {
       // 设置全局状态
       let _index = Number(res.currentStage) || 1;
+      let _status = formateStatus(Number(res.currentStageStatus));
       setDoneStep(Number(_index));
-      setDoneStepStatus(formateStatus(Number(res.currentStageStatus)));
+      setDoneStepStatus(_status);
       // 进行页面跳转
       setPageLoad(true);
       goToUrl(codeToName(_index), _modelId || modelId);
       setCurStep(_index - 1);
       // --------
       setIsHadBuild(res.modelBuildStatus === '1');
-      setIsHadReported(!!res.reportFilePath);
+      // 步骤大于10 且 已完成
+      setIsHadReported(_index >= 10 && _status === 'finish');
       //是否有编辑权限
       // setOperate(res?.operate);
       setOperate('EDIT'); //暂时先开启
@@ -143,7 +145,7 @@ const Myjob: React.FC<any> = (props: any) => {
     } else if (i > fs) {
       return '未完成';
     } else {
-      return `状态设置错误: ${i} - ${fs} 
+      return `状态设置错误: ${i} - ${fs}
       ${doneStepStatus} - ${status}`;
     }
   };
