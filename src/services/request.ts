@@ -21,9 +21,8 @@ const request = extend({
     // console.log(Object.keys(error).map((it: any) => error[it]));
     // 权限无验证 跳转 统一认证页面
     if (error?.response.status === 401) {
-      if (!process.env.devmock) {
-        window.location.href = `${config.originPath}/login`; // 填写统一认证地址，地址不固定
-      }
+      console.log('登陆401: window.location.href=' + `${config.originPath}/login`);
+      window.location.href = `${config.originPath}/login`; // 填写统一认证地址，地址不固定
     } else if (error?.response.status === 404) {
       message.warning('请求路径不存在');
     } else if (error?.response.status === 403) {
