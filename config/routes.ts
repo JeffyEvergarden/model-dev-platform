@@ -77,7 +77,11 @@ export default [
         path: '/modelStep/exportReport',
         component: './model-step/pages/step-export-report', // 生成报告
       },
-      // { redirect: '/modelStep/overview' },
+      {
+        path: '/modelStep/loadingPage',
+        component: './model-step/pages/loadingPage.tsx', // 生成报告
+      },
+      { redirect: '/modelStep/loadingPage' },
     ],
   },
   { path: '/403', component: './403', layout: true, hideInMenu: true },
