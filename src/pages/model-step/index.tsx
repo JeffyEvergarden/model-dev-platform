@@ -91,8 +91,7 @@ const Myjob: React.FC<any> = (props: any) => {
       // 步骤大于10 且 已完成
       setIsHadReported(_index >= 10 && _status === 'finish');
       //是否有编辑权限
-      // setOperate(res?.operate);
-      setOperate('EDIT'); //暂时先开启
+      setOperate(res?.operate);
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');

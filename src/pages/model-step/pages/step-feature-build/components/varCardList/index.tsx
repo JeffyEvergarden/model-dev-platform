@@ -1,3 +1,4 @@
+import Condition from '@/components/Condition';
 import { Card, Checkbox, Col, Divider, Pagination, Row, Select, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useState } from 'react';
 import { useModel } from 'umi';
@@ -13,6 +14,7 @@ const VarCardList: React.FC<any> = (props: any) => {
     useExportReportModel();
   const [page, setPage] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(50);
+  const [selectList, setSelectList] = useState<any>([]);
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -28,6 +30,7 @@ const VarCardList: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     getVarList: getList,
+    selectList,
   }));
 
   const pageChange = (page: any, size: any) => {
@@ -63,22 +66,36 @@ const VarCardList: React.FC<any> = (props: any) => {
           </div>
         }
       >
-        <Checkbox.Group style={{ width: '100%' }} onChange={() => {}}>
-          <Row gutter={[0, 16]}>
+        <Checkbox.Group
+          style={{ width: '100%' }}
+          onChange={(val) => {
+            console.log(val);
+            setSelectList(val);
+          }}
+        >
+          <div className={style['varSelectList']}>
             {varList?.map?.((item: any, index: any) => {
-              if (index >= (page - 1) * pageSize && index < page * pageSize)
-                //分页
-                return (
-                  <Col span={4} key={index} style={{ marginRight: '3%' }}>
-                    <Checkbox value={item?.variable} className={style['checkBoxText']}>
-                      <Tooltip placement="topLeft" title={item?.variableName}>
-                        {item?.variableName}
-                      </Tooltip>
-                    </Checkbox>
-                  </Col>
-                );
+              // if (index >= (page - 1) * pageSize && index < page * pageSize) {
+              //分页
+              return (
+                <div
+                  style={{
+                    flex: '0 0 20%',
+                    marginBottom: '12px',
+                    display:
+                      index >= (page - 1) * pageSize && index < page * pageSize ? 'block' : 'none',
+                  }}
+                >
+                  <Checkbox value={item?.variable} className={style['checkBoxText']}>
+                    <Tooltip placement="topLeft" title={item?.variableName}>
+                      {item?.variableName}
+                    </Tooltip>
+                  </Checkbox>
+                </div>
+              );
+              // }
             })}
-          </Row>
+          </div>
         </Checkbox.Group>
         <Divider />
         <Pagination

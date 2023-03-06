@@ -79,22 +79,46 @@ const getVariableTypeList = (req: any, res: any) => {
 };
 
 const getVariableListForBinning = (req: any, res: any) => {
+  const obj = {
+    1: 'number',
+    2: 'string',
+    3: 'boolean',
+    4: 'date',
+  };
+
   let list = new Array(11).fill(1).map((item: any, index: number) => {
     return {
       variable: 'name' + index,
       variableName: '中文name' + index,
-      variableType: '1',
-      boxGoup: '2',
-      trainBoxRate: '10',
-      validBoxRate: '20',
-      trainBadRate: '30',
-      validBadRate: '40',
-      trainKs: '5',
-      validKs: '2',
-      trainIv: '0',
-      validIv: '1',
-      trainPsi: '3',
-      validPsi: '4',
+      variableType: obj[Math.ceil(Math.random() * 4)],
+      binning: [
+        {
+          boxGroup: '(-inf,0)',
+          trainBoxRate: '10%',
+          validBoxRate: '20%',
+          trainBadRate: '30%',
+          validBadRate: '40%',
+          trainKs: '5%',
+          validKs: '2%',
+          trainIv: '0%',
+          validIv: '1%',
+          trainPsi: '3%',
+          validPsi: '4%',
+        },
+        {
+          boxGroup: '(0,+inf)',
+          trainBoxRate: '10%',
+          validBoxRate: '20%',
+          trainBadRate: '30%',
+          validBadRate: '40%',
+          trainKs: '5%',
+          validKs: '2%',
+          trainIv: '0%',
+          validIv: '1%',
+          trainPsi: '3%',
+          validPsi: '4%',
+        },
+      ],
     };
   });
 
@@ -103,9 +127,7 @@ const getVariableListForBinning = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: {
-      variableMetricsList: [...list],
-    },
+    result: [...list],
   });
 };
 

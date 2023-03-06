@@ -5,18 +5,21 @@ import style from './style.less';
 import styles from '../../../style.less';
 import classnames from 'classnames';
 import { useComparePage } from '../../../step-model-compare/model';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { changeData } from '@/utils';
 import ScoreCardTable from '@/pages/model-step/components/scoreCardTable';
-import { getVariableBoxTypeList, getVariableListForBinning } from '../../model/api';
+import { boxExport, getVariableBoxTypeList, getVariableListForBinning } from '../../model/api';
 import { useModel } from 'umi';
 import config from '@/config/index';
 
 const SubBox: React.FC<any> = (props: any) => {
+  const { cref, varRef } = props;
   const { Option } = Select;
   const actionRef = useRef<any>();
+  const tableRef = useRef<any>();
   const [tableList, setTableList] = useState<any>([]);
+  const [originTableList, setOriginTableList] = useState<any>([]);
   // const [boxList, setBoxList] = useState<any>([]);
   const [selectValue, setSelectValue] = useState<any>();
 
@@ -24,7 +27,20 @@ const SubBox: React.FC<any> = (props: any) => {
     modelId: model.modelId,
   }));
 
+  const varType: any = {
+    number: '数值型',
+    string: '字符串型',
+    boolean: '布尔型',
+    date: '日期型',
+  };
+
   const getTableList = async () => {
+    console.log(varRef?.current?.selectList);
+    if (!varRef?.current?.selectList?.length) {
+      message.warning('请选择变量');
+      return;
+    }
+
     if (!selectValue) {
       message.warning('请选择分箱方式');
       return;
@@ -32,29 +48,90 @@ const SubBox: React.FC<any> = (props: any) => {
     let reqData = {
       itmModelRegisCode: modelId,
       binningType: selectValue,
+      selectedVariables: varRef?.current?.selectList?.join(),
     };
+    let data: any = [];
+    let total: any = 0;
     await getVariableListForBinning(reqData).then((res) => {
-      console.log(res?.result?.variableMetricsList);
-      let data = res?.result?.variableMetricsList || [];
-      data = changeData(data, 'variable');
+      console.log(res?.result);
+      data = res?.result || [];
+      total = data?.length;
+      console.log(data);
+      setOriginTableList(data);
+      data = togetherData(data);
       console.log(data);
       setTableList(data);
+      return { data, total: total };
     });
+    return { data, total: total };
   };
 
-  // const getVariableBoxList = async () => {
-  //   await getVariableBoxTypeList({}).then((res) => {
-  //     if (res?.status?.code === config.successCode) {
-  //       setBoxList(res?.result?.typeList);
-  //     } else {
-  //       setBoxList([]);
-  //     }
-  //   });
-  // };
+  useImperativeHandle(cref, () => ({
+    originTableList: originTableList,
+  }));
 
-  // useEffect(() => {
-  //   getVariableBoxList();
-  // }, []);
+  const togetherData = (data: any) => {
+    let tempArr: any = [];
+    data?.map((item: any, index: any) => {
+      item?.binning?.map((el: any) => {
+        tempArr.push({
+          idx: index,
+          id: el?.variable,
+          variable: item?.variable,
+          variableName: item?.variableName,
+          variableType: varType[item?.variableType],
+          boxGroup: el?.boxGroup,
+
+          trainBadRate: el?.trainBadRate,
+          trainBoxRate: el?.trainBoxRate,
+          trainIv: el?.trainIv,
+          trainKs: el?.trainKs,
+          trainPsi: el?.trainPsi,
+
+          validBadRate: el?.validBadRate,
+          validBoxRate: el?.validBoxRate,
+          validIv: el?.validIv,
+          validKs: el?.validKs,
+          validPsi: el?.validPsi,
+        });
+      });
+    });
+    console.log(tempArr);
+
+    return changeData(tempArr, 'variable');
+  };
+
+  const exportTable = async () => {
+    console.log(1);
+
+    if (!tableRef?.current?.selectList?.length) {
+      message.warning('请选择列表');
+      return;
+    }
+    let reqData = {
+      itmModelRegisCode: modelId,
+      variableList: originTableList?.filter((item: any) =>
+        tableRef?.current?.selectList?.includes(item.variable),
+      ),
+    };
+    await boxExport(reqData)
+      .then((res: any) => {
+        const blob: any = res;
+        const reader = new FileReader(blob);
+        reader.readAsDataURL(blob);
+        reader.onload = (e: any) => {
+          const a = document.createElement('a');
+          a.download = `特征工程分箱.${'xls'}`;
+          a.href = e.target.result;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className={styles.comparePage}>
@@ -73,47 +150,37 @@ const SubBox: React.FC<any> = (props: any) => {
             </Option>
           ))}
         </Select>
-        <Button type="primary" onClick={getTableList}>
+        <Button
+          type="primary"
+          onClick={() => {
+            // actionRef?.current?.reload()
+            getTableList();
+          }}
+        >
           开始分箱
         </Button>
       </div>
       <div className={classnames(styles.relateTable)}>
-        {/* <ProTable
-          className={style['tableBox']}
-          headerTitle={
-
-          }
-          rowKey={(record: any) => record.id}
-          toolBarRender={() => []}
-          options={false}
-          bordered
-          actionRef={actionRef}
-          pagination={{
-            pageSize: 10,
-          }}
-          search={false}
-          columns={columnsScoreCard}
-          request={async (params = {}) => {
-            return scoreCardList(params);
-          }}
-        /> */}
         <ScoreCardTable
+          cref={tableRef}
           pageType="varBinning"
-          headerTitle={
+          headerTitle={() => (
             <div className={style['title']}>
               <span>分箱结果</span>{' '}
-              <Button type="link" icon={<DownloadOutlined />}>
+              <Button type="link" icon={<DownloadOutlined />} onClick={exportTable}>
                 下载
               </Button>
             </div>
-          }
+          )}
           rowKey={(record: any) => record.id}
           toolBarRender={() => []}
           actionRef={actionRef}
           // request={async (params = {}) => {
           //   return scoreCardList(params);
           // }}
+          requestMethod={getTableList}
           dataSource={tableList}
+          originTableList={originTableList}
         />
       </div>
     </div>

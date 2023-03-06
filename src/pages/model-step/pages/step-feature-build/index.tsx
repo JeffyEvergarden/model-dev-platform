@@ -1,4 +1,4 @@
-import { Button, Divider, Space } from 'antd';
+import { Button, Divider, message, Space } from 'antd';
 import React, { useEffect, useRef } from 'react';
 
 import styles from '../style.less';
@@ -14,6 +14,9 @@ import { useNextStep } from '../../config';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
+  const lostRef = useRef<any>();
+  const boxRef = useRef<any>();
+
   const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     isHadReported: model.isHadReported,
@@ -23,13 +26,23 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const { nextStep } = useNextStep();
 
   const _nextFlow = async () => {
+    console.log(boxRef);
+
+    if (!lostRef?.current?.tableList?.length) {
+      message.warning('请查询缺失值填充');
+      return;
+    }
+    if (!boxRef?.current?.tableRef?.current?.originTableList?.length) {
+      message.warning('请查询变量分箱结果');
+      return;
+    }
     let reqData = {
       itmModelRegisCode: modelId,
-      featureMetricsResult: '',
-      featureBinningResults: '',
+      featureMetricsResult: lostRef?.current?.tableList,
+      featureBinningResults: boxRef?.current?.tableRef?.current?.originTableList,
     };
     await nextProcess(reqData).then((res) => {
-      if (res.status.code == successCode) {
+      if (res?.status?.code == successCode) {
         nextStep();
       }
     });
@@ -42,9 +55,10 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
         <TitleStatus index={7}></TitleStatus>
       </div>
 
-      <MissingValueFilling />
+      <MissingValueFilling cref={lostRef} />
       <Divider></Divider>
-      <VariableSubBox />
+      <VariableSubBox cref={boxRef} />
+
       <Condition r-if={operate == 'EDIT' && !isHadReported}>
         <NextStepButton
           btnNode={

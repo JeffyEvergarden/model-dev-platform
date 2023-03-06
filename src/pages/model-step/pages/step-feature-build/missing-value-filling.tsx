@@ -1,7 +1,7 @@
 import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, InputNumber, message, Select, Space, Table } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { boxList, varList } from './config';
 import { useExportReportModel } from './model';
@@ -9,6 +9,7 @@ import { lostExport } from './model/api';
 import style from './style.less';
 
 const MissingValueFilling: React.FC<any> = (props: any) => {
+  const { cref } = props;
   const [form] = Form.useForm();
   const formData = Form.useWatch('numberFillType', form);
   const formData2 = Form.useWatch('categoryFillType', form);
@@ -209,6 +210,10 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     },
   ];
 
+  useImperativeHandle(cref, () => ({
+    tableList,
+  }));
+
   const tableChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     console.log('tableChange-------');
     console.log(extra);
@@ -216,13 +221,17 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   };
 
   const searchTable = () => {
-    console.log();
-    let formData: any = form.getFieldsValue();
-    let reqData = {
-      itmModelRegisCode: modelId,
-      ...formData,
-    };
-    getLostList(reqData);
+    form.validateFields().then((values) => {
+      if (!values) {
+        return;
+      }
+      let formData: any = form.getFieldsValue();
+      let reqData = {
+        itmModelRegisCode: modelId,
+        ...formData,
+      };
+      getLostList(reqData);
+    });
   };
 
   const exportLost = async () => {
@@ -240,7 +249,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         reader.readAsDataURL(blob);
         reader.onload = (e: any) => {
           const a = document.createElement('a');
-          a.download = `特征工程.${'xls'}`;
+          a.download = `特征工程缺失值.${'xls'}`;
           a.href = e.target.result;
           document.body.appendChild(a);
           a.click();
@@ -257,7 +266,12 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       <div style={{ fontWeight: 'bold', fontSize: '16px' }}>缺失值填充</div>
       <Form form={form}>
         <div className={style['form']}>
-          <FormItem label={'数值型变量'} className={style['formItem']} name={'numberFillType'}>
+          <FormItem
+            label={'数值型变量'}
+            className={style['formItem']}
+            name={'numberFillType'}
+            rules={[{ required: true, message: '请选择' }]}
+          >
             <Select
               placeholder={'请选择填充方式'}
               onChange={() => {
@@ -278,7 +292,12 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             </FormItem>
           </Condition>
 
-          <FormItem label={'类别型变量'} className={style['formItem']} name={'categoryFillType'}>
+          <FormItem
+            label={'类别型变量'}
+            className={style['formItem']}
+            name={'categoryFillType'}
+            rules={[{ required: true, message: '请选择' }]}
+          >
             <Select placeholder={'请选择填充方式'} allowClear>
               {varList?.map((item) => (
                 <Option key={item.value} value={item.value}>
@@ -315,7 +334,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       </Form>
       <div className={style['missingTable']}>
         <Table
-          // pagination={false}
+          pagination={{ showSizeChanger: true }}
           dataSource={tableList}
           columns={columns}
           scroll={{ x: columns.length * 200 }}

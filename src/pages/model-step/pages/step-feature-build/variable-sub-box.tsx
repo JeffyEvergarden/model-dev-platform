@@ -1,5 +1,5 @@
 import { Button, Divider, Form, Input, message, Select, Slider, Space, Table } from 'antd';
-import { useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 import { twoDecimal_f } from '../utils/util';
 import SubBox from './components/subBox';
 import VarCardList from './components/varCardList';
@@ -7,9 +7,11 @@ import { VarBoxList } from './config';
 import style from './style.less';
 
 const MissingValueFilling: React.FC<any> = (props: any) => {
+  const { cref } = props;
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
   const varRef: any = useRef();
+  const tableRef: any = useRef();
 
   const sliderAndInput = (val: any) => {
     if (Array.isArray(val)) {
@@ -21,6 +23,10 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       return arr;
     }
   };
+
+  useImperativeHandle(cref, () => ({
+    tableRef,
+  }));
 
   const onChange = (e: any, name: any, str: any) => {
     let val = e.target.value;
@@ -66,6 +72,10 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
     varRef?.current?.getVarList(selectList);
   };
+
+  useEffect(() => {
+    console.log(tableRef);
+  }, [tableRef?.current?.originTableList]);
 
   return (
     <div>
@@ -119,7 +129,8 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         </div>
       </Form>
       <VarCardList cref={varRef} selectVar={selectVar} />
-      <SubBox />
+
+      <SubBox varRef={varRef} cref={tableRef} />
     </div>
   );
 };
