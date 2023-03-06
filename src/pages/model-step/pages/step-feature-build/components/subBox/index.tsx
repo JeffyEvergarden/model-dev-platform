@@ -164,16 +164,17 @@ const SubBox: React.FC<any> = (props: any) => {
         <ScoreCardTable
           cref={tableRef}
           pageType="varBinning"
-          headerTitle={() => (
+          headerTitle={
             <div className={style['title']}>
               <span>分箱结果</span>{' '}
-              <Button type="link" icon={<DownloadOutlined />} onClick={exportTable}>
-                下载
-              </Button>
             </div>
-          )}
+          }
           rowKey={(record: any) => record.id}
-          toolBarRender={() => []}
+          toolBarRender={() => [
+            <Button type="link" icon={<DownloadOutlined />} onClick={exportTable}>
+              下载
+            </Button>,
+          ]}
           actionRef={actionRef}
           // request={async (params = {}) => {
           //   return scoreCardList(params);

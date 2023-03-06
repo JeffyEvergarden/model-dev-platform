@@ -5,7 +5,7 @@ import styles from './style.less';
 import classnames from 'classnames';
 import { changeData } from '@/utils';
 import Condition from '@/components/Condition';
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined, FacebookFilled } from '@ant-design/icons';
 
 export default (props: any) => {
   const {
@@ -48,12 +48,14 @@ export default (props: any) => {
   };
 
   useEffect(() => {
-    let arr = originTableList.map((item: any) => {
-      return item.variable;
-    });
-    resetTable();
-    setSelectList(arr);
-    setSelectAll(true);
+    if (pageType != 'compareAndReport') {
+      let arr = originTableList.map((item: any) => {
+        return item.variable;
+      });
+      resetTable();
+      setSelectList(arr);
+      setSelectAll(true);
+    }
   }, [originTableList]);
 
   const resetTable = () => {
@@ -193,7 +195,7 @@ export default (props: any) => {
     {
       title: '分数',
       dataIndex: 'score',
-      hideInTable: pageType != 'compareAndReport',
+      hideInTable: pageType == 'varBinning' ? true : false,
       render: (t: any, r: any, i: any) => {
         return <span className={styles.cellSty}>{r.score}</span>;
       },
@@ -370,14 +372,19 @@ export default (props: any) => {
       </Condition>
 
       <Condition r-if={pageType != 'compareAndReport'}>
-        <Table
+        <ProTable
           onChange={resetTable}
+          headerTitle={headerTitle}
           rowKey={'variable'}
-          title={headerTitle}
-          dataSource={tableData}
-          columns={columnsScoreCard}
-          scroll={{ x: columnsScoreCard?.length * 120 }}
+          toolBarRender={toolBarRender}
+          options={false}
+          bordered
+          actionRef={actionRef}
           pagination={false}
+          scroll={{ x: columnsScoreCard?.length * 120 }}
+          search={false}
+          columns={columnsScoreCard}
+          dataSource={tableData}
         />
         <div style={{ marginBottom: '36px' }}>
           <Pagination
