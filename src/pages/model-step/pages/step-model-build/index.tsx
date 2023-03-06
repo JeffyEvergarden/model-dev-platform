@@ -116,6 +116,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   };
 
   const handleClose = (entityValueName: any) => {
+    if (ruleList?.length == 1) {
+      message.info('变量不能为空');
+      return;
+    }
     let temp = JSON.parse(JSON.stringify(ruleList));
     const tags = temp.filter((item: any) => item !== entityValueName);
     setRulist(tags);
@@ -196,10 +200,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           layout="vertical"
           initialValues={{
             penalty: 12,
-            solver: 'solver1',
+            solver: 'liblinear',
             c: 1.0,
             lrMaxIter: 100,
-            emptySeparate: '否',
+            emptySeparate: '0',
             isStepwise: '1',
             estimator: 'ols',
             direction: 'both',
@@ -251,33 +255,38 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 </Select>
               </Form.Item>
             </Col>
-            {varBinningType == '等频分箱' || varBinningType == '等距分箱'}
-            <Col span={6}>
-              <Form.Item
-                label="箱数"
-                name="varBoxNum"
-                rules={[{ required: true, message: '请输入箱数' }]}
-              >
-                <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label="每箱最小样本占比"
-                name="minSampleRate"
-                rules={[{ required: true, message: '请输入迭代次数' }]}
-              >
-                <InputNumber
-                  step="0.01"
-                  min={0}
-                  max={1}
-                  precision={2}
-                  style={{ width: '100%' }}
-                  placeholder="请输入"
-                  stringMode
-                />
-              </Form.Item>
-            </Col>
+            {varBinningType == '等频分箱' ||
+              (varBinningType == '等距分箱' && (
+                <Col span={6}>
+                  <Form.Item
+                    label="箱数"
+                    name="varBoxNum"
+                    rules={[{ required: true, message: '请输入箱数' }]}
+                  >
+                    <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
+                  </Form.Item>
+                </Col>
+              ))}
+            {varBinningType == '卡片分箱' ||
+              (varBinningType == '决策树分箱' && (
+                <Col span={6}>
+                  <Form.Item
+                    label="每箱最小样本占比"
+                    name="minSampleRate"
+                    rules={[{ required: true, message: '请输入每箱最小样本占比' }]}
+                  >
+                    <InputNumber
+                      step="0.01"
+                      min={0}
+                      max={1}
+                      precision={2}
+                      style={{ width: '100%' }}
+                      placeholder="请输入"
+                      stringMode
+                    />
+                  </Form.Item>
+                </Col>
+              ))}
             <Col span={6}>
               <Form.Item
                 label="变量空值单独分箱"
@@ -472,11 +481,20 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择solver' }]}
               >
                 <Select placeholder="请选择solver">
-                  <Select.Option key={'solver1'} value={'solver1'}>
-                    solver1
+                  <Select.Option key={'liblinear'} value={'liblinear'}>
+                    liblinear
                   </Select.Option>
-                  <Select.Option key={'solver2'} value={'solver2'}>
-                    solver2
+                  <Select.Option key={'lbfgs'} value={'lbfgs'}>
+                    lbfgs
+                  </Select.Option>
+                  <Select.Option key={'newton-cg'} value={'newton-cg'}>
+                    newton-cg
+                  </Select.Option>
+                  <Select.Option key={'sag'} value={'sag'}>
+                    sag
+                  </Select.Option>
+                  <Select.Option key={'saga'} value={'saga'}>
+                    saga
                   </Select.Option>
                 </Select>
               </Form.Item>
@@ -526,7 +544,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                   step="1"
                   precision={0}
                   min={0}
-                  max={1}
+                  // max={1}
                   style={{ width: '100%' }}
                   placeholder="请输入"
                 />
@@ -542,7 +560,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                   step="1"
                   precision={0}
                   min={0}
-                  max={1}
+                  // max={1}
                   style={{ width: '100%' }}
                   placeholder="请输入"
                 />
@@ -558,7 +576,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                   step="0.01"
                   precision={2}
                   min={0}
-                  max={1}
+                  // max={1}
                   style={{ width: '100%' }}
                   placeholder="请输入"
                 />
@@ -584,24 +602,22 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 </Select>
               </Form.Item>
             </Col>
-            <Condition r-if={scoreBinningType === '等频分箱'}>
-              <Col span={3}>
-                <Form.Item
-                  label="分箱数"
-                  name="scoreBoxNum"
-                  rules={[{ required: true, message: '请输入评分分箱方式' }]}
-                >
-                  <InputNumber
-                    step="1"
-                    precision={0}
-                    min={0}
-                    max={20}
-                    style={{ width: '100%' }}
-                    placeholder="分箱数"
-                  />
-                </Form.Item>
-              </Col>
-            </Condition>
+            <Col span={3}>
+              <Form.Item
+                label="分箱数"
+                name="scoreBoxNum"
+                rules={[{ required: true, message: '请输入评分分箱方式' }]}
+              >
+                <InputNumber
+                  step="1"
+                  precision={0}
+                  min={0}
+                  max={20}
+                  style={{ width: '100%' }}
+                  placeholder="分箱数"
+                />
+              </Form.Item>
+            </Col>
           </Row>
         </Form>
         <Condition r-if={!isDisabled}>

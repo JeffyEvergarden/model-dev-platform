@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Form, Input, DatePicker, Button, Select, Space } from 'antd';
 import styles from './style.less';
 import NextStepButton from '../../components/nextstep-button';
@@ -57,9 +57,11 @@ const StepTwo: React.FC<any> = (props: any) => {
   }, [tabType]);
 
   //状态改变时重新请求详情--更新创建时间字段
-  // useEffect(() => {
-  //   (processType == 'finish' || 'error') && getCurrentDetail();
-  // }, [processType]);
+  useEffect(() => {
+    if (processType == 'finish' || processType == 'error') {
+      getCurrentDetail();
+    }
+  }, [processType]);
 
   const getCurrentDetail = async () => {
     let params = {
@@ -74,19 +76,31 @@ const StepTwo: React.FC<any> = (props: any) => {
       <CommonPage
         loadingContent={
           <>
-            <div className={styles['title']}>样本选取中</div>
-            <div className={styles['desc']}>请稍后，待样本选取完成后可开始下一个流程</div>
+            {tabType == '0' && (
+              <Fragment>
+                <div className={styles['title']}>样本选取中</div>
+                <div className={styles['desc']}>请稍后，待样本选取完成后可开始下一个流程</div>
+              </Fragment>
+            )}
+            {tabType == '1' && (
+              <Fragment>
+                <div className={styles['title']}>样本导入中</div>
+                <div className={styles['desc']}>请稍后，待样本导入完成后可开始下一个流程</div>
+              </Fragment>
+            )}
           </>
         }
         sucessContent={
           <>
-            <div className={styles['title']}>样本选取成功</div>
+            {tabType == '0' && <div className={styles['title']}>样本选取成功</div>}
+            {tabType == '1' && <div className={styles['title']}>样本导入成功</div>}
             <div className={styles['desc']} />
           </>
         }
         errorContent={
           <>
-            <div className={styles['title']}>样本选取失败</div>
+            {tabType == '0' && <div className={styles['title']}>样本选取失败</div>}
+            {tabType == '1' && <div className={styles['title']}>样本导入失败</div>}
             <div className={styles['desc']}>失败原因：{desc}</div>
           </>
         }
