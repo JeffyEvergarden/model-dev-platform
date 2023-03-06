@@ -110,11 +110,11 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
     let varList: any = res?.data || [];
 
-    let arr = selectedRowKeys?.filter((item: any) =>
-      varList?.every((val: any) => val.featureCode == item),
+    let arr = selectedRowKeys?.filter(
+      (item: any) => !varList?.some((val: any) => val.featureCode == item),
     );
-    let arr2 = selectList?.filter((item) =>
-      varList?.every((val: any) => val.featureCode == item.featureCode),
+    let arr2 = selectList?.filter(
+      (item) => !varList?.some((val: any) => val.featureCode == item.featureCode),
     );
 
     setSelectList(arr2);

@@ -79,7 +79,9 @@ const SelectorTable: React.FC<any> = (props: any) => {
 
   return (
     <div className={style['page-content']}>
-      <div className={styles['step-tips']}>选择需要回溯的编排：</div>
+      <div className={styles['step-tips']}>
+        选择需要回溯的编排，将命中策略的数据从建模样本中剔除：
+      </div>
       <div className={style['table-box']}>
         <Table
           rowSelection={{

@@ -60,16 +60,17 @@ export const useVarSelectModal = () => {
         data = res?.result?.tableData;
         setVarList(data);
         setListType('tree');
-        setTotalSize(data.length || 0);
+        setTotalSize(res?.result?.totalSize || 0);
       } else {
         data = res?.result;
         setVarList(data);
         setTotalSize(data.length || 0);
       }
-      return { data, total: data.length };
+      return { data, total: res?.result?.totalSize || data.length };
     } else {
       if (!params?.searchType) {
         setVarList([]);
+        setTotalSize(0);
       }
       message.warning(res?.resultDesc);
       return false;
