@@ -255,38 +255,36 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 </Select>
               </Form.Item>
             </Col>
-            {varBinningType == '等频分箱' ||
-              (varBinningType == '等距分箱' && (
-                <Col span={6}>
-                  <Form.Item
-                    label="箱数"
-                    name="varBoxNum"
-                    rules={[{ required: true, message: '请输入箱数' }]}
-                  >
-                    <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
-                  </Form.Item>
-                </Col>
-              ))}
-            {varBinningType == '卡片分箱' ||
-              (varBinningType == '决策树分箱' && (
-                <Col span={6}>
-                  <Form.Item
-                    label="每箱最小样本占比"
-                    name="minSampleRate"
-                    rules={[{ required: true, message: '请输入每箱最小样本占比' }]}
-                  >
-                    <InputNumber
-                      step="0.01"
-                      min={0}
-                      max={1}
-                      precision={2}
-                      style={{ width: '100%' }}
-                      placeholder="请输入"
-                      stringMode
-                    />
-                  </Form.Item>
-                </Col>
-              ))}
+            {(varBinningType == '等频分箱' || varBinningType == '等距分箱') && (
+              <Col span={6}>
+                <Form.Item
+                  label="箱数"
+                  name="varBoxNum"
+                  rules={[{ required: true, message: '请输入箱数' }]}
+                >
+                  <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
+                </Form.Item>
+              </Col>
+            )}
+            {(varBinningType == '卡方分箱' || varBinningType == '决策树分箱') && (
+              <Col span={6}>
+                <Form.Item
+                  label="每箱最小样本占比"
+                  name="minSampleRate"
+                  rules={[{ required: true, message: '请输入每箱最小样本占比' }]}
+                >
+                  <InputNumber
+                    step="0.01"
+                    min={0}
+                    max={1}
+                    precision={2}
+                    style={{ width: '100%' }}
+                    placeholder="请输入"
+                    stringMode
+                  />
+                </Form.Item>
+              </Col>
+            )}
             <Col span={6}>
               <Form.Item
                 label="变量空值单独分箱"

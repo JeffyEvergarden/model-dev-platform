@@ -134,8 +134,8 @@ const StepOne: React.FC = (props: any) => {
             rules={[
               { required: true, message: '请输入模型名称' },
               {
-                pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
-                message: '请输入汉字、字母、下划线、数字、横杠',
+                // pattern: /^[A-Za-z0-9_\-\u4e00-\u9fa5]+$/g,
+                // message: '请输入汉字、字母、下划线、数字、横杠',
               },
             ]}
             name="modelName"
