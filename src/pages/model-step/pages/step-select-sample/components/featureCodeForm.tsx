@@ -57,6 +57,7 @@ export default (props: any) => {
   };
 
   const changOperator = async (val: any) => {
+    console.log('paramList', paramList);
     if (val) {
       getParamVal(featureType, val);
       form.setFieldsValue({
@@ -172,7 +173,7 @@ export default (props: any) => {
           </span>
         </Col>
         {/* 下拉单选框 */}
-        <Condition r-if={paramType == 'select'}>
+        <Condition r-if={paramType == 'select' && paramList?.length > 0}>
           <Col span={8}>
             <span className={styles.labelSpan}>
               <FormItem
@@ -180,19 +181,28 @@ export default (props: any) => {
                 name="params"
                 label="参数值"
               >
-                {paramList.length > 0 ? (
-                  <Select optionFilterProp="children" allowClear showSearch>
-                    {paramList?.map((item: any) => {
-                      return (
-                        <Option key={item?.value} value={item?.value}>
-                          {item?.name}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                ) : (
-                  <Input placeholder="请输入" />
-                )}
+                <Select optionFilterProp="children" allowClear showSearch>
+                  {paramList?.map((item: any) => {
+                    return (
+                      <Option key={item?.value} value={item?.value}>
+                        {item?.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FormItem>
+            </span>
+          </Col>
+        </Condition>
+        <Condition r-if={paramType == 'select' && paramList?.length == 0}>
+          <Col span={8}>
+            <span className={styles.labelSpan}>
+              <FormItem
+                rules={[{ required: false, message: '请选择' }]}
+                name="params"
+                label="参数值"
+              >
+                <Input placeholder="请输入" />
               </FormItem>
             </span>
           </Col>

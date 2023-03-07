@@ -19,7 +19,7 @@ const { Option } = Select;
 // 首页
 const StepTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { loading, form, onNext, tabType, onClickReSelect, nextFlow } = props;
+  const { loading, form, onNext, tabType, onClickReSelect, nextFlow, stepType } = props;
 
   const [_form] = Form.useForm(form);
 
@@ -54,7 +54,7 @@ const StepTwo: React.FC<any> = (props: any) => {
     }
     getCurrentDetail();
     return () => clearInterval(fake?.current?.timeFn);
-  }, [tabType]);
+  }, [stepType]);
 
   //状态改变时重新请求详情--更新创建时间字段
   useEffect(() => {

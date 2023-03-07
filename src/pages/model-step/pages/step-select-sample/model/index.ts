@@ -70,41 +70,6 @@ export const useStepSelectModel = () => {
     return _data;
   };
 
-  // const getTreeList = async (params?: any) => {
-  //   let res: any = await getDatabaseList(params);
-  //   let list: any[] = res?.result || [];
-  //   if (!Array.isArray(list)) {
-  //     list = [];
-  //   }
-  //   list = processTreeData(list);
-  //   console.log('treeList', list);
-  //   setTreeList(list || []);
-  //   return true;
-  // };
-
-  // const getTableList = async (params?: any) => {
-  //   setTableLoading(true);
-  //   let res: any = await getDatacolumnsList(params);
-  //   setTableLoading(false);
-  //   let list: any[] = res.data;
-  //   let total: any = res.total || 0;
-
-  //   if (!Array.isArray(list)) {
-  //     list = [];
-  //   }
-  //   list = list.map((item: any, index: number) => {
-  //     return {
-  //       ...item,
-  //       title: item.name,
-  //       index,
-  //     };
-  //   });
-  //   // console.log('tableList', datas);
-  //   setTableList(list || []);
-  //   setTotal(total);
-  //   return true;
-  // };
-
   const labelListRequest = async (params?: any) => {
     setTableLoading(true);
     let res: any = await labelListApi(params);
