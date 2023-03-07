@@ -225,6 +225,19 @@ const getParams = (req: any, res: any) => {
   });
 };
 
+const getProcessList = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: [
+      { name: '编排1', value: '11' },
+      { name: '编排2', value: '12' },
+    ],
+  });
+};
+
 export default {
   [`POST ${baseUrl}/sampleSelection/submit`]: submit,
   [`POST ${baseUrl}/sampleSelection/confirm`]: normalDeal,
@@ -233,4 +246,5 @@ export default {
   [`GET ${baseUrl}/sampleSelection/getSelectionList`]: getSelectionList,
   [`GET ${baseUrl}/sampleSelection/getParams`]: getParams,
   [`GET ${baseUrl}/sampleSelection/getSample`]: getSample,
+  [`GET ${baseUrl}/sampleSelection/getProcessList`]: getProcessList,
 };

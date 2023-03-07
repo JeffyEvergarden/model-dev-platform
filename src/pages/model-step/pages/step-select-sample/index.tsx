@@ -46,10 +46,10 @@ const StepOne: React.FC = (props: any) => {
     labelListRequest,
     labelList,
     featureOperatorMap,
+    getProcessList,
 
     getparams,
     processList,
-    setProcessList,
     productList,
     setProductList,
     channelMidList,
@@ -115,14 +115,17 @@ const StepOne: React.FC = (props: any) => {
     } else if (curStep + 1 == doneStep) {
       let res = await getCurrentStageRequest({ itmModelRegisCode: modelId });
       let data = res.result || {};
-      if (data.currentStageStatus == '2' || data.currentStageStatus == '3') {
-        setStepType(2);
-      } else if (data?.currentStageStatus == '1' && data?.isCommittedPage == '1') {
+      if (
+        data.currentStageStatus == '2' ||
+        data.currentStageStatus == '3' ||
+        (data?.currentStageStatus == '1' && data?.isCommittedPage == '1')
+      ) {
         setStepType(2);
       } else {
         setStepType(1);
         labelListRequest(); //分群建模标签查询
         getSelectDetail();
+        getProcessList();
       }
     }
   };
@@ -131,7 +134,7 @@ const StepOne: React.FC = (props: any) => {
     let res = await getSample({ itmModelRegisCode: modelId });
     if (res?.status?.code === successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
-      if (res?.result?.samplePara?.businessType) {
+      if (res?.result?.sampleParam?.businessType) {
         getparams({ businessType: res?.result?.samplePara?.businessType });
       }
     }
@@ -228,6 +231,7 @@ const StepOne: React.FC = (props: any) => {
       setDoneStepStatus('processing');
       setTabType(res?.result?.sampleParam?.importType);
       getparams({ businessType: res?.result?.sampleParam?.businessType });
+      getProcessList();
     } else {
       message.error(res?.status?.desc || '失败');
     }
@@ -279,7 +283,6 @@ const StepOne: React.FC = (props: any) => {
             featureOperatorMap={featureOperatorMap}
             getparams={getparams}
             processList={processList}
-            setProcessList={setProcessList}
             productList={productList}
             setProductList={setProductList}
             channelMidList={channelMidList}
@@ -298,6 +301,7 @@ const StepOne: React.FC = (props: any) => {
             originChannelSmList={originChannelSmList}
             originCustCatList={originCustCatList}
             originCustCatSmList={originCustCatSmList}
+            loading={loading}
           />
         </Condition>
       </Condition>

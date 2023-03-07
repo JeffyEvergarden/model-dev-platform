@@ -11,6 +11,7 @@ import {
   selectionListApi,
   getparamsApi,
   getSampleApi,
+  getProcessListAPi,
 } from './api';
 
 export const successCode = config.successCode;
@@ -69,41 +70,6 @@ export const useStepSelectModel = () => {
     return _data;
   };
 
-  // const getTreeList = async (params?: any) => {
-  //   let res: any = await getDatabaseList(params);
-  //   let list: any[] = res?.result || [];
-  //   if (!Array.isArray(list)) {
-  //     list = [];
-  //   }
-  //   list = processTreeData(list);
-  //   console.log('treeList', list);
-  //   setTreeList(list || []);
-  //   return true;
-  // };
-
-  // const getTableList = async (params?: any) => {
-  //   setTableLoading(true);
-  //   let res: any = await getDatacolumnsList(params);
-  //   setTableLoading(false);
-  //   let list: any[] = res.data;
-  //   let total: any = res.total || 0;
-
-  //   if (!Array.isArray(list)) {
-  //     list = [];
-  //   }
-  //   list = list.map((item: any, index: number) => {
-  //     return {
-  //       ...item,
-  //       title: item.name,
-  //       index,
-  //     };
-  //   });
-  //   // console.log('tableList', datas);
-  //   setTableList(list || []);
-  //   setTotal(total);
-  //   return true;
-  // };
-
   const labelListRequest = async (params?: any) => {
     setTableLoading(true);
     let res: any = await labelListApi(params);
@@ -144,12 +110,6 @@ export const useStepSelectModel = () => {
     setTableLoading(true);
     let res: any = await getparamsApi(params);
     setTableLoading(false);
-    let tempProcessList: any[] = res?.result?.processList;
-    tempProcessList?.unshift({
-      value: 'all',
-      name: '全部',
-    });
-    setProcessList(tempProcessList);
     if (res.status?.code === successCode) {
       let data: any = deepFormateData(res.result?.prodTree, 1);
       data?.unshift({
@@ -211,6 +171,18 @@ export const useStepSelectModel = () => {
     return true;
   };
 
+  const getProcessList = async () => {
+    setTableLoading(true);
+    let res: any = await getProcessListAPi();
+    let tempProcessList: any[] = res?.result;
+    tempProcessList?.unshift({
+      value: 'all',
+      name: '全部',
+    });
+    setProcessList(tempProcessList);
+    setTableLoading(false);
+  };
+
   return {
     treeList,
     tableList,
@@ -236,8 +208,9 @@ export const useStepSelectModel = () => {
     paramType,
     setParamType,
 
-    //产品大类、渠道中类、渠道小类、客群大类、客群小类
+    //产品大类、渠道中类、渠道小类、客群大类、客群小类、编排
     getparams,
+    getProcessList,
     processList,
     setProcessList,
     productList,

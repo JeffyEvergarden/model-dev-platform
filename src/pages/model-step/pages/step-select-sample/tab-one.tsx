@@ -57,6 +57,7 @@ const StepOne: React.FC<any> = (props: any) => {
     originChannelSmList,
     originCustCatList,
     originCustCatSmList,
+    loading,
   } = props;
 
   const { isHadBuild, isHadReported } = useModel('step', (model: any) => ({
@@ -147,7 +148,7 @@ const StepOne: React.FC<any> = (props: any) => {
       setChannelSmList([]);
       setCustCatList([]);
       setCustCatSmList([]);
-      setProcessList([]);
+      // setProcessList([]);
     }
 
     form.setFieldsValue({
@@ -156,7 +157,7 @@ const StepOne: React.FC<any> = (props: any) => {
       channelCatS: undefined,
       custCat: undefined,
       custCatS: undefined,
-      processName: undefined,
+      // processName: undefined,
     });
   };
 
@@ -483,11 +484,7 @@ const StepOne: React.FC<any> = (props: any) => {
         paramList={paramList}
       />
       {isHadBuild !== '1' && isHadReported !== '1' && (
-        <NextStepButton
-          onClick={onClick}
-          text={'提交'}
-          // disabled={isHadBuild == '1' || isHadReported == '1'}
-        />
+        <NextStepButton onClick={onClick} text={'提交'} loading={loading} />
       )}
     </div>
   );

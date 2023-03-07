@@ -254,12 +254,22 @@ const StepOne: React.FC = (props: any) => {
           btnNode={
             <Space>
               {doneStep !== 1 && (
-                <Button size="large" type="primary" onClick={() => submitNextStep('save')}>
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => submitNextStep('save')}
+                  loading={loading}
+                >
                   保存
                 </Button>
               )}
               {doneStep == 1 && (
-                <Button size="large" type="primary" onClick={() => submitNextStep('next')}>
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => submitNextStep('next')}
+                  loading={loading}
+                >
                   下一流程
                 </Button>
               )}
