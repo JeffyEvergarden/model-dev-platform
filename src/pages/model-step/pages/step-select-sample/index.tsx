@@ -135,7 +135,7 @@ const StepOne: React.FC = (props: any) => {
     if (res?.status?.code === successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       if (res?.result?.sampleParam?.businessType) {
-        getparams({ businessType: res?.result?.samplePara?.businessType });
+        getparams({ businessType: res?.result?.sampleParam?.businessType });
       }
     }
   };
