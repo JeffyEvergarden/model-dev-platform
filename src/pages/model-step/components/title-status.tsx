@@ -21,7 +21,7 @@ const TitleStatus: React.FC<any> = (props: any) => {
           <Tag color="success">已完成</Tag>
         </Condition>
         <Condition r-if={index === doneStep}>
-          {doneStepStatus === 'error' && <Tag color="error">已失败</Tag>}
+          {doneStepStatus === 'error' && <Tag color="error">处理失败</Tag>}
           {doneStepStatus === 'finish' && <Tag color="success">已完成</Tag>}
           {doneStepStatus !== 'error' && doneStepStatus !== 'finish' && (
             <Tag color="processing">进行中</Tag>
@@ -30,7 +30,7 @@ const TitleStatus: React.FC<any> = (props: any) => {
       </Condition>
       {/* 未完成 */}
       <Condition r-if={index > doneStep}>
-        <Tag color="default">待完成</Tag>
+        <Tag color="default">未开始</Tag>
       </Condition>
     </div>
   );

@@ -57,6 +57,13 @@ export async function getparamsApi(params?: Record<string, any>) {
   });
 }
 
+export async function getProcessListAPi(params?: Record<string, any>) {
+  return request(`${baseUrl}/sampleSelection/getProcessList`, {
+    method: 'GET',
+    params,
+  });
+}
+
 //样本选取-详情
 export async function getSampleApi(params?: Record<string, any>) {
   return request(`${baseUrl}/sampleSelection/getSample`, {

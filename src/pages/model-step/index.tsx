@@ -126,7 +126,7 @@ const Myjob: React.FC<any> = (props: any) => {
       // 处在最新步骤
       if (cur === i && fs === i) {
         if (status === 'error') {
-          return '已失败';
+          return '处理失败';
         } else if (status !== 'finish') {
           return '进行中';
         } else {
@@ -135,7 +135,7 @@ const Myjob: React.FC<any> = (props: any) => {
       }
       if (i === fs) {
         if (status === 'error') {
-          return '已失败';
+          return '处理失败';
         } else if (status === 'finish') {
           return '已完成';
         } else {
@@ -144,7 +144,7 @@ const Myjob: React.FC<any> = (props: any) => {
       }
       return '已完成';
     } else if (i > fs) {
-      return '未完成';
+      return '未开始';
     } else {
       return `状态设置错误:
       ${doneStepStatus} - ${status}`;
@@ -183,7 +183,7 @@ const Myjob: React.FC<any> = (props: any) => {
         title: item.title,
         name: item.name,
         description: modelMapToValue(curStep, doneStep - 1, i, doneStepStatus),
-        status: modelMapToStatus(curStep, doneStep - 1, i, doneStepStatus),
+        // status: modelMapToStatus(curStep, doneStep - 1, i, doneStepStatus),
       };
       if (
         curStep === i &&

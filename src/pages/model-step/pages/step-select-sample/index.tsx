@@ -46,10 +46,10 @@ const StepOne: React.FC = (props: any) => {
     labelListRequest,
     labelList,
     featureOperatorMap,
+    getProcessList,
 
     getparams,
     processList,
-    setProcessList,
     productList,
     setProductList,
     channelMidList,
@@ -123,6 +123,7 @@ const StepOne: React.FC = (props: any) => {
         setStepType(1);
         labelListRequest(); //分群建模标签查询
         getSelectDetail();
+        getProcessList();
       }
     }
   };
@@ -279,7 +280,6 @@ const StepOne: React.FC = (props: any) => {
             featureOperatorMap={featureOperatorMap}
             getparams={getparams}
             processList={processList}
-            setProcessList={setProcessList}
             productList={productList}
             setProductList={setProductList}
             channelMidList={channelMidList}
@@ -298,6 +298,7 @@ const StepOne: React.FC = (props: any) => {
             originChannelSmList={originChannelSmList}
             originCustCatList={originCustCatList}
             originCustCatSmList={originCustCatSmList}
+            loading={loading}
           />
         </Condition>
       </Condition>
