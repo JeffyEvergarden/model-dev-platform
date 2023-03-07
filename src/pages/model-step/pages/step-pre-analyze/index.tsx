@@ -687,6 +687,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               }
               return values;
             },
+            ignoreRules: false,
           }}
           pagination={false}
           dateFormatter="string"

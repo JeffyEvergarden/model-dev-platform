@@ -108,8 +108,14 @@ export const genColumns = (extra: any[], config: any) => {
     {
       title: '汇总指标',
       dataIndex: 'indexList',
+      fieldProps: {
+        placeholder: '请选择汇总指标',
+      },
       valueEnum: {
         ...listToMap(config.indexList),
+      },
+      formItemProps: {
+        rules: [{ required: true, message: '请选择汇总指标' }],
       },
       hideInTable: true,
     },
