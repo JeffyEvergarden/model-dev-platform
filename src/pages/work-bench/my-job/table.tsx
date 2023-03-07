@@ -328,8 +328,11 @@ const ModelManagement: React.FC<any> = (props: any) => {
         rowKey="index"
         search={{
           labelWidth: 'auto',
+          span: 8,
           // optionRender: false,
           // collapsed: false,
+          defaultCollapsed: false,
+          collapseRender: () => null,
         }}
         form={{}}
         pagination={{

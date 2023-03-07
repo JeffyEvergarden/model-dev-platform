@@ -127,13 +127,12 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const { nextStep } = useNextStep();
 
   //维度
-  const changeDimension = (val: any) => {
-    getparams({ businessType: val });
-
-    setProductList([]);
-    setChannelMidList([]);
-    setChannelSmList([]);
-    setCustCatList([]);
+  const changeDimension = async (val: any) => {
+    // setProductList([]);
+    // setChannelMidList([]);
+    // setChannelSmList([]);
+    // setCustCatList([]);
+    await getparams({ businessType: val });
 
     formRef?.current?.setFieldsValue({
       prodCat: undefined,
@@ -146,18 +145,31 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   //大类
   const changeProductClass = (arr: any) => {
     let val: any = arr;
+
     if (arr[arr.length - 1] == '全部') {
       val = ['全部'];
     } else {
       val = val.filter((item: any) => item != '全部');
     }
 
-    console.log(val);
     let obj: any = {};
     if (val.length > 0) {
       let list: any[] = [];
       if (val?.includes('全部')) {
         list = originChannelMidList;
+        if (!originChannelMidList?.length) {
+          console.log(productList);
+          list = [
+            {
+              name: '全部',
+              label: '全部',
+            },
+          ];
+          productList?.map((ele: any) => {
+            let tempChild: any[] = ele?.children ? ele?.children : [];
+            list = [...list, ...tempChild];
+          });
+        }
       } else {
         val?.map((ele: any) => {
           let temp: any = productList?.find((item: any) => item.name == ele);
@@ -166,6 +178,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         });
       }
       obj.prodCat = val;
+      console.log(list);
+
       setChannelMidList(list);
       setChannelSmList([]);
       setCustCatList([]);
@@ -411,8 +425,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   );
 
   useEffect(() => {
-    getConditionList();
-    getYaerMonth();
     //回显默认
     getProdChannelList({ itmModelRegisCode: modelId }).then((res) => {
       if (res?.status?.code == successCode) {
@@ -450,6 +462,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         customerFormRef?.setFieldsValue(data?.customerDefinition || {});
       }
     });
+    getConditionList();
+    getYaerMonth();
   }, []);
 
   const getYaerMonth = async () => {
@@ -471,15 +485,15 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           label: '本期状态',
         },
         {
-          key: 'M0',
+          key: 'm0',
           label: 'M0',
         },
         {
-          key: 'M1',
+          key: 'm1',
           label: 'M1',
         },
         {
-          key: 'M2',
+          key: 'm2',
           label: 'M2',
         },
       ];
@@ -682,7 +696,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           search={{
             labelWidth: 'auto',
             // optionRender: false,
+            span: 8,
             // collapsed: false,
+            defaultCollapsed: false,
+            collapseRender: () => null,
           }}
           formRef={formRef}
           form={{
@@ -747,7 +764,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           search={{
             labelWidth: 'auto',
             // optionRender: false,
+            span: 8,
             // collapsed: false,
+            defaultCollapsed: false,
+            collapseRender: () => null,
           }}
           pagination={false}
           columns={_rateColumns}
