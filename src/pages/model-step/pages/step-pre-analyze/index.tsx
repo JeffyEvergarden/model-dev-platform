@@ -371,10 +371,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         valueType: 'select',
         valueEnum: {
           进件层: '进件层',
-          借据层: '借据层',
+          // 借据层: '借据层',
         },
         hideInTable: true,
-        initialValue: '账户数',
+        initialValue: '进件层',
       },
       {
         title: '汇总指标',
@@ -687,6 +687,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               }
               return values;
             },
+            ignoreRules: false,
           }}
           pagination={false}
           dateFormatter="string"

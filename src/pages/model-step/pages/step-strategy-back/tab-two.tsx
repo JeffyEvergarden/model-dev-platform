@@ -53,21 +53,23 @@ const TabTwo: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    let data: any = {};
     (async () => {
-      let res = await getWaitResult({ itmModelRegisCode: modelId });
-      data = res.result || {};
+      await getWaitResult({ itmModelRegisCode: modelId }).then((res) => {
+        let data = res.result || {};
+        setDoneStep(data.currentStage || 3);
+        console.log(data);
+        if (curStep + 1 < (data.currentStage || 3)) {
+          console.log('直接成功');
+
+          startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+        } else {
+          startLoop({ itmModelRegisCode: modelId }, 4);
+        }
+        console.log(operate, processType, isHadBuild, isHadReported);
+      });
     })();
-    setDoneStep(data.currentStage || 3);
+
     // if (processId) {
-
-    if (curStep + 1 < (data.currentStage || 3)) {
-      startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
-    } else {
-      startLoop({ itmModelRegisCode: modelId }, 4);
-    }
-
-    console.log(operate, processType, isHadBuild, isHadReported);
 
     // }
     return () => {
@@ -101,6 +103,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         detailInfo={{
           backtrackProcessName: selectedKeys?.join(',') || dataList,
         }}
+        page={3}
       />
       <Condition
         r-if={
