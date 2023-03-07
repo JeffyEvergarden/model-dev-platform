@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useMemo, useState, Fragment, Children } from 'react';
-import { Form, Input, DatePicker, Divider, Select, Button, Space, Descriptions } from 'antd';
+import {
+  Form,
+  Input,
+  DatePicker,
+  Divider,
+  Select,
+  Button,
+  Space,
+  Descriptions,
+  Tooltip,
+} from 'antd';
 import styles from '../style.less';
 import ProTable from '@ant-design/pro-table';
 import CustomerFormBox from './component/customerFormBox';
@@ -695,12 +705,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           toolBarRender={() => []}
           toolbar={{
             actions: [
-              <AreaChartOutlined
-                onClick={() => {
-                  setTableType(!tableType);
-                }}
-                style={{ color: tableType ? 'gray' : '#40a9ff', border: '1px solid', padding: 4 }}
-              />,
+              <Tooltip title={'切换为图表/表格展示'} placement={'topRight'}>
+                <AreaChartOutlined
+                  onClick={() => {
+                    setTableType(!tableType);
+                  }}
+                  style={{ color: tableType ? 'gray' : '#40a9ff', border: '1px solid', padding: 4 }}
+                />
+              </Tooltip>,
             ],
           }}
           options={false}
@@ -713,7 +725,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       {pageType !== 'viewReport' && (
         <Form form={form} layout="vertical">
           <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
-            <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
+            <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={500} />
           </FormItem>
         </Form>
       )}
@@ -756,7 +768,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         <Fragment>
           <Form form={form} layout="vertical">
             <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
-              <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
+              <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={500} />
             </FormItem>
           </Form>
           <Divider />
