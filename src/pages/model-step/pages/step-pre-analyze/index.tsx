@@ -657,7 +657,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           columns={_vcolumns}
           actionRef={tableRef}
           loading={vloading}
-          // scroll={{}}
+          scroll={{ x: _vcolumns.length * 200 }}
           request={async (params = {}, sort, filter) => {
             return getVintageList({ page: params.current, ...params });
           }}
