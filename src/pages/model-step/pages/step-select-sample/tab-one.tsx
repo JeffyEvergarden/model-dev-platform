@@ -51,7 +51,7 @@ const StepOne: React.FC<any> = (props: any) => {
     operationList,
     setOperationList,
     getSelectionList,
-    paramList,
+    // paramList,
 
     originChannelMidList,
     originChannelSmList,
@@ -481,7 +481,7 @@ const StepOne: React.FC<any> = (props: any) => {
         featureOperatorMap={featureOperatorMap}
         operationList={operationList}
         setOperationList={setOperationList}
-        paramList={paramList}
+        // paramList={paramList}
       />
       {isHadBuild !== '1' && isHadReported !== '1' && (
         <NextStepButton onClick={onClick} text={'提交'} loading={loading} />

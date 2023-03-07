@@ -32,7 +32,6 @@ export const useStepSelectModel = () => {
   const [featureOperatorMap, setFeatureOperatorMap] = useState<any>([]);
   const [featureType, setFeatureType] = useState<any>('');
   const [operationList, setOperationList] = useState<any>([]);
-  const [paramList, setParamList] = useState<any>([]);
   const [paramType, setParamType] = useState<any>('');
 
   {
@@ -85,8 +84,8 @@ export const useStepSelectModel = () => {
     setTableLoading(true);
     let res: any = await selectionListApi(params);
     setTableLoading(false);
-    setParamList(res?.result);
-    return true;
+    // setParamList(res?.result);
+    return res;
   };
 
   // 数据处理
@@ -203,8 +202,8 @@ export const useStepSelectModel = () => {
     operationList,
     setOperationList,
     getSelectionList,
-    paramList,
-    setParamList,
+    // paramList,
+    // setParamList,
     paramType,
     setParamType,
 

@@ -64,7 +64,7 @@ const StepOne: React.FC = (props: any) => {
     operationList,
     setOperationList,
     getSelectionList,
-    paramList,
+    // paramList,
 
     originChannelMidList,
     originChannelSmList,
@@ -135,7 +135,7 @@ const StepOne: React.FC = (props: any) => {
     if (res?.status?.code === successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       if (res?.result?.sampleParam?.businessType) {
-        getparams({ businessType: res?.result?.samplePara?.businessType });
+        getparams({ businessType: res?.result?.sampleParam?.businessType });
       }
     }
   };
@@ -296,7 +296,7 @@ const StepOne: React.FC = (props: any) => {
             operationList={operationList}
             setOperationList={setOperationList}
             getSelectionList={getSelectionList}
-            paramList={paramList}
+            // paramList={paramList}
             originChannelMidList={originChannelMidList}
             originChannelSmList={originChannelSmList}
             originCustCatList={originCustCatList}

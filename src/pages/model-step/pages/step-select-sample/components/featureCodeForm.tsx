@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Form, Input, DatePicker, Row, Col, Select, InputNumber } from 'antd';
 import Condition from '@/components/Condition';
 import styles from '@/pages/model-step/pages/style.less';
@@ -24,11 +24,13 @@ export default (props: any) => {
     featureOperatorMap,
     operationList,
     setOperationList,
-    paramList,
+    // paramList,
   } = props;
 
   const { getSelectionList, featureType, setFeatureType, paramType, setParamType } =
     useStepSelectModel();
+
+  const [paramList, setParamListt] = useState<any>([]);
 
   useEffect(() => {
     getParamVal(editData?.featureType, editData?.operator);
@@ -38,6 +40,7 @@ export default (props: any) => {
     if (val) {
       let params = { labelId: val };
       let res = await getSelectionList(params);
+      setParamListt(res?.result);
       setOperationList(featureOperatorMap?.[opt?.opt?.featureType]);
       setFeatureType(opt?.opt?.featureType);
       form.setFieldsValue({
