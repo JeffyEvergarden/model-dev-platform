@@ -34,13 +34,19 @@ export default (props: any) => {
 
   useEffect(() => {
     getParamVal(editData?.featureType, editData?.operator);
+    getSelectionListRequest(editData?.featureCode);
+    setFeatureType(editData?.featureType);
   }, [editData]);
+
+  const getSelectionListRequest = async (val: any) => {
+    let params = { labelId: val };
+    let res = await getSelectionList(params);
+    setParamListt(res?.result);
+  };
 
   const changeLabel = async (val: any, opt: any) => {
     if (val) {
-      let params = { labelId: val };
-      let res = await getSelectionList(params);
-      setParamListt(res?.result);
+      getSelectionListRequest(val);
       setOperationList(featureOperatorMap?.[opt?.opt?.featureType]);
       setFeatureType(opt?.opt?.featureType);
       form.setFieldsValue({
