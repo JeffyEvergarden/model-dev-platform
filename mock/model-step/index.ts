@@ -156,7 +156,7 @@ const getStrategyBackList = (req: any, res: any) => {
     result: {
       processName: '编排1,编排2',
       backtrackProcessName: '编排1,编排2',
-      isSkipCurrentStage: true,
+      isSkipCurrentStage: false,
     },
   });
 };
