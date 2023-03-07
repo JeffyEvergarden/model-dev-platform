@@ -103,6 +103,7 @@ const TabTwo: React.FC<any> = (props: any) => {
         detailInfo={{
           backtrackProcessName: selectedKeys?.join(',') || dataList,
         }}
+        page={3}
       />
       <Condition
         r-if={

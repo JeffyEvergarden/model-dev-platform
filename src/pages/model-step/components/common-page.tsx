@@ -24,6 +24,7 @@ const StepTwo: React.FC<any> = (props: any) => {
     columns,
     detailInfo,
     dataList,
+    page,
   } = props;
 
   // const [pageType, setPageType] = useState<any>('loading'); // init、 loading、finish、fail
@@ -86,7 +87,7 @@ const StepTwo: React.FC<any> = (props: any) => {
               val = `${detailInfo?.dimensionField ?? ''}`;
             }
             return (
-              <div className={styles['col-row']} key={index}>
+              <div className={page == 3 ? '' : styles['col-row']} key={index}>
                 <span className={styles['label-item']}>{item?.name}：</span>
                 <span className={styles['value-item']}>{val}</span>
               </div>
