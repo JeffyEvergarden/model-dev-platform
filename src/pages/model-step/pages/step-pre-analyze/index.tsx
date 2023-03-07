@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useMemo, useState, Fragment, Children } from 'react';
-import { Form, Input, DatePicker, Divider, Select, Button, Space, Descriptions } from 'antd';
+import {
+  Form,
+  Input,
+  DatePicker,
+  Divider,
+  Select,
+  Button,
+  Space,
+  Descriptions,
+  Tooltip,
+} from 'antd';
 import styles from '../style.less';
 import ProTable from '@ant-design/pro-table';
 import CustomerFormBox from './component/customerFormBox';
@@ -695,12 +705,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           toolBarRender={() => []}
           toolbar={{
             actions: [
-              <AreaChartOutlined
-                onClick={() => {
-                  setTableType(!tableType);
-                }}
-                style={{ color: tableType ? 'gray' : '#40a9ff', border: '1px solid', padding: 4 }}
-              />,
+              <Tooltip title={'切换为图表/表格展示'} placement={'topRight'}>
+                <AreaChartOutlined
+                  onClick={() => {
+                    setTableType(!tableType);
+                  }}
+                  style={{ color: tableType ? 'gray' : '#40a9ff', border: '1px solid', padding: 4 }}
+                />
+              </Tooltip>,
             ],
           }}
           options={false}
