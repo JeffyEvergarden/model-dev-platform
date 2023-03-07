@@ -185,13 +185,13 @@ const Myjob: React.FC<any> = (props: any) => {
         description: modelMapToValue(curStep, doneStep - 1, i, doneStepStatus),
         // status: modelMapToStatus(curStep, doneStep - 1, i, doneStepStatus),
       };
-      if (
-        curStep === i &&
-        doneStep - 1 === i &&
-        (doneStepStatus === 'process' || doneStepStatus === 'wait')
-      ) {
-        obj.icon = <LoadingOutlined />;
-      }
+      // if (
+      //   curStep === i &&
+      //   doneStep - 1 === i &&
+      //   (doneStepStatus === 'process' || doneStepStatus === 'wait')
+      // ) {
+      //   obj.icon = <LoadingOutlined />;
+      // }
       return obj;
     });
   }, [curStep, doneStep, doneStepStatus]);

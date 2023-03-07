@@ -40,7 +40,6 @@ export default (props: any) => {
       let res = await getSelectionList(params);
       setOperationList(featureOperatorMap?.[opt?.opt?.featureType]);
       setFeatureType(opt?.opt?.featureType);
-      debugger;
       form.setFieldsValue({
         operator: '',
         // params: '',
@@ -58,7 +57,6 @@ export default (props: any) => {
   };
 
   const changOperator = async (val: any) => {
-    debugger;
     if (val) {
       getParamVal(featureType, val);
       form.setFieldsValue({
