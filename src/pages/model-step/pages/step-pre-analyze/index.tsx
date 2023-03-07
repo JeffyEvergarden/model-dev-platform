@@ -713,7 +713,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       {pageType !== 'viewReport' && (
         <Form form={form} layout="vertical">
           <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
-            <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={150} />
+            <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={500} />
           </FormItem>
         </Form>
       )}
@@ -756,7 +756,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         <Fragment>
           <Form form={form} layout="vertical">
             <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
-              <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={150} />
+              <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={500} />
             </FormItem>
           </Form>
           <Divider />
