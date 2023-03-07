@@ -92,6 +92,8 @@ export const useSearchModel = () => {
       //   label: '全部',
       // });
 
+      console.log(channelMidTemp, channelSmTemp, custCatTemp);
+
       setOriginChannelMidList(channelMidTemp);
       setOriginChannelSmList(channelSmTemp);
       setOriginCustCatList(custCatTemp);
