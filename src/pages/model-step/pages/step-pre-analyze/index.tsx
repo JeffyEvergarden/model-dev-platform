@@ -458,36 +458,41 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       }
     });
     //回显
-    getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId }).then((res) => {
-      if (res.status.code == successCode) {
-        let data = res?.result;
-        // itmModelRegisCode: modelId,
-        // customerDefinition: value,
-        //   ...formData,
+    getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId })
+      .then((res) => {
+        if (res.status.code == successCode) {
+          let data = res?.result;
+          // itmModelRegisCode: modelId,
+          // customerDefinition: value,
+          //   ...formData,
 
-        let preanalysisCondition = data?.preanalysisCondition || {};
-        preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
-        preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
-        preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
-        preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
-        formRef?.current?.setFieldsValue(preanalysisCondition);
+          let preanalysisCondition = data?.preanalysisCondition || {};
+          preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
+          preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
+          preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
+          preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
+          formRef?.current?.setFieldsValue(preanalysisCondition);
 
-        let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
-        preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
-          ?.split?.(',')
-          ?.map((item: any) => moment(item));
-        preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
-          ? preanalysisRollRateCondition.loadTerm?.split?.(',')
-          : ['全部'];
-        formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
+          let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
+          preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
+            ?.split?.(',')
+            ?.map((item: any) => moment(item));
+          preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
+            ? preanalysisRollRateCondition.loadTerm?.split?.(',')
+            : ['全部'];
+          formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
 
-        form?.setFieldsValue({
-          vintageConclusion: data?.vintageConclusion,
-          rollRateConclusion: data?.rollRateConclusion,
-        });
-        customerFormRef?.setFieldsValue(data?.customerDefinition || {});
-      }
-    });
+          form?.setFieldsValue({
+            vintageConclusion: data?.vintageConclusion,
+            rollRateConclusion: data?.rollRateConclusion,
+          });
+          customerFormRef?.setFieldsValue(data?.customerDefinition || {});
+        }
+      })
+      .finally(() => {
+        tableRef?.current?.reload();
+        rateRef?.current?.reload();
+      });
     getConditionList();
     getYaerMonth();
   }, []);
@@ -732,6 +737,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             }}
             options={false}
             tableStyle={{ display: tableType ? 'block' : 'none' }}
+            manualRequest={true}
           />
           <Condition r-show={!tableType}>
             <LineChart
@@ -784,6 +790,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
               return getRateListArr({ page: params.current, ...params, ...reqData }, rateFilter);
             }}
+            manualRequest={true}
             onChange={rateTableChange}
           />
         </div>
