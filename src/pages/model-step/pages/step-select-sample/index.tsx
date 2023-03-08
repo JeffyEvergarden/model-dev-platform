@@ -189,7 +189,7 @@ const StepOne: React.FC = (props: any) => {
       if (tabType == '0') {
         let resobj = await getCurrentStageRequest({ itmModelRegisCode: modelId });
         let data = resobj.result || {};
-        setDoneStep(2);
+        setDoneStep(Number(data?.currentStage));
         setTimeout(() => setStepType(2), 500);
       } else if (tabType == '1') {
         confirmModalRef?.current?.open(res?.result?.prepareSql);
