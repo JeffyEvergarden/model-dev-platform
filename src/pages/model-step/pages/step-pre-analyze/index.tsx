@@ -656,7 +656,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         console.log(reqData);
         nextFlow(reqData).then((res) => {
           if (res) {
-            nextStep();
+            // nextStep();
+            setStepType(2);
           }
         });
       }

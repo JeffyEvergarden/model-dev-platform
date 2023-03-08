@@ -33,7 +33,7 @@ const TabThree: React.FC<any> = (props: any) => {
       }, 10 * 1000);
     } else if (data?.currentStage == 4 && data?.currentStageStatus == '3') {
       back();
-    } else {
+    } else if (data?.currentStage == 5 && data?.currentStageStatus == '1') {
       nextStep();
     }
   };

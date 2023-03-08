@@ -48,16 +48,14 @@ const TabThree: React.FC<any> = (props: any) => {
   const getskip = async () => {
     let reqData = { itmModelRegisCode: modelId };
     await passBackStep(reqData).then((res: any) => {
-      if (res.status?.code == successCode) {
-        if (res?.result?.skipCurrentStageStatus == '1') {
-          fake.current.timeFn = null;
-          //跳到下一流程
-          nextStep();
-        } else {
-          setTimeout(async () => {
-            getskip();
-          }, 2 * 1000);
-        }
+      if (res?.result?.skipCurrentStageStatus == '1') {
+        fake.current.timeFn = null;
+        //跳到下一流程
+        nextStep();
+      } else {
+        setTimeout(async () => {
+          getskip();
+        }, 2 * 1000);
       }
     });
   };
