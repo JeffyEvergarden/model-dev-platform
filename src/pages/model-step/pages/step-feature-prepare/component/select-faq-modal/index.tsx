@@ -136,16 +136,19 @@ const SelectorModal: React.FC<any> = (props: any) => {
     let varList: any = res?.data || [];
 
     let clearArr = selectedRowKeys?.filter(
-      (item: any) => !varList?.some((val: any) => val.featureCode == item),
+      (item: any) => !varList?.some?.((val: any) => val.featureCode == item),
     );
     let clearArr2 = selectList?.filter(
-      (item) => !varList?.some((val: any) => val.featureCode == item.featureCode),
+      (item) => !varList?.some?.((val: any) => val.featureCode == item.featureCode),
     );
 
-    let arr = varList.map((item: any) => {
+    let arr = varList?.map((item: any) => {
       return item?.featureCode;
     });
     let arr2 = varList;
+
+    console.log([...clearArr2, ...arr2], [...clearArr, ...arr]);
+
     setSelectList([...clearArr2, ...arr2]);
     setSelectedRowKeys([...clearArr, ...arr]);
   };
@@ -295,10 +298,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   >
                     <MinusCircleOutlined className={style['del']} />
                   </Button>
-                  <Tooltip placement="topLeft" title={item.featureName}>
+                  <Tooltip placement="topLeft" title={item?.featureName}>
                     <div className={style['label']}>
                       <span className={style['num']}>{index + 1}.</span>
-                      {item.featureName}
+                      {item?.featureName}
                     </div>
                   </Tooltip>
                 </div>
@@ -353,7 +356,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                 }}
                 dataSource={varList}
                 columns={columns1}
-                rowKey="featureCode"
+                rowKey="featureName"
                 loading={loading}
               />
             </div>
