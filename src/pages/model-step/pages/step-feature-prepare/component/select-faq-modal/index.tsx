@@ -356,7 +356,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                 }}
                 dataSource={varList}
                 columns={columns1}
-                rowKey="featureName"
+                rowKey="featureCode"
                 loading={loading}
               />
             </div>
