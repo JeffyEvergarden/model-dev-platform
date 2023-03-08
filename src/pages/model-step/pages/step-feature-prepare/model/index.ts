@@ -62,7 +62,7 @@ export const useVarSelectModal = () => {
         setListType('tree');
         setTotalSize(res?.result?.totalSize || 0);
       } else {
-        data = res?.result;
+        data = res?.result?.tableData || res?.result;
         // setVarList(data);
         // setTotalSize(data.length || 0);
       }

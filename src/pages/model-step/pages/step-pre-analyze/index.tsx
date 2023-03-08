@@ -82,7 +82,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     }));
 
   useEffect(() => {
-    // getCurrentStage()
+    getCurrentStage();
     resize();
     const fn = throttle(() => {
       resize();
@@ -97,7 +97,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
     if (res?.status?.code == successCode) {
       let data = res?.result || {};
-      if (data?.currentStage == 4 && data?.currentStageStatus == 1) {
+      if (
+        data?.currentStage == 4 &&
+        data?.currentStageStatus == '1' &&
+        data?.isCommittedPage == '1'
+      ) {
         setStepType(2);
       }
     }
@@ -454,36 +458,41 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       }
     });
     //回显
-    getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId }).then((res) => {
-      if (res.status.code == successCode) {
-        let data = res?.result;
-        // itmModelRegisCode: modelId,
-        // customerDefinition: value,
-        //   ...formData,
+    getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId })
+      .then((res) => {
+        if (res.status.code == successCode) {
+          let data = res?.result;
+          // itmModelRegisCode: modelId,
+          // customerDefinition: value,
+          //   ...formData,
 
-        let preanalysisCondition = data?.preanalysisCondition || {};
-        preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
-        preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
-        preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
-        preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
-        formRef?.current?.setFieldsValue(preanalysisCondition);
+          let preanalysisCondition = data?.preanalysisCondition || {};
+          preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
+          preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
+          preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
+          preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
+          formRef?.current?.setFieldsValue(preanalysisCondition);
 
-        let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
-        preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
-          ?.split?.(',')
-          ?.map((item: any) => moment(item));
-        preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
-          ? preanalysisRollRateCondition.loadTerm?.split?.(',')
-          : ['全部'];
-        formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
+          let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
+          preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
+            ?.split?.(',')
+            ?.map((item: any) => moment(item));
+          preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
+            ? preanalysisRollRateCondition.loadTerm?.split?.(',')
+            : ['全部'];
+          formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
 
-        form?.setFieldsValue({
-          vintageConclusion: data?.vintageConclusion,
-          rollRateConclusion: data?.rollRateConclusion,
-        });
-        customerFormRef?.setFieldsValue(data?.customerDefinition || {});
-      }
-    });
+          form?.setFieldsValue({
+            vintageConclusion: data?.vintageConclusion,
+            rollRateConclusion: data?.rollRateConclusion,
+          });
+          customerFormRef?.setFieldsValue(data?.customerDefinition || {});
+        }
+      })
+      .finally(() => {
+        tableRef?.current?.reload();
+        rateRef?.current?.reload();
+      });
     getConditionList();
     getYaerMonth();
   }, []);
@@ -647,7 +656,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         console.log(reqData);
         nextFlow(reqData).then((res) => {
           if (res) {
-            nextStep();
+            // nextStep();
+            setStepType(2);
           }
         });
       }
@@ -728,6 +738,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             }}
             options={false}
             tableStyle={{ display: tableType ? 'block' : 'none' }}
+            manualRequest={true}
           />
           <Condition r-show={!tableType}>
             <LineChart
@@ -757,7 +768,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             actionRef={rateRef}
             formRef={formRef2}
             headerTitle="滚动率分析结果"
-            rowKey={(r) => r.key}
+            rowKey={(r) => r.name}
             toolBarRender={() => []}
             options={{ density: false, fullScreen: false, reload: false, setting: true }}
             search={{
@@ -780,6 +791,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
               return getRateListArr({ page: params.current, ...params, ...reqData }, rateFilter);
             }}
+            manualRequest={true}
             onChange={rateTableChange}
           />
         </div>

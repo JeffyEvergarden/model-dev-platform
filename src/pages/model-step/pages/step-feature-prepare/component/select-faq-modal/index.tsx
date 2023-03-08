@@ -111,10 +111,10 @@ const SelectorModal: React.FC<any> = (props: any) => {
     let varList: any = res?.data || [];
 
     let arr = selectedRowKeys?.filter(
-      (item: any) => !varList?.some((val: any) => val.featureCode == item),
+      (item: any) => !varList?.some((val: any) => val?.featureCode == item),
     );
     let arr2 = selectList?.filter(
-      (item) => !varList?.some((val: any) => val.featureCode == item.featureCode),
+      (item) => !varList?.some((val: any) => val?.featureCode == item?.featureCode),
     );
 
     setSelectList(arr2);
@@ -206,7 +206,25 @@ const SelectorModal: React.FC<any> = (props: any) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       console.log(selectedRowKeys, selectedRows);
       setSelectedRowKeys(selectedRowKeys);
-      setSelectList(selectedRows);
+      // setSelectList(selectedRows);
+    },
+    onSelect: (r: any, s: any, sr: any, e: any) => {
+      console.log(r, s, sr, e);
+      if (s) {
+        setSelectList([...selectList, r]);
+      } else {
+        setSelectList(selectList.filter((item) => item.featureCode != r.featureCode));
+      }
+    },
+    onSelectAll: (r: any, s: any, changeRow: any) => {
+      console.log(r, s, changeRow);
+      if (r) {
+        setSelectList([...selectList, ...changeRow]);
+      } else {
+        let changeid = changeRow?.map((item: any) => item.featureCode);
+        let arr = selectList.filter((item: any) => !changeid.includes(item.featureCode));
+        setSelectList([...arr]);
+      }
     },
   };
 

@@ -59,11 +59,10 @@ const getTreeList = (req: any, res: any) => {
 const getVarList = (req: any, res: any) => {
   let page = 1;
   let list = new Array(21).fill(1).map((item: any, index: number) => {
+    let num = Math.ceil(Math.random() * 1000);
     return {
-      featureName:
-        '阿斯拉大1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111' +
-        index,
-      featureCode: index,
+      featureName: '阿斯拉大' + num,
+      featureCode: num,
     };
   });
 
