@@ -34,7 +34,9 @@ export default (props: any) => {
 
   useEffect(() => {
     getParamVal(editData?.featureType, editData?.operator);
-    getSelectionListRequest(editData?.featureCode);
+    if (editData?.featureCode) {
+      getSelectionListRequest(editData?.featureCode);
+    }
     setFeatureType(editData?.featureType);
   }, [editData]);
 
