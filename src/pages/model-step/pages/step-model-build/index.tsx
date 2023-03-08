@@ -134,6 +134,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       ...formVal,
     };
     params.variableNames = variableNames;
+    debugger;
     let res = await beginBuildModel(params);
     if (res.status?.code === successCode) {
       setLoading(false);
@@ -199,7 +200,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           form={form}
           layout="vertical"
           initialValues={{
-            penalty: 12,
+            penalty: 'l2',
             solver: 'liblinear',
             c: 1.0,
             lrMaxIter: 100,
@@ -463,11 +464,11 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请选择惩罚项' }]}
               >
                 <Select placeholder="请选择建模方法">
-                  <Select.Option key={11} value={11}>
-                    11
+                  <Select.Option key={'l1'} value={'l1'}>
+                    l1
                   </Select.Option>
-                  <Select.Option key={12} value={12}>
-                    12
+                  <Select.Option key={'l2'} value={'l2'}>
+                    l2
                   </Select.Option>
                 </Select>
               </Form.Item>
@@ -537,7 +538,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="Pdo" name="Pdo" rules={[{ required: true, message: '请输入Pdo' }]}>
+              <Form.Item label="Pdo" name="pdo" rules={[{ required: true, message: '请输入Pdo' }]}>
                 <InputNumber
                   step="1"
                   precision={0}

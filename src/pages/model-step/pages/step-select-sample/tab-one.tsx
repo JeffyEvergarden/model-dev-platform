@@ -116,7 +116,6 @@ const StepOne: React.FC<any> = (props: any) => {
         params: editData?.params,
       });
     }
-
     if (editData?.featureCode) {
       getSelectionList({ labelId: editData?.featureCode });
     }
