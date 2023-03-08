@@ -45,6 +45,9 @@ const rebuild = (req: any, res: any) => {
       rate: '1',
       scoreBinningType: '',
       scoreBoxNum: 12,
+      preanalysisRollRateCondition: {
+        paymentTime: '2023-01,2023-02',
+      },
     },
   });
 };

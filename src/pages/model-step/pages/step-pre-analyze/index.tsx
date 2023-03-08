@@ -31,6 +31,7 @@ import { getWaitResult } from '../step-select-sample/model/api';
 import { getModelStepDetailApi } from '../../model/api';
 import { exportExcel, queryVintageLoanTerms } from './model/api';
 import moment from 'moment';
+import Loadingpage from './loadingpage';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -52,6 +53,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const [yearMonth, setYearMonth] = useState<any[]>([]);
   const [useTimeData, setUseTimeData] = useState<any>('');
   const [limitTimeData, setLimitTimeData] = useState<any>(['全部']);
+  const [stepType, setStepType] = useState<any>(1);
 
   const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2']);
   const [tableType, setTableType] = useState<any>(true);
@@ -68,7 +70,19 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     setBase(rate);
   };
 
+  const { modelId, doneStep, curStep, setDoneStepStatus, setDoneStep, isHadReported, operate } =
+    useModel('step', (model: any) => ({
+      modelId: model.modelId,
+      doneStep: model.doneStep,
+      curStep: model.curStep,
+      setDoneStepStatus: model.setDoneStepStatus,
+      setDoneStep: model.setDoneStep,
+      isHadReported: model.isHadReported,
+      operate: model.operate,
+    }));
+
   useEffect(() => {
+    // getCurrentStage()
     resize();
     const fn = throttle(() => {
       resize();
@@ -78,6 +92,16 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       window.removeEventListener('resize', fn);
     };
   }, []);
+
+  const getCurrentStage = async () => {
+    let res = await getWaitResult({ itmModelRegisCode: modelId });
+    if (res?.status?.code == successCode) {
+      let data = res?.result || {};
+      if (data?.currentStage == 4 && data?.currentStageStatus == 1) {
+        setStepType(2);
+      }
+    }
+  };
 
   // vintage 分析
   const {
@@ -119,11 +143,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     originCustCatList,
   } = useSearchModel();
 
-  const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
-    modelId: model.modelId,
-    isHadReported: model.isHadReported,
-    operate: model.operate,
-  }));
   const { nextStep } = useNextStep();
 
   //维度
@@ -426,8 +445,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     //回显默认
-    getProdChannelList({ itmModelRegisCode: modelId }).then((res) => {
+    getProdChannelList({ itmModelRegisCode: modelId }).then(async (res) => {
       if (res?.status?.code == successCode) {
+        await getparams({ businessType: 'SX' });
         formRef?.current?.setFieldsValue({
           ...res?.result?.defaultSelection,
         });
@@ -442,17 +462,19 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         //   ...formData,
 
         let preanalysisCondition = data?.preanalysisCondition || {};
-        preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.();
-        preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.();
-        preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.();
-        preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.();
+        preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
+        preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
+        preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
+        preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
         formRef?.current?.setFieldsValue(preanalysisCondition);
 
         let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
         preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
-          ?.split?.()
+          ?.split?.(',')
           ?.map((item: any) => moment(item));
-        preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition.loadTerm?.split?.();
+        preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
+          ? preanalysisRollRateCondition.loadTerm?.split?.(',')
+          : ['全部'];
         formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
 
         form?.setFieldsValue({
@@ -594,40 +616,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           });
       }
     });
-
-    customerFormRef.validateFields().then((value: any) => {
-      let formData = form.getFieldsValue();
-      if (value) {
-        let reqData = {
-          itmModelRegisCode: modelId,
-          customerDefinition: value,
-          ...formData,
-          preanalysisCondition: formRef?.current?.getFieldsValue(),
-          preanalysisRollRateCondition: formRef2?.current?.getFieldsValue(),
-        };
-
-        reqData.preanalysisRollRateCondition.paymentTime =
-          reqData?.preanalysisRollRateCondition?.paymentTime
-            ?.map((item: any) => moment(item)?.format?.('YYYY-MM'))
-            ?.join?.();
-        reqData.preanalysisRollRateCondition.loadTerm =
-          reqData?.preanalysisRollRateCondition?.loadTerm?.join();
-
-        reqData.preanalysisCondition.prodCat = reqData?.preanalysisCondition?.prodCat?.join();
-        reqData.preanalysisCondition.channelCatM =
-          reqData?.preanalysisCondition?.channelCatM?.join();
-        reqData.preanalysisCondition.channelCatS =
-          reqData?.preanalysisCondition?.channelCatS?.join();
-        reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
-
-        console.log(reqData);
-        nextFlow(reqData).then((res) => {
-          if (res) {
-            nextStep();
-          }
-        });
-      }
-    });
   };
 
   const onClick = () => {
@@ -674,147 +662,167 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           <TitleStatus index={4} />
         </div>
       )}
-      <p className={styles.commonTitle}>VINTAGE分析</p>
-      <div className={styles.commonTable}>
-        <ProTable<any>
-          // params={searchForm}
-          columns={_vcolumns}
-          actionRef={tableRef}
-          loading={vloading}
-          scroll={{ x: _vcolumns.length * 200 }}
-          request={async (params = {}, sort, filter) => {
-            return getVintageList({ page: params.current, ...params });
-          }}
-          editable={{
-            type: 'multiple',
-          }}
-          columnsState={{
-            persistenceKey: 'pro-table-pre-analyze-list',
-            persistenceType: 'localStorage',
-          }}
-          rowKey={(r) => r.key}
-          search={{
-            labelWidth: 'auto',
-            // optionRender: false,
-            span: 8,
-            // collapsed: false,
-            defaultCollapsed: false,
-            collapseRender: () => null,
-          }}
-          formRef={formRef}
-          form={{
-            // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-            // 查询参数转化
-            syncToUrl: (values, type) => {
-              console.log(values, type);
-              if (type === 'get') {
-                return {
-                  ...values,
-                };
-              }
-              return values;
-            },
-            ignoreRules: false,
-          }}
-          pagination={false}
-          dateFormatter="string"
-          headerTitle="VINTAGE分析结果"
-          toolBarRender={() => []}
-          toolbar={{
-            actions: [
-              <Tooltip title={'切换为图表/表格展示'} placement={'topRight'}>
-                <AreaChartOutlined
-                  onClick={() => {
-                    setTableType(!tableType);
-                  }}
-                  style={{ color: tableType ? 'gray' : '#40a9ff', border: '1px solid', padding: 4 }}
-                />
-              </Tooltip>,
-            ],
-          }}
-          options={false}
-          tableStyle={{ display: tableType ? 'block' : 'none' }}
-        />
-        <Condition r-show={!tableType}>
-          <LineChart base={base} tableType={tableType} columns={vChartColumns} data={vintageList} />
-        </Condition>
-      </div>
-      {pageType !== 'viewReport' && (
-        <Form form={form} layout="vertical">
-          <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
-            <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={500} />
-          </FormItem>
-        </Form>
-      )}
-      {pageType == 'viewReport' && (
-        <Descriptions bordered column={2}>
-          <Descriptions.Item label="VINTAGE分析结论">{}</Descriptions.Item>
-        </Descriptions>
-      )}
-      <Divider />
-      <p className={styles.commonTitle}>滚动率分析</p>
-      <div className={styles.commonTable}>
-        <ProTable
-          actionRef={rateRef}
-          formRef={formRef2}
-          headerTitle="滚动率分析结果"
-          rowKey={(r) => r.key}
-          toolBarRender={() => []}
-          options={{ density: false, fullScreen: false, reload: false, setting: true }}
-          search={{
-            labelWidth: 'auto',
-            // optionRender: false,
-            span: 8,
-            // collapsed: false,
-            defaultCollapsed: false,
-            collapseRender: () => null,
-          }}
-          pagination={false}
-          columns={_rateColumns}
-          request={async (params = {}, sort, filter) => {
-            let reqData = {
-              paymentTime: params?.paymentTime
-                ?.map((item: any) => moment(item).format('YYYY-MM'))
-                ?.join(),
-              loadTerm: params?.loadTerm?.join(),
-            };
 
-            return getRateListArr({ page: params.current, ...params, ...reqData }, rateFilter);
-          }}
-          onChange={rateTableChange}
-        />
-      </div>
-      {pageType !== 'viewReport' && (
-        <Fragment>
-          <Form form={form} layout="vertical">
-            <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
-              <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={500} />
-            </FormItem>
-          </Form>
-          <Divider />
-          <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
-          <CustomerFormBox customerFormRef={customerFormRef} />
-          <Condition r-if={operate == 'EDIT' && !isHadReported}>
-            <NextStepButton
-              btnNode={
-                <Space>
-                  <Button onClick={exportResult} size="large">
-                    导出结果
-                  </Button>
-                  <Button onClick={onClick} size="large" type="primary">
-                    下一流程
-                  </Button>
-                </Space>
-              }
+      <Condition r-if={stepType == 1}>
+        <p className={styles.commonTitle}>VINTAGE分析</p>
+        <div className={styles.commonTable}>
+          <ProTable<any>
+            // params={searchForm}
+            columns={_vcolumns}
+            actionRef={tableRef}
+            loading={vloading}
+            scroll={{ x: _vcolumns.length * 200 }}
+            request={async (params = {}, sort, filter) => {
+              return getVintageList({ page: params.current, ...params });
+            }}
+            editable={{
+              type: 'multiple',
+            }}
+            columnsState={{
+              persistenceKey: 'pro-table-pre-analyze-list',
+              persistenceType: 'localStorage',
+            }}
+            rowKey={(r) => r.key}
+            search={{
+              labelWidth: 'auto',
+              // optionRender: false,
+              span: 8,
+              // collapsed: false,
+              defaultCollapsed: false,
+              collapseRender: () => null,
+            }}
+            formRef={formRef}
+            form={{
+              // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+              // 查询参数转化
+              syncToUrl: (values, type) => {
+                console.log(values, type);
+                if (type === 'get') {
+                  return {
+                    ...values,
+                  };
+                }
+                return values;
+              },
+              ignoreRules: false,
+            }}
+            pagination={false}
+            dateFormatter="string"
+            headerTitle="VINTAGE分析结果"
+            toolBarRender={() => []}
+            toolbar={{
+              actions: [
+                <Tooltip title={'切换为图表/表格展示'} placement={'topRight'}>
+                  <AreaChartOutlined
+                    onClick={() => {
+                      setTableType(!tableType);
+                    }}
+                    style={{
+                      color: tableType ? 'gray' : '#40a9ff',
+                      border: '1px solid',
+                      padding: 4,
+                    }}
+                  />
+                </Tooltip>,
+              ],
+            }}
+            options={false}
+            tableStyle={{ display: tableType ? 'block' : 'none' }}
+          />
+          <Condition r-show={!tableType}>
+            <LineChart
+              base={base}
+              tableType={tableType}
+              columns={vChartColumns}
+              data={vintageList}
             />
           </Condition>
-        </Fragment>
-      )}
-      {pageType == 'viewReport' && (
-        <Descriptions bordered column={2}>
-          <Descriptions.Item label="滚动率分析结论">{}</Descriptions.Item>
-        </Descriptions>
-      )}
+        </div>
+        {pageType !== 'viewReport' && (
+          <Form form={form} layout="vertical">
+            <FormItem name="vintageConclusion" label="VINTAGE分析结果" style={{ width: '100%' }}>
+              <TextArea rows={4} placeholder="请输入VINTAGE分析结果" maxLength={500} />
+            </FormItem>
+          </Form>
+        )}
+        {pageType == 'viewReport' && (
+          <Descriptions bordered column={2}>
+            <Descriptions.Item label="VINTAGE分析结论">{}</Descriptions.Item>
+          </Descriptions>
+        )}
+        <Divider />
+        <p className={styles.commonTitle}>滚动率分析</p>
+        <div className={styles.commonTable}>
+          <ProTable
+            actionRef={rateRef}
+            formRef={formRef2}
+            headerTitle="滚动率分析结果"
+            rowKey={(r) => r.key}
+            toolBarRender={() => []}
+            options={{ density: false, fullScreen: false, reload: false, setting: true }}
+            search={{
+              labelWidth: 'auto',
+              // optionRender: false,
+              span: 8,
+              // collapsed: false,
+              defaultCollapsed: false,
+              collapseRender: () => null,
+            }}
+            pagination={false}
+            columns={_rateColumns}
+            request={async (params = {}, sort, filter) => {
+              let reqData = {
+                paymentTime: params?.paymentTime
+                  ?.map((item: any) => moment(item).format('YYYY-MM'))
+                  ?.join(),
+                loadTerm: params?.loadTerm?.join(),
+              };
+
+              return getRateListArr({ page: params.current, ...params, ...reqData }, rateFilter);
+            }}
+            onChange={rateTableChange}
+          />
+        </div>
+        {pageType !== 'viewReport' && (
+          <Fragment>
+            <Form form={form} layout="vertical">
+              <FormItem name="rollRateConclusion" label="滚动率分析结论" style={{ width: '100%' }}>
+                <TextArea rows={4} placeholder="请输入滚动率分析结论" maxLength={500} />
+              </FormItem>
+            </Form>
+            <Divider />
+            <p className={styles.commonTitle}>经分析，将好坏客户定义设置为：</p>
+            <CustomerFormBox customerFormRef={customerFormRef} />
+            <Condition r-if={operate == 'EDIT' && !isHadReported}>
+              <NextStepButton
+                btnNode={
+                  <Space>
+                    <Button onClick={exportResult} size="large">
+                      导出结果
+                    </Button>
+                    <Button onClick={onClick} size="large" type="primary">
+                      下一流程
+                    </Button>
+                  </Space>
+                }
+              />
+            </Condition>
+          </Fragment>
+        )}
+        {pageType == 'viewReport' && (
+          <Descriptions bordered column={2}>
+            <Descriptions.Item label="滚动率分析结论">{}</Descriptions.Item>
+          </Descriptions>
+        )}
+      </Condition>
+
+      <Condition r-if={stepType == 2}>
+        <Loadingpage
+          back={() => {
+            setStepType(1);
+          }}
+        ></Loadingpage>
+      </Condition>
     </div>
   );
 };
