@@ -134,14 +134,14 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       ...formVal,
     };
     params.variableNames = variableNames;
-    debugger;
     let res = await beginBuildModel(params);
     if (res.status?.code === successCode) {
       setLoading(false);
       message.success(res.status?.desc || '成功');
       let resobj = await getCurrentStageRequest({ itmModelRegisCode: modelId });
       let data = resobj.result || {};
-      setDoneStep(data?.currentStage);
+      setDoneStep(Number(data?.currentStage));
+      // setDoneStepStatus('processing');
       setTimeout(() => setStepType(2), 500);
       setStepType(2);
     } else {
@@ -160,6 +160,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       setLoading(false);
       setStepType(1);
       setDoneStepStatus('processing');
+      // setDoneStep(8)
       form.setFieldsValue(res.result);
       let temp: any[] = res.result?.variableNames?.split(',');
       setRulist(temp);

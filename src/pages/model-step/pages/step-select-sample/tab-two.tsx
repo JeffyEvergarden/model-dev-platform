@@ -23,17 +23,16 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, isHadBuild, isHadReported, isReadonly, doneStep, curStep } = useModel(
-    'step',
-    (model: any) => ({
+  const { modelId, isHadBuild, isHadReported, isReadonly, doneStep, curStep, setDoneStepStatus } =
+    useModel('step', (model: any) => ({
       modelId: model.modelId,
       doneStep: model.doneStep,
       curStep: model.curStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
       isReadonly: model.isReadonly,
-    }),
-  );
+      setDoneStepStatus: model.setDoneStepStatus,
+    }));
 
   // 表单是否可以编辑
   const isDisabled = isHadReported || isHadBuild || isReadonly;
@@ -61,6 +60,7 @@ const StepTwo: React.FC<any> = (props: any) => {
     if (processType == 'finish' || processType == 'error') {
       getCurrentDetail();
     }
+    setDoneStepStatus(processType);
   }, [processType]);
 
   const getCurrentDetail = async () => {

@@ -189,7 +189,7 @@ const StepOne: React.FC = (props: any) => {
       if (tabType == '0') {
         let resobj = await getCurrentStageRequest({ itmModelRegisCode: modelId });
         let data = resobj.result || {};
-        setDoneStep(data?.currentStage);
+        setDoneStep(2);
         setTimeout(() => setStepType(2), 500);
       } else if (tabType == '1') {
         confirmModalRef?.current?.open(res?.result?.prepareSql);
@@ -229,6 +229,7 @@ const StepOne: React.FC = (props: any) => {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
       setDoneStepStatus('processing');
+      // setDoneStep(2)
       setTabType(res?.result?.sampleParam?.importType);
       getparams({ businessType: res?.result?.sampleParam?.businessType });
       getProcessList();

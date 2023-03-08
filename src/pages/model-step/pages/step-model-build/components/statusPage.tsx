@@ -16,7 +16,7 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   const { processType, startLoop, desc, fake } = useSampleUploadAwaitModel();
 
-  const { modelId, isHadReported, isReadonly, isHadBuild, doneStep, curStep } = useModel(
+  const { modelId, isHadReported, isReadonly, setDoneStepStatus, doneStep, curStep } = useModel(
     'step',
     (model: any) => ({
       modelId: model.modelId,
@@ -25,6 +25,7 @@ const StepTwo: React.FC<any> = (props: any) => {
       isHadReported: model.isHadReported,
       isReadonly: model.isReadonly,
       isHadBuild: model.isHadBuild,
+      setDoneStepStatus: model.setDoneStepStatus,
     }),
   );
 
@@ -43,6 +44,10 @@ const StepTwo: React.FC<any> = (props: any) => {
     }
     return () => clearInterval(fake?.current?.timeFn);
   }, [tabType]);
+
+  useEffect(() => {
+    setDoneStepStatus(processType);
+  }, [processType]);
 
   return (
     <div>
