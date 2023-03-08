@@ -23,11 +23,15 @@ const TabThree: React.FC<any> = (props: any) => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
 
     let data = res?.result || {};
-    if (data?.currentStage == 4 && data?.currentStageStatus == 1) {
+    if (
+      data?.currentStage == 4 &&
+      data?.currentStageStatus == '1' &&
+      data?.isCommittedPage == '1'
+    ) {
       setTimeout(async () => {
         getloading();
       }, 10 * 1000);
-    } else if (data?.currentStage == 4) {
+    } else if (data?.currentStage == 4 && data?.currentStageStatus == '3') {
       back();
     } else {
       nextStep();

@@ -153,21 +153,21 @@ const getRateListRequest = (req: any, res: any) => {
     },
     result: [
       {
-        key: 1,
+        // key: 1,
         name: 'M0',
         m0: '98.45%',
         m1: '98.45%',
         m2: '98.45%',
         monthList: [
           {
-            key: '11',
+            // key: '11',
             name: '2021-12',
             m0: '98.45%',
             m1: '98.45%',
             m2: '98.45%',
             monthList: [
               {
-                key: '111',
+                // key: '111',
                 name: '2021-12',
                 m0: '98.45%',
                 m1: '98.45%',
@@ -176,14 +176,14 @@ const getRateListRequest = (req: any, res: any) => {
             ],
           },
           {
-            key: '12',
+            // key: '12',
             name: '2022-01',
             m0: '98.45%',
             m1: '98.45%',
             m2: '98.45%',
             monthList: [
               {
-                key: '111',
+                // key: '111',
                 name: '2021-12',
                 m0: '98.45%',
                 m1: '98.45%',
@@ -192,7 +192,7 @@ const getRateListRequest = (req: any, res: any) => {
             ],
           },
           {
-            key: '13',
+            // key: '13',
             name: '2022-02',
             m0: '98.45%',
             m1: '98.45%',
@@ -201,28 +201,28 @@ const getRateListRequest = (req: any, res: any) => {
         ],
       },
       {
-        key: 2,
+        // key: 2,
         name: 'M1',
         m0: '33.98%',
         m1: '33.98%',
         m2: '33.98%',
         monthList: [
           {
-            key: '21',
+            // key: '21',
             name: '2021-12',
             m0: '98.45%',
             m1: '98.45%',
             m2: '98.45%',
           },
           {
-            key: '22',
+            // key: '22',
             name: '2022-01',
             m0: '98.45%',
             m1: '98.45%',
             m2: '98.45%',
           },
           {
-            key: '23',
+            // key: '23',
             name: '2022-02',
             m0: '98.45%',
             m1: '98.45%',

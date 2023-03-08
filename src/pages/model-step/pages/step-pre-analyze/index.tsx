@@ -82,7 +82,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     }));
 
   useEffect(() => {
-    // getCurrentStage()
+    getCurrentStage();
     resize();
     const fn = throttle(() => {
       resize();
@@ -97,7 +97,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
     if (res?.status?.code == successCode) {
       let data = res?.result || {};
-      if (data?.currentStage == 4 && data?.currentStageStatus == 1) {
+      if (
+        data?.currentStage == 4 &&
+        data?.currentStageStatus == '1' &&
+        data?.isCommittedPage == '1'
+      ) {
         setStepType(2);
       }
     }
@@ -757,7 +761,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             actionRef={rateRef}
             formRef={formRef2}
             headerTitle="滚动率分析结果"
-            rowKey={(r) => r.key}
+            rowKey={(r) => r.name}
             toolBarRender={() => []}
             options={{ density: false, fullScreen: false, reload: false, setting: true }}
             search={{
