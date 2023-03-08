@@ -63,8 +63,8 @@ export const useVarSelectModal = () => {
         setTotalSize(res?.result?.totalSize || 0);
       } else {
         data = res?.result;
-        setVarList(data);
-        setTotalSize(data.length || 0);
+        // setVarList(data);
+        // setTotalSize(data.length || 0);
       }
       return { data, total: res?.result?.totalSize || data.length };
     } else {
