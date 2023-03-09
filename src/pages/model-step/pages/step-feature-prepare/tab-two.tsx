@@ -30,17 +30,16 @@ const TabTwo: React.FC<any> = (props: any) => {
   const { errorMsg, processType, dataList, startLoop, nextFlow, clearTime } = useVarSelectModal();
   const { nextStep } = useNextStep();
 
-  const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate } = useModel(
-    'step',
-    (model: any) => ({
+  const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate, setDoneStepStatus } =
+    useModel('step', (model: any) => ({
       modelId: model.modelId,
       curStep: model.curStep,
       doneStep: model.doneStep,
       isHadBuild: model.isHadBuild,
       isHadReported: model.isHadReported,
       operate: model.operate,
-    }),
-  );
+      setDoneStepStatus: model.setDoneStepStatus,
+    }));
 
   const onClick = () => {
     nextFlow({ itmModelRegisCode: modelId }).then((res) => {
@@ -68,6 +67,9 @@ const TabTwo: React.FC<any> = (props: any) => {
       clearTime();
     };
   }, [processId]);
+  useEffect(() => {
+    setDoneStepStatus(processType);
+  }, [processType]);
 
   return (
     <div>
