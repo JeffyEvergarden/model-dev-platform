@@ -17,6 +17,7 @@ import { useModel } from 'umi';
 import { useStepSelectModel } from './model';
 import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
 import { useNextStep } from '@/pages/model-step/config';
+import LoadingPage from '../loadingPage';
 
 const successCode = config.successCode;
 
@@ -91,7 +92,7 @@ const StepOne: React.FC = (props: any) => {
 
   const [tabType, setTabType] = useState<any>('0'); // 导入数据类型 0、1  // 0 -> 否， 1 -> 是
 
-  const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
+  const [stepType, setStepType] = useState<any>(0); //  1、2  //  1-> 选择条件    2--> 导入进度
 
   const [formValTwo, setFormValTwo] = useState<any>({});
   const [batchNo, setBatchNo] = useState<any>('');
@@ -260,6 +261,10 @@ const StepOne: React.FC = (props: any) => {
         <TitleStatus index={2} />
       </div>
 
+      <Condition r-if={stepType === 0}>
+        <LoadingPage />
+      </Condition>
+
       {/* 步骤一 */}
       <Condition r-if={stepType === 1}>
         <div className={style['sub-box']}>
@@ -272,7 +277,7 @@ const StepOne: React.FC = (props: any) => {
 
         <Condition r-if={tabType == '1'}>
           {/* <ImportTabOne form={form1} onNext={clickNextStep} /> */}
-          <ImportTrue form={form1} onNext={clickNextStep} editData={editData} />
+          <ImportTrue form={form1} onNext={clickNextStep} editData={editData} loading={loading} />
         </Condition>
 
         <Condition r-if={tabType == '0'}>

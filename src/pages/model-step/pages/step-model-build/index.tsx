@@ -25,6 +25,7 @@ import { useSample } from './../step-select-sample/model';
 import { useBaseInfoModel } from './../../../model-step/model';
 const successCode = config.successCode;
 import { useNextStep } from '@/pages/model-step/config';
+import LoadingPage from '../loadingPage';
 
 const gutter = { xs: 8, sm: 16, md: 24, lg: 32 };
 
@@ -46,7 +47,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
 
   const [ruleList, setRulist] = useState<any>([]);
   const [pageType, setPageType] = useState<string>(''); //loading error finish
-  const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
+  const [stepType, setStepType] = useState<any>(0); //  1、2  //  1-> 选择条件    2--> 导入进度
 
   const isStepwise: any = Form.useWatch('isStepwise', form);
   const isVif: any = Form.useWatch('isVif', form);
@@ -193,8 +194,11 @@ const StepModelBuild: React.FC<any> = (props: any) => {
         <span>模型构建</span>
         <TitleStatus index={8} />
       </div>
+      <Condition r-if={stepType === 0}>
+        <LoadingPage />
+      </Condition>
       <Condition r-if={stepType === 2}>
-        <PageStatus onClickReSelect={rebuild} nextFlow={nextFlow} />
+        <PageStatus onClickReSelect={rebuild} nextFlow={nextFlow} loading={loading} />
       </Condition>
       <Condition r-if={stepType !== 2}>
         <Form

@@ -7,8 +7,8 @@ const baseUrl = config.basePath;
 const normalDeal = (req: any, res: any) => {
   res.json({
     status: {
-      code: successCode,
-      desc: '',
+      code: 500,
+      desc: '123rg',
     },
   });
 };
