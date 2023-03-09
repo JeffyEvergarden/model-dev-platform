@@ -121,7 +121,7 @@ const SubBox: React.FC<any> = (props: any) => {
         reader.readAsDataURL(blob);
         reader.onload = (e: any) => {
           const a = document.createElement('a');
-          a.download = `特征工程分箱.${'xls'}`;
+          a.download = `特征工程分箱结果.${'xls'}`;
           a.href = e.target.result;
           document.body.appendChild(a);
           a.click();

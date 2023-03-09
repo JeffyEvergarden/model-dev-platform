@@ -16,6 +16,7 @@ export const useDefineSampleModel = () => {
   const [resultTableList, setResultTableList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [resultLoading, setResultLoading] = useState<boolean>(false);
+  const [nextLoading, setNextLoading] = useState<boolean>(false);
 
   const getSampleTableList = async (params?: any) => {
     setLoading(true);
@@ -51,7 +52,9 @@ export const useDefineSampleModel = () => {
 
   //下一流程
   const nextFlow = async (params: any) => {
+    setNextLoading(true);
     let res: any = await nextProcess(params);
+    setNextLoading(false);
     if (res?.status?.code == successCode) {
       return true;
     } else {
@@ -67,6 +70,7 @@ export const useDefineSampleModel = () => {
     resultTableList,
     tableTotal,
     tableResultTotal,
+    nextLoading,
     getSampleTableList,
     getResultTableList,
     nextFlow,

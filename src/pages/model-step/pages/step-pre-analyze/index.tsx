@@ -127,6 +127,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
     getRateList,
     nextFlow,
+    loading,
   } = usePreAnalyzeModel();
 
   const {
@@ -812,10 +813,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
               <NextStepButton
                 btnNode={
                   <Space>
-                    <Button onClick={exportResult} size="large">
+                    <Button onClick={exportResult} size="large" loading={loading}>
                       导出结果
                     </Button>
-                    <Button onClick={onClick} size="large" type="primary">
+                    <Button onClick={onClick} size="large" type="primary" loading={loading}>
                       下一流程
                     </Button>
                   </Space>

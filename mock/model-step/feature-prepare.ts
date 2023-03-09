@@ -103,4 +103,5 @@ export default {
   [`POST ${baseUrl}/featurePrepare/submit`]: getVarList,
   [`GET ${baseUrl}/featurePrepare/getModelStageInfo`]: getInfo,
   [`post ${baseUrl}/featurePrepare/reset`]: getInfo,
+  [`post ${baseUrl}/featurePrepare/nextStage`]: getInfo,
 };

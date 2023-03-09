@@ -201,6 +201,8 @@ export const usePreAnalyzeModel = () => {
   const [badList, setBadList] = useState<any[]>([]);
   const [midList, setMidList] = useState<any[]>([]);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const getVintageList = async (params?: any) => {
     console.log(params);
     let reqData = {
@@ -313,7 +315,9 @@ export const usePreAnalyzeModel = () => {
 
   //下一流程
   const nextFlow = async (params: any) => {
+    setLoading(true);
     let res: any = await nextStage(params);
+    setLoading(false);
     if (res?.status?.code == successCode) {
       return true;
     } else {
@@ -344,5 +348,6 @@ export const usePreAnalyzeModel = () => {
     midList,
     // -------
     nextFlow,
+    loading,
   };
 };

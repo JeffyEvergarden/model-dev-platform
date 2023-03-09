@@ -14,6 +14,7 @@ export const useVarSelectModal = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
   const [dataList, setDataList] = useState<any[]>([]);
   const [errorMsg, setErrorMsg] = useState<any>('');
+  const [nextLoading, setNextLoading] = useState<boolean>(false);
 
   const fake = useRef<any>({});
 
@@ -106,7 +107,9 @@ export const useVarSelectModal = () => {
 
   //下一流程
   const nextFlow = async (params: any) => {
+    setNextLoading(true);
     let res: any = await nextStage(params);
+    setNextLoading(false);
     if (res?.status?.code == successCode) {
       return true;
     } else {
@@ -178,6 +181,7 @@ export const useVarSelectModal = () => {
 
   return {
     loading,
+    nextLoading,
     treeList,
     varList,
     totalSize,

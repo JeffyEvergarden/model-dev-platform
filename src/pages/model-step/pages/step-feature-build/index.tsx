@@ -1,5 +1,5 @@
 import { Button, Divider, message, Space } from 'antd';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styles from '../style.less';
 import MissingValueFilling from './missing-value-filling';
@@ -16,6 +16,8 @@ import { useNextStep } from '../../config';
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const lostRef = useRef<any>();
   const boxRef = useRef<any>();
+
+  const [loading, setLoading] = useState<any>(false);
 
   const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -41,10 +43,12 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
       featureMetricsResult: lostRef?.current?.tableList,
       featureBinningResults: boxRef?.current?.tableRef?.current?.originTableList,
     };
+    setLoading(true);
     await nextProcess(reqData).then((res) => {
       if (res?.status?.code == successCode) {
         nextStep();
       }
+      setLoading(false);
     });
   };
 
@@ -69,6 +73,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
                 }}
                 size="large"
                 type="primary"
+                loading={loading}
               >
                 下一流程
               </Button>

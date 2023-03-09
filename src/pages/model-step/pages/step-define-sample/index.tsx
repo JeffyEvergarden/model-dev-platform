@@ -109,6 +109,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     getSampleTableList,
     getResultTableList,
     nextFlow,
+    nextLoading,
   } = useDefineSampleModel();
   const [form] = Form.useForm();
   // 页码, 分页相关
@@ -508,7 +509,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         <NextStepButton
           btnNode={
             <Space>
-              <Button onClick={exportResult} size="large">
+              <Button onClick={exportResult} size="large" loading={nextLoading}>
                 导出结果
               </Button>
               <Button
@@ -517,6 +518,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
                 }}
                 size="large"
                 type="primary"
+                loading={nextLoading}
               >
                 下一流程
               </Button>
