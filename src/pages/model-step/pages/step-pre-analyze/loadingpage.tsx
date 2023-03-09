@@ -5,7 +5,7 @@ import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
 import { successCode } from './model';
-import { useNextStep } from '../../config';
+import { formateStatus, useNextStep } from '../../config';
 import { useModel } from 'umi';
 import { getWaitResult } from '../step-select-sample/model/api';
 
@@ -13,8 +13,9 @@ import { getWaitResult } from '../step-select-sample/model/api';
 const TabThree: React.FC<any> = (props: any) => {
   const { back } = props;
   const fake = useRef<any>({});
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, setDoneStepStatus } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    setDoneStepStatus: model.setDoneStepStatus,
   }));
 
   const { nextStep } = useNextStep();

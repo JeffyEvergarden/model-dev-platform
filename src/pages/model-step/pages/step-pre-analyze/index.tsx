@@ -21,7 +21,7 @@ import { genColumns } from './model/config';
 import { successCode, usePreAnalyzeModel, useSearchModel } from './model';
 import config from '@/config/index';
 import Item from 'antd/lib/list/Item';
-import { useNextStep } from '../../config';
+import { formateStatus, useNextStep } from '../../config';
 import { useModel } from 'umi';
 import { AreaChartOutlined } from '@ant-design/icons';
 import Condition from '@/components/Condition';
@@ -97,6 +97,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
     if (res?.status?.code == successCode) {
       let data = res?.result || {};
+      if (data?.currentStageStatus) {
+        setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
+      }
       if (
         data?.currentStage == 4 &&
         data?.currentStageStatus == '1' &&

@@ -50,6 +50,7 @@ export const useStrategyBackUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
   const [errorMsg, setErrorMsg] = useState<any>('');
   const [dataList, setDataList] = useState<any>('');
+  const [loading, setLoading] = useState<any>(false);
 
   const fake = useRef<any>({});
 
@@ -77,7 +78,9 @@ export const useStrategyBackUploadAwaitModel = () => {
 
   //下一流程
   const nextFlow = async (params: any) => {
+    setLoading(true);
     let res: any = await nextStage(params);
+    setLoading(false);
     if (res?.status?.code == successCode) {
       return true;
     } else {
@@ -116,7 +119,6 @@ export const useStrategyBackUploadAwaitModel = () => {
     let res: any = await awaitResult(params);
     if (status == 'finish') {
       setProcessType('finish');
-      return 'finish';
     }
     if (res == 'finish') {
       clearTimeout(fake.current.timeFn);
@@ -138,6 +140,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     processType,
     errorMsg,
     dataList,
+    loading,
     clearTime,
     awaitResult,
     startLoop,

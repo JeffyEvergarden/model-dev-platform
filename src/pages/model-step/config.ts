@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { history, useModel } from 'umi';
+import { getWaitResult } from './pages/step-select-sample/model/api';
 
 export enum config {
   model_overview = '/modelStep/overview', // 模型概况  -------
@@ -107,10 +109,15 @@ export const useNextStep = () => {
     }),
   );
 
+  const [nextLoading, setNextLoading] = useState<any>(false);
+
   const keys = Object.keys(config);
 
-  const nextStep = (conf?: any) => {
+  const nextStep = async (conf?: any) => {
     // console.log(history.location);
+    setNextLoading(true);
+    let res = await getWaitResult({ itmModelRegisCode: modelId });
+    setNextLoading(false);
     const curName: any = history.location.pathname;
     let _curName: any = keys.find((item: any) => config[item] === curName);
     const curIndex = Number(STEP_NAME_MAP[_curName]) + 1;
@@ -119,11 +126,11 @@ export const useNextStep = () => {
       let urlName = config[STEP_NAME_MAP[curIndex]];
       history.replace(urlName + `?id=${modelId}`);
       //
-      setDoneStep(curIndex);
+      setDoneStep(res?.currentStage || curIndex);
       setCurStep(curIndex - 1);
       setDoneStepStatus('process');
     }
   };
 
-  return { nextStep };
+  return { nextLoading, nextStep };
 };

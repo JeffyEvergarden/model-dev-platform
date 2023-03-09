@@ -26,22 +26,29 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { modelId, curStep, doneStep, setDoneStep, isHadBuild, isHadReported, operate } = useModel(
-    'step',
-    (model: any) => ({
-      modelId: model.modelId,
-      curStep: model.curStep,
-      doneStep: model.doneStep,
-      setDoneStep: model.setDoneStep,
-      isHadBuild: model.isHadBuild,
-      isHadReported: model.isHadReported,
-      operate: model.operate,
-    }),
-  );
+  const {
+    modelId,
+    curStep,
+    doneStep,
+    setDoneStep,
+    isHadBuild,
+    isHadReported,
+    operate,
+    setDoneStepStatus,
+  } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    curStep: model.curStep,
+    doneStep: model.doneStep,
+    setDoneStep: model.setDoneStep,
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
+    operate: model.operate,
+    setDoneStepStatus: model.setDoneStepStatus,
+  }));
 
-  const { processType, dataList, errorMsg, startLoop, nextFlow, clearTime } =
+  const { processType, dataList, errorMsg, loading, startLoop, nextFlow, clearTime } =
     useStrategyBackUploadAwaitModel();
-  const { nextStep } = useNextStep();
+  const { nextLoading, nextStep } = useNextStep();
 
   const onClick = () => {
     // onNext?.();
@@ -76,6 +83,10 @@ const TabTwo: React.FC<any> = (props: any) => {
       clearTime();
     };
   }, [processId]);
+
+  useEffect(() => {
+    setDoneStepStatus(processType);
+  }, [processType]);
 
   return (
     <div>
@@ -122,11 +133,17 @@ const TabTwo: React.FC<any> = (props: any) => {
                 }}
                 size="large"
                 type={processType === 'error' ? 'primary' : undefined}
+                loading={loading || nextLoading}
               >
                 重新回溯
               </Button>
               <Condition r-if={processType !== 'error'}>
-                <Button onClick={onClick} size="large" type="primary">
+                <Button
+                  onClick={onClick}
+                  size="large"
+                  type="primary"
+                  loading={loading || nextLoading}
+                >
                   下一流程
                 </Button>
               </Condition>
