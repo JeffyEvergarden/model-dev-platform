@@ -119,7 +119,7 @@ const StepOne: React.FC<any> = (props: any) => {
     if (editData?.featureCode) {
       getSelectionList({ labelId: editData?.featureCode });
     }
-    labelListRequest();
+    // labelListRequest();
     setTimeout(() => {
       setOperationList(featureOperatorMap?.[editData?.featureType]);
     }, 500);

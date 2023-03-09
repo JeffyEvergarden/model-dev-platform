@@ -27,7 +27,7 @@ export default (props: any) => {
       footer={
         <Space>
           <Button onClick={() => setVisible(false)}>取消</Button>
-          <Button type="primary" onClick={confirmSunmit} disabled={loading}>
+          <Button type="primary" onClick={confirmSunmit} loading={loading}>
             确定
           </Button>
         </Space>

@@ -5,7 +5,7 @@ import NextStepButton from './../../../components/nextstep-button';
 const FormItem = Form.Item;
 
 export default (props: any) => {
-  const { form, onNext, editData } = props;
+  const { form, onNext, editData, loading } = props;
 
   useEffect(() => {
     form.setFieldsValue({
@@ -55,7 +55,7 @@ export default (props: any) => {
           </Col>
         </Row>
       </Form>
-      <NextStepButton onClick={onClick} text={'提交'} />
+      <NextStepButton onClick={onClick} text={'提交'} loading={loading} />
     </Fragment>
   );
 };

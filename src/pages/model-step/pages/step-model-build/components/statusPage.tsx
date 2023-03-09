@@ -10,7 +10,7 @@ import { useSampleUploadAwaitModel } from '@/pages/model-step/pages/step-select-
 // 首页
 const StepTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, btnNode, tabType, onClickReSelect, nextFlow } = props;
+  const { processId, form, onNext, btnNode, tabType, onClickReSelect, nextFlow, loading } = props;
 
   const [_form] = Form.useForm(form);
 
@@ -77,16 +77,16 @@ const StepTwo: React.FC<any> = (props: any) => {
           btnNode={
             processType == 'error' ? (
               <Space>
-                <Button size="large" onClick={onClickReSelect}>
+                <Button size="large" onClick={onClickReSelect} loading={loading}>
                   重新建模
                 </Button>
               </Space>
             ) : (
               <Space>
-                <Button size="large" onClick={onClickReSelect}>
+                <Button size="large" onClick={onClickReSelect} loading={loading}>
                   重新建模
                 </Button>
-                <Button size="large" onClick={nextFlow} type="primary">
+                <Button size="large" onClick={nextFlow} type="primary" loading={loading}>
                   下一流程
                 </Button>
               </Space>
