@@ -87,6 +87,7 @@ export default (props: any) => {
         title: '评分区间',
         dataIndex: 'scoreRange',
         key: 'scoreRange',
+        ellipsis: true,
       },
       {
         title: '占比',
@@ -149,11 +150,13 @@ export default (props: any) => {
         title: '变量名称',
         dataIndex: 'variable',
         key: 'variable',
+        ellipsis: true,
       },
       {
         title: '中文名字',
         dataIndex: 'variableName',
         key: 'variableName',
+        ellipsis: true,
       },
       // {
       //   title: 'PSI_valid',
@@ -238,46 +241,55 @@ export default (props: any) => {
       title: '评分区间',
       dataIndex: 'scoreRange',
       key: 'scoreRange',
+      ellipsis: true,
     },
     {
       title: '总样本数',
       dataIndex: 'sampleTotal',
       key: 'sampleTotal',
+      ellipsis: true,
     },
     {
       title: '好样本数',
       dataIndex: 'sampleGood',
       key: 'sampleGood',
+      ellipsis: true,
     },
     {
       title: '坏样本数',
       dataIndex: 'sampleBad',
       key: 'sampleBad',
+      ellipsis: true,
     },
     {
       title: '坏样本率',
       dataIndex: 'sampleBadRate',
       key: 'sampleBadRate',
+      ellipsis: true,
     },
     {
       title: '累计好样本率',
       dataIndex: 'addupGoodRate',
       key: 'addupGoodRate',
+      ellipsis: true,
     },
     {
       title: '累计坏样本率',
       dataIndex: 'addupBadRate',
       key: 'addupBadRate',
+      ellipsis: true,
     },
     {
       title: 'KS',
       dataIndex: 'ks',
       key: 'ks',
+      ellipsis: true,
     },
     {
       title: 'lift',
       dataIndex: 'lift',
       key: 'lift',
+      ellipsis: true,
     },
   ];
 
@@ -331,7 +343,7 @@ export default (props: any) => {
           search={false}
           columns={columnsTrate}
           dataSource={trateAndVerifyData?.trainDataset}
-          scroll={{ y: 500 }}
+          scroll={{ y: 500, x: columnsTrate?.length * 150 }}
         />
       </div>
       <div className={styles.tableBox}>
@@ -345,7 +357,7 @@ export default (props: any) => {
           search={false}
           columns={columnsTrate}
           dataSource={trateAndVerifyData?.validDataset}
-          scroll={{ y: 500 }}
+          scroll={{ y: 500, x: columnsTrate?.length * 150 }}
         />
       </div>
       {pageType == 'modelEffect' && (
@@ -360,7 +372,7 @@ export default (props: any) => {
             search={false}
             columns={getSortColums(sortData?.rateHeadList)}
             dataSource={sortData?.modelSortInfoList}
-            scroll={{ y: 500 }}
+            scroll={{ y: 500, x: getSortColums(sortData?.rateHeadList)?.length * 150 }}
           />
         </div>
       )}
@@ -381,7 +393,7 @@ export default (props: any) => {
           search={false}
           columns={getStableColums(modelStabilityList)}
           dataSource={modelStabilityList?.modelStabilityList}
-          scroll={{ y: 500 }}
+          scroll={{ y: 500, x: getStableColums(modelStabilityList)?.length * 150 }}
         />
       </div>
       <div className={styles.tableBox}>
@@ -402,6 +414,7 @@ export default (props: any) => {
             pageSize: 10,
           }}
           search={false}
+          scroll={{ x: getVarCodeStableColums(psiHeadList)?.length * 150 }}
           columns={getVarCodeStableColums(psiHeadList)}
           // dataSource={modelResult?.variableStabilityList}
           request={async (params = {}, sort, filter) => {
