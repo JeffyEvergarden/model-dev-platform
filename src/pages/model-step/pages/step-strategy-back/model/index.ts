@@ -1,6 +1,7 @@
 import config from '@/config/index';
 import { message } from 'antd';
 import { useState, useRef } from 'react';
+import { useModel } from 'umi';
 
 import {
   getWaitResult,
@@ -51,6 +52,10 @@ export const useStrategyBackUploadAwaitModel = () => {
   const [errorMsg, setErrorMsg] = useState<any>('');
   const [dataList, setDataList] = useState<any>('');
   const [loading, setLoading] = useState<any>(false);
+
+  const { setDoneStepStatus } = useModel('step', (model: any) => ({
+    setDoneStepStatus: model.setDoneStepStatus,
+  }));
 
   const fake = useRef<any>({});
 
@@ -119,6 +124,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     let res: any = await awaitResult(params);
     if (status == 'finish') {
       setProcessType('finish');
+      return 'finish';
     }
     if (res == 'finish') {
       clearTimeout(fake.current.timeFn);
@@ -127,8 +133,6 @@ export const useStrategyBackUploadAwaitModel = () => {
       fake.current.timeFn = setTimeout(async () => {
         startLoop(params, time + 2);
       }, 10 * 1000);
-    } else {
-      message.error(res?.resultMsg || '未知系统异常');
     }
   };
 

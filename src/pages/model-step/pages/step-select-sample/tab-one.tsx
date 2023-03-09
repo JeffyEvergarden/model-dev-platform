@@ -160,8 +160,14 @@ const StepOne: React.FC<any> = (props: any) => {
     });
   };
 
-  const changeProduct = (val: any, option: any) => {
-    if (val.length > 0) {
+  const changeProduct = (arr: any, option: any) => {
+    let val: any = arr;
+    if (arr.length > 0) {
+      if (arr[arr.length - 1] == '全部') {
+        val = ['全部'];
+      } else {
+        val = val.filter((item: any) => item != '全部');
+      }
       let list: any[] = [];
       if (val?.includes('全部')) {
         list = originChannelMidList;
@@ -191,22 +197,14 @@ const StepOne: React.FC<any> = (props: any) => {
     });
   };
 
-  const onSelect = (value: any, option: any, type: any) => {
-    if (value == '全部') {
-      form.setFieldsValue({
-        [type]: ['全部'],
-      });
-    } else {
-      let formval = form.getFieldsValue(type);
-      let temp = formval?.[type]?.filter((item: any) => item !== '全部');
-      form.setFieldsValue({
-        [type]: temp,
-      });
-    }
-  };
-
-  const changeChannelCatM = (val: any) => {
+  const changeChannelCatM = (arr: any) => {
+    let val: any = arr;
     if (val.length > 0) {
+      if (arr[arr.length - 1] == '全部') {
+        val = ['全部'];
+      } else {
+        val = val.filter((item: any) => item != '全部');
+      }
       let list: any[] = [];
       if (val?.includes('全部')) {
         list = originChannelSmList;
@@ -231,8 +229,14 @@ const StepOne: React.FC<any> = (props: any) => {
     });
   };
 
-  const changeChannelCatS = (val: any) => {
+  const changeChannelCatS = (arr: any) => {
+    let val: any = arr;
     if (val.length > 0) {
+      if (arr[arr.length - 1] == '全部') {
+        val = ['全部'];
+      } else {
+        val = val.filter((item: any) => item != '全部');
+      }
       let list: any[] = [];
       if (val?.includes('全部')) {
         list = originCustCatList;
@@ -254,8 +258,14 @@ const StepOne: React.FC<any> = (props: any) => {
     });
   };
 
-  const changeCustCat = (val: any) => {
+  const changeCustCat = (arr: any) => {
+    let val: any = arr;
     if (val.length > 0) {
+      if (arr[arr.length - 1] == '全部') {
+        val = ['全部'];
+      } else {
+        val = val.filter((item: any) => item != '全部');
+      }
       let list: any[] = [];
       if (val?.includes('全部')) {
         list = originCustCatSmList;
@@ -272,6 +282,20 @@ const StepOne: React.FC<any> = (props: any) => {
     form.setFieldsValue({
       custCatS: undefined,
     });
+  };
+
+  const onSelect = (value: any, option: any, type: any) => {
+    if (value == '全部') {
+      form.setFieldsValue({
+        [type]: ['全部'],
+      });
+    } else {
+      let formval = form.getFieldsValue(type);
+      let temp = formval?.[type]?.filter((item: any) => item !== '全部');
+      form.setFieldsValue({
+        [type]: temp,
+      });
+    }
   };
 
   const onClick = async () => {
@@ -340,7 +364,6 @@ const StepOne: React.FC<any> = (props: any) => {
                   allowClear
                   mode="multiple"
                   onChange={changeProduct}
-                  onSelect={(value, opt) => onSelect(value, opt, 'prodCat')}
                 >
                   {productList.map((item: any, index: number) => {
                     return (
@@ -364,7 +387,6 @@ const StepOne: React.FC<any> = (props: any) => {
                   allowClear
                   mode="multiple"
                   onChange={changeChannelCatM}
-                  onSelect={(value, opt) => onSelect(value, opt, 'channelCatM')}
                 >
                   {channelMidList.map((item: any, index: number) => {
                     return (
@@ -388,7 +410,6 @@ const StepOne: React.FC<any> = (props: any) => {
                   allowClear
                   mode="multiple"
                   onChange={changeChannelCatS}
-                  onSelect={(value, opt) => onSelect(value, opt, 'channelCatS')}
                 >
                   {channelSmList.map((item: any, index: number) => {
                     return (
@@ -412,7 +433,6 @@ const StepOne: React.FC<any> = (props: any) => {
                   allowClear
                   mode="multiple"
                   onChange={changeCustCat}
-                  onSelect={(value, opt) => onSelect(value, opt, 'custCat')}
                 >
                   {custCatList.map((item: any, index: number) => {
                     return (
@@ -431,12 +451,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 label="客群小类"
                 initialValue={['all']}
               >
-                <Select
-                  placeholder="请选择客群小类"
-                  allowClear
-                  mode="multiple"
-                  onSelect={(value, opt) => onSelect(value, opt, 'custCatS')}
-                >
+                <Select placeholder="请选择客群小类" allowClear mode="multiple">
                   {custCatSmList.map((item: any, index: number) => {
                     return (
                       <Option value={item.name} key={index}>

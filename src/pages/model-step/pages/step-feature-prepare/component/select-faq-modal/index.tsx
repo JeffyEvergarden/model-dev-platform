@@ -301,41 +301,43 @@ const SelectorModal: React.FC<any> = (props: any) => {
     >
       <div className={style['modal-bg_default']}>
         <div className={style['select-box']}>
-          {/* <Condition r-if={selectList.length > 0}> */}
-          <div className={style['title']}>已选择的变量</div>
+          <Condition r-if={selectList.length > 0}>
+            <div className={style['title']}>已选择的变量：</div>
 
-          <div className={style['select-content']}>
-            {selectList.map((item: any, index: number) => {
-              return (
-                <div className={style['select-item']} key={index}>
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      deleteItem(item, index);
-                    }}
-                  >
-                    <MinusCircleOutlined className={style['del']} />
-                  </Button>
-                  <Tooltip placement="topLeft" title={item?.featureName}>
-                    <div className={style['label']}>
-                      <span className={style['num']}>{index + 1}.</span>
-                      {item?.featureName}
-                    </div>
-                  </Tooltip>
-                </div>
-              );
-            })}
-          </div>
-          {/* </Condition> */}
+            <div className={style['select-content']}>
+              {selectList.map((item: any, index: number) => {
+                return (
+                  <div className={style['select-item']} key={index}>
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        deleteItem(item, index);
+                      }}
+                    >
+                      <MinusCircleOutlined className={style['del']} />
+                    </Button>
+                    <Tooltip placement="topLeft" title={item?.featureName}>
+                      <div className={style['label']}>
+                        <span className={style['num']}>{index + 1}.</span>
+                        {item?.featureName}
+                      </div>
+                    </Tooltip>
+                  </div>
+                );
+              })}
+            </div>
+          </Condition>
         </div>
 
         <div className={style['zy-row']}>
           <div className={style['page_left']}>
-            <div className={style['zy-row_start']}>变量列表</div>
             <MyTree draggable={false} onChange={onSelect} data={treeList} edit={false} size="sm" />
           </div>
 
           <div className={style['page_content']}>
+            <div className={style['zy-row_start']}>
+              <span className={style['title']}>变量列表</span>{' '}
+            </div>
             <div className={style['zy-row_end']}>
               <Input.Group compact>
                 <Select
@@ -347,7 +349,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   <Option value={'model'}>模型</Option>
                 </Select>
                 <Search
-                  placeholder="输入搜索"
+                  placeholder="请输入变量名称后回车"
                   value={searchText1}
                   onSearch={onSearch1}
                   onPressEnter={onSearch1}

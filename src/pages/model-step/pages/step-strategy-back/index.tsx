@@ -113,7 +113,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
       <Condition r-if={stepType === 2}>
         <TabTwo
           tabType={tabType}
-          processId={processId}
+          stepType={stepType}
           selectedKeys={selectedKeys}
           again={again}
         ></TabTwo>

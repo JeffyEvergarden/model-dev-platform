@@ -22,7 +22,7 @@ const { Option } = Select;
 // 首页
 const TabTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, extra, selectedKeys, again } = props;
+  const { stepType, form, onNext, extra, selectedKeys, again } = props;
 
   const [_form] = Form.useForm(form);
 
@@ -76,13 +76,10 @@ const TabTwo: React.FC<any> = (props: any) => {
       });
     })();
 
-    // if (processId) {
-
-    // }
     return () => {
       clearTime();
     };
-  }, [processId]);
+  }, [stepType]);
 
   useEffect(() => {
     setDoneStepStatus(processType);

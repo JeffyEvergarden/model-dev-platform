@@ -98,7 +98,7 @@ export const useStepSelectModel = () => {
       let children = deepFormateData(item.children, level + 1);
       return {
         name: item.name,
-        value: item.id,
+        value: item.name,
         children,
       };
     });

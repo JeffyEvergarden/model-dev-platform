@@ -81,7 +81,7 @@ const SelectModal: React.FC<any> = (props: any) => {
           选择变量
         </Button>
         <div className={style['select-box']}>
-          <div className={style['title']}>已选择的变量</div>
+          <div className={style['title']}>已选择的变量：</div>
 
           <div className={style['select-content']}>
             {selectList?.map((item: any, index: number) => {

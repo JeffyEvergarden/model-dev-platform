@@ -7,7 +7,11 @@ export default function useStepModel() {
   const [modelName, setModelName] = useState<any>('');
 
   // 当前已完成步骤
-  const [doneStep, setDoneStep] = useState<any>(0); //  1-10
+  const [doneStep, _setDoneStep] = useState<any>(0); //  1-10
+
+  const setDoneStep = (val: any) => {
+    _setDoneStep(Number(val));
+  };
 
   // 当前已完成步骤状态
   const [doneStepStatus, setDoneStepStatus] = useState<any>(null);

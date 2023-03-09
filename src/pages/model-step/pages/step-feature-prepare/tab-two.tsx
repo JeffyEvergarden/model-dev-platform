@@ -9,6 +9,7 @@ import { useNextStep } from '../../config';
 import { useModel } from 'umi';
 import { useVarSelectModal } from './model';
 import { getWaitResult } from '../step-select-sample/model/api';
+import { getInfo } from './model/api';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -27,10 +28,11 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
+  const [dataList, setDataList] = useState<any[]>([]);
+
   const {
     errorMsg,
     processType,
-    dataList,
     nextLoading: nLoading,
     startLoop,
     nextFlow,
@@ -58,7 +60,12 @@ const TabTwo: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    console.log(selectList);
+    (async () => {
+      let res = await getInfo({ itmModelRegisCode: modelId });
+      let data = res.result || {};
+      setDataList(data?.featureVOList || []);
+    })();
+
     let data: any = {};
     (async () => {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
@@ -104,9 +111,9 @@ const TabTwo: React.FC<any> = (props: any) => {
         columns={[]}
         detailInfo={{}}
         dataList={
-          selectList?.map((item: any) => item?.featureName || item) ||
-          dataList?.map((item: any) => item?.featureName || item) ||
-          []
+          selectList?.length
+            ? selectList?.map((item: any) => item?.featureName || item)
+            : dataList?.map((item: any) => item?.featureName || item)
         }
       />
       <Condition

@@ -133,10 +133,12 @@ export const useVarSelectModal = () => {
 
   const awaitResult = async (params?: any) => {
     let res: any = await getWaitResult(params);
+    let res2: any = await getInfo({ ...params });
+
     let data = res?.result || {};
     console.log(data);
 
-    setDataList(data?.featureVOList || '');
+    setDataList(res2?.result?.featureVOList || []);
     if (StageStatus[data?.modelStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
@@ -170,8 +172,6 @@ export const useVarSelectModal = () => {
       fake.current.timeFn = setTimeout(async () => {
         startLoop(params, time + 2);
       }, 10 * 1000);
-    } else {
-      message.error(res?.resultMsg || '未知系统异常');
     }
   };
 
