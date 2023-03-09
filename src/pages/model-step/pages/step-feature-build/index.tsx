@@ -25,7 +25,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     operate: model.operate,
   }));
 
-  const { nextStep } = useNextStep();
+  const { nextLoading, nextStep } = useNextStep();
 
   const _nextFlow = async () => {
     console.log(boxRef);
@@ -73,7 +73,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
                 }}
                 size="large"
                 type="primary"
-                loading={loading}
+                loading={loading || nextLoading}
               >
                 下一流程
               </Button>

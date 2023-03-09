@@ -27,9 +27,16 @@ const TabTwo: React.FC<any> = (props: any) => {
 
   const [_form] = Form.useForm(form);
 
-  const { errorMsg, processType, dataList, nextLoading, startLoop, nextFlow, clearTime } =
-    useVarSelectModal();
-  const { nextStep } = useNextStep();
+  const {
+    errorMsg,
+    processType,
+    dataList,
+    nextLoading: nLoading,
+    startLoop,
+    nextFlow,
+    clearTime,
+  } = useVarSelectModal();
+  const { nextLoading, nextStep } = useNextStep();
 
   const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate, setDoneStepStatus } =
     useModel('step', (model: any) => ({
@@ -122,7 +129,12 @@ const TabTwo: React.FC<any> = (props: any) => {
                 重新匹配
               </Button>
               <Condition r-if={processType !== 'error'}>
-                <Button onClick={onClick} size="large" type="primary" loading={nextLoading}>
+                <Button
+                  onClick={onClick}
+                  size="large"
+                  type="primary"
+                  loading={nextLoading || nLoading}
+                >
                   下一流程
                 </Button>
               </Condition>
