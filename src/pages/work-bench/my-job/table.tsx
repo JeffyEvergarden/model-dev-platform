@@ -198,6 +198,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
       dataIndex: 'creator',
       fieldProps: {
         placeholder: '请选择建模人员',
+        showSearch: true,
       },
       valueEnum: {
         ...listToMap(userList),
