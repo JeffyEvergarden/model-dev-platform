@@ -214,7 +214,10 @@ const StepOne: React.FC = (props: any) => {
     let res = await confirmSunmitRequest(params);
     if (res?.status?.code == successCode) {
       confirmModalRef?.current?.close();
-      setStepType(2);
+      let resobj = await getCurrentStageRequest({ itmModelRegisCode: modelId });
+      let data = resobj.result || {};
+      setDoneStep(Number(data?.currentStage));
+      setTimeout(() => setStepType(2), 500);
     } else {
       message.error(res?.status?.desc || '失败');
     }
