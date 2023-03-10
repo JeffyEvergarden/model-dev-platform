@@ -160,7 +160,9 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res.status?.code === successCode) {
       setLoading(false);
       setStepType(1);
-      setDoneStepStatus('processing');
+      if (doneStep == 8) {
+        setDoneStepStatus('processing');
+      }
       // setDoneStep(8)
       form.setFieldsValue(res.result);
       let temp: any[] = res.result?.variableNames?.split(',');
