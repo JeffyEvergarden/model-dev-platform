@@ -138,6 +138,8 @@ const Myjob: React.FC<any> = (props: any) => {
           return '处理失败';
         } else if (status === 'finish') {
           return '已完成';
+        } else if (status !== 'finish') {
+          return '进行中';
         } else {
           return '未开始';
         }
@@ -183,7 +185,7 @@ const Myjob: React.FC<any> = (props: any) => {
         title: item.title,
         name: item.name,
         description: modelMapToValue(curStep, doneStep - 1, i, doneStepStatus),
-        // status: modelMapToStatus(curStep, doneStep - 1, i, doneStepStatus),
+        status: modelMapToStatus(curStep, doneStep - 1, i, doneStepStatus),
       };
       // if (
       //   curStep === i &&

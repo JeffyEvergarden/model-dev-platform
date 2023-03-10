@@ -133,20 +133,20 @@ export const useVarSelectModal = () => {
 
   const awaitResult = async (params?: any) => {
     let res: any = await getWaitResult(params);
-    let res2: any = await getInfo({ ...params });
+    // let res2: any = await getInfo({ ...params });
 
     let data = res?.result || {};
     console.log(data);
 
-    setDataList(res2?.result?.featureVOList || []);
-    if (StageStatus[data?.modelStageStatus] === 'finish') {
+    // setDataList(res2?.result?.featureVOList || []);
+    if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
-    } else if (StageStatus[data?.modelStageStatus] === 'loading') {
+    } else if (StageStatus[data?.currentStageStatus] === 'loading') {
       setProcessType('loading');
       return 'loading';
-    } else if (StageStatus[data?.modelStageStatus] === 'error') {
-      setErrorMsg(res?.modelStageDesc || '未知错误');
+    } else if (StageStatus[data?.currentStageStatus] === 'error') {
+      setErrorMsg(data?.currentStageDesc || '未知错误');
       setProcessType('error');
       return 'error';
     }
@@ -162,6 +162,8 @@ export const useVarSelectModal = () => {
 
     let res: any = await awaitResult(params);
     if (status == 'finish') {
+      console.log('直接跳完成');
+
       setProcessType('finish');
       return 'finish';
     }
