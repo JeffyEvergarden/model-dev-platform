@@ -60,7 +60,7 @@ const monthDistributionList = (req: any, res: any) => {
         { startTime: '2022-02-01', endTime: '2022-02-02' },
         { startTime: '2022-02-03', endTime: '2022-02-04' },
       ],
-      intertemporalTime: { startTime: '2022-03-01', endTime: '2022-03-02' },
+      verificationTime: { startTime: '2022-03-01', endTime: '2022-03-02' },
       trainingTime: { startTime: '2022-04-01', endTime: '2022-04-02' },
     },
   });
