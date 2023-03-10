@@ -65,20 +65,17 @@ const TabTwo: React.FC<any> = (props: any) => {
       setDataList(res?.result?.featureVOList || []);
     })();
 
-    let data: any = {};
     (async () => {
+      let data: any = {};
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       data = res.result || {};
+      if (curStep + 1 < data.currentStage) {
+        startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+      } else {
+        startLoop({ itmModelRegisCode: modelId }, 4);
+      }
     })();
-    // if (processId) {
-    console.log(data);
 
-    if (curStep + 1 < data.currentStage) {
-      startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
-    } else {
-      startLoop({ itmModelRegisCode: modelId }, 4);
-    }
-    // }
     return () => {
       clearTime();
     };
