@@ -63,7 +63,9 @@ const TabTwo: React.FC<any> = (props: any) => {
     (async () => {
       await getWaitResult({ itmModelRegisCode: modelId }).then((res) => {
         let data = res.result || {};
-        setDoneStep(data.currentStage);
+        if (data.currentStage) {
+          setDoneStep(data.currentStage);
+        }
         console.log(data);
         if (curStep + 1 < data.currentStage) {
           console.log('直接成功');
