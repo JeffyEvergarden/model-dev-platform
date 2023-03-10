@@ -82,7 +82,9 @@ const TabTwo: React.FC<any> = (props: any) => {
   }, [stepType]);
 
   useEffect(() => {
-    setDoneStepStatus(processType);
+    if (doneStep == 3) {
+      setDoneStepStatus(processType);
+    }
   }, [processType]);
 
   return (
