@@ -232,7 +232,9 @@ const StepOne: React.FC = (props: any) => {
     if (res?.status?.code == successCode) {
       setEditData({ ...res?.result?.sampleParam, ...res?.result?.sampleParam?.featureLabel });
       setStepType(1);
-      setDoneStepStatus('processing');
+      if (doneStep == 2) {
+        setDoneStepStatus('processing');
+      }
       // setDoneStep(2)
       setTabType(res?.result?.sampleParam?.importType);
       getparams({ businessType: res?.result?.sampleParam?.businessType });

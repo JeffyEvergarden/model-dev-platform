@@ -59,7 +59,7 @@ const getWaitResult = (req: any, res: any) => {
       desc: '',
     },
     result: {
-      currentStage: '7',
+      currentStage: '6',
       currentStageStatus: '3', //：0：未开始 1：进行中 2：已完成 3：处理失败
       isCommittedPage: '0',
       currentStageDesc: '0',

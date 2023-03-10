@@ -60,7 +60,9 @@ const StepTwo: React.FC<any> = (props: any) => {
     if (processType == 'finish' || processType == 'error') {
       getCurrentDetail();
     }
-    setDoneStepStatus(processType);
+    if (doneStep == 2) {
+      setDoneStepStatus(processType);
+    }
   }, [processType]);
 
   const getCurrentDetail = async () => {
