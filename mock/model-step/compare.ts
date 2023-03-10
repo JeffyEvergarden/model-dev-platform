@@ -62,11 +62,62 @@ const getModelBuildResult = (req: any, res: any) => {
     result: {
       //变量相关性列表
       variableRelevanceData: {
-        rowList: ['fea1', 'fea2', 'fea3'], //行标题
+        rowList: ['fea1', 'fea2', 'fea3', 'fea11', 'fea21', 'fea31'], //行标题
         correlationList: [
-          { name: 'fea1', fea1: '1.0', fea2: '0.5', fea3: '0.45' },
-          { name: 'fea2', fea1: '0.5', fea2: '1.0', fea3: '0.6' },
-          { name: 'fea3', fea1: '0.45', fea2: '0.6', fea3: '1.0' },
+          {
+            name: 'fea1',
+            fea1: '1.0',
+            fea2: '0.5',
+            fea3: '0.45',
+            fea11: '1.0',
+            fea21: '0.5',
+            fea31: '0.45',
+          },
+          {
+            name: 'fea2',
+            fea1: '0.5',
+            fea2: '1.0',
+            fea3: '0.6',
+            fea11: '1.0',
+            fea21: '0.5',
+            fea31: '0.45',
+          },
+          {
+            name: 'fea3',
+            fea1: '0.45',
+            fea2: '0.6',
+            fea3: '1.0',
+            fea11: '1.0',
+            fea21: '0.5',
+            fea31: '0.45',
+          },
+          {
+            name: 'fea11',
+            fea1: '1.0',
+            fea2: '0.5',
+            fea3: '0.45',
+            fea11: '1.0',
+            fea21: '0.5',
+            fea31: '0.45',
+          },
+          {
+            name: 'fea21',
+            fea1: '1.0',
+            fea2: '0.5',
+            fea3: '0.45',
+            fea11: '1.0',
+            fea21: '0.5',
+            fea31: '0.45',
+          },
+          {
+            name: 'fea31',
+            fea1: '1.0',
+            fea2: '0.5',
+            fea3: '0.45',
+            fea11: '1.0',
+            fea21: '0.5',
+            fea31: '0.45',
+          },
         ],
       },
       //集合KS
@@ -229,7 +280,8 @@ const getInputVariableApi = (req: any, res: any) => {
       tableData: [
         {
           id: 0,
-          variable: '变量名称1',
+          variable:
+            '变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1变量名称1',
           variableName: '中文名称',
           variableSource: '变量来源',
           freeDegree: '自由度',
