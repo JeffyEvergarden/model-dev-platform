@@ -1,6 +1,6 @@
 import Condition from '@/components/Condition';
 import { DeleteOutlined, MonitorOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Input, message, Modal, Space, Table, Tabs, Tooltip } from 'antd';
+import { Button, Empty, Input, message, Modal, Space, Table, Tabs, Tooltip } from 'antd';
 import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import NextStepButton from '../../components/nextstep-button';
@@ -99,6 +99,16 @@ const SelectorTable: React.FC<any> = (props: any) => {
           columns={columns1}
           rowKey="processName"
           loading={loading}
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                  '所选样本未迁移至新决策，无法关联trace_id进行策略回溯，将自动跳过这一流程'
+                }
+              />
+            ),
+          }}
         />
       </div>
       <Condition r-if={operate == 'EDIT' && !isHadBuild && !isHadReported}>
