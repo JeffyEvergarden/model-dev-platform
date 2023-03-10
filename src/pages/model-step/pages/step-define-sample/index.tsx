@@ -152,20 +152,32 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       pageSize: pageSize,
       itmModelRegisCode: modelId,
     }).then((res) => {
-      //回显整体
-      form.setFieldsValue({
-        trainingTime: [
+      let obj: any = {};
+      if (res?.trainingTime?.startTime && res?.trainingTime?.endTime) {
+        obj.trainingTime = [
           moment?.(res?.trainingTime?.startTime),
           moment?.(res?.trainingTime?.endTime),
-        ],
-        intertemporalTime: [
-          moment?.(res?.intertemporalTime?.startTime),
-          moment?.(res?.intertemporalTime?.endTime),
-        ],
-        other: res?.otherTimeList?.map((item: any) => [
-          moment?.(item?.startTime),
-          moment?.(item?.endTime),
-        ]),
+        ];
+      }
+      if (res?.verificationTime?.startTime && res?.verificationTime?.endTime) {
+        obj.verificationTime = [
+          moment?.(res?.verificationTime?.startTime),
+          moment?.(res?.verificationTime?.endTime),
+        ];
+      }
+      if (res?.otherTimeList?.length) {
+        obj.other = res?.otherTimeList?.map((item: any) => {
+          if (item?.startTime && item?.endTime) {
+            return [moment?.(item?.startTime), moment?.(item?.endTime)];
+          } else {
+            return [];
+          }
+        });
+      }
+
+      //回显整体
+      form.setFieldsValue({
+        ...obj,
       });
     });
     getModelStepDetailApi({ stage: '5', itmModelRegisCode: modelId }).then((res) => {
@@ -192,7 +204,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       pageSize: obj.pageSize ? obj.pageSize : pageSize2,
       itmModelRegisCode: modelId,
       trainingTime: submitObj?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
-      intertemporalTime: submitObj?.intertemporalTime?.map?.((item: any) =>
+      verificationTime: submitObj?.verificationTime?.map?.((item: any) =>
         item?.format?.('YYYY-MM-DD'),
       ),
       other: submitObj?.other?.map?.((item: any) => {
@@ -214,7 +226,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         let reqData = {
           itmModelRegisCode: modelId,
           // trainingTime: value?.trainingTime?.map?.((item: any) => item?.format?.('YYYY-MM-DD')),
-          // intertemporalTime: value?.intertemporalTime?.map?.((item: any) =>
+          // verificationTime: value?.verificationTime?.map?.((item: any) =>
           //   item?.format?.('YYYY-MM-DD'),
           // ),
           // other: value?.other?.map?.((item: any) => {
@@ -224,9 +236,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             startTime: value?.trainingTime[0]?.format?.('YYYY-MM-DD'),
             endTime: value?.trainingTime[1]?.format?.('YYYY-MM-DD'),
           },
-          intertemporalTime: {
-            startTime: value?.intertemporalTime[0]?.format?.('YYYY-MM-DD'),
-            endTime: value?.intertemporalTime[1]?.format?.('YYYY-MM-DD'),
+          verificationTime: {
+            startTime: value?.verificationTime[0]?.format?.('YYYY-MM-DD'),
+            endTime: value?.verificationTime[1]?.format?.('YYYY-MM-DD'),
           },
           otherTimeList: value?.other?.map?.((item: any) => {
             return {
@@ -272,9 +284,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             startTime: value?.trainingTime[0]?.format?.('YYYY-MM-DD'),
             endTime: value?.trainingTime[1]?.format?.('YYYY-MM-DD'),
           },
-          intertemporalTime: {
-            startTime: value?.intertemporalTime[0]?.format?.('YYYY-MM-DD'),
-            endTime: value?.intertemporalTime[1]?.format?.('YYYY-MM-DD'),
+          verificationTime: {
+            startTime: value?.verificationTime[0]?.format?.('YYYY-MM-DD'),
+            endTime: value?.verificationTime[1]?.format?.('YYYY-MM-DD'),
           },
           otherTimeList: value?.other?.map?.((item: any) => {
             return {
@@ -399,7 +411,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
             <Space align="baseline">
               <FormItem
                 rules={[{ required: true, message: '请选择跨期验证范围' }]}
-                name="intertemporalTime"
+                name="verificationTime"
                 noStyle
               >
                 <RangePicker

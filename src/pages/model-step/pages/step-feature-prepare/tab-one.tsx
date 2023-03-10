@@ -6,6 +6,7 @@ import { DeleteOutlined, MinusCircleOutlined, MonitorOutlined } from '@ant-desig
 import NextStepButton from '../../components/nextstep-button';
 import { useVarSelectModal } from './model';
 import { useModel } from 'umi';
+import Condition from '@/components/Condition';
 
 // 首页
 const SelectModal: React.FC<any> = (props: any) => {
@@ -17,8 +18,11 @@ const SelectModal: React.FC<any> = (props: any) => {
 
   const { submitFeature, getModelStageInfo } = useVarSelectModal();
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadBuild, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
+    operate: model.operate,
   }));
 
   // 打开选择FAQ/意图模态框
@@ -106,8 +110,9 @@ const SelectModal: React.FC<any> = (props: any) => {
             })}
           </div>
         </div>
-
-        <NextStepButton onClick={onClick} text={'提交'} />
+        <Condition r-if={operate == 'EDIT' && !isHadBuild && !isHadReported}>
+          <NextStepButton onClick={onClick} text={'提交'} />
+        </Condition>
       </div>
       <SelectFaqModal
         cref={selectFaqModalRef}
