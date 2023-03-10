@@ -7,7 +7,7 @@ const baseUrl = config.basePath;
 const normalDeal = (req: any, res: any) => {
   res.json({
     status: {
-      code: 500,
+      code: successCode,
       desc: '123rg',
     },
   });
