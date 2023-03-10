@@ -234,7 +234,7 @@ const StepOne: React.FC = (props: any) => {
       setTabType(res?.result?.sampleParam?.importType);
       getparams({ businessType: res?.result?.sampleParam?.businessType });
       getProcessList();
-      // labelListRequest();
+      labelListRequest();
     } else {
       message.error(res?.status?.desc || '失败');
     }
