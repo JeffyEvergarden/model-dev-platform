@@ -19,8 +19,11 @@ const columns1: any[] = [
 const SelectorTable: React.FC<any> = (props: any) => {
   const { cref, confirm, type = 'checkbox', onNext, skip } = props;
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, isHadBuild, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
+    operate: model.operate,
   }));
 
   //  批量相关操作
@@ -98,19 +101,20 @@ const SelectorTable: React.FC<any> = (props: any) => {
           loading={loading}
         />
       </div>
-
-      <NextStepButton
-        btnNode={
-          <Space>
-            <Button onClick={skipBackStep} size="large">
-              跳过，下一流程
-            </Button>
-            <Button onClick={onClick} size="large" type="primary">
-              提交
-            </Button>
-          </Space>
-        }
-      />
+      <Condition r-if={operate == 'EDIT' && !isHadBuild && !isHadReported}>
+        <NextStepButton
+          btnNode={
+            <Space>
+              <Button onClick={skipBackStep} size="large">
+                跳过，下一流程
+              </Button>
+              <Button onClick={onClick} size="large" type="primary">
+                提交
+              </Button>
+            </Space>
+          }
+        />
+      </Condition>
     </div>
   );
 };
