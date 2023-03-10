@@ -98,27 +98,27 @@ const SelectorModal: React.FC<any> = (props: any) => {
   };
 
   const clearSelect = async () => {
-    if (!treeName && !classType) {
-      message.warning('请选择分类');
-      return;
-    }
-    let res: any = await getVarInfo({
-      categoryName: treeName,
-      categoryPath: classType,
-      searchType: 'all',
-    });
+    // if (!treeName && !classType) {
+    //   message.warning('请选择分类');
+    //   return;
+    // }
+    // let res: any = await getVarInfo({
+    //   categoryName: treeName,
+    //   categoryPath: classType,
+    //   searchType: 'all',
+    // });
 
-    let varList: any = res?.data || [];
+    // let varList: any = res?.data || [];
 
-    let arr = selectedRowKeys?.filter(
-      (item: any) => !varList?.some((val: any) => val?.featureCode == item),
-    );
-    let arr2 = selectList?.filter(
-      (item) => !varList?.some((val: any) => val?.featureCode == item?.featureCode),
-    );
+    // let arr = selectedRowKeys?.filter(
+    //   (item: any) => !varList?.some((val: any) => val?.featureCode == item),
+    // );
+    // let arr2 = selectList?.filter(
+    //   (item) => !varList?.some((val: any) => val?.featureCode == item?.featureCode),
+    // );
 
-    setSelectList(arr2);
-    setSelectedRowKeys([...arr]);
+    setSelectList([]);
+    setSelectedRowKeys([]);
   };
 
   const selectAll = async () => {
@@ -349,7 +349,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
                   <Option value={'model'}>模型</Option>
                 </Select>
                 <Search
-                  placeholder="请输入变量名称后回车"
+                  placeholder={`请输入${searchMode == 'feature' ? '变量' : '模型'}名称后回车`}
                   value={searchText1}
                   onSearch={onSearch1}
                   onPressEnter={onSearch1}
