@@ -162,6 +162,8 @@ export const useVarSelectModal = () => {
 
     let res: any = await awaitResult(params);
     if (status == 'finish') {
+      console.log('直接跳完成');
+
       setProcessType('finish');
       return 'finish';
     }

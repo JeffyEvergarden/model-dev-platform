@@ -62,8 +62,7 @@ const TabTwo: React.FC<any> = (props: any) => {
   useEffect(() => {
     (async () => {
       let res = await getInfo({ itmModelRegisCode: modelId });
-      let data = res.result || {};
-      setDataList(data?.featureVOList || []);
+      setDataList(res?.result?.featureVOList || []);
     })();
 
     let data: any = {};
@@ -72,7 +71,9 @@ const TabTwo: React.FC<any> = (props: any) => {
       data = res.result || {};
     })();
     // if (processId) {
-    if (curStep + 1 < data.currentStage || 6) {
+    console.log(data);
+
+    if (curStep + 1 < data.currentStage) {
       startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
     } else {
       startLoop({ itmModelRegisCode: modelId }, 4);
