@@ -237,6 +237,12 @@ const SelectorModal: React.FC<any> = (props: any) => {
       getTreeList({}); // 获取faq列表
       setSelectedRowKeys(obj?.selectList?.map((item: any) => item.featureCode) || []);
       setSelectList(obj?.selectList || []);
+      getKeyVarInfo({
+        page: 1,
+        pageSize: 10,
+        keyword: searchText1,
+        searchMode: searchMode,
+      });
       // 显示
       setVisible(true);
     },
@@ -264,15 +270,6 @@ const SelectorModal: React.FC<any> = (props: any) => {
     });
     setSelectedRowKeys(_selectedRowKeys);
   };
-
-  useEffect(() => {
-    getKeyVarInfo({
-      page: 1,
-      pageSize: 10,
-      keyword: searchText1,
-      searchMode: searchMode,
-    });
-  }, []);
 
   return (
     <Modal
