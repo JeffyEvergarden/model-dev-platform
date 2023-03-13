@@ -50,7 +50,7 @@ const SelectModal: React.FC<any> = (props: any) => {
       console.log(selectList);
       let reqData = {
         itmModelRegisCode: modelId,
-        featureCodeList: selectList?.map((item: any) => item.featureCode),
+        featureCodeList: selectList?.map((item: any) => item?.featureCode),
       };
       let res = await submitFeature(reqData);
       if (res) {

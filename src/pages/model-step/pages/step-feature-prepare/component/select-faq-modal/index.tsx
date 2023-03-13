@@ -344,7 +344,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
           <div className={style['page_content']}>
             <div className={style['zy-row_start']}>
-              <span className={style['title']}>变量列表</span>{' '}
+              <span className={style['title']}>变量列表</span>
             </div>
             <div className={style['zy-row_end']}>
               <Input.Group compact>

@@ -179,8 +179,8 @@ const SubBox: React.FC<any> = (props: any) => {
           // request={async (params = {}) => {
           //   return scoreCardList(params);
           // }}
-          requestMethod={getTableList}
-          dataSource={tableList}
+          // requestMethod={getTableList}
+          // dataSource={tableList}
           originTableList={originTableList}
         />
       </div>
