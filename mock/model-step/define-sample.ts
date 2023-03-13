@@ -67,9 +67,9 @@ const monthDistributionList = (req: any, res: any) => {
 };
 
 const totalDistributionList = (req: any, res: any) => {
-  let list = new Array(11).fill(1).map((item: any, index: number) => {
+  let list = new Array(5).fill(1).map((item: any, index: number) => {
     return {
-      sampleType: 'x',
+      sampleType: '其他验证' + Math.ceil(Math.random() * 9) + index * 10,
       goodSample: '10',
       badSample: '1',
       total: '11',
@@ -81,7 +81,25 @@ const totalDistributionList = (req: any, res: any) => {
       code: successCode,
       desc: '',
     },
-    result: { sampleTotalDistributionList: list },
+    result: {
+      sampleTotalDistributionList: [
+        {
+          sampleType: '跨期验证',
+          goodSample: '10',
+          badSample: '1',
+          total: '11',
+          badRate: '1%',
+        },
+        ...list,
+        {
+          sampleType: '训练集',
+          goodSample: '10',
+          badSample: '1',
+          total: '11',
+          badRate: '1%',
+        },
+      ],
+    },
   });
 };
 

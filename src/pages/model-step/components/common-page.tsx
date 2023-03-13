@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Form, Input, DatePicker, Row, Col, Select } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Select, Tooltip } from 'antd';
 import { LoadingOutlined, CheckCircleTwoTone, CloseCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { useState } from 'react';
@@ -104,7 +104,9 @@ const StepTwo: React.FC<any> = (props: any) => {
               return (
                 <div className={styles['col-row-3']} key={index}>
                   <span className={styles['label-item']}>{index + 1}.</span>
-                  <span className={styles['value-item']}>{item}</span>
+                  <Tooltip title={item}>
+                    <span className={styles['value-item']}>{item}</span>
+                  </Tooltip>
                 </div>
               );
             }

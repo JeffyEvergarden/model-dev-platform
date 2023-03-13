@@ -25,6 +25,12 @@ const TabThree: React.FC<any> = (props: any) => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
     let data = res?.result || {};
     if (res?.status?.code == successCode) {
+      if (data?.currentStage) {
+        setDoneStep(data?.currentStage);
+      }
+      if (data?.currentStageStatus) {
+        setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
+      }
       if (
         data?.currentStage == 4 &&
         data?.currentStageStatus == '1' &&

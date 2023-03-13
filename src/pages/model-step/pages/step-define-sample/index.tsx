@@ -517,7 +517,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
               showSizeChanger: true,
               defaultPageSize: 20,
             }}
-            dataSource={resultTableList}
+            dataSource={resultTableList.sort((a, b) => a.sampleType.length - b.sampleType.length)}
             columns={columns2}
             rowKey="index"
             loading={resultLoading}
