@@ -226,6 +226,12 @@ const Myjob: React.FC<any> = (props: any) => {
     }
   };
 
+  useEffect(() => {
+    if (rightContentRef.current) {
+      rightContentRef.current.scrollTop = 0;
+    }
+  }, [curStep]);
+
   return (
     <PageContainer
       header={{

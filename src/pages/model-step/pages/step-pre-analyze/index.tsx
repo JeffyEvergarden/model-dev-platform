@@ -658,10 +658,19 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
 
         console.log(reqData);
-        nextFlow(reqData).then((res) => {
+        nextFlow(reqData).then(async (res) => {
           if (res) {
             // nextStep();
             setStepType(2);
+          } else {
+            let res: any = await getWaitResult({ itmModelRegisCode: modelId });
+            let data = res?.result || {};
+            if (data?.currentStage) {
+              setDoneStep(data?.currentStage);
+            }
+            if (data?.currentStageStatus) {
+              setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
+            }
           }
         });
       }
