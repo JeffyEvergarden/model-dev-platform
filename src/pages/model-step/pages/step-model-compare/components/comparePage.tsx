@@ -29,12 +29,15 @@ export default (props: any) => {
 
   const actionRef = useRef<any>();
   const relateModalRef = useRef<any>({});
+  const tableRef = useRef<any>({});
 
   //模型构建参数
   const [modelParams, setModelParams] = useState<any>({});
 
   //模型结果
   const [modelResult, setModelResult] = useState<any>({});
+
+  const [originTableList, setOriginTableList] = useState<any>([]);
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -46,24 +49,27 @@ export default (props: any) => {
 
     //模型结果-变量相关性/集合KS/年月KS
     getModelResult();
+
+    scoreCardList();
   }, [activeKey]);
 
   //评分卡
-  const scoreCardList = async (payload: any) => {
+  const scoreCardList = async () => {
     let params = {
-      page: payload?.current,
-      pageSize: 10,
+      page: tableRef?.current?.page,
+      pageSize: tableRef?.current?.pageSize,
       itmModelRegisCode: modelId,
       modelVersion: activeKey,
     };
     let res = await scoreCardListReuqest(params);
-    let resultData = togetherData(res?.result?.tableData);
-    return {
-      data: resultData || [],
-      total: res?.result?.totalSize || 0,
-      current: payload?.current || 1,
-      pageSize: payload?.pageSize || 10,
-    };
+    setOriginTableList(res?.result?.tableData);
+    // let resultData = togetherData(res?.result?.tableData);
+    // return {
+    //   data: resultData || [],
+    //   total: res?.result?.tableData?.length || 0,
+    //   // current: payload?.current || 1,
+    //   // pageSize: payload?.pageSize || 10,
+    // };
   };
 
   const getModelStructureParam = async () => {
@@ -97,27 +103,6 @@ export default (props: any) => {
       setLoading(false);
       message.error(res?.status?.desc || '异常');
     }
-  };
-
-  const togetherData = (data: any) => {
-    let tempArr: any = [];
-    data?.map((item: any, index: any) => {
-      item?.scoreItemList?.map((el: any) => {
-        tempArr.push({
-          idx: index,
-          id: el?.variable,
-          variable: item?.variable,
-          variableName: item?.variableName,
-          boxGroup: el?.boxGroup,
-          score: el?.score,
-          trainBadRate: el?.trainBadRate,
-          validBadRate: el?.validBadRate,
-          trainRate: el?.trainRate,
-          validRate: el?.validRate,
-        });
-      });
-    });
-    return changeData(tempArr, 'variable');
   };
 
   const openMax = () => {
@@ -198,8 +183,11 @@ export default (props: any) => {
           rowKey={(record: any, index: any) => record?.id + index}
           toolBarRender={() => []}
           actionRef={actionRef}
-          requestMethod={scoreCardList}
-          // dataSource={modelResult?.scoreCardLogicList}
+          // requestMethod={scoreCardList}
+          // dataSource={tableList}
+          activeKey={activeKey}
+          cref={tableRef}
+          originTableList={originTableList}
         />
       </div>
       <CompareAndReportCommonPage

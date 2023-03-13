@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Checkbox, Pagination, Progress, Table } from 'antd';
+import { Button, Checkbox, message, Pagination, Progress, Table } from 'antd';
 import styles from './style.less';
 import classnames from 'classnames';
 import { changeData } from '@/utils';
-import Condition from '@/components/Condition';
-import { DownloadOutlined, FacebookFilled } from '@ant-design/icons';
+import { useModel, history } from 'umi';
+import { useComparePage } from '@/pages/model-step/pages/step-model-compare/model';
+import { successCode } from '../pages/step-define-sample/model';
 
 export default (props: any) => {
   const {
@@ -15,9 +16,16 @@ export default (props: any) => {
     rowKey,
     toolBarRender,
     actionRef,
-    requestMethod,
+    activeKey,
     originTableList = [],
   } = props;
+
+  const { modelId } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+  }));
+
+  const { scoreCardListReuqest } = useComparePage();
+
   const [selectAll, setSelectAll] = useState(true);
 
   const [selectList, setSelectList] = useState<any>([]);
@@ -48,21 +56,47 @@ export default (props: any) => {
   };
 
   useEffect(() => {
-    if (pageType != 'compareAndReport') {
-      let arr = originTableList.map((item: any) => {
-        return item.variable;
-      });
-      resetTable();
-      setSelectList(arr);
-      setSelectAll(true);
-    }
+    // if (pageType != 'compareAndReport') {
+    let arr = originTableList.map((item: any) => {
+      return item.variable;
+    });
+    resetTable();
+    setSelectList(arr);
+    setSelectAll(true);
+    // }
   }, [originTableList]);
 
   const resetTable = () => {
     let list = originTableList.filter((item: any, index: any) => {
       return index >= (page - 1) * pageSize && index < page * pageSize;
     });
-    setTableData(togetherData(list));
+
+    if (pageType == 'compareAndReport') {
+      setTableData(togetherDataComRe(list));
+    } else {
+      setTableData(togetherData(list));
+    }
+  };
+
+  const togetherDataComRe = (data: any) => {
+    let tempArr: any = [];
+    data?.map((item: any, index: any) => {
+      item?.scoreItemList?.map((el: any) => {
+        tempArr.push({
+          idx: index,
+          id: el?.variable,
+          variable: item?.variable,
+          variableName: item?.variableName,
+          boxGroup: el?.boxGroup,
+          score: el?.score,
+          trainBadRate: el?.trainBadRate,
+          validBadRate: el?.validBadRate,
+          trainRate: el?.trainRate,
+          validRate: el?.validRate,
+        });
+      });
+    });
+    return changeData(tempArr, 'variable');
   };
 
   const togetherData = (data: any) => {
@@ -334,24 +368,45 @@ export default (props: any) => {
 
   useImperativeHandle(cref, () => ({
     selectList,
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
   }));
 
-  const pageChange = (page: any, size: any) => {
-    setTableData([]);
-    setPage(page);
-    setPageSize(size);
-    let list = originTableList.filter((item: any, index: any) => {
-      return index < page * size && index >= (page - 1) * size;
-    });
-    console.log(list);
-    setTimeout(() => {
-      setTableData([...togetherData([...list])]);
-    }, 100);
+  const pageChange = async (page: any, size: any) => {
+    if (pageType == 'compareAndReport') {
+      let params = {
+        page: page,
+        pageSize: size,
+        itmModelRegisCode: modelId,
+        modelVersion: activeKey,
+      };
+      let res = await scoreCardListReuqest(params);
+      if (res?.status?.code == successCode) {
+        setPage(page);
+        setPageSize(size);
+        setTableData([...togetherDataComRe(res?.result?.tableData)]);
+      } else {
+        message.error(res?.status?.desc || '异常');
+      }
+    } else {
+      setTableData([]);
+      setPage(page);
+      setPageSize(size);
+      let list = originTableList.filter((item: any, index: any) => {
+        return index < page * size && index >= (page - 1) * size;
+      });
+      console.log(list);
+      setTimeout(() => {
+        setTableData([...togetherData([...list])]);
+      }, 100);
+    }
   };
 
   return (
     <div className={classnames(styles.relateTable, styles.TableCommonSty)}>
-      <Condition r-if={pageType == 'compareAndReport'}>
+      {/* <Condition r-if={pageType == 'compareAndReport'}>
         <ProTable
           headerTitle={headerTitle}
           rowKey={'variable'}
@@ -367,40 +422,45 @@ export default (props: any) => {
             return requestMethod({ ...params, sort, filter });
           }}
           manualRequest={pageType == 'compareAndReport' ? false : true}
-          // dataSource={dataSource}
+        // dataSource={dataSource}
         />
-      </Condition>
+      </Condition> */}
 
-      <Condition r-if={pageType != 'compareAndReport'}>
-        <ProTable
-          onChange={resetTable}
-          headerTitle={headerTitle}
-          rowKey={'variable'}
-          toolBarRender={toolBarRender}
-          options={false}
-          bordered
-          actionRef={actionRef}
-          pagination={false}
-          scroll={{ x: columnsScoreCard?.length * 120 }}
-          search={false}
-          columns={columnsScoreCard}
-          dataSource={tableData}
+      {/* <Condition r-if={pageType != 'compareAndReport'}> */}
+      <ProTable
+        onChange={resetTable}
+        headerTitle={headerTitle}
+        rowKey={'variable'}
+        toolBarRender={toolBarRender}
+        options={false}
+        bordered
+        actionRef={actionRef}
+        pagination={false}
+        scroll={{ x: columnsScoreCard?.length * 120 }}
+        search={false}
+        columns={columnsScoreCard}
+        dataSource={tableData}
+
+        // request={async (params = {}, sort, filter) => {
+        //   return requestMethod({ ...params, sort, filter });
+        // }}
+        // manualRequest={pageType == 'compareAndReport' ? false : true}
+      />
+      <div style={{ marginBottom: '36px' }}>
+        <Pagination
+          style={{ float: 'right', marginTop: '12px' }}
+          size={'small'}
+          showSizeChanger
+          total={originTableList?.length || 0}
+          current={page}
+          pageSize={pageSize}
+          showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
+          defaultPageSize={50}
+          defaultCurrent={1}
+          onChange={pageChange}
         />
-        <div style={{ marginBottom: '36px' }}>
-          <Pagination
-            style={{ float: 'right', marginTop: '12px' }}
-            size={'small'}
-            showSizeChanger
-            total={originTableList?.length || 0}
-            current={page}
-            pageSize={pageSize}
-            showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
-            defaultPageSize={50}
-            defaultCurrent={1}
-            onChange={pageChange}
-          />
-        </div>
-      </Condition>
+      </div>
+      {/* </Condition> */}
     </div>
   );
 };

@@ -51,6 +51,7 @@ const StepExportReport: React.FC<any> = (props: any) => {
     let params = {
       itmModelRegisCode: modelId,
     };
+    debugger;
     let res = await getOptimalVersionRquest(params);
     if (res?.status?.code === successCode) {
       setOptimalVersion(res?.result);
