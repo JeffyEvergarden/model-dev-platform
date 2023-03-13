@@ -39,6 +39,14 @@ export const tabSelectColumns: any[] = [
     key: 'channelCatS',
   },
   {
+    name: '客群大类',
+    key: 'custCat',
+  },
+  {
+    name: '客群小类',
+    key: 'custCatS',
+  },
+  {
     name: '编排维度',
     key: 'processName',
   },

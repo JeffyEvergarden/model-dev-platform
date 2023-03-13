@@ -223,6 +223,7 @@ const StepOne: React.FC<any> = (props: any) => {
       setCustCatSmList([]);
     }
     form.setFieldsValue({
+      channelCatM: val,
       channelCatS: undefined,
       custCat: undefined,
       custCatS: undefined,
@@ -253,6 +254,7 @@ const StepOne: React.FC<any> = (props: any) => {
       setCustCatSmList([]);
     }
     form.setFieldsValue({
+      channelCatS: val,
       custCat: undefined,
       custCatS: undefined,
     });
@@ -280,7 +282,22 @@ const StepOne: React.FC<any> = (props: any) => {
       setCustCatSmList([]);
     }
     form.setFieldsValue({
+      custCat: val,
       custCatS: undefined,
+    });
+  };
+
+  const changeCustCatS = (arr: any) => {
+    let val: any = arr;
+    if (val.length > 0) {
+      if (arr[arr.length - 1] == '全部') {
+        val = ['全部'];
+      } else {
+        val = val.filter((item: any) => item != '全部');
+      }
+    }
+    form.setFieldsValue({
+      custCatS: val,
     });
   };
 
@@ -451,7 +468,12 @@ const StepOne: React.FC<any> = (props: any) => {
                 label="客群小类"
                 initialValue={['all']}
               >
-                <Select placeholder="请选择客群小类" allowClear mode="multiple">
+                <Select
+                  placeholder="请选择客群小类"
+                  allowClear
+                  mode="multiple"
+                  onChange={changeCustCatS}
+                >
                   {custCatSmList.map((item: any, index: number) => {
                     return (
                       <Option value={item.name} key={index}>
