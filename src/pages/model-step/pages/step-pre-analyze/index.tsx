@@ -300,6 +300,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     formRef?.current?.setFieldsValue({
       ...obj,
     });
+    tableRef?.current?.reload();
   };
 
   const _vcolumns = useMemo(
@@ -318,38 +319,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       }),
     [vColumns, productList, channelMidList, channelSmList, custCatList, indexList],
   );
-
-  const onSelect = (val: any, type: string) => {
-    if (type === 'paymentTime') {
-      if (val !== '') {
-        let temp = [...useTimeData];
-        temp = temp.filter((item: any) => item !== '');
-        temp.push(val);
-        setUseTimeData(temp);
-      } else if (val == '') {
-        setUseTimeData('');
-      }
-    } else if (type === 'loadTerm') {
-      if (val !== '') {
-        let temp = [...limitTimeData];
-        temp = temp.filter((item: any) => item !== '');
-        temp.push(val);
-        setLimitTimeData(temp);
-      } else if (val == '') {
-        setLimitTimeData('');
-      }
-    }
-  };
-
-  const onDeselect = (val: any, type: string) => {
-    let temp = [...useTimeData];
-    temp = temp.filter((item: any) => item !== val);
-    if (type === 'paymentTime') {
-      setUseTimeData(temp);
-    } else if (type === 'loadTerm') {
-      setLimitTimeData(temp);
-    }
-  };
 
   const getRateColumns = (extra: any[]) => {
     let _columns: any[] = [
@@ -452,51 +421,75 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   );
 
   useEffect(() => {
-    //回显默认
-    getProdChannelList({ itmModelRegisCode: modelId }).then(async (res) => {
-      if (res?.status?.code == successCode) {
-        await getparams({ businessType: 'SX' });
-        formRef?.current?.setFieldsValue({
-          ...res?.result?.defaultSelection,
+    {
+      (async () => {
+        //回显默认
+        await getProdChannelList({ itmModelRegisCode: modelId }).then(async (res) => {
+          if (res?.status?.code == successCode) {
+            await getparams({ businessType: 'SX' });
+            let obj = { ...res?.result?.defaultSelection };
+            Object?.keys(obj).forEach((item) => {
+              if (!(obj[item] && obj[item]?.length)) {
+                delete obj[item];
+              }
+            });
+            formRef?.current?.setFieldsValue({
+              ...obj,
+              channelCatM: obj['channelCatM'].split(','),
+              channelCatS: obj['channelCatS'].split(','),
+              custCatL: obj['custCatL'].split(','),
+              prodCat: obj['prodCat'].split(','),
+            });
+          }
         });
-      }
-    });
-    //回显
-    getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId })
-      .then((res) => {
-        if (res.status.code == successCode) {
-          let data = res?.result;
-          // itmModelRegisCode: modelId,
-          // customerDefinition: value,
-          //   ...formData,
+        //回显
+        await getModelStepDetailApi({ stage: '4', itmModelRegisCode: modelId })
+          .then((res) => {
+            if (res.status.code == successCode) {
+              let data = res?.result;
+              // itmModelRegisCode: modelId,
+              // customerDefinition: value,
+              //   ...formData,
 
-          let preanalysisCondition = data?.preanalysisCondition || {};
-          preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
-          preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
-          preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
-          preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
-          formRef?.current?.setFieldsValue(preanalysisCondition);
+              let preanalysisCondition = data?.preanalysisCondition || {};
+              preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
+              preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
+              preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
+              preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
+              //为空去掉不设
+              Object?.keys(preanalysisCondition).forEach((item) => {
+                if (!(preanalysisCondition[item] && preanalysisCondition[item]?.length)) {
+                  delete preanalysisCondition[item];
+                }
+              });
+              formRef?.current?.setFieldsValue(preanalysisCondition);
 
-          let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
-          preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
-            ?.split?.(',')
-            ?.map((item: any) => moment(item));
-          preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
-            ? preanalysisRollRateCondition.loadTerm?.split?.(',')
-            : ['全部'];
-          formRef2?.current?.setFieldsValue(data?.preanalysisRollRateCondition || {});
+              let preanalysisRollRateCondition = data?.preanalysisRollRateCondition || {};
+              preanalysisRollRateCondition.paymentTime = preanalysisRollRateCondition?.paymentTime
+                ?.split?.(',')
+                ?.map((item: any) => moment(item));
+              preanalysisRollRateCondition.loadTerm = preanalysisRollRateCondition?.loadTerm?.length
+                ? preanalysisRollRateCondition.loadTerm?.split?.(',')
+                : ['全部'];
 
-          form?.setFieldsValue({
-            vintageConclusion: data?.vintageConclusion,
-            rollRateConclusion: data?.rollRateConclusion,
+              console.log(preanalysisRollRateCondition);
+
+              formRef2?.current?.setFieldsValue({ ...preanalysisRollRateCondition });
+
+              form?.setFieldsValue({
+                vintageConclusion: data?.vintageConclusion,
+                rollRateConclusion: data?.rollRateConclusion,
+              });
+              customerFormRef?.setFieldsValue(data?.customerDefinition || {});
+            }
+          })
+          .finally(() => {
+            formRef?.current?.submit();
+            formRef2?.current?.submit();
           });
-          customerFormRef?.setFieldsValue(data?.customerDefinition || {});
-        }
-      })
-      .finally(() => {
-        tableRef?.current?.reload();
-        rateRef?.current?.reload();
-      });
+      })();
+    }
+
     getConditionList();
     getYaerMonth();
   }, []);
@@ -658,14 +651,27 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
 
         console.log(reqData);
-        nextFlow(reqData).then((res) => {
+        nextFlow(reqData).then(async (res) => {
           if (res) {
             // nextStep();
             setStepType(2);
+          } else {
+            getStatus();
           }
         });
       }
     });
+  };
+
+  const getStatus = async () => {
+    let res: any = await getWaitResult({ itmModelRegisCode: modelId });
+    let data = res?.result || {};
+    if (data?.currentStage) {
+      setDoneStep(data?.currentStage);
+    }
+    if (data?.currentStageStatus) {
+      setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
+    }
   };
 
   return (
@@ -687,6 +693,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             loading={vloading}
             scroll={{ x: _vcolumns.length * 200 }}
             request={async (params = {}, sort, filter) => {
+              console.log(params);
+
               return getVintageList({ page: params.current, ...params });
             }}
             editable={{

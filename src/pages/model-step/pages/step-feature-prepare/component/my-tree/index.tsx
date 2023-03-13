@@ -1,11 +1,12 @@
 import Condition from '@/components/Condition';
 import { CaretDownOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Button, message, Modal, Tooltip, Tree } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { useLocation } from 'react-router';
 import style from './style.less';
 
 interface TreeProps {
+  cref: any;
   data: any[];
   onChange?: (...args: any) => void;
   touchChangeParent?: (...args: any) => void;
@@ -26,6 +27,7 @@ const { DirectoryTree } = Tree;
 
 const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   const {
+    cref,
     data,
     onChange,
     touchChangeParent,
@@ -38,6 +40,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
 
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [defaultOpenTree, setDefaultOpenTree] = useState<any[]>([]);
+  const [selectKey, setSelectKey] = useState<any>([]);
 
   const location: any = useLocation();
 
@@ -50,9 +53,17 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
   // 选择节点
   const onSelect = (key: any, opt: any) => {
     let node = opt.node;
+    console.log(key, opt);
+
+    setSelectKey(key);
     onChange?.(key, opt);
   };
   // ----
+  useImperativeHandle(cref, () => ({
+    setSelectKey: () => {
+      setSelectKey([]);
+    },
+  }));
 
   // 打开删除弹窗
   const openDeleteModal = (e: any, nodeData: any) => {
@@ -156,6 +167,7 @@ const MyTree: React.FC<TreeProps> = (props: TreeProps) => {
           onExpand={(val: any) => {
             setDefaultOpenTree(val);
           }}
+          selectedKeys={selectKey}
         ></Tree>
       </Condition>
     </div>

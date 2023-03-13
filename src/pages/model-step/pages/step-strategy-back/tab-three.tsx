@@ -50,13 +50,15 @@ const TabThree: React.FC<any> = (props: any) => {
     let reqData = { itmModelRegisCode: modelId };
     await passBackStep(reqData).then((res: any) => {
       if (res?.result?.skipCurrentStageStatus == '1') {
-        fake.current.timeFn = null;
+        clearTimeout(fake.current.timeFn);
         //跳到下一流程
         nextStep();
       } else {
-        setTimeout(async () => {
-          getskip();
-        }, 2 * 1000);
+        if (res?.status?.code == successCode) {
+          fake.current.timeFn = setTimeout(async () => {
+            getskip();
+          }, 2 * 1000);
+        }
       }
     });
   };
@@ -67,7 +69,7 @@ const TabThree: React.FC<any> = (props: any) => {
       getskip();
     }, 2 * 1000);
     return () => {
-      fake.current.timeFn = null;
+      clearTimeout(fake.current.timeFn);
     };
   }, []);
 

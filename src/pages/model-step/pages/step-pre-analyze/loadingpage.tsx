@@ -13,29 +13,33 @@ import { getWaitResult } from '../step-select-sample/model/api';
 const TabThree: React.FC<any> = (props: any) => {
   const { back } = props;
   const fake = useRef<any>({});
-  const { modelId, setDoneStepStatus } = useModel('step', (model: any) => ({
+  const { modelId, setDoneStepStatus, setDoneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     setDoneStepStatus: model.setDoneStepStatus,
+    setDoneStep: model.setDoneStep,
   }));
 
   const { nextStep } = useNextStep();
 
   const getloading = async () => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
-
     let data = res?.result || {};
-    if (
-      data?.currentStage == 4 &&
-      data?.currentStageStatus == '1' &&
-      data?.isCommittedPage == '1'
-    ) {
-      setTimeout(async () => {
-        getloading();
-      }, 10 * 1000);
-    } else if (data?.currentStage == 4 && data?.currentStageStatus == '3') {
-      back();
+    if (res?.status?.code == successCode) {
+      if (
+        data?.currentStage == 4 &&
+        data?.currentStageStatus == '1' &&
+        data?.isCommittedPage == '1'
+      ) {
+        setTimeout(async () => {
+          getloading();
+        }, 10 * 1000);
+      } else if (data?.currentStage == 4 && data?.currentStageStatus == '3') {
+        back();
+      } else {
+        nextStep();
+      }
     } else {
-      nextStep();
+      back();
     }
   };
 
@@ -45,7 +49,7 @@ const TabThree: React.FC<any> = (props: any) => {
       getloading();
     }, 10 * 1000);
     return () => {
-      fake.current.timeFn = null;
+      clearTimeout(fake.current.timeFn);
     };
   }, []);
 

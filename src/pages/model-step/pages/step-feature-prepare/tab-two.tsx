@@ -108,12 +108,10 @@ const TabTwo: React.FC<any> = (props: any) => {
           </>
         }
         pageType={processType}
-        columns={[]}
-        detailInfo={{}}
         dataList={
           selectList?.length
             ? selectList?.map((item: any) => item?.featureName || item)
-            : dataList?.map((item: any) => item?.featureName || item)
+            : dataList?.map((item: any) => item?.featureName || item?.featureCode || '')
         }
       />
       <Condition

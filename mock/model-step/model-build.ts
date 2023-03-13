@@ -47,6 +47,7 @@ const rebuild = (req: any, res: any) => {
       scoreBoxNum: 12,
       preanalysisRollRateCondition: {
         paymentTime: '2023-01,2023-02',
+        loadTerm: '',
       },
     },
   });
