@@ -13,6 +13,7 @@ import { useNextStep } from '../../config';
 import { exportExcel } from './model/api';
 import { getModelStepDetailApi } from '../../model/api';
 import moment from 'moment';
+import { ProTable } from '@ant-design/pro-components';
 
 const { Item: FormItem, List: FormList } = Form;
 
@@ -114,7 +115,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   // 页码, 分页相关
   const [current, setCurrent] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(20);
 
   const [current2, setCurrent2] = useState<number>(1);
   const [pageSize2, setPageSize2] = useState<number>(10);
@@ -369,13 +370,14 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
       <div className={styles['page-table']}>
         <div className={style['table-box']}>
-          <Table
+          <ProTable
             pagination={{
               current: current,
               pageSize: pageSize,
               onChange: onChange,
               total: tableTotal,
               showSizeChanger: true,
+              defaultPageSize: 20,
               // onShowSizeChange: (pn: any, ps: any) => {
               //   getSampleTableList({ itmModelRegisCode: modelId, currentPage: 1, pageSize: ps });
               //   setCurrent(1);

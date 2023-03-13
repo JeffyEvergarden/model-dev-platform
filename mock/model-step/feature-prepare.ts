@@ -78,7 +78,8 @@ const getVarList = (req: any, res: any) => {
 const getInfo = (req: any, res: any) => {
   let list = new Array(21).fill(1).map((item: any, index: number) => {
     return {
-      featureName: '阿斯拉大' + index,
+      featureName:
+        '阿斯拉大阿斯拉大阿斯拉大阿斯拉大阿斯拉大阿斯拉大阿斯拉大阿斯拉大阿斯拉大阿斯拉大' + index,
       featureCode: index,
     };
   });

@@ -45,7 +45,7 @@ const SelectModal: React.FC<any> = (props: any) => {
 
   const onClick = async () => {
     if (selectList.length === 0) {
-      message.warning('请选择需要回溯的编排');
+      message.warning('请选择变量或者模型');
     } else {
       console.log(selectList);
       let reqData = {

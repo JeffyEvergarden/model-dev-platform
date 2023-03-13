@@ -51,11 +51,8 @@ export const useStrategyBackUploadAwaitModel = () => {
   const [processType, setProcessType] = useState<any>('loading'); // 0未开始 1进行中 2完成 3失败
   const [errorMsg, setErrorMsg] = useState<any>('');
   const [dataList, setDataList] = useState<any>('');
+  const [successMsg, setSuccessMsg] = useState<any>([]);
   const [loading, setLoading] = useState<any>(false);
-
-  const { setDoneStepStatus } = useModel('step', (model: any) => ({
-    setDoneStepStatus: model.setDoneStepStatus,
-  }));
 
   const fake = useRef<any>({});
 
@@ -100,6 +97,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     console.log(data);
 
     setDataList(data?.backtrackProcessName || '');
+    setSuccessMsg(data?.sampleTableName?.split('.'));
     if (StageStatus[data?.currentStageStatus] === 'finish') {
       setProcessType('finish');
       return 'finish';
@@ -141,6 +139,7 @@ export const useStrategyBackUploadAwaitModel = () => {
   };
 
   return {
+    successMsg,
     processType,
     errorMsg,
     dataList,

@@ -46,7 +46,7 @@ const TabTwo: React.FC<any> = (props: any) => {
     setDoneStepStatus: model.setDoneStepStatus,
   }));
 
-  const { processType, dataList, errorMsg, loading, startLoop, nextFlow, clearTime } =
+  const { processType, dataList, errorMsg, successMsg, loading, startLoop, nextFlow, clearTime } =
     useStrategyBackUploadAwaitModel();
   const { nextLoading, nextStep } = useNextStep();
 
@@ -100,7 +100,8 @@ const TabTwo: React.FC<any> = (props: any) => {
         sucessContent={
           <>
             <div className={styles['title']}>策略回溯成功</div>
-            <div className={styles['desc']}></div>
+            <div className={styles['desc']}>数据集的名称：{successMsg?.[1] ?? '-'}</div>
+            <div className={styles['desc']}>数据集存放库：{successMsg?.[0] ?? '-'}</div>
           </>
         }
         errorContent={

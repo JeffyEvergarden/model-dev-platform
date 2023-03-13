@@ -29,10 +29,6 @@ const StepTwo: React.FC<any> = (props: any) => {
 
   // const [pageType, setPageType] = useState<any>('loading'); // init、 loading、finish、fail
 
-  useEffect(() => {
-    console.log(dataList);
-  }, [dataList]);
-
   return (
     <div>
       <Condition r-if={pageType === 'loading'}>
