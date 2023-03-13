@@ -118,7 +118,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   const [pageSize, setPageSize] = useState<number>(20);
 
   const [current2, setCurrent2] = useState<number>(1);
-  const [pageSize2, setPageSize2] = useState<number>(10);
+  const [pageSize2, setPageSize2] = useState<number>(20);
 
   const { nextLoading, nextStep } = useNextStep();
 
@@ -152,6 +152,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       currentPage: current,
       pageSize: pageSize,
       itmModelRegisCode: modelId,
+      first: true,
     }).then((res) => {
       let obj: any = {};
       if (res?.trainingTime?.startTime && res?.trainingTime?.endTime) {
@@ -507,18 +508,22 @@ const StepDefineSample: React.FC<any> = (props: any) => {
 
       <div className={styles['page-table']} style={{ paddingBottom: '16px' }}>
         <div className={style['table-box']}>
-          <Table
+          <ProTable
             pagination={{
               current: current2,
               pageSize: pageSize2,
               onChange: onResultChange,
               total: tableResultTotal,
               showSizeChanger: true,
+              defaultPageSize: 20,
             }}
             dataSource={resultTableList}
             columns={columns2}
             rowKey="index"
             loading={resultLoading}
+            toolBarRender={false}
+            options={false}
+            search={false}
           />
         </div>
       </div>
