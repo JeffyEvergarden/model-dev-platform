@@ -6,7 +6,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Input, message, Modal, Select, Table, Tabs, Tooltip } from 'antd';
-import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { useVarSelectModal } from '../../model';
 import MyTree from '../my-tree';
@@ -38,6 +38,7 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
   const [classType, setClassType] = useState<string>(''); //选中树(path)
   const [treeName, setTreeName] = useState<string>(''); //选中树
+  const treeRef = useRef<any>(null);
 
   const [visible, setVisible] = useState<boolean>(false);
   // 页码, 分页相关
@@ -166,6 +167,9 @@ const SelectorModal: React.FC<any> = (props: any) => {
     // if (!treeName && !classType) {
     //   return;
     // }
+    treeRef?.current?.setSelectKey();
+    setTreeName('');
+    setClassType('');
     setCurrent1(1);
     getKeyVarInfo({
       page: 1,
@@ -331,7 +335,14 @@ const SelectorModal: React.FC<any> = (props: any) => {
 
         <div className={style['zy-row']}>
           <div className={style['page_left']}>
-            <MyTree draggable={false} onChange={onSelect} data={treeList} edit={false} size="sm" />
+            <MyTree
+              cref={treeRef}
+              draggable={false}
+              onChange={onSelect}
+              data={treeList}
+              edit={false}
+              size="sm"
+            />
           </div>
 
           <div className={style['page_content']}>
