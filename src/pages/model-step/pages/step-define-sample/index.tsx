@@ -526,7 +526,11 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         <NextStepButton
           btnNode={
             <Space>
-              <Button onClick={exportResult} size="large" loading={nextLoading || nLoading}>
+              <Button
+                onClick={exportResult}
+                size="large"
+                loading={nextLoading || nLoading || resultLoading || loading}
+              >
                 导出结果
               </Button>
               <Button
@@ -535,7 +539,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
                 }}
                 size="large"
                 type="primary"
-                loading={nextLoading || nLoading}
+                loading={nextLoading || nLoading || resultLoading || loading}
               >
                 下一流程
               </Button>

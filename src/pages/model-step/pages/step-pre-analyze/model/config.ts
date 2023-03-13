@@ -116,6 +116,7 @@ export const genColumns = (extra: any[], config: any) => {
       },
       formItemProps: {
         rules: [{ required: true, message: '请选择汇总指标' }],
+        initialValue: 'M2+余额占比',
       },
       hideInTable: true,
     },

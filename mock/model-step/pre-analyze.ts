@@ -251,6 +251,24 @@ const getCustomerList = (req: any, res: any) => {
   });
 };
 
+const backshow = (req: any, res: any) => {
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      defaultSelection: {
+        prodCat: '全部',
+        channelCatM: '全部',
+        channelCatS: '全部',
+        custCatL: '全部',
+        dimension: '进件层',
+      },
+    },
+  });
+};
+
 // 菜单管理相关
 export default {
   // 样本定义
@@ -261,4 +279,5 @@ export default {
   [`GET ${baseUrl}/preanalysis/vintageLoanTerms`]: getYaerMonthApi,
   [`GET ${baseUrl}/preanalysis/customerDefinitionOptions`]: getCustomerList,
   [`POST ${baseUrl}/preanalysis/nextStage`]: normalDeal,
+  [`GET ${baseUrl}/preanalysis/prodChannelList`]: backshow,
 };
