@@ -8,6 +8,13 @@ export default (props: any) => {
   const { optimalVersion } = props;
 
   const actionRef = useRef<any>();
+  const tableRef = useRef<any>({});
+
+  const [originTableList, setOriginTableList] = useState<any>([]);
+
+  useEffect(() => {
+    scoreCardList();
+  }, []);
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -16,21 +23,21 @@ export default (props: any) => {
   const { scoreCardListReuqest } = useComparePage();
 
   //评分卡
-  const scoreCardList = async (payload: any) => {
+  const scoreCardList = async () => {
     let params = {
-      page: payload?.current,
-      pageSize: 10,
+      page: tableRef?.current?.page,
+      pageSize: tableRef?.current?.pageSize,
       itmModelRegisCode: modelId,
       modelVersion: optimalVersion,
     };
     let res = await scoreCardListReuqest(params);
-    let resultData = togetherData(res?.result?.tableData);
-    return {
-      data: resultData || [],
-      total: res?.result?.totalSize || 0,
-      current: payload?.current || 1,
-      pageSize: payload?.pageSize || 10,
-    };
+    setOriginTableList(res?.result?.tableData);
+    // return {
+    //   data: resultData || [],
+    //   total: res?.result?.totalSize || 0,
+    //   current: payload?.current || 1,
+    //   pageSize: payload?.pageSize || 10,
+    // };
   };
 
   const togetherData = (data: any) => {
@@ -61,7 +68,8 @@ export default (props: any) => {
       rowKey={(record: any) => record.id}
       toolBarRender={() => []}
       actionRef={actionRef}
-      requestMethod={scoreCardList}
+      originTableList={originTableList}
+      cref={tableRef}
     />
   );
 };

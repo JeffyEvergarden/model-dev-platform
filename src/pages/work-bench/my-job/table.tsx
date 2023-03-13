@@ -119,7 +119,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
               style={{ color: '#1890ff !important' }}
               onClick={() => {
                 setModelName(row?.modelName || '');
-                history?.push(`/modelStep/exportReport?id=${row?.itmModelRegisCode}`);
+                history?.push(`/modelStep?id=${row?.itmModelRegisCode}`);
               }}
             >{`${row?.modelName}`}</a>
           );

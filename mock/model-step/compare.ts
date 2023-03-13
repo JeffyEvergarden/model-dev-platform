@@ -417,6 +417,38 @@ const getInputVariableApi = (req: any, res: any) => {
 };
 
 const getModelScoreCalcLogic = (req: any, res: any) => {
+  let list = new Array(21).fill(1).map((item: any, index: any) => {
+    return {
+      variable: `变量名称${index}`,
+      variableName: `变量中文名${index}`,
+      scoreItemList: [
+        {
+          boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
+          score: '64.29', //分箱对应分数
+          trainBadRate: '36.25%', //训练坏比率
+          validBadRate: '36.25%', //验证坏比率
+          trainRate: '36.25%', //训练该箱占比
+          validRate: '36.25%', //验证该箱占比
+        },
+        {
+          boxGroup: '[3.0 ~ 5.0)',
+          score: '39.45',
+          trainBadRate: '34.89%',
+          validBadRate: '34.89%',
+          trainRate: '34.89%',
+          validRate: '34.89%',
+        },
+        {
+          boxGroup: '[3.0 ~ 5.0)',
+          score: '39.45',
+          trainBadRate: '34.89%',
+          validBadRate: '34.89%',
+          trainRate: '34.89%',
+          validRate: '34.89%',
+        },
+      ],
+    };
+  });
   res.json({
     status: {
       code: successCode,
@@ -426,68 +458,7 @@ const getModelScoreCalcLogic = (req: any, res: any) => {
       current: 1,
       pageSize: 10,
       totalSize: 100,
-      tableData: [
-        {
-          variable: '变量名称1',
-          variableName: '变量中文名1',
-          scoreItemList: [
-            {
-              boxGroup: '[-inf ~ 3.0)或nan', //分箱范围
-              score: '64.29', //分箱对应分数
-              trainBadRate: '36.25%', //训练坏比率
-              validBadRate: '36.25%', //验证坏比率
-              trainRate: '36.25%', //训练该箱占比
-              validRate: '36.25%', //验证该箱占比
-            },
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              score: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainRate: '34.89%',
-              validRate: '34.89%',
-            },
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              score: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainRate: '34.89%',
-              validRate: '34.89%',
-            },
-          ],
-        },
-        {
-          variable: '变量名称2',
-          variableName: '中文含义2',
-          scoreItemList: [
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              score: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainRate: '34.89%',
-              validRate: '34.89%',
-            },
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              score: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainRate: '34.89%',
-              validRate: '34.89%',
-            },
-            {
-              boxGroup: '[3.0 ~ 5.0)',
-              score: '39.45',
-              trainBadRate: '34.89%',
-              validBadRate: '34.89%',
-              trainRate: '34.89%',
-              validRate: '34.89%',
-            },
-          ],
-        },
-      ],
+      tableData: [...list],
     },
   });
 };
@@ -644,6 +615,40 @@ const getModelSortInfo = (req: any, res: any) => {
           其他验证1: '34.1%',
         },
       ],
+    },
+  });
+};
+
+const getLostList = (req: any, res: any) => {
+  let list = new Array(21).fill(1).map((item: any, index: number) => {
+    return {
+      variable: '变量名称' + index,
+      variableName: '中文名称' + index,
+      variableType: index + 1 * 100,
+      trainMissRate: (Math.random() * 100).toFixed(2) + '%',
+      validMissRate: (Math.random() * 100).toFixed(2) + '%',
+      trainKs: (Math.random() * 100).toFixed(2) + '%',
+      validKs: (Math.random() * 100).toFixed(2) + '%',
+      trainIv: (Math.random() * 100).toFixed(2) + '%',
+      validIv: (Math.random() * 100).toFixed(2) + '%',
+      trainPsi: (Math.random() * 100).toFixed(2) + '%',
+      validPsi: (Math.random() * 100).toFixed(2) + '%',
+    };
+  });
+
+  res.json({
+    status: {
+      code: successCode,
+      desc: '',
+    },
+    result: {
+      // pageSize: req?.pageSize || 10,
+      // totalPage: 21,
+      // current: 1,
+      variableNum: '1000',
+      numTypeNum: '500',
+      otherTypeNum: '300',
+      tableData: [...list],
     },
   });
 };
