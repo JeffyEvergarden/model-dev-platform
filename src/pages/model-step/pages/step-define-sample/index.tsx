@@ -384,6 +384,9 @@ const StepDefineSample: React.FC<any> = (props: any) => {
               //   setPageSize(ps);
               // },
             }}
+            toolBarRender={false}
+            options={false}
+            search={false}
             dataSource={tableList}
             columns={columns1}
             rowKey="month"
