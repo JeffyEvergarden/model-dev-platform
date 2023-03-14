@@ -82,8 +82,10 @@ const VarCardList: React.FC<any> = (props: any) => {
                   style={{
                     flex: '0 0 20%',
                     marginBottom: '12px',
+                    paddingRight: '12px',
                     display:
                       index >= (page - 1) * pageSize && index < page * pageSize ? 'block' : 'none',
+                    overflow: 'hidden',
                   }}
                 >
                   <Checkbox value={item?.variable} className={style['checkBoxText']}>

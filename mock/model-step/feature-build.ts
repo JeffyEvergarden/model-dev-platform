@@ -43,7 +43,7 @@ const getVarList = (req: any, res: any) => {
   let list = new Array(60).fill(1).map((item: any, index: number) => {
     return {
       variable: index,
-      variableName: '阿斯拉大' + index,
+      variableName: '阿斯拉大撒大大打啥接口22' + index,
       variableType: Math.floor(Math.random() * 10),
     };
   });
