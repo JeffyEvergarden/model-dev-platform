@@ -196,6 +196,26 @@ const Myjob: React.FC<any> = (props: any) => {
       ) {
         obj.icon = <LoadingOutlined />;
       }
+      if (
+        curStep == i &&
+        doneStep - 1 === i &&
+        (doneStepStatus === 'error' || doneStepStatus === 'finish')
+      ) {
+        obj.icon = (
+          <div
+            style={{
+              fontSize: '16px',
+              width: '32px',
+              height: '32',
+              borderRadius: '32px',
+              color: '#fff',
+              background: doneStepStatus === 'error' ? '#ff4d4f' : '#1890FF',
+            }}
+          >
+            {doneStep}
+          </div>
+        );
+      }
       return obj;
     });
   }, [curStep, doneStep, doneStepStatus]);
