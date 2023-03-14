@@ -69,7 +69,7 @@ const monthDistributionList = (req: any, res: any) => {
 const totalDistributionList = (req: any, res: any) => {
   let list = new Array(5).fill(1).map((item: any, index: number) => {
     return {
-      sampleType: '其他验证' + Math.ceil(Math.random() * 9) + index * 10,
+      sampleType: '其他验证' + Math.ceil(Math.random() * 5),
       goodSample: '10',
       badSample: '1',
       total: '11',

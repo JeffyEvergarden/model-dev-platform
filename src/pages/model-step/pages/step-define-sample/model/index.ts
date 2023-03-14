@@ -43,8 +43,21 @@ export const useDefineSampleModel = () => {
     // 策略分析
     if (res?.status?.code === successCode) {
       let data: any[] = res?.result?.sampleTotalDistributionList || [];
-      setTableResultTotal(res?.totalSize || 0);
-      setResultTableList(data);
+      let arr: any = [];
+      data?.forEach((item: any, index: any) => {
+        if (index == 0) {
+          console.log(data?.find((item) => item.sampleType == '训练集'));
+          arr.push(data?.find((item) => item.sampleType == '训练集'));
+        } else if (index == 1) {
+          arr.push(data?.find((item) => item.sampleType == '跨期验证'));
+        } else {
+          arr.push(data?.find((item) => item.sampleType == '其他验证' + (index - 1)) || {});
+        }
+      });
+      console.log(arr);
+
+      setTableResultTotal(res?.totalSize || data?.length || 0);
+      setResultTableList(arr);
     } else {
       setTableResultTotal(0);
       setResultTableList([]);
