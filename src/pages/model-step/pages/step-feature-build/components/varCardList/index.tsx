@@ -80,7 +80,7 @@ const VarCardList: React.FC<any> = (props: any) => {
               return (
                 <div
                   style={{
-                    flex: '0 0 20%',
+                    flex: '0 0 25%',
                     marginBottom: '12px',
                     paddingRight: '12px',
                     display:
