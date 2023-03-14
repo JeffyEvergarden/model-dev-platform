@@ -16,7 +16,7 @@ const SelectModal: React.FC<any> = (props: any) => {
   const tmpRef = useRef<any>({});
   const [form] = Form.useForm();
 
-  const { submitFeature, getModelStageInfo } = useVarSelectModal();
+  const { submitLoading, submitFeature, getModelStageInfo } = useVarSelectModal();
 
   const { modelId, isHadBuild, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -114,7 +114,7 @@ const SelectModal: React.FC<any> = (props: any) => {
           </div>
         </div>
         <Condition r-if={operate == 'EDIT' && !isHadBuild && !isHadReported}>
-          <NextStepButton onClick={onClick} text={'提交'} />
+          <NextStepButton onClick={onClick} text={'提交'} loading={submitLoading} />
         </Condition>
       </div>
       <SelectFaqModal

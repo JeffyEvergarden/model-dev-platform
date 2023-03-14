@@ -15,6 +15,7 @@ export const useVarSelectModal = () => {
   const [dataList, setDataList] = useState<any[]>([]);
   const [errorMsg, setErrorMsg] = useState<any>('');
   const [nextLoading, setNextLoading] = useState<boolean>(false);
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   const fake = useRef<any>({});
 
@@ -96,7 +97,9 @@ export const useVarSelectModal = () => {
   };
 
   const submitFeature = async (params: any) => {
+    setSubmitLoading(true);
     let res: any = await saveFeature({ ...params });
+    setSubmitLoading(false);
     if (res?.status?.code === successCode) {
       return true;
     } else {
@@ -191,6 +194,7 @@ export const useVarSelectModal = () => {
     processType,
     dataList,
     errorMsg,
+    submitLoading,
     clearTime,
     nextFlow,
     getTreeList,
