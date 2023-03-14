@@ -280,13 +280,13 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               allowClear
             >
               {varList?.map((item) => (
-                <Option key={item.value} value={item.value}>
+                <Option key={item.label} value={item.label}>
                   {item.label}
                 </Option>
               ))}
             </Select>
           </FormItem>
-          <Condition r-if={formData == 4}>
+          <Condition r-if={formData == '自定义'}>
             <FormItem className={style['inputNumber']} name={'numberCustomValue'}>
               <Input type={'number'} allowClear placeholder="请输入"></Input>
             </FormItem>
@@ -299,14 +299,17 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             rules={[{ required: true, message: '请选择' }]}
           >
             <Select placeholder={'请选择填充方式'} allowClear>
-              {varList?.map((item) => (
-                <Option key={item.value} value={item.value}>
-                  {item.label}
-                </Option>
-              ))}
+              {varList?.map(
+                (item) =>
+                  item.label == '自定义' && (
+                    <Option key={item.label} value={item.label}>
+                      {item.label}
+                    </Option>
+                  ),
+              )}
             </Select>
           </FormItem>
-          <Condition r-if={formData2 == 4}>
+          <Condition r-if={formData2 == '自定义'}>
             <FormItem className={style['inputNumber']} name={'categoryCustomValue'}>
               <Input allowClear placeholder="请输入"></Input>
             </FormItem>
@@ -315,14 +318,14 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           <FormItem label={'分箱方式'} className={style['formItem']} name={'boxFillType'}>
             <Select placeholder={'请选择分箱方式'} allowClear>
               {boxList?.map((item) => (
-                <Option key={item.value} value={item.value}>
+                <Option key={item.label} value={item.label}>
                   {item.label}
                 </Option>
               ))}
             </Select>
           </FormItem>
 
-          <Condition r-if={formData3 == 1 || formData3 == 2}>
+          <Condition r-if={formData3 == '等频分箱' || formData3 == '等距分箱'}>
             <FormItem className={style['inputNumber']} name={'boxinputNumber'}>
               <Input type={'number'} max={20} allowClear placeholder="分箱个数"></Input>
             </FormItem>
