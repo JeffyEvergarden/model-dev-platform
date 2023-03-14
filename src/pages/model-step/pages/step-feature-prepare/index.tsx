@@ -37,6 +37,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const [processId, setProcessId] = useState<any>('000');
 
   const [selectList, setSelectList] = useState<any>([]);
+  const [rloading, setRloading] = useState<any>(false);
 
   const onNext = (list: any) => {
     setSelectList(list || []);
@@ -56,7 +57,9 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   };
 
   const reset = async (list: any) => {
+    setRloading(true);
     await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
+      setRloading(false);
       if (res?.status?.code == successCode) {
         getStatus();
         setResetScroll(resetScroll + 1);
@@ -117,6 +120,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
           processId={processId}
           selectList={selectList}
           reset={reset}
+          rloading={rloading}
         ></TabTwo>
       </Condition>
     </div>

@@ -24,7 +24,7 @@ const { Option } = Select;
 // 首页
 const TabTwo: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, selectList, reset } = props;
+  const { processId, form, onNext, selectList, reset, rloading } = props;
 
   const [_form] = Form.useForm(form);
 
@@ -131,7 +131,7 @@ const TabTwo: React.FC<any> = (props: any) => {
                 }}
                 size="large"
                 type={processType === 'error' ? 'primary' : undefined}
-                loading={nextLoading}
+                loading={nextLoading || rloading}
               >
                 重新匹配
               </Button>
@@ -140,7 +140,7 @@ const TabTwo: React.FC<any> = (props: any) => {
                   onClick={onClick}
                   size="large"
                   type="primary"
-                  loading={nextLoading || nLoading}
+                  loading={nextLoading || nLoading || rloading}
                 >
                   下一流程
                 </Button>
