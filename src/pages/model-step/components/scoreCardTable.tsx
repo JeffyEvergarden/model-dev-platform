@@ -317,7 +317,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '训练集KS',
+      title: '训练KS',
       dataIndex: 'trainKs',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
@@ -325,7 +325,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证集KS',
+      title: '验证KS',
       dataIndex: 'validKs',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
@@ -333,7 +333,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '训练集IV',
+      title: '训练IV',
       dataIndex: 'trainIv',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
@@ -341,7 +341,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证集IV',
+      title: '验证IV',
       dataIndex: 'trainIv',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
@@ -349,7 +349,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '训练集PSI',
+      title: '训练PSI',
       dataIndex: 'validIv',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
@@ -357,7 +357,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证集PSI',
+      title: '验证PSI',
       dataIndex: 'validPsi',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
