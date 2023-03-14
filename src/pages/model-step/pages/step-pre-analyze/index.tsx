@@ -528,7 +528,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let res = await getRateList(payLoad);
     if (res?.status?.code === config.successCode) {
       let data: any[] =
-        res?.result?.map?.((item: any) => ({ ...item, children: item?.monthList })) || [];
+        res?.result?.map?.((item: any, index: any) => ({
+          ...item,
+          idx: index,
+          children: item?.monthList?.map((ite: any, idx: any) => ({
+            ...ite,
+            idx: `${index}-${idx}`,
+          })),
+        })) || [];
       let columns: any[] = [
         {
           key: 'name',
@@ -577,6 +584,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         };
       });
 
+      console.log(filter);
       data = data?.filter?.((item) => filter?.includes(item?.name));
 
       let total = data?.length || 0;
@@ -803,7 +811,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             actionRef={rateRef}
             formRef={formRef2}
             headerTitle="滚动率分析结果"
-            rowKey={(r) => r.name}
+            rowKey={(r) => r.idx}
             toolBarRender={() => []}
             options={{ density: false, fullScreen: false, reload: false, setting: true }}
             search={{
