@@ -10,7 +10,7 @@ import Condition from '@/components/Condition';
 
 // 首页
 const SelectModal: React.FC<any> = (props: any) => {
-  const { onNext } = props;
+  const { onNext, selectList: backList } = props;
   const selectFaqModalRef = useRef<any>({});
   const [selectList, setSelectList] = useState<any>([]);
   const tmpRef = useRef<any>({});
@@ -69,6 +69,9 @@ const SelectModal: React.FC<any> = (props: any) => {
     (async () => {
       await getModelStageInfo({ itmModelRegisCode: modelId }).then((res) => {
         setSelectList(res || []);
+        if (!res?.length) {
+          setSelectList(backList);
+        }
       });
     })();
   }, []);

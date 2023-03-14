@@ -70,16 +70,27 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     setBase(rate);
   };
 
-  const { modelId, doneStep, curStep, setDoneStepStatus, setDoneStep, isHadReported, operate } =
-    useModel('step', (model: any) => ({
-      modelId: model.modelId,
-      doneStep: model.doneStep,
-      curStep: model.curStep,
-      setDoneStepStatus: model.setDoneStepStatus,
-      setDoneStep: model.setDoneStep,
-      isHadReported: model.isHadReported,
-      operate: model.operate,
-    }));
+  const {
+    modelId,
+    doneStep,
+    curStep,
+    setDoneStepStatus,
+    setDoneStep,
+    isHadReported,
+    operate,
+    resetScroll,
+    setResetScroll,
+  } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    doneStep: model.doneStep,
+    curStep: model.curStep,
+    setDoneStepStatus: model.setDoneStepStatus,
+    setDoneStep: model.setDoneStep,
+    isHadReported: model.isHadReported,
+    operate: model.operate,
+    resetScroll: model.resetScroll,
+    setResetScroll: model.setResetScroll,
+  }));
 
   useEffect(() => {
     getCurrentStage();
@@ -665,6 +676,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         nextFlow(reqData).then(async (res) => {
           if (res) {
             // nextStep();
+            setResetScroll(resetScroll + 1);
             setStepType(2);
           } else {
             getStatus();

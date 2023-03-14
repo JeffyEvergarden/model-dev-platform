@@ -22,16 +22,23 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
 
   const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
 
-  const { modelId, doneStep, curStep, setDoneStepStatus, setDoneStep } = useModel(
-    'step',
-    (model: any) => ({
-      modelId: model.modelId,
-      doneStep: model.doneStep,
-      curStep: model.curStep,
-      setDoneStepStatus: model.setDoneStepStatus,
-      setDoneStep: model.setDoneStep,
-    }),
-  );
+  const {
+    modelId,
+    doneStep,
+    curStep,
+    setDoneStepStatus,
+    setDoneStep,
+    resetScroll,
+    setResetScroll,
+  } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    doneStep: model.doneStep,
+    curStep: model.curStep,
+    setDoneStepStatus: model.setDoneStepStatus,
+    setDoneStep: model.setDoneStep,
+    resetScroll: model.resetScroll,
+    setResetScroll: model.setResetScroll,
+  }));
 
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
@@ -39,6 +46,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
   const { getStrategyTableList } = useStrategyBackModel();
 
   const onNext = (key: any) => {
+    setResetScroll(resetScroll + 1);
     setStepType(2);
     setSelectedKeys(key);
   };
@@ -49,6 +57,7 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
         setDoneStepStatus(formateStatus(Number(1)));
         setDoneStep(3);
         setStepType(1);
+        setResetScroll(resetScroll + 1);
       }
     });
   };

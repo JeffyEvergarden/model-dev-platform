@@ -126,7 +126,9 @@ const TabTwo: React.FC<any> = (props: any) => {
           btnNode={
             <Space>
               <Button
-                onClick={reset}
+                onClick={() => {
+                  reset(selectList?.length ? selectList : dataList);
+                }}
                 size="large"
                 type={processType === 'error' ? 'primary' : undefined}
                 loading={nextLoading}

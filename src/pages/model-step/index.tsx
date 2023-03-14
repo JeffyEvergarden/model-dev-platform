@@ -40,6 +40,7 @@ const Myjob: React.FC<any> = (props: any) => {
     isHadReported,
     setIsHadReported,
     setOperate,
+    resetScroll,
   } = useModel('step' as any, (model: any) => ({
     modelId: model.modelId,
     setModelId: model.setModelId,
@@ -57,6 +58,7 @@ const Myjob: React.FC<any> = (props: any) => {
     isHadReported: model.isHadReported,
     setIsHadReported: model.setIsHadReported,
     setOperate: model.setOperate,
+    resetScroll: model.resetScroll,
   }));
 
   const { hasDone, getModelInfo, getModelDetail } = useBaseInfoModel();
@@ -230,7 +232,7 @@ const Myjob: React.FC<any> = (props: any) => {
     if (rightContentRef.current) {
       rightContentRef.current.scrollTop = 0;
     }
-  }, [curStep]);
+  }, [curStep, resetScroll]);
 
   return (
     <PageContainer

@@ -235,7 +235,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '训练坏比率',
+      title: pageType == 'compareAndReport' ? '训练坏比率' : '训练坏样本率',
       dataIndex: 'trainBadRate',
       render: (t: any, r: any, i: any) => {
         let temp = r?.trainBadRate?.replace('%', '');
@@ -254,7 +254,7 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证坏比率',
+      title: pageType == 'compareAndReport' ? '验证坏比率' : '验证坏样本率',
       dataIndex: 'validBadRate',
       render: (t: any, r: any, i: any) => {
         let temp = r?.validBadRate?.replace('%', '');

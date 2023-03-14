@@ -9,17 +9,29 @@ import { useModel } from 'umi';
 import { resetPrepare } from './model/api';
 import { successCode } from '../step-strategy-back/model';
 import { formateStatus } from '../../config';
+import { message } from 'antd';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const [tabType, setTabType] = useState<any>(1); // 导入数据类型 0、1  // 0 -> 是， 1 -> 否
 
   const [stepType, setStepType] = useState<any>(1); //  1、2  //  1-> 选择条件    2--> 导入进度
-  const { modelId, doneStep, curStep, setDoneStepStatus } = useModel('step', (model: any) => ({
+  const {
+    modelId,
+    doneStep,
+    curStep,
+    setDoneStepStatus,
+    setResetScroll,
+    resetScroll,
+    setDoneStep,
+  } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
     curStep: model.curStep,
     setDoneStepStatus: model.setDoneStepStatus,
+    setResetScroll: model.setResetScroll,
+    resetScroll: model.resetScroll,
+    setDoneStep: model.setDoneStep,
   }));
   // 过程id
   const [processId, setProcessId] = useState<any>('000');
@@ -29,15 +41,29 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const onNext = (list: any) => {
     setSelectList(list || []);
     setStepType(2);
+    setResetScroll(resetScroll + 1);
   };
 
-  const reset = async () => {
+  const getStatus = async () => {
+    let res: any = await getWaitResult({ itmModelRegisCode: modelId });
+    let data = res?.result || {};
+    if (data?.currentStage) {
+      setDoneStep(data?.currentStage);
+    }
+    if (data?.currentStageStatus) {
+      setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
+    }
+  };
+
+  const reset = async (list: any) => {
     await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
       if (res?.status?.code == successCode) {
-        if (doneStep == 6) {
-          setDoneStepStatus('process');
-        }
+        getStatus();
+        setResetScroll(resetScroll + 1);
+        setSelectList(list);
         setStepType(1);
+      } else {
+        message.error(res?.status?.desc || '未知异常');
       }
     });
   };
@@ -82,7 +108,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
       </div>
 
       <Condition r-if={stepType === 1}>
-        <SelectModal onNext={onNext}></SelectModal>
+        <SelectModal onNext={onNext} selectList={selectList}></SelectModal>
       </Condition>
 
       <Condition r-if={stepType === 2}>

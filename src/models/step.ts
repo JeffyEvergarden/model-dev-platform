@@ -45,6 +45,9 @@ export default function useStepModel() {
   //模型详情-步骤条当前点击的步骤
   let currentStep: any = useRef();
 
+  //滚动条置顶
+  const [resetScroll, setResetScroll] = useState<any>(0);
+
   return {
     modelId,
     setModelId,
@@ -65,5 +68,7 @@ export default function useStepModel() {
     operate,
     setOperate,
     isReadonly,
+    setResetScroll,
+    resetScroll,
   };
 }
