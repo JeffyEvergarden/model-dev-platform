@@ -57,18 +57,18 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   };
 
   const reset = async (list: any) => {
-    setRloading(true);
-    await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
-      setRloading(false);
-      if (res?.status?.code == successCode) {
-        getStatus();
-        setResetScroll(resetScroll + 1);
-        setSelectList(list);
-        setStepType(1);
-      } else {
-        message.error(res?.status?.desc || '未知异常');
-      }
-    });
+    // setRloading(true);
+    // await resetPrepare({ itmModelRegisCode: modelId }).then((res) => {
+    //   setRloading(false);
+    //   if (res?.status?.code == successCode) {
+    //     getStatus();
+    setResetScroll(resetScroll + 1);
+    setSelectList(list);
+    setStepType(1);
+    // } else {
+    //   message.error(res?.status?.desc || '未知异常');
+    // }
+    // });
   };
 
   useEffect(() => {

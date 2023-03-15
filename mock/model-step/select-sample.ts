@@ -184,6 +184,39 @@ const getParams = (req: any, res: any) => {
           ],
         },
         {
+          id: 123,
+          parentId: 0,
+          name: '产品大类1',
+          children: [
+            {
+              id: 332,
+              parentId: 1,
+              name: '渠道中类3',
+              children: [
+                {
+                  id: 322,
+                  parentId: 2,
+                  name: '渠道小类1',
+                  children: [
+                    {
+                      id: 433,
+                      parentId: 3,
+                      name: '客群大类2',
+                      children: [
+                        {
+                          id: 544,
+                          parentId: 6,
+                          name: '客群小类1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
           id: 11,
           parentId: 0,
           name: '产品大类1',
@@ -224,7 +257,7 @@ const getParams = (req: any, res: any) => {
       ],
       processList: [
         { name: '编排1', value: '1' },
-        { name: '编排2', value: '2' },
+        { name: '编排1', value: '1' },
       ],
     },
   });

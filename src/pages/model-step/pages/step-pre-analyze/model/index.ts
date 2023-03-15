@@ -25,6 +25,7 @@ export const useSearchModel = () => {
   const [custCatList, setCustCatList] = useState<any[]>([]); //客群大类
   const [indexList, setIndexList] = useState<any[]>([]); //汇总指标
 
+  const [originProductList, setOriginProductList] = useState<any[]>([]); //产品大类
   const [originChannelMidList, setOriginChannelMidList] = useState<any[]>([]);
   const [originChannelSmList, setOriginChannelSmList] = useState<any[]>([]);
   const [originCustCatList, setOriginCustCatList] = useState<any[]>([]);
@@ -32,6 +33,11 @@ export const useSearchModel = () => {
 
   // let originChannelMidList: any[] = [];
   // let originChannelSmList: any[] = [];
+
+  const unique = (arr: any, uniId: any) => {
+    const res = new Map();
+    return arr.filter((item: any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+  };
 
   const getparams = async (params?: any) => {
     let res: any = await getparamsApi(params);
@@ -51,6 +57,7 @@ export const useSearchModel = () => {
         children: [],
       });
       setProductList(data);
+      setOriginProductList(data);
 
       let channelMidTemp: any[] = []; //渠道中类
       let channelSmTemp: any[] = []; //渠道小类
@@ -179,6 +186,7 @@ export const useSearchModel = () => {
     getConditionList,
     getYaerMonthRequest,
     getProdChannelList,
+    originProductList,
     originChannelMidList,
     originChannelSmList,
     originCustCatList,
