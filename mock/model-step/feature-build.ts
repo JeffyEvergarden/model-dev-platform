@@ -6,10 +6,16 @@ const baseUrl = config.basePath;
 
 const getLostList = (req: any, res: any) => {
   let list = new Array(21).fill(1).map((item: any, index: number) => {
+    const obj = {
+      1: 'number',
+      2: 'string',
+      3: 'boolean',
+      4: 'date',
+    };
     return {
       variable: '变量名称' + index,
       variableName: '中文名称' + index,
-      variableType: index + 1 * 100,
+      variableType: obj[Math.ceil(Math.random() * 4)],
       trainMissRate: (Math.random() * 100).toFixed(2) + '%',
       validMissRate: (Math.random() * 100).toFixed(2) + '%',
       trainKs: (Math.random() * 100).toFixed(2) + '%',

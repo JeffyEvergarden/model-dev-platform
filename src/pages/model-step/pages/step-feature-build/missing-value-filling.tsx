@@ -151,6 +151,15 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       title: '变量类型',
       dataIndex: 'variableType',
       width: 200,
+      render: (v: any, r: any) => {
+        let obj = {
+          number: '数值',
+          date: '日期',
+          string: '字符',
+          boolean: '布尔',
+        };
+        return obj[v];
+      },
     },
     {
       title: '缺失率_train',
