@@ -66,7 +66,7 @@ const StepOne: React.FC = (props: any) => {
     setOperationList,
     getSelectionList,
     // paramList,
-
+    originProductList,
     originChannelMidList,
     originChannelSmList,
     originCustCatList,
@@ -309,6 +309,7 @@ const StepOne: React.FC = (props: any) => {
             setOperationList={setOperationList}
             getSelectionList={getSelectionList}
             // paramList={paramList}
+            originProductList={originProductList}
             originChannelMidList={originChannelMidList}
             originChannelSmList={originChannelSmList}
             originCustCatList={originCustCatList}

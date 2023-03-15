@@ -52,7 +52,7 @@ const StepOne: React.FC<any> = (props: any) => {
     setOperationList,
     getSelectionList,
     // paramList,
-
+    originProductList,
     originChannelMidList,
     originChannelSmList,
     originCustCatList,
@@ -173,8 +173,12 @@ const StepOne: React.FC<any> = (props: any) => {
         list = originChannelMidList;
       } else {
         val.map((ele: any) => {
-          let temp: any = productList.find((item: any) => item.name == ele);
-          let tempChild: any[] = temp?.children ? temp?.children : [];
+          let tempChild: any = [];
+          originProductList.forEach((item: any) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
           list = [...list, ...tempChild];
         });
       }
@@ -210,8 +214,13 @@ const StepOne: React.FC<any> = (props: any) => {
         list = originChannelSmList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = channelMidList.find((item: any) => item.name == ele);
-          list = [...list, ...temp?.children];
+          let tempChild: any = [];
+          originChannelMidList.forEach((item: any) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
+          list = [...list, ...tempChild];
         });
       }
       setChannelSmList(list);
@@ -243,8 +252,13 @@ const StepOne: React.FC<any> = (props: any) => {
         list = originCustCatList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = channelSmList.find((item: any) => item.name == ele);
-          list = [...list, ...temp?.children];
+          let tempChild: any = [];
+          originChannelSmList.forEach((item: any) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
+          list = [...list, ...tempChild];
         });
       }
       setCustCatList(list);
@@ -273,8 +287,13 @@ const StepOne: React.FC<any> = (props: any) => {
         list = originCustCatSmList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = custCatList.find((item: any) => item.name == ele);
-          list = [...list, ...temp?.children];
+          let tempChild: any = [];
+          originCustCatList.forEach((item: any) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
+          list = [...list, ...tempChild];
         });
       }
       setCustCatSmList(list);
