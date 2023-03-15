@@ -68,6 +68,7 @@ export default (props: any) => {
       actionRef={actionRef}
       originTableList={originTableList}
       cref={tableRef}
+      activeKey={optimalVersion}
     />
   );
 };

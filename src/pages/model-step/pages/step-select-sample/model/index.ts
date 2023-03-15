@@ -2,6 +2,7 @@ import config from '@/config/index';
 import { message } from 'antd';
 import { useModel } from 'umi';
 import { useState, useRef } from 'react';
+import { unique } from '@/utils';
 
 import {
   getWaitResult,
@@ -45,6 +46,7 @@ export const useStepSelectModel = () => {
   const [custCatList, setCustCatList] = useState<any[]>([]); //客群大类
   const [custCatSmList, setCustCatSmList] = useState<any[]>([]); //客群小类
 
+  const [originProductList, setOriginProductList] = useState<any[]>([]); //产品大类
   const [originChannelMidList, setOriginChannelMidList] = useState<any[]>([]);
   const [originChannelSmList, setOriginChannelSmList] = useState<any[]>([]);
   const [originCustCatList, setOriginCustCatList] = useState<any[]>([]);
@@ -117,7 +119,9 @@ export const useStepSelectModel = () => {
         name: '全部',
         children: [],
       });
-      setProductList(data);
+      setProductList(unique(data, 'name'));
+      setOriginProductList(data);
+
       let channelMidTemp: any[] = []; //渠道中类
       let channelSmTemp: any[] = []; //渠道小类
       let custCatTemp: any[] = []; //客群大类
@@ -163,10 +167,10 @@ export const useStepSelectModel = () => {
       setOriginCustCatList(custCatTemp);
       setOriginCustCatSmList(custCatSmTemp);
 
-      setChannelMidList(channelMidTemp);
-      setChannelSmList(channelSmTemp);
-      setCustCatList(custCatTemp);
-      setCustCatSmList(custCatSmTemp);
+      setChannelMidList(unique(channelMidTemp, 'name'));
+      setChannelSmList(unique(channelSmTemp, 'name'));
+      setCustCatList(unique(custCatTemp, 'name'));
+      setCustCatSmList(unique(custCatSmTemp, 'name'));
     }
     return true;
   };
@@ -224,6 +228,7 @@ export const useStepSelectModel = () => {
     custCatSmList,
     setCustCatSmList,
 
+    originProductList,
     originChannelMidList,
     originChannelSmList,
     originCustCatList,

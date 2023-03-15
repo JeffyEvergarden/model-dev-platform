@@ -417,7 +417,7 @@ const getInputVariableApi = (req: any, res: any) => {
 };
 
 const getModelScoreCalcLogic = (req: any, res: any) => {
-  let list = new Array(21).fill(1).map((item: any, index: any) => {
+  let list = new Array(11).fill(1).map((item: any, index: any) => {
     return {
       variable: `变量名称${index}`,
       variableName: `变量中文名${index}`,
