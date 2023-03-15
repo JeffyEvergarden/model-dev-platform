@@ -18,3 +18,9 @@ export const changeData = (data: any, field: any) => {
   }
   return data;
 };
+
+//去重
+export const unique = (arr: any, uniId: any) => {
+  const res = new Map();
+  return arr.filter((item: any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+};

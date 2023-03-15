@@ -186,7 +186,7 @@ const getParams = (req: any, res: any) => {
         {
           id: 11,
           parentId: 0,
-          name: '产品大类2',
+          name: '产品大类1',
           children: [
             {
               id: 12,
@@ -205,6 +205,11 @@ const getParams = (req: any, res: any) => {
                       children: [
                         {
                           id: 15,
+                          parentId: 14,
+                          name: '客群小类2',
+                        },
+                        {
+                          id: 16,
                           parentId: 14,
                           name: '客群小类2',
                         },
