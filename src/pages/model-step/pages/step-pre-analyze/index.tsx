@@ -157,6 +157,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     getConditionList,
     getYaerMonthRequest,
     getProdChannelList,
+    originProductList,
     originChannelMidList,
     originChannelSmList,
     originCustCatList,
@@ -210,14 +211,18 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         }
       } else {
         val?.map((ele: any) => {
-          let temp: any = productList?.find((item: any) => item.name == ele);
-          let tempChild: any[] = temp?.children ? temp?.children : [];
+          // let temp: any = productList?.find((item: any) => item.name == ele);
+          let tempChild: any = [];
+          originProductList.forEach((item) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
           list = [...list, ...tempChild];
         });
       }
       obj.prodCat = val;
       console.log(list);
-
       setChannelMidList(list);
       setChannelSmList([]);
       setCustCatList([]);
@@ -248,9 +253,15 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       if (val?.includes('全部')) {
         list = originChannelSmList;
       } else {
-        val.forEach((ele: any) => {
-          let temp: any = channelMidList.find((item: any) => item.name == ele);
-          list = [...list, ...temp?.children];
+        val?.map((ele: any) => {
+          // let temp: any = channelMidList.find((item: any) => item.name == ele);
+          let tempChild: any = [];
+          originChannelMidList.forEach((item) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
+          list = [...list, ...tempChild];
         });
       }
       obj.channelCatM = val;
@@ -282,8 +293,13 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         list = originCustCatList;
       } else {
         val.forEach((ele: any) => {
-          let temp: any = channelSmList.find((item: any) => item.name == ele);
-          list = [...list, ...temp?.children];
+          let tempChild: any = [];
+          originChannelSmList.forEach((item) => {
+            if (item.name == ele) {
+              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+            }
+          });
+          list = [...list, ...tempChild];
         });
       }
       obj.channelCatS = val;
