@@ -31,7 +31,7 @@ const SubBox: React.FC<any> = (props: any) => {
     number: '数值型',
     string: '字符串型',
     boolean: '布尔型',
-    date: '日期型',
+    datetime: '日期型',
   };
 
   const getTableList = async () => {

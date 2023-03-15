@@ -30,6 +30,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     modelId: model.modelId,
   }));
   const tbFilter = (dataIndex: any) => {
+    let arr = ['trainIv', 'validIv', 'validPsi'];
     return {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }: any) => (
         <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
@@ -72,7 +73,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               placeholder={'衡量值'}
               value={selectedKeys[1]}
               style={{ marginBottom: 8, flex: 1 }}
-              precision={2}
+              precision={arr.includes(dataIndex) ? 4 : 2}
               onChange={(val) => {
                 setSelectedKeys([selectedKeys[0], val]);
                 setSearchText([searchText[0], val]);
@@ -154,7 +155,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       render: (v: any, r: any) => {
         let obj = {
           number: '数值',
-          date: '日期',
+          datetime: '日期',
           string: '字符',
           boolean: '布尔',
         };

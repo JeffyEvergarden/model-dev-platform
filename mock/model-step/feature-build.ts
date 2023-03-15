@@ -10,7 +10,7 @@ const getLostList = (req: any, res: any) => {
       1: 'number',
       2: 'string',
       3: 'boolean',
-      4: 'date',
+      4: 'datetime',
     };
     return {
       variable: '变量名称' + index,
@@ -89,14 +89,15 @@ const getVariableListForBinning = (req: any, res: any) => {
     1: 'number',
     2: 'string',
     3: 'boolean',
-    4: 'date',
+    4: 'datetime',
   };
 
   let list = new Array(11).fill(1).map((item: any, index: number) => {
     return {
       variable: 'name' + index,
       variableName: '中文name' + index,
-      variableType: obj[Math.ceil(Math.random() * 4)],
+      // variableType: obj[Math.ceil(Math.random() * 4)],
+      variableType: obj[index],
       binning: [
         {
           boxGroup: '(-inf,0)',

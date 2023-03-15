@@ -32,11 +32,13 @@ export default (props: any) => {
   const [page, setPage] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
   const [tableData, setTableData] = useState<any>([]);
+  const [filterList, setFilterList] = useState<any>({}); //筛选
+  const [filterTotal, setFilterTotal] = useState<any>(0); //筛选total
   const varType: any = {
     number: '数值型',
     string: '字符串型',
     boolean: '布尔型',
-    date: '日期型',
+    datetime: '日期型',
   };
 
   const onCheckAllChange = (e: any) => {
@@ -66,16 +68,33 @@ export default (props: any) => {
     // }
   }, [originTableList]);
 
-  const resetTable = () => {
-    let list = originTableList.filter((item: any, index: any) => {
+  const resetTable = (a?: any, filter?: any, c?: any) => {
+    console.log(a, filter, c);
+    let list = originTableList || [];
+    console.log(list);
+
+    if (filter?.variableType?.length) {
+      setFilterList(filter);
+      list = list.filter((item: any) =>
+        filter?.variableType?.includes(varType[item?.variableType]),
+      );
+      console.log(list);
+      setFilterTotal(list?.length);
+    }
+
+    list = list.filter((item: any, index: any) => {
       return index >= (page - 1) * pageSize && index < page * pageSize;
     });
-
-    if (pageType == 'compareAndReport') {
-      setTableData(togetherDataComRe(list));
-    } else {
-      setTableData(togetherData(list));
-    }
+    console.log(list);
+    setTableData([]);
+    console.log(togetherData(list));
+    setTimeout(() => {
+      if (pageType == 'compareAndReport') {
+        setTableData(togetherDataComRe(list));
+      } else {
+        setTableData(togetherData(list));
+      }
+    }, 100);
   };
 
   const togetherDataComRe = (data: any) => {
@@ -214,10 +233,10 @@ export default (props: any) => {
           },
         };
       },
-      onFilter: (a: any, b: any) => {
-        console.log(a, b);
-        return b?.variableType == a;
-      },
+      // onFilter: (a: any, b: any) => {
+      //   // console.log(a, b);
+      //   return b?.variableType == a;
+      // },
     },
     {
       title: '分箱',
@@ -391,10 +410,22 @@ export default (props: any) => {
         message.error(res?.status?.desc || '异常');
       }
     } else {
+      let list = originTableList || [];
+      let filter: any = filterList;
+      console.log(list);
+
+      if (filter?.variableType?.length) {
+        setFilterList(filter);
+        list = list.filter((item: any) =>
+          filter?.variableType?.includes(varType[item?.variableType]),
+        );
+        console.log(list);
+        setFilterTotal(list?.length);
+      }
       setTableData([]);
       setPage(page);
       setPageSize(size);
-      let list = originTableList.filter((item: any, index: any) => {
+      list = originTableList.filter((item: any, index: any) => {
         return index < page * size && index >= (page - 1) * size;
       });
       console.log(list);
@@ -451,7 +482,7 @@ export default (props: any) => {
           style={{ float: 'right', marginTop: '12px' }}
           size={'small'}
           showSizeChanger
-          total={originTableList?.length || 0}
+          total={filterTotal || originTableList?.length || 0}
           current={page}
           pageSize={pageSize}
           showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
