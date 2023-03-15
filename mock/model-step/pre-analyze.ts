@@ -259,11 +259,12 @@ const backshow = (req: any, res: any) => {
     },
     result: {
       defaultSelection: {
-        prodCat: '全部',
-        channelCatM: '全部',
-        channelCatS: '全部',
-        custCatL: '全部',
+        // prodCat: '全部',
+        // channelCatM: '全部',
+        // channelCatS: '全部',
+        // custCatL: '全部',
         dimension: '进件层',
+        index: 'xxx',
       },
     },
   });

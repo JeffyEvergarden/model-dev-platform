@@ -18,6 +18,7 @@ export default (props: any) => {
     actionRef,
     activeKey,
     originTableList = [],
+    loading,
   } = props;
 
   const { modelId } = useModel('step', (model: any) => ({
@@ -48,7 +49,7 @@ export default (props: any) => {
       let arr = originTableList?.map((item: any) => {
         return item?.variable;
       });
-      console.log(arr);
+      // console.log(arr);
       setSelectList(arr);
       setSelectAll(true);
     } else {
@@ -62,6 +63,7 @@ export default (props: any) => {
     let arr = originTableList.map((item: any) => {
       return item.variable;
     });
+    setFilterList(null);
     resetTable();
     setSelectList(arr);
     setSelectAll(true);
@@ -71,23 +73,20 @@ export default (props: any) => {
   const resetTable = (a?: any, filter?: any, c?: any) => {
     console.log(a, filter, c);
     let list = originTableList || [];
-    console.log(list);
 
-    if (filter?.variableType?.length) {
+    if (filter?.variableType?.length || filterList?.variableType?.length) {
+      let obj = filter?.variableType?.length
+        ? filter?.variableType
+        : filterList?.variableType || [];
       setFilterList(filter);
-      list = list.filter((item: any) =>
-        filter?.variableType?.includes(varType[item?.variableType]),
-      );
-      console.log(list);
+      list = list.filter((item: any) => obj?.includes(varType[item?.variableType]));
       setFilterTotal(list?.length);
     }
 
     list = list.filter((item: any, index: any) => {
       return index >= (page - 1) * pageSize && index < page * pageSize;
     });
-    console.log(list);
     setTableData([]);
-    console.log(togetherData(list));
     setTimeout(() => {
       if (pageType == 'compareAndReport') {
         setTableData(togetherDataComRe(list));
@@ -225,6 +224,8 @@ export default (props: any) => {
           value: '日期型',
         },
       ],
+      onFilter: true,
+      filteredValue: filterList?.['variableType'],
       render: (t: any, r: any, i: any) => {
         return {
           children: <span className={styles.cellSty}>{r?.variableType}</span>,
@@ -471,7 +472,7 @@ export default (props: any) => {
         search={false}
         columns={columnsScoreCard}
         dataSource={tableData}
-
+        loading={loading}
         // request={async (params = {}, sort, filter) => {
         //   return requestMethod({ ...params, sort, filter });
         // }}

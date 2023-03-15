@@ -449,37 +449,33 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getdefValue();
-
-    getConditionList();
+    getSubmitValue();
+    // getConditionList();
     getYaerMonth();
   }, []);
 
   const getdefValue = async () => {
     //回显默认
-    await getProdChannelList({ itmModelRegisCode: modelId })
-      .then(async (res) => {
-        if (res?.status?.code == successCode) {
-          await getparams({ businessType: 'SX' });
-          let obj = { ...res?.result?.defaultSelection };
-          Object?.keys(obj).forEach((item) => {
-            if (!(obj[item] && obj[item]?.length)) {
-              delete obj[item];
-            }
-          });
-          console.log(obj);
+    await getProdChannelList({ itmModelRegisCode: modelId }).then(async (res) => {
+      if (res?.status?.code == successCode) {
+        await getparams({ businessType: 'SX' });
+        let obj = { ...res?.result?.defaultSelection };
+        Object?.keys(obj).forEach((item) => {
+          if (!(obj[item] && obj[item]?.length)) {
+            delete obj[item];
+          }
+        });
+        console.log(obj);
 
-          formRef?.current?.setFieldsValue({
-            ...obj,
-            channelCatM: obj['channelCatM'].split(','),
-            channelCatS: obj['channelCatS'].split(','),
-            custCatL: obj['custCatL'].split(','),
-            prodCat: obj['prodCat'].split(','),
-          });
-        }
-      })
-      .then(() => {
-        getSubmitValue();
-      });
+        formRef?.current?.setFieldsValue({
+          ...obj,
+          channelCatM: obj?.['channelCatM']?.split(','),
+          channelCatS: obj?.['channelCatS']?.split(','),
+          custCatL: obj?.['custCatL']?.split(','),
+          prodCat: obj?.['prodCat']?.split(','),
+        });
+      }
+    });
   };
 
   const getSubmitValue = async () => {

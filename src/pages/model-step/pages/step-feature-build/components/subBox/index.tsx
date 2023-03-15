@@ -20,6 +20,7 @@ const SubBox: React.FC<any> = (props: any) => {
   const tableRef = useRef<any>();
   const [tableList, setTableList] = useState<any>([]);
   const [originTableList, setOriginTableList] = useState<any>([]);
+  const [loading, setLoading] = useState<any>(false);
   // const [boxList, setBoxList] = useState<any>([]);
   const [selectValue, setSelectValue] = useState<any>();
 
@@ -52,7 +53,9 @@ const SubBox: React.FC<any> = (props: any) => {
     };
     let data: any = [];
     let total: any = 0;
+    setLoading(true);
     await getVariableListForBinning(reqData).then((res) => {
+      setLoading(false);
       console.log(res?.result);
       data = res?.result || [];
       total = data?.length;
@@ -182,6 +185,7 @@ const SubBox: React.FC<any> = (props: any) => {
           // requestMethod={getTableList}
           // dataSource={tableList}
           originTableList={originTableList}
+          loading={loading}
         />
       </div>
     </div>
