@@ -204,13 +204,6 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       ...tbFilter('validIv'),
     },
     {
-      title: 'PSI_train',
-      dataIndex: 'trainPsi',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.trainPsi) - parseFloat(b.trainPsi),
-      ...tbFilter('trainPsi'),
-    },
-    {
       title: 'PSI_valid',
       dataIndex: 'validPsi',
       width: 200,
