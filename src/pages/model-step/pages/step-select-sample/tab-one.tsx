@@ -499,7 +499,7 @@ const StepOne: React.FC<any> = (props: any) => {
                 >
                   {processList.map((item: any, index: number) => {
                     return (
-                      <Option value={item.name} key={item.value}>
+                      <Option value={item.name} key={item.index}>
                         {item.name}
                       </Option>
                     );
