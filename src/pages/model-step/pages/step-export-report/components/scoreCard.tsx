@@ -32,6 +32,7 @@ export default (props: any) => {
     };
     let res = await scoreCardListReuqest(params);
     setOriginTableList(res?.result?.tableData);
+    tableRef?.current?.setTotal(res?.result?.totalSize);
     // return {
     //   data: resultData || [],
     //   total: res?.result?.totalSize || 0,

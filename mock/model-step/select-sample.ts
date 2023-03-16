@@ -191,12 +191,12 @@ const getParams = (req: any, res: any) => {
             {
               id: 332,
               parentId: 1,
-              name: '渠道中类3',
+              name: '渠道中类1',
               children: [
                 {
                   id: 322,
                   parentId: 2,
-                  name: '渠道小类1',
+                  name: '渠道小类11',
                   children: [
                     {
                       id: 433,
