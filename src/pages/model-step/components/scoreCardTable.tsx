@@ -408,7 +408,7 @@ export default (props: any) => {
       if (res?.status?.code == successCode) {
         setPage(page);
         setPageSize(size);
-        setTableData([...togetherDataComRe(res?.result?.tableData)]);
+        setTableData(togetherDataComRe(res?.result?.tableData));
       } else {
         message.error(res?.status?.desc || '异常');
       }
