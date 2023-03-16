@@ -177,7 +177,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       prodCat: undefined,
       channelCatM: undefined,
       channelCatS: undefined,
-      custCatL: undefined,
+      custCat: undefined,
     });
   };
 
@@ -234,7 +234,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     formRef?.current?.setFieldsValue({
       channelCatM: undefined,
       channelCatS: undefined,
-      custCatL: undefined,
+      custCat: undefined,
       ...obj,
     });
   };
@@ -273,7 +273,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     }
     formRef?.current?.setFieldsValue({
       channelCatS: undefined,
-      custCatL: undefined,
+      custCat: undefined,
       ...obj,
     });
   };
@@ -308,7 +308,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
       setCustCatList([]);
     }
     formRef?.current?.setFieldsValue({
-      custCatL: undefined,
+      custCat: undefined,
       ...obj,
     });
   };
@@ -322,12 +322,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     }
     let obj: any = {};
     if (val.length > 0) {
-      obj.custCatL = val;
+      obj.custCat = val;
     }
     formRef?.current?.setFieldsValue({
       ...obj,
     });
-    tableRef?.current?.reload();
   };
 
   const _vcolumns = useMemo(
@@ -471,7 +470,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           ...obj,
           channelCatM: obj?.['channelCatM']?.split(','),
           channelCatS: obj?.['channelCatS']?.split(','),
-          custCatL: obj?.['custCatL']?.split(','),
+          custCat: obj?.['custCat']?.split(','),
           prodCat: obj?.['prodCat']?.split(','),
         });
       }
@@ -492,7 +491,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
           preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
           preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
-          preanalysisCondition.custCatL = preanalysisCondition?.custCatL?.split?.(',');
+          preanalysisCondition.custCat = preanalysisCondition?.custCat?.split?.(',');
           //为空去掉不设
           Object?.keys(preanalysisCondition).forEach((item) => {
             if (!(preanalysisCondition[item] && preanalysisCondition[item]?.length)) {
@@ -643,7 +642,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           reqData?.preanalysisCondition?.channelCatM?.join();
         reqData.preanalysisCondition.channelCatS =
           reqData?.preanalysisCondition?.channelCatS?.join();
-        reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
+        reqData.preanalysisCondition.custCat = reqData?.preanalysisCondition?.custCat?.join();
 
         exportExcel(reqData)
           .then((res) => {
@@ -690,7 +689,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           reqData?.preanalysisCondition?.channelCatM?.join();
         reqData.preanalysisCondition.channelCatS =
           reqData?.preanalysisCondition?.channelCatS?.join();
-        reqData.preanalysisCondition.custCatL = reqData?.preanalysisCondition?.custCatL?.join();
+        reqData.preanalysisCondition.custCat = reqData?.preanalysisCondition?.custCat?.join();
 
         console.log(reqData);
         nextFlow(reqData).then(async (res) => {
