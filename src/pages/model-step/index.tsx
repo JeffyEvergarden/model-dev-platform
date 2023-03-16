@@ -86,7 +86,8 @@ const Myjob: React.FC<any> = (props: any) => {
       setDoneStepStatus(_status);
       // 进行页面跳转
       setPageLoad(true);
-      goToUrl(codeToName(_index), _modelId || modelId);
+      setTimeout(() => goToUrl(codeToName(_index), _modelId || modelId), 500);
+
       setCurStep(_index - 1);
       // --------
       setIsHadBuild(res.modelBuildStatus === '1');
@@ -97,7 +98,7 @@ const Myjob: React.FC<any> = (props: any) => {
     } else {
       setDoneStep(1);
       setDoneStepStatus('process');
-      goToUrl('model_overview', _modelId || modelId);
+      setTimeout(() => goToUrl('model_overview', _modelId || modelId), 500);
       setCurStep(0);
       setIsHadBuild(false);
       setIsHadReported(false);
