@@ -75,6 +75,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               value={selectedKeys[1]}
               style={{ marginBottom: 8, flex: 1 }}
               precision={arr.includes(dataIndex) ? 4 : 2}
+              controls={false}
               onChange={(val) => {
                 setSelectedKeys([selectedKeys[0], val]);
                 setSearchText([searchText[0], val]);
@@ -292,7 +293,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           </FormItem>
           <Condition r-if={formData == '自定义'}>
             <FormItem className={style['inputNumber']} name={'numberCustomValue'}>
-              <Input type={'number'} allowClear placeholder="请输入"></Input>
+              <InputNumber placeholder="请输入" controls={false}></InputNumber>
             </FormItem>
           </Condition>
 
@@ -315,7 +316,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           </FormItem>
           <Condition r-if={formData2 == '自定义'}>
             <FormItem className={style['inputNumber']} name={'categoryCustomValue'}>
-              <Input allowClear placeholder="请输入"></Input>
+              <InputNumber placeholder="请输入" controls={false}></InputNumber>
             </FormItem>
           </Condition>
 
@@ -331,7 +332,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
           <Condition r-if={formData3 == '等频分箱' || formData3 == '等距分箱'}>
             <FormItem className={style['inputNumber']} name={'boxinputNumber'}>
-              <Input type={'number'} max={20} allowClear placeholder="分箱个数"></Input>
+              <InputNumber max={20} placeholder="分箱个数" controls={false}></InputNumber>
             </FormItem>
           </Condition>
           <Button type="primary" onClick={searchTable}>
