@@ -218,7 +218,7 @@ export const usePreAnalyzeModel = () => {
       prodCat: params?.prodCat?.join(),
       channelCatM: params?.channelCatM?.join(),
       channelCatS: params?.channelCatS?.join(),
-      custCatL: params?.custCatL?.join(),
+      custCat: params?.custCat?.join(),
     };
     setVLoading(true);
     const res: any = await getPreAnalyzeVintageList(reqData);

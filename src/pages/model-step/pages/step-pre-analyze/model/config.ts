@@ -99,7 +99,7 @@ export const genColumns = (extra: any[], config: any) => {
           config.changeCustCatL(e);
         },
       },
-      dataIndex: 'custCatL',
+      dataIndex: 'custCat',
       valueEnum: {
         ...listToMap(config.custCatList),
       },
