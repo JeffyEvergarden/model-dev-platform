@@ -1,5 +1,6 @@
 import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
+import { ProTable } from '@ant-design/pro-components';
 import { Button, Divider, Form, Input, InputNumber, message, Select, Space, Table } from 'antd';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useModel } from 'umi';
@@ -339,7 +340,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         </div>
       </Form>
       <div className={style['missingTable']}>
-        <Table
+        <ProTable
           pagination={{ showSizeChanger: true }}
           dataSource={tableList}
           columns={columns}
@@ -347,6 +348,9 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           rowKey="variable"
           loading={loading}
           onChange={tableChange}
+          toolBarRender={false}
+          options={false}
+          search={false}
           title={() => (
             <div className={style['title']}>
               <div>
