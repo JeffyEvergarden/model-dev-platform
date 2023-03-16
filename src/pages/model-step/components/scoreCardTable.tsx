@@ -32,6 +32,7 @@ export default (props: any) => {
   const [selectList, setSelectList] = useState<any>([]);
   const [page, setPage] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
+  const [total, setTotal] = useState<any>(0);
   const [tableData, setTableData] = useState<any>([]);
   const [filterList, setFilterList] = useState<any>({}); //筛选
   const [filterTotal, setFilterTotal] = useState<any>(0); //筛选total
@@ -392,6 +393,7 @@ export default (props: any) => {
     setPage,
     pageSize,
     setPageSize,
+    setTotal,
   }));
 
   const pageChange = async (page: any, size: any) => {
@@ -483,7 +485,9 @@ export default (props: any) => {
           style={{ float: 'right', marginTop: '12px' }}
           size={'small'}
           showSizeChanger
-          total={filterTotal || originTableList?.length || 0}
+          total={
+            pageType == 'compareAndReport' ? total : filterTotal || originTableList?.length || 0
+          }
           current={page}
           pageSize={pageSize}
           showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}

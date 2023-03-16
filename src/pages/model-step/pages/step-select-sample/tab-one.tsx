@@ -170,7 +170,7 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = originChannelMidList;
+        list = channelMidList;
       } else {
         val.map((ele: any) => {
           let tempChild: any = [];
@@ -211,7 +211,7 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = originChannelSmList;
+        list = channelSmList;
       } else {
         val.forEach((ele: any) => {
           let tempChild: any = [];
@@ -249,7 +249,7 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = originCustCatList;
+        list = custCatList;
       } else {
         val.forEach((ele: any) => {
           let tempChild: any = [];
@@ -284,7 +284,7 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = originCustCatSmList;
+        list = custCatSmList;
       } else {
         val.forEach((ele: any) => {
           let tempChild: any = [];
