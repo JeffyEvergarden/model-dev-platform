@@ -49,6 +49,13 @@ const SubBox: React.FC<any> = (props: any) => {
       message.warning('请选择分箱方式');
       return;
     }
+
+    if (selectValue == '等频分箱' || selectValue == '等距分箱') {
+      if (!binningNum) {
+        message.warning('请输入分箱个数');
+        return;
+      }
+    }
     let reqData = {
       itmModelRegisCode: modelId,
       binningType: selectValue,

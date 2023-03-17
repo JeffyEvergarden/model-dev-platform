@@ -41,6 +41,7 @@ export default (props: any) => {
     string: '字符串型',
     boolean: '布尔型',
     datetime: '日期型',
+    list: '列表',
   };
 
   const onCheckAllChange = (e: any) => {
@@ -223,6 +224,10 @@ export default (props: any) => {
         {
           text: '日期型',
           value: '日期型',
+        },
+        {
+          text: '列表',
+          value: '列表',
         },
       ],
       onFilter: true,
