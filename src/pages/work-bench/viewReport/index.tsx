@@ -28,8 +28,9 @@ export default () => {
   const [sampleData, setSampleData] = useState<any>([]);
   const [modelResult, setModelResult] = useState<any>({});
 
-  const { modelId } = useModel('step', (model: any) => ({
+  const { modelId, modelName } = useModel('step', (model: any) => ({
     modelId: model.modelId,
+    modelName: model.modelName,
   }));
 
   const onClickBreadcrumb = (route: any) => {
@@ -116,7 +117,7 @@ export default () => {
     <div className={styles.model_report_detail}>
       <PageContainer
         header={{
-          title: '模型名称',
+          title: modelName,
           ghost: true,
           breadcrumb: {
             itemRender: (route: any, params: any, router: any, paths: any[]) => {

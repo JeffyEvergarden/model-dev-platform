@@ -206,11 +206,27 @@ const getModelBuildResult = (req: any, res: any) => {
             //其他验证
             { name: '验证集1', value: '23%' },
             { name: '验证集2', value: '23%' },
+            { name: '验证集1', value: '23%' },
+            { name: '验证集2', value: '23%' },
+            { name: '验证集1', value: '23%' },
+            { name: '验证集1', value: '23%' },
+            { name: '验证集2', value: '23%' },
+            { name: '验证集2', value: '23%' },
           ],
           PSI_train: '0.2685', //训练集PSI指标值
           PSI_valid: '0.2685', //验证集PSI指标值
           otherValidPsiList: [
             //其他验证1PSI指标值
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
+            { name: 'PSI_valid1', value: '23%' },
+            { name: 'PSI_valid2', value: '23%' },
             { name: 'PSI_valid1', value: '23%' },
             { name: 'PSI_valid2', value: '23%' },
           ],
@@ -508,7 +524,15 @@ const getModelStability = (req: any, res: any) => {
     },
     result: {
       rateHeadList: ['训练集占比', '验证集占比', '其他验证1占比', '其他验证2占比'],
-      psiHeadList: ['PSI_valid', 'PSI_valid1', 'PSI_valid2'],
+      psiHeadList: [
+        'PSI_valid',
+        'PSI_valid1',
+        'PSI_valid2',
+        'PSI_valid3',
+        'PSI_valid4',
+        'PSI_valid5',
+        'PSI_valid6',
+      ],
       modelStabilityList: [
         {
           scoreRange: '(0,100)',
@@ -519,6 +543,12 @@ const getModelStability = (req: any, res: any) => {
           PSI_valid: '0.003',
           PSI_valid1: '0.002',
           PSI_valid2: '0.001',
+          PSI_valid3: '0.003',
+          PSI_valid13: '0.002',
+          PSI_valid23: '0.001',
+          PSI_valid33: '0.003',
+          PSI_valid133: '0.002',
+          PSI_valid233: '0.001',
         },
         {
           scoreRange: '(100,200)',
@@ -529,6 +559,12 @@ const getModelStability = (req: any, res: any) => {
           PSI_valid: '0.003',
           PSI_valid1: '0.002',
           PSI_valid2: '0.001',
+          PSI_valid3: '0.003',
+          PSI_valid13: '0.002',
+          PSI_valid23: '0.001',
+          PSI_valid33: '0.003',
+          PSI_valid133: '0.002',
+          PSI_valid233: '0.001',
         },
         {
           scoreRange: '总计',

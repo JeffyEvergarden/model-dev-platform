@@ -445,9 +445,11 @@ export default (props: any) => {
       };
       let res = await scoreCardListReuqest(params);
       if (res?.status?.code == successCode) {
-        setPage(page);
-        setPageSize(size);
-        setTableData(togetherDataComRe(res?.result?.tableData));
+        setTimeout(() => {
+          setPage(page);
+          setPageSize(size);
+          setTableData(togetherDataComRe(res?.result?.tableData));
+        }, 100);
       } else {
         message.error(res?.status?.desc || '异常');
       }

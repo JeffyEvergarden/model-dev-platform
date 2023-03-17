@@ -88,6 +88,7 @@ export default (props: any) => {
         dataIndex: 'scoreRange',
         key: 'scoreRange',
         ellipsis: true,
+        fixed: 'left',
       },
       {
         title: '占比',
@@ -393,7 +394,14 @@ export default (props: any) => {
           search={false}
           columns={getStableColums(modelStabilityList)}
           dataSource={modelStabilityList?.modelStabilityList}
-          scroll={{ y: 500, x: getStableColums(modelStabilityList)?.length * 150 }}
+          scroll={{
+            y: 500,
+            x:
+              (getStableColums(modelStabilityList)?.[1]?.children?.length +
+                getStableColums(modelStabilityList)?.[2]?.children?.length +
+                2) *
+              150,
+          }}
         />
       </div>
       <div className={styles.tableBox}>
