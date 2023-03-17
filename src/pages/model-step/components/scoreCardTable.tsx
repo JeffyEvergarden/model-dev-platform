@@ -65,29 +65,63 @@ export default (props: any) => {
     let arr = originTableList.map((item: any) => {
       return item.variable;
     });
-    setFilterList(null);
-    resetTable();
+    // setFilterList(null);
+    setTimeout(() => {
+      resetTable();
+    }, 100);
     setSelectList(arr);
     setSelectAll(true);
     // }
   }, [originTableList]);
 
-  const resetTable = (a?: any, filter?: any, c?: any) => {
-    console.log(a, filter, c);
+  const resetTable = () => {
+    setPage(1);
+    let page = 1;
     let list = originTableList || [];
+    console.log(filterList);
 
-    if (filter?.variableType?.length || filterList?.variableType?.length) {
-      let obj = filter?.variableType?.length
-        ? filter?.variableType
-        : filterList?.variableType || [];
-      setFilterList(filter);
+    if (filterList?.variableType?.length) {
+      let obj = filterList?.variableType || [];
       list = list.filter((item: any) => obj?.includes(varType[item?.variableType]));
       setFilterTotal(list?.length);
+    } else {
+      setFilterTotal(null);
     }
 
     list = list.filter((item: any, index: any) => {
       return index >= (page - 1) * pageSize && index < page * pageSize;
     });
+    console.log(list);
+
+    setTableData([]);
+    setTimeout(() => {
+      if (pageType == 'compareAndReport') {
+        setTableData(togetherDataComRe(list));
+      } else {
+        setTableData(togetherData(list));
+      }
+    }, 100);
+  };
+
+  const onchange = (a?: any, filter?: any, c?: any) => {
+    setPage(1);
+    let page = 1;
+    console.log(a, filter, c);
+    let list = originTableList || [];
+    setFilterList(filter);
+    if (filter?.variableType?.length) {
+      let obj = filter?.variableType;
+      list = list.filter((item: any) => obj?.includes(varType[item?.variableType]));
+      setFilterTotal(list?.length);
+    } else {
+      setFilterTotal(null);
+    }
+
+    list = list.filter((item: any, index: any) => {
+      return index >= (page - 1) * pageSize && index < page * pageSize;
+    });
+    console.log(list);
+
     setTableData([]);
     setTimeout(() => {
       if (pageType == 'compareAndReport') {
@@ -429,6 +463,8 @@ export default (props: any) => {
         );
         console.log(list);
         setFilterTotal(list?.length);
+      } else {
+        setFilterTotal(null);
       }
       setTableData([]);
       setPage(page);
@@ -467,7 +503,7 @@ export default (props: any) => {
 
       {/* <Condition r-if={pageType != 'compareAndReport'}> */}
       <ProTable
-        onChange={resetTable}
+        onChange={onchange}
         headerTitle={headerTitle}
         rowKey={'variable'}
         toolBarRender={toolBarRender}
@@ -491,7 +527,7 @@ export default (props: any) => {
           size={'small'}
           showSizeChanger
           total={
-            pageType == 'compareAndReport' ? total : filterTotal || originTableList?.length || 0
+            pageType == 'compareAndReport' ? total : filterTotal ?? originTableList?.length ?? 0
           }
           current={page}
           pageSize={pageSize}
