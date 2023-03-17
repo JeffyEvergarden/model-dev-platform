@@ -37,10 +37,10 @@ export default (props: any) => {
   const [filterList, setFilterList] = useState<any>({}); //筛选
   const [filterTotal, setFilterTotal] = useState<any>(0); //筛选total
   const varType: any = {
-    number: '数值型',
-    string: '字符串型',
-    boolean: '布尔型',
-    datetime: '日期型',
+    number: '数值',
+    string: '字符',
+    boolean: '布尔',
+    datetime: '日期',
     list: '列表',
   };
 
@@ -244,20 +244,20 @@ export default (props: any) => {
       hideInTable: pageType == 'compareAndReport',
       filters: [
         {
-          text: '数值型',
-          value: '数值型',
+          text: '数值',
+          value: '数值',
         },
         {
-          text: '字符串型',
-          value: '字符串型',
+          text: '字符',
+          value: '字符',
         },
         {
-          text: '布尔型',
-          value: '布尔型',
+          text: '布尔',
+          value: '布尔',
         },
         {
-          text: '日期型',
-          value: '日期型',
+          text: '日期',
+          value: '日期',
         },
         {
           text: '列表',
@@ -385,14 +385,6 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证KS',
-      dataIndex: 'validKs',
-      hideInTable: pageType == 'compareAndReport',
-      render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.validKs}</span>;
-      },
-    },
-    {
       title: '训练IV',
       dataIndex: 'trainIv',
       hideInTable: pageType == 'compareAndReport',
@@ -401,11 +393,19 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证IV',
-      dataIndex: 'trainIv',
+      title: '验证KS',
+      dataIndex: 'validKs',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.trainIv}</span>;
+        return <span className={styles.cellSty}>{r.validKs}</span>;
+      },
+    },
+    {
+      title: '验证IV',
+      dataIndex: 'validIv',
+      hideInTable: pageType == 'compareAndReport',
+      render: (t: any, r: any, i: any) => {
+        return <span className={styles.cellSty}>{r.validIv}</span>;
       },
     },
     // {

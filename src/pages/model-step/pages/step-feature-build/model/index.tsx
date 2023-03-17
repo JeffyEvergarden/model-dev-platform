@@ -42,9 +42,6 @@ export const useExportReportModel = () => {
     // 策略分析
     if (res?.status?.code === successCode) {
       let data: any[] = res?.result || [];
-      if (type) {
-        data = data.filter((item) => item?.variableType == type);
-      }
 
       setVarList(data);
       setVarTotal(data?.length || 0);

@@ -31,7 +31,7 @@ const rebuild = (req: any, res: any) => {
       varBoxNum: 10,
       minSampleRate: '0.1',
       emptySeparate: '1',
-      variableNames: [
+      variableList: [
         { variable: 1, variableName: '变量1' },
         { variable: 2, variableName: '变量2' },
       ],

@@ -52,6 +52,7 @@ const getVarList = (req: any, res: any) => {
       variable: index,
       variableName: '阿斯拉大撒大大打啥接口22' + index,
       variableType: Math.floor(Math.random() * 10),
+      tick: Math.random() * 100 > 50 ? true : false,
     };
   });
 
