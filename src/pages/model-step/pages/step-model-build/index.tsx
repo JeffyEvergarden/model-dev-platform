@@ -92,7 +92,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     if (res?.status?.code == successCode) {
       setLoading(false);
       form.setFieldsValue(res.result);
-      let temp: any[] = res.result?.variableNames?.split(',');
+      let temp: any[] = res.result?.variableNames;
       setRulist(temp);
     } else {
       setLoading(false);
@@ -116,25 +116,29 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     }
   };
 
-  const handleClose = (entityValueName: any) => {
+  const handleClose = (variable: any) => {
     if (ruleList?.length == 1) {
       message.info('变量不能为空');
       return;
     }
     let temp = JSON.parse(JSON.stringify(ruleList));
-    const tags = temp.filter((item: any) => item !== entityValueName);
+    const tags = temp.filter((item: any) => item?.variable !== variable);
     setRulist(tags);
   };
 
   const beginBuild = async () => {
     let formVal = await form.validateFields();
     setLoading(true);
-    let variableNames = ruleList?.join(',');
+    let variables: any = [];
+    ruleList?.map((item: any) => {
+      variables.push(item?.variable);
+    });
+    variables = variables?.join(',');
     let params = {
       itmModelRegisCode: modelId,
       ...formVal,
     };
-    params.variableNames = variableNames;
+    params.variables = variables;
     let res = await beginBuildModel(params);
     if (res.status?.code === successCode) {
       setLoading(false);
@@ -154,9 +158,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
   const rebuild = async () => {
     let params = {
       itmModelRegisCode: modelId,
+      stage: '8',
     };
     setLoading(true);
-    let res = await rebuildModel(params);
+    let res = await getModelStepDetail(params);
     if (res.status?.code === successCode) {
       setLoading(false);
       setStepType(1);
@@ -165,7 +170,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       }
       // setDoneStep(8)
       form.setFieldsValue(res.result);
-      let temp: any[] = res.result?.variableNames?.split(',');
+      let temp: any[] = res.result?.variableNames;
       setRulist(temp);
     } else {
       setLoading(false);
@@ -319,10 +324,10 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                         key={index}
                         onClose={(e) => {
                           e.preventDefault();
-                          handleClose(item);
+                          handleClose(item?.variable);
                         }}
                       >
-                        <span>{item}</span>
+                        <span>{item?.variableName}</span>
                       </Tag>
                     );
                   })}
