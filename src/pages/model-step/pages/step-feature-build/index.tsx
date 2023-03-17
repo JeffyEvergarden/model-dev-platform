@@ -45,10 +45,12 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     };
     setLoading(true);
     await nextProcess(reqData).then((res) => {
+      setLoading(false);
       if (res?.status?.code == successCode) {
         nextStep();
+      } else {
+        message.error(res?.status?.desc || '');
       }
-      setLoading(false);
     });
   };
 
