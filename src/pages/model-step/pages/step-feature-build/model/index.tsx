@@ -6,6 +6,7 @@ import {
   getVariableMetricsListForBinning,
   getVariableTypeList,
 } from './api';
+import { message } from 'antd';
 
 const successCode = config.successCode;
 
@@ -22,13 +23,14 @@ export const useExportReportModel = () => {
     setLoading(true);
     const res: any = await getFillFeatureMetrics(params);
     setLoading(false);
-    const { code, desc } = res?.status;
 
     // 策略分析
-    if (code === successCode) {
+    if (res?.status?.code === successCode) {
       let data: any[] = res?.result?.variableList || [];
       setTableInfo(res?.result || {});
       setTableList(data);
+    } else {
+      message.error(res?.status?.desc);
     }
   };
 
@@ -46,6 +48,8 @@ export const useExportReportModel = () => {
 
       setVarList(data);
       setVarTotal(data?.length || 0);
+    } else {
+      message.error(res?.status?.desc);
     }
   };
 
@@ -55,6 +59,8 @@ export const useExportReportModel = () => {
     if (res?.status?.code === successCode) {
       let data: any[] = res?.result || [];
       setVarTypeList(data);
+    } else {
+      message.error(res?.status?.desc);
     }
   };
 

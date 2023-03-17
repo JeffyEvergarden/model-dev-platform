@@ -14,7 +14,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   const [form] = Form.useForm();
   const formData = Form.useWatch('numberFillType', form);
   const formData2 = Form.useWatch('categoryFillType', form);
-  const formData3 = Form.useWatch('boxFillType', form);
+  const formData3 = Form.useWatch('binningType', form);
   const { Item: FormItem, List: FormList } = Form;
   const { Option } = Select;
 
@@ -332,7 +332,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           <FormItem
             label={'分箱方式'}
             className={style['formItem']}
-            name={'boxFillType'}
+            name={'binningType'}
             rules={[{ required: true, message: '请选择' }]}
           >
             <Select placeholder={'请选择分箱方式'} allowClear>
@@ -347,7 +347,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           <Condition r-if={formData3 == '等频分箱' || formData3 == '等距分箱'}>
             <FormItem
               className={style['inputNumber']}
-              name={'boxinputNumber'}
+              name={'binningNumber'}
               rules={[{ required: true, message: '请选择' }]}
             >
               <InputNumber max={20} placeholder="分箱个数" controls={false}></InputNumber>
