@@ -9,12 +9,13 @@ const VarCardList: React.FC<any> = (props: any) => {
   const { cref, selectVar } = props;
   const { Option } = Select;
   const { Meta } = Card;
-  const [varType, setVarType] = useState<any>('');
+  const [varType, setVarType] = useState<any>('all');
   const { loading, varList, varTypeList, getVarTypeList, varTotal, getVarCardList } =
     useExportReportModel();
   const [page, setPage] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(50);
   const [selectList, setSelectList] = useState<any>([]);
+  const [filterList, setFilterList] = useState<any>([]);
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -24,9 +25,32 @@ const VarCardList: React.FC<any> = (props: any) => {
     getVarTypeList({ itmModelRegisCode: modelId });
   }, []);
 
+  const varTypeChange = (val: any) => {
+    setPage(1);
+    setVarType(val);
+    if (val != 'all') {
+      let data = varList;
+      data = data.filter((item) => item?.variableType == val);
+      setFilterList(data);
+    } else {
+      setFilterList(varList);
+    }
+  };
   useEffect(() => {
     selectVar();
-  }, [varType]);
+  }, []);
+
+  useEffect(() => {
+    setVarType('all');
+    setFilterList(varList);
+    let arr: any = [];
+    varList?.map((item) => {
+      if (item?.tick) {
+        arr.push(item?.variableType);
+      }
+    });
+    setSelectList(arr);
+  }, [varList]);
 
   useImperativeHandle(cref, () => ({
     getVarList: getList,
@@ -53,8 +77,8 @@ const VarCardList: React.FC<any> = (props: any) => {
         title={
           <div>
             <span style={{ marginRight: '6px' }}>变量类别：</span>
-            <Select onChange={setVarType} style={{ width: '150px' }} defaultValue={''}>
-              <Option key={'all'} value={''}>
+            <Select onChange={varTypeChange} style={{ width: '150px' }} value={varType}>
+              <Option key={'all'} value={'all'}>
                 全部类别
               </Option>
               {varTypeList?.map((item) => (
@@ -68,13 +92,14 @@ const VarCardList: React.FC<any> = (props: any) => {
       >
         <Checkbox.Group
           style={{ width: '100%' }}
+          value={selectList}
           onChange={(val) => {
             console.log(val);
             setSelectList(val);
           }}
         >
           <div className={style['varSelectList']}>
-            {varList?.map?.((item: any, index: any) => {
+            {filterList?.map?.((item: any, index: any) => {
               // if (index >= (page - 1) * pageSize && index < page * pageSize) {
               //分页
               return (
@@ -87,6 +112,7 @@ const VarCardList: React.FC<any> = (props: any) => {
                       index >= (page - 1) * pageSize && index < page * pageSize ? 'block' : 'none',
                     overflow: 'hidden',
                   }}
+                  key={index}
                 >
                   <Checkbox value={item?.variable} className={style['checkBoxText']}>
                     <Tooltip placement="topLeft" title={item?.variableName}>

@@ -55,7 +55,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const [limitTimeData, setLimitTimeData] = useState<any>(['全部']);
   const [stepType, setStepType] = useState<any>(1);
 
-  const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2']);
+  const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2', 'M3', 'M4']);
   const [tableType, setTableType] = useState<any>(true);
 
   const rate = document.body.clientWidth / 1920;
@@ -564,6 +564,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           key: 'm2',
           label: 'M2',
         },
+        {
+          key: 'm3',
+          label: 'M3',
+        },
+        {
+          key: 'm4',
+          label: 'M4',
+        },
       ];
       columns = columns?.map?.((item: any) => {
         return {
@@ -589,6 +597,14 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
                   {
                     text: 'M2',
                     value: 'M2',
+                  },
+                  {
+                    text: 'M3',
+                    value: 'M3',
+                  },
+                  {
+                    text: 'M4',
+                    value: 'M4',
                   },
                 ]
               : null,

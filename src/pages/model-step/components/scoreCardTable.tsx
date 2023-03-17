@@ -385,14 +385,6 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证KS',
-      dataIndex: 'validKs',
-      hideInTable: pageType == 'compareAndReport',
-      render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.validKs}</span>;
-      },
-    },
-    {
       title: '训练IV',
       dataIndex: 'trainIv',
       hideInTable: pageType == 'compareAndReport',
@@ -401,11 +393,19 @@ export default (props: any) => {
       },
     },
     {
-      title: '验证IV',
-      dataIndex: 'trainIv',
+      title: '验证KS',
+      dataIndex: 'validKs',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.trainIv}</span>;
+        return <span className={styles.cellSty}>{r.validKs}</span>;
+      },
+    },
+    {
+      title: '验证IV',
+      dataIndex: 'validIv',
+      hideInTable: pageType == 'compareAndReport',
+      render: (t: any, r: any, i: any) => {
+        return <span className={styles.cellSty}>{r.validIv}</span>;
       },
     },
     // {
