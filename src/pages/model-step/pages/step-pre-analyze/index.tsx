@@ -58,6 +58,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
   const [rateFilter, setRateFilter] = useState<any[]>(['M0', 'M1', 'M2', 'M3', 'M4']);
   const [tableType, setTableType] = useState<any>(true);
 
+  const [backData, setBackData] = useState<any>({});
+
   const rate = document.body.clientWidth / 1920;
   const [base, setBase] = useState<number>(rate);
 
@@ -486,6 +488,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           // itmModelRegisCode: modelId,
           // customerDefinition: value,
           //   ...formData,
+          setBackData(data);
 
           let preanalysisCondition = data?.preanalysisCondition || {};
           preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
@@ -828,7 +831,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         )}
         {pageType == 'viewReport' && (
           <Descriptions bordered column={2}>
-            <Descriptions.Item label="VINTAGE分析结论">{}</Descriptions.Item>
+            <Descriptions.Item label="VINTAGE分析结论">
+              {backData?.vintageConclusion}
+            </Descriptions.Item>
           </Descriptions>
         )}
         <Divider />
@@ -893,7 +898,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         )}
         {pageType == 'viewReport' && (
           <Descriptions bordered column={2}>
-            <Descriptions.Item label="滚动率分析结论">{}</Descriptions.Item>
+            <Descriptions.Item label="滚动率分析结论">
+              {backData?.rollRateConclusion}
+            </Descriptions.Item>
           </Descriptions>
         )}
       </Condition>
