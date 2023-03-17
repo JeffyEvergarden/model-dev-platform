@@ -21,7 +21,7 @@ const VarCardList: React.FC<any> = (props: any) => {
   }));
 
   useEffect(() => {
-    getVarTypeList();
+    getVarTypeList({ itmModelRegisCode: modelId });
   }, []);
 
   useEffect(() => {

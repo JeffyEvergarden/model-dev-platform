@@ -160,6 +160,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           datetime: '日期',
           string: '字符',
           boolean: '布尔',
+          list: '列表',
         };
         return obj[v];
       },
@@ -292,7 +293,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={formData == '自定义'}>
-            <FormItem className={style['inputNumber']} name={'numberCustomValue'}>
+            <FormItem
+              className={style['inputNumber']}
+              name={'numberCustomValue'}
+              rules={[{ required: true, message: '请选择' }]}
+            >
               <InputNumber placeholder="请输入" controls={false}></InputNumber>
             </FormItem>
           </Condition>
@@ -315,12 +320,21 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
             </Select>
           </FormItem>
           <Condition r-if={formData2 == '自定义'}>
-            <FormItem className={style['inputNumber']} name={'categoryCustomValue'}>
-              <InputNumber placeholder="请输入" controls={false}></InputNumber>
+            <FormItem
+              className={style['inputNumber']}
+              name={'categoryCustomValue'}
+              rules={[{ required: true, message: '请选择' }]}
+            >
+              <Input placeholder="请输入"></Input>
             </FormItem>
           </Condition>
 
-          <FormItem label={'分箱方式'} className={style['formItem']} name={'boxFillType'}>
+          <FormItem
+            label={'分箱方式'}
+            className={style['formItem']}
+            name={'boxFillType'}
+            rules={[{ required: true, message: '请选择' }]}
+          >
             <Select placeholder={'请选择分箱方式'} allowClear>
               {boxList?.map((item) => (
                 <Option key={item.label} value={item.label}>
@@ -331,7 +345,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           </FormItem>
 
           <Condition r-if={formData3 == '等频分箱' || formData3 == '等距分箱'}>
-            <FormItem className={style['inputNumber']} name={'boxinputNumber'}>
+            <FormItem
+              className={style['inputNumber']}
+              name={'boxinputNumber'}
+              rules={[{ required: true, message: '请选择' }]}
+            >
               <InputNumber max={20} placeholder="分箱个数" controls={false}></InputNumber>
             </FormItem>
           </Condition>
