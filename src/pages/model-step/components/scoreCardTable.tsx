@@ -408,16 +408,16 @@ export default (props: any) => {
         return <span className={styles.cellSty}>{r.trainIv}</span>;
       },
     },
+    // {
+    //   title: '训练PSI',
+    //   dataIndex: 'validIv',
+    //   hideInTable: pageType == 'compareAndReport',
+    //   render: (t: any, r: any, i: any) => {
+    //     return <span className={styles.cellSty}>{r.validIv}</span>;
+    //   },
+    // },
     {
-      title: '训练PSI',
-      dataIndex: 'validIv',
-      hideInTable: pageType == 'compareAndReport',
-      render: (t: any, r: any, i: any) => {
-        return <span className={styles.cellSty}>{r.validIv}</span>;
-      },
-    },
-    {
-      title: '验证PSI',
+      title: 'PSI',
       dataIndex: 'validPsi',
       hideInTable: pageType == 'compareAndReport',
       render: (t: any, r: any, i: any) => {
