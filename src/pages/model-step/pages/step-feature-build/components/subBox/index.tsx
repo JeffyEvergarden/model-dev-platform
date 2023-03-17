@@ -1,5 +1,5 @@
 import { DownloadOutlined } from '@ant-design/icons';
-import { Button, message, Progress, Select, Table } from 'antd';
+import { Button, InputNumber, message, Progress, Select, Table } from 'antd';
 import { boxList } from '../../config';
 import style from './style.less';
 import styles from '../../../style.less';
@@ -12,6 +12,7 @@ import ScoreCardTable from '@/pages/model-step/components/scoreCardTable';
 import { boxExport, getVariableBoxTypeList, getVariableListForBinning } from '../../model/api';
 import { useModel } from 'umi';
 import config from '@/config/index';
+import Condition from '@/components/Condition';
 
 const SubBox: React.FC<any> = (props: any) => {
   const { cref, varRef } = props;
@@ -23,6 +24,7 @@ const SubBox: React.FC<any> = (props: any) => {
   const [loading, setLoading] = useState<any>(false);
   // const [boxList, setBoxList] = useState<any>([]);
   const [selectValue, setSelectValue] = useState<any>();
+  const [binningNum, setBinningNum] = useState<any>();
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -47,9 +49,17 @@ const SubBox: React.FC<any> = (props: any) => {
       message.warning('请选择分箱方式');
       return;
     }
+
+    if (selectValue == '等频分箱' || selectValue == '等距分箱') {
+      if (!binningNum) {
+        message.warning('请输入分箱个数');
+        return;
+      }
+    }
     let reqData = {
       itmModelRegisCode: modelId,
       binningType: selectValue,
+      binningNumber: binningNum,
       selectedVariables: varRef?.current?.selectList?.join(),
     };
     let data: any = [];
@@ -154,6 +164,16 @@ const SubBox: React.FC<any> = (props: any) => {
             </Option>
           ))}
         </Select>
+        <Condition r-if={selectValue == '等频分箱' || selectValue == '等距分箱'}>
+          <InputNumber
+            style={{ marginRight: '16px' }}
+            onChange={setBinningNum}
+            max={20}
+            placeholder="分箱个数"
+            controls={false}
+            value={binningNum}
+          ></InputNumber>
+        </Condition>
         <Button
           type="primary"
           onClick={() => {
