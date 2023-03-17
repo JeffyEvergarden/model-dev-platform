@@ -166,8 +166,8 @@ export const useStepSelectModel = () => {
       setOriginChannelSmList(channelSmTemp);
       setOriginCustCatList(custCatTemp);
       setOriginCustCatSmList(custCatSmTemp);
-
       setChannelMidList(unique(channelMidTemp, 'name'));
+
       setChannelSmList(unique(channelSmTemp, 'name'));
       setCustCatList(unique(custCatTemp, 'name'));
       setCustCatSmList(unique(custCatSmTemp, 'name'));

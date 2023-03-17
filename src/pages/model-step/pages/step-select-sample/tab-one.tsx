@@ -171,7 +171,16 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = channelMidList;
+        let tempChild: any = [
+          {
+            name: '全部',
+            label: '全部',
+          },
+        ];
+        originProductList.forEach((item: any) => {
+          tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+        });
+        list = unique([...list, ...tempChild], 'name');
       } else {
         val.map((ele: any) => {
           let tempChild: any = [];
@@ -180,10 +189,10 @@ const StepOne: React.FC<any> = (props: any) => {
               tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
             }
           });
-          list = [...list, ...tempChild];
+          list = unique([...list, ...tempChild], 'name');
         });
       }
-      setChannelMidList(unique(list, 'name'));
+      setChannelMidList(list);
       setChannelSmList([]);
       setCustCatList([]);
       setCustCatSmList([]);
@@ -212,7 +221,16 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = channelSmList;
+        let tempChild: any = [
+          {
+            name: '全部',
+            label: '全部',
+          },
+        ];
+        originChannelMidList.forEach((item: any) => {
+          tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+        });
+        list = unique([...list, ...tempChild], 'name');
       } else {
         val.forEach((ele: any) => {
           let tempChild: any = [];
@@ -250,7 +268,16 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = custCatList;
+        let tempChild: any = [
+          {
+            name: '全部',
+            label: '全部',
+          },
+        ];
+        originChannelSmList.forEach((item: any) => {
+          tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+        });
+        list = unique([...list, ...tempChild], 'name');
       } else {
         val.forEach((ele: any) => {
           let tempChild: any = [];
@@ -285,7 +312,16 @@ const StepOne: React.FC<any> = (props: any) => {
       }
       let list: any[] = [];
       if (val?.includes('全部')) {
-        list = custCatSmList;
+        let tempChild: any = [
+          {
+            name: '全部',
+            label: '全部',
+          },
+        ];
+        originCustCatList.forEach((item: any) => {
+          tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+        });
+        list = unique([...list, ...tempChild], 'name');
       } else {
         val.forEach((ele: any) => {
           let tempChild: any = [];
