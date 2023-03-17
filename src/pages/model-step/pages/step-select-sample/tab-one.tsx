@@ -8,6 +8,7 @@ import FeatureCodeForm from './components/featureCodeForm';
 import config from '@/config/index';
 import { inputNumberRangerList, DatePickerList, RangePickerList } from './model/config';
 export const successCode = config.successCode;
+import { unique } from '@/utils';
 
 const FormItem = Form.Item;
 
@@ -182,7 +183,7 @@ const StepOne: React.FC<any> = (props: any) => {
           list = [...list, ...tempChild];
         });
       }
-      setChannelMidList(list);
+      setChannelMidList(unique(list, 'name'));
       setChannelSmList([]);
       setCustCatList([]);
       setCustCatSmList([]);
@@ -223,7 +224,7 @@ const StepOne: React.FC<any> = (props: any) => {
           list = [...list, ...tempChild];
         });
       }
-      setChannelSmList(list);
+      setChannelSmList(unique(list, 'name'));
       setCustCatList([]);
       setCustCatSmList([]);
     } else {
@@ -261,7 +262,7 @@ const StepOne: React.FC<any> = (props: any) => {
           list = [...list, ...tempChild];
         });
       }
-      setCustCatList(list);
+      setCustCatList(unique(list, 'name'));
       setCustCatSmList([]);
     } else {
       setCustCatList([]);
@@ -296,7 +297,7 @@ const StepOne: React.FC<any> = (props: any) => {
           list = [...list, ...tempChild];
         });
       }
-      setCustCatSmList(list);
+      setCustCatSmList(unique(list, 'name'));
     } else {
       setCustCatSmList([]);
     }
