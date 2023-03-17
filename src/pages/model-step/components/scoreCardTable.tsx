@@ -397,6 +397,7 @@ export default (props: any) => {
   }));
 
   const pageChange = async (page: any, size: any) => {
+    setTableData([]);
     if (pageType == 'compareAndReport') {
       let params = {
         page: page,

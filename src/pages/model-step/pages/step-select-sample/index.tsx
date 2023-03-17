@@ -111,6 +111,7 @@ const StepOne: React.FC = (props: any) => {
   }, []);
 
   const getCurrentStage = async () => {
+    console.log('进入了选取页面');
     if (curStep + 1 < doneStep) {
       setStepType(2);
     } else if (curStep + 1 == doneStep) {
