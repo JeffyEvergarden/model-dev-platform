@@ -46,7 +46,7 @@ const VarCardList: React.FC<any> = (props: any) => {
     let arr: any = [];
     varList?.map((item) => {
       if (item?.tick) {
-        arr.push(item?.variableType);
+        arr.push(item?.variable);
       }
     });
     setSelectList(arr);

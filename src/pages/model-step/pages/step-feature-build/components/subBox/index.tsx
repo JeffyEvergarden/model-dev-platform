@@ -31,10 +31,10 @@ const SubBox: React.FC<any> = (props: any) => {
   }));
 
   const varType: any = {
-    number: '数值型',
-    string: '字符串型',
-    boolean: '布尔型',
-    datetime: '日期型',
+    number: '数值',
+    string: '字符',
+    boolean: '布尔',
+    datetime: '日期',
     list: '列表',
   };
 
