@@ -43,7 +43,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     let reqData = {
       itmModelRegisCode: modelId,
       featureMetricsRequest: lostRef?.current?.searchData, //缺失值条件
-      featureMetricsResult: lostRef?.current?.tableList, //缺失值table
+      featureMetricsResult: lostRef?.current?.tableInfo, //缺失值table
       featureSelectRequest: boxRef?.current?.featureSelectRequest(), //分箱 选择变量条件
       featureBinningRequest: {
         binningType: boxRef?.current?.tableRef?.current?.binningType,

@@ -117,5 +117,7 @@ export const useExportReportModel = () => {
     getLostList,
     getVarTypeList,
     setTableList,
+    setColumn,
+    setTableInfo,
   };
 };
