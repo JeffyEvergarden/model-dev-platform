@@ -4,7 +4,7 @@ import { boxList } from '../../config';
 import style from './style.less';
 import styles from '../../../style.less';
 import classnames from 'classnames';
-import { useComparePage } from '../../../step-model-compare/model';
+import { successCode, useComparePage } from '../../../step-model-compare/model';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { changeData } from '@/utils';
@@ -67,14 +67,18 @@ const SubBox: React.FC<any> = (props: any) => {
     setLoading(true);
     await getVariableListForBinning(reqData).then((res) => {
       setLoading(false);
-      console.log(res?.result);
-      data = res?.result || [];
-      total = data?.length;
-      console.log(data);
-      setOriginTableList(data);
-      data = togetherData(data);
-      console.log(data);
-      setTableList(data);
+      if (res?.status?.code == successCode) {
+        console.log(res?.result);
+        data = res?.result || [];
+        total = data?.length;
+        console.log(data);
+        setOriginTableList(data);
+        data = togetherData(data);
+        console.log(data);
+        setTableList(data);
+      } else {
+        message.error(res?.status?.desc);
+      }
       return { data, total: total };
     });
     return { data, total: total };
@@ -82,6 +86,13 @@ const SubBox: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     originTableList: originTableList,
+    selectList: tableRef?.current?.selectList || [],
+    binningType: selectValue,
+    binningNum,
+    // backSetForm: (data: any) => {
+    //   setSelectValue(data?.featureBinningRequest?.binningType),
+    //     setBinningNum(data?.featureBinningRequest?.binningNumber),
+    // }
   }));
 
   const togetherData = (data: any) => {

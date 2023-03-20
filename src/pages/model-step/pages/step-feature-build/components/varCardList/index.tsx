@@ -62,13 +62,15 @@ const VarCardList: React.FC<any> = (props: any) => {
     setPageSize(size);
   };
 
-  const getList = (params: any) => {
+  const getList = (params: any, list?: any) => {
     setPage(1);
     let reqData = {
       itmModelRegisCode: modelId,
       ...params,
     };
-    getVarCardList(reqData, varType);
+    getVarCardList(reqData, varType).then((res) => {
+      setSelectList(list?.split(',') || []);
+    });
   };
 
   return (

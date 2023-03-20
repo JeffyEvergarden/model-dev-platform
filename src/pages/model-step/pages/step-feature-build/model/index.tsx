@@ -72,5 +72,6 @@ export const useExportReportModel = () => {
     getVarCardList,
     getLostList,
     getVarTypeList,
+    setTableList,
   };
 };

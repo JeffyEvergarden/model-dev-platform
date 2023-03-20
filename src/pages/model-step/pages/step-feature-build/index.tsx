@@ -11,6 +11,8 @@ import { useModel } from 'umi';
 import { nextProcess } from './model/api';
 import { successCode } from '../step-model-compare/model';
 import { useNextStep } from '../../config';
+import { getWaitResult } from '../step-select-sample/model/api';
+import { getModelStepDetailApi } from '../../model/api';
 
 // 首页
 const StepFeaturePrepare: React.FC<any> = (props: any) => {
@@ -40,9 +42,18 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     }
     let reqData = {
       itmModelRegisCode: modelId,
-      featureMetricsResult: lostRef?.current?.tableList,
-      featureBinningResults: boxRef?.current?.tableRef?.current?.originTableList,
+      featureMetricsRequest: lostRef?.current?.searchData, //缺失值条件
+      featureMetricsResult: lostRef?.current?.tableList, //缺失值table
+      featureSelectRequest: boxRef?.current?.featureSelectRequest(), //分箱 选择变量条件
+      featureBinningRequest: {
+        binningType: boxRef?.current?.tableRef?.current?.binningType,
+        binningNumber: boxRef?.current?.tableRef?.current?.binningNum,
+        selectedVariables: boxRef?.current?.varRef?.current?.selectList?.join(','), //分箱勾选
+      },
+      featureBinningResults: boxRef?.current?.tableRef?.current?.originTableList, //分箱table
+      variables: boxRef?.current?.tableRef?.current?.selectList?.join(','), //table选中值
     };
+    console.log(reqData);
     setLoading(true);
     await nextProcess(reqData).then((res) => {
       setLoading(false);
@@ -50,6 +61,35 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
         nextStep();
       } else {
         message.error(res?.status?.desc || '');
+      }
+    });
+  };
+
+  useEffect(() => {
+    getCurrentStage();
+  }, []);
+
+  const getCurrentStage = async () => {
+    let res = await getWaitResult({ itmModelRegisCode: modelId });
+    if (res?.status?.code == successCode) {
+      let data = res?.result || {};
+      if (data?.currentStage > 7) {
+        getSubmitValue(); //回显
+      }
+    }
+  };
+
+  const getSubmitValue = async () => {
+    //回显
+    await getModelStepDetailApi({ stage: '7', itmModelRegisCode: modelId }).then((res) => {
+      if (res?.status?.code == successCode) {
+        let data = res?.result || {};
+        lostRef?.current?.backSetForm(data?.featureMetricsRequest);
+        lostRef?.current?.setLostTable(data?.featureMetricsResult);
+        boxRef?.current?.backSetForm(data);
+        // boxRef?.current?.tableRef?.current?.backSetForm(data)
+      } else {
+        message.error(res?.status?.desc);
       }
     });
   };

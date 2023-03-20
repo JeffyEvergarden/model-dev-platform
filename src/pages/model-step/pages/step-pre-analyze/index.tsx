@@ -110,6 +110,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     let res = await getWaitResult({ itmModelRegisCode: modelId });
     if (res?.status?.code == successCode) {
       let data = res?.result || {};
+
+      if (data?.currentStage > 4) {
+        getSubmitValue(); //回显
+      }
+
       if (data?.currentStageStatus) {
         setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
       }
@@ -450,7 +455,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getdefValue();
-    getSubmitValue();
     // getConditionList();
     getYaerMonth();
   }, []);

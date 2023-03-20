@@ -26,6 +26,38 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     tableRef,
+    varRef,
+    featureSelectRequest: () => {
+      let formData = form.getFieldsValue();
+      return {
+        ivFilter: formData?.ivFilter?.join(','),
+        ksFilter: formData?.ksFilter?.join(','),
+        missFilter: formData?.missFilter?.join(','),
+        corrFilter: formData?.corrFilter?.join(','),
+      };
+    },
+    backSetForm: (data: any) => {
+      //回显 获取范围 选择变量
+      let obj = data?.featureSelectRequest || {};
+      let arr = {
+        ivFilter: obj?.ivFilter?.split(',') || [0, 10],
+        ksFilter: obj?.ksFilter?.split(',') || [0, 1],
+        missFilter: obj?.missFilter?.split(',') || [0, 1],
+        corrFilter: obj?.corrFilter?.split(',') || [0, 1],
+        ivFilterStr: sliderAndInput(obj?.ivFilter?.split(',')) || '0.00~10.00',
+        ksFilterStr: sliderAndInput(obj?.ksFilter?.split(',')) || '0.00~1.00',
+        missFilterStr: sliderAndInput(obj?.missFilter?.split(',')) || '0.00~1.00',
+        corrFilterStr: sliderAndInput(obj?.corrFilter?.split(',')) || '0.00~1.00',
+      };
+      form.setFieldsValue({
+        ...arr,
+      });
+      setTimeout(() => {
+        if (data?.featureBinningRequest?.selectedVariables) {
+          selectVar(data?.featureBinningRequest?.selectedVariables);
+        }
+      }, 100);
+    },
   }));
 
   const onChange = (e: any, name: any, str: any) => {
@@ -59,7 +91,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     }
   };
 
-  const selectVar = () => {
+  const selectVar = (setSelectStr?: any) => {
     console.log(form.getFieldsValue());
     let formData = form.getFieldsValue();
     let selectList = {
@@ -70,7 +102,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     };
     console.log(selectList);
 
-    varRef?.current?.getVarList(selectList);
+    varRef?.current?.getVarList(selectList, setSelectStr);
   };
 
   useEffect(() => {

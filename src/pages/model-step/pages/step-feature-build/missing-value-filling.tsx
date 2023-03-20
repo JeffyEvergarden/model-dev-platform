@@ -25,7 +25,8 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
   const [selectReportList, setReportList] = useState<any[]>();
 
-  const { loading, tableList, tableInfo, tableTotal, getLostList } = useExportReportModel();
+  const { loading, tableList, tableInfo, tableTotal, getLostList, setTableList } =
+    useExportReportModel();
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -218,6 +219,11 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     tableList,
+    searchData: form.getFieldsValue(),
+    backSetForm: (obj: any) => {
+      form.setFieldsValue({ obj });
+    },
+    setLostTable: setTableList,
   }));
 
   const tableChange = (pagination: any, filters: any, sorter: any, extra: any) => {
