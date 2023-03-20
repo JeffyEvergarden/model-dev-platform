@@ -86,7 +86,7 @@ const VarCardList: React.FC<any> = (props: any) => {
                 全部类别
               </Option>
               {varTypeList?.map((item) => (
-                <Option key={item?.typeCode} value={item?.typeName}>
+                <Option key={item?.typeName} value={item?.typeName}>
                   {item?.typeName}
                 </Option>
               ))}
