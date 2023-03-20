@@ -53,7 +53,7 @@ const TabThree: React.FC<any> = (props: any) => {
     setDoneStepStatus('process');
     fake.current.timeFn = setInterval(async () => {
       getloading();
-    }, 1 * 1000);
+    }, 10 * 1000);
     return () => {
       clearTimeout(fake.current.timeFn);
     };

@@ -21,7 +21,7 @@ const { Option } = Select;
 // 首页
 const TabThree: React.FC<any> = (props: any) => {
   // const { initialState, setInitialState } = useModel('@@initialState');
-  const { processId, form, onNext, extra, selectedKeys, again } = props;
+  const { processId, form, onNext, extra, selectedKeys, again, back } = props;
 
   const [_form] = Form.useForm(form);
   const fake = useRef<any>({});
@@ -58,6 +58,9 @@ const TabThree: React.FC<any> = (props: any) => {
           fake.current.timeFn = setTimeout(async () => {
             getskip();
           }, 2 * 1000);
+        } else {
+          clearTimeout(fake.current.timeFn);
+          back();
         }
       }
     });
@@ -65,7 +68,7 @@ const TabThree: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     setDoneStepStatus('process');
-    fake.current.timeFn = setTimeout(async () => {
+    fake.current.timeFn = setInterval(async () => {
       getskip();
     }, 2 * 1000);
     return () => {

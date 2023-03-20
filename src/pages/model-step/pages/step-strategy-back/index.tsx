@@ -129,7 +129,11 @@ const StepStrategyBack: React.FC<any> = (props: any) => {
       </Condition>
 
       <Condition r-if={stepType === 3}>
-        <TabThree></TabThree>
+        <TabThree
+          back={() => {
+            setStepType(1);
+          }}
+        ></TabThree>
       </Condition>
     </div>
   );
