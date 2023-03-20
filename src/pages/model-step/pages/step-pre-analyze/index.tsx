@@ -220,11 +220,19 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         val?.map((ele: any) => {
           // let temp: any = productList?.find((item: any) => item.name == ele);
           let tempChild: any = [];
-          originProductList.forEach((item) => {
-            if (item.name == ele) {
-              tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
-            }
-          });
+          if (originChannelMidList?.length) {
+            originProductList.forEach((item) => {
+              if (item.name == ele) {
+                tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+              }
+            });
+          } else {
+            productList.forEach((item) => {
+              if (item.name == ele) {
+                tempChild = item?.children ? [...tempChild, ...item?.children] : tempChild;
+              }
+            });
+          }
           list = [...list, ...tempChild];
         });
       }
@@ -463,7 +471,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     //回显默认
     await getProdChannelList({ itmModelRegisCode: modelId }).then(async (res) => {
       if (res?.status?.code == successCode) {
-        await getparams({ businessType: 'SX' });
+        // await getparams({ businessType: 'SX' });
         let obj = { ...res?.result?.defaultSelection };
         Object?.keys(obj).forEach((item) => {
           if (!(obj[item] && obj[item]?.length)) {
@@ -495,6 +503,9 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
           setBackData(data);
 
           let preanalysisCondition = data?.preanalysisCondition || {};
+          preanalysisCondition.dimension = preanalysisCondition?.dimension;
+          preanalysisCondition.indexList = preanalysisCondition?.indexList;
+
           preanalysisCondition.prodCat = preanalysisCondition?.prodCat?.split?.(',');
           preanalysisCondition.channelCatM = preanalysisCondition?.channelCatM?.split?.(',');
           preanalysisCondition.channelCatS = preanalysisCondition?.channelCatS?.split?.(',');
@@ -759,7 +770,6 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             scroll={{ x: _vcolumns.length * 200 }}
             request={async (params = {}, sort, filter) => {
               console.log(params);
-
               return getVintageList({ page: params.current, ...params });
             }}
             editable={{

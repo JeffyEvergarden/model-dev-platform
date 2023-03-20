@@ -266,6 +266,112 @@ const backshow = (req: any, res: any) => {
         dimension: '进件层',
         index: 'xxx',
       },
+      prodTreeDto: [
+        {
+          id: 1,
+          parentId: 0,
+          name: '产品大类1',
+          children: [
+            {
+              id: 2,
+              parentId: 1,
+              name: '渠道中类1',
+              children: [
+                {
+                  id: 3,
+                  parentId: 2,
+                  name: '渠道小类1',
+                  children: [
+                    {
+                      id: 4,
+                      parentId: 3,
+                      name: '客群大类1',
+                      children: [
+                        {
+                          id: 5,
+                          parentId: 6,
+                          name: '客群小类1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 123,
+          parentId: 0,
+          name: '产品大类1',
+          children: [
+            {
+              id: 332,
+              parentId: 1,
+              name: '渠道中类1',
+              children: [
+                {
+                  id: 322,
+                  parentId: 2,
+                  name: '渠道小类11',
+                  children: [
+                    {
+                      id: 433,
+                      parentId: 3,
+                      name: '客群大类2',
+                      children: [
+                        {
+                          id: 544,
+                          parentId: 6,
+                          name: '客群小类1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 11,
+          parentId: 0,
+          name: '产品大类1',
+          children: [
+            {
+              id: 12,
+              parentId: 11,
+              name: '渠道中类2',
+              children: [
+                {
+                  id: 13,
+                  parentId: 12,
+                  name: '渠道小类2',
+                  children: [
+                    {
+                      id: 14,
+                      parentId: 13,
+                      name: '客群大类2',
+                      children: [
+                        {
+                          id: 15,
+                          parentId: 14,
+                          name: '客群小类2',
+                        },
+                        {
+                          id: 16,
+                          parentId: 14,
+                          name: '客群小类2',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
   });
 };

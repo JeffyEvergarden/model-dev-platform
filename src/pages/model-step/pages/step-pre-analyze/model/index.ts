@@ -39,78 +39,78 @@ export const useSearchModel = () => {
     return arr.filter((item: any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
   };
 
-  const getparams = async (params?: any) => {
-    let res: any = await getparamsApi(params);
-    let tempProcessList: any[] = res?.result?.processList;
-    tempProcessList?.unshift({
-      value: '全部',
+  const getparams = async (tree?: any) => {
+    // let tempProcessList: any[] = res?.result?.processList;
+    // tempProcessList?.unshift({
+    //   value: '全部',
+    //   name: '全部',
+    // });
+    // setProcessList(tempProcessList);
+
+    // if (res.status?.code === successCode) {
+    let data: any = deepFormateData(tree, 1);
+
+    data?.unshift({
       name: '全部',
+      label: '全部',
+      children: [],
     });
-    setProcessList(tempProcessList);
+    setProductList(data);
+    setOriginProductList(data);
+    console.log(data);
 
-    if (res.status?.code === successCode) {
-      let data: any = deepFormateData(res.result?.prodTree, 1);
+    let channelMidTemp: any[] = []; //渠道中类
+    let channelSmTemp: any[] = []; //渠道小类
+    let custCatTemp: any[] = []; //客群大类
+    let custCatSmTemp: any[] = []; //客群小类
+    data.forEach((ele: any) => {
+      if (ele.children) {
+        channelMidTemp.push(...ele.children);
+        ele.children.forEach((subItem: any) => {
+          if (subItem) {
+            channelSmTemp.push(...subItem.children);
+            subItem.children.forEach((threeItem: any) => {
+              if (threeItem.children) {
+                custCatTemp.push(...threeItem.children);
+                threeItem.children.forEach((fourItem: any) => {
+                  custCatSmTemp.push(...fourItem.children);
+                });
+              }
+            });
+          }
+        });
+      }
+    });
 
-      data?.unshift({
-        name: '全部',
-        label: '全部',
-        children: [],
-      });
-      setProductList(data);
-      setOriginProductList(data);
+    channelMidTemp?.unshift({
+      name: '全部',
+      label: '全部',
+    });
+    channelSmTemp?.unshift({
+      name: '全部',
+      label: '全部',
+    });
+    custCatTemp?.unshift({
+      name: '全部',
+      label: '全部',
+    });
+    // custCatSmTemp?.unshift({
+    //   name: 'all',
+    //   label: '全部',
+    // });
 
-      let channelMidTemp: any[] = []; //渠道中类
-      let channelSmTemp: any[] = []; //渠道小类
-      let custCatTemp: any[] = []; //客群大类
-      let custCatSmTemp: any[] = []; //客群小类
-      data.forEach((ele: any) => {
-        if (ele.children) {
-          channelMidTemp.push(...ele.children);
-          ele.children.forEach((subItem: any) => {
-            if (subItem) {
-              channelSmTemp.push(...subItem.children);
-              subItem.children.forEach((threeItem: any) => {
-                if (threeItem.children) {
-                  custCatTemp.push(...threeItem.children);
-                  threeItem.children.forEach((fourItem: any) => {
-                    custCatSmTemp.push(...fourItem.children);
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
+    console.log(channelMidTemp, channelSmTemp, custCatTemp);
 
-      channelMidTemp?.unshift({
-        name: '全部',
-        label: '全部',
-      });
-      channelSmTemp?.unshift({
-        name: '全部',
-        label: '全部',
-      });
-      custCatTemp?.unshift({
-        name: '全部',
-        label: '全部',
-      });
-      // custCatSmTemp?.unshift({
-      //   name: 'all',
-      //   label: '全部',
-      // });
+    setOriginChannelMidList(channelMidTemp);
+    setOriginChannelSmList(channelSmTemp);
+    setOriginCustCatList(custCatTemp);
+    // setOriginCustCatSmList(custCatSmTemp);
 
-      console.log(channelMidTemp, channelSmTemp, custCatTemp);
-
-      setOriginChannelMidList(channelMidTemp);
-      setOriginChannelSmList(channelSmTemp);
-      setOriginCustCatList(custCatTemp);
-      // setOriginCustCatSmList(custCatSmTemp);
-
-      setChannelMidList(channelMidTemp);
-      setChannelSmList(channelSmTemp);
-      setCustCatList(custCatTemp);
-    }
-    return true;
+    // setChannelMidList(channelMidTemp);
+    // setChannelSmList(channelSmTemp);
+    // setCustCatList(custCatTemp);
+    // }
+    // return true;
   };
 
   // 数据处理
@@ -164,10 +164,13 @@ export const useSearchModel = () => {
 
   const getProdChannelList = async (params: any) => {
     let res: any = await queryProdChannelList(params);
-    let data = res?.result?.indexList || [];
-    data = data.map((item: any) => ({ label: item, name: item }));
-    setIndexList(data);
-    return res;
+    if (res?.status?.code == successCode) {
+      await getparams(res?.result?.prodTreeDto);
+      let data = res?.result?.indexList || [];
+      data = data.map((item: any) => ({ label: item, name: item }));
+      setIndexList(data);
+      return res;
+    }
   };
 
   return {

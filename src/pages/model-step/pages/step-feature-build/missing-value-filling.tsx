@@ -2,7 +2,7 @@ import Condition from '@/components/Condition';
 import { DownloadOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Divider, Form, Input, InputNumber, message, Select, Space, Table } from 'antd';
-import { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { boxList, varList } from './config';
 import { useExportReportModel } from './model';
@@ -25,14 +25,15 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
 
   const [selectReportList, setReportList] = useState<any[]>();
 
-  const { loading, tableList, tableInfo, tableTotal, getLostList, setTableList } =
+  const { loading, tableList, tableInfo, column, tableTotal, getLostList, setTableList } =
     useExportReportModel();
 
   const { modelId } = useModel('step', (model: any) => ({
     modelId: model.modelId,
   }));
-  const tbFilter = (dataIndex: any) => {
-    let arr = ['trainIv', 'validIv', 'validPsi'];
+  const tbFilter = (dataIndex: any, name: any) => {
+    let reg = /^IV_|^PSI_/.test(name);
+
     return {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }: any) => (
         <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
@@ -75,7 +76,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               placeholder={'衡量值'}
               value={selectedKeys[1]}
               style={{ marginBottom: 8, flex: 1 }}
-              precision={arr.includes(dataIndex) ? 4 : 2}
+              precision={reg ? 4 : 2}
               controls={false}
               onChange={(val) => {
                 setSelectedKeys([selectedKeys[0], val]);
@@ -113,6 +114,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       ),
       onFilter: (value: any, record: any) => {
         console.log(searchText);
+        console.log(record);
 
         if (searchText?.length && searchText[0]) {
           if (searchText[0] == '=') {
@@ -133,89 +135,127 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           if (searchText[0] == '<') {
             return parseFloat(record[dataIndex]) < searchText[1];
           }
+        } else {
+          return record[dataIndex];
         }
-        return record[dataIndex];
       },
     };
   };
-  const columns: any[] = [
-    {
-      title: '变量名称',
-      dataIndex: 'variable',
-      width: 200,
-      fixed: 'left',
-    },
-    {
-      title: '中文名称',
-      dataIndex: 'variableName',
-      width: 200,
-      fixed: 'left',
-    },
-    {
-      title: '变量类型',
-      dataIndex: 'variableType',
-      width: 200,
-      render: (v: any, r: any) => {
-        let obj = {
-          number: '数值',
-          datetime: '日期',
-          string: '字符',
-          boolean: '布尔',
-          list: '列表',
+  // const columns: any[] = [
+  //   {
+  //     title: '变量名称',
+  //     dataIndex: 'variable',
+  //     width: 200,
+  //     fixed: 'left',
+  //   },
+  //   {
+  //     title: '中文名称',
+  //     dataIndex: 'variableName',
+  //     width: 200,
+  //     fixed: 'left',
+  //   },
+  //   {
+  //     title: '变量类型',
+  //     dataIndex: 'variableType',
+  //     width: 200,
+  //     render: (v: any, r: any) => {
+  //       let obj = {
+  //         number: '数值',
+  //         datetime: '日期',
+  //         string: '字符',
+  //         boolean: '布尔',
+  //         list: '列表',
+  //       };
+  //       return obj[v];
+  //     },
+  //   },
+  //   {
+  //     title: '缺失率_train',
+  //     dataIndex: 'trainMissRate',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.trainMissRate) - parseFloat(b.trainMissRate),
+  //     ...tbFilter('trainMissRate'),
+  //   },
+  //   {
+  //     title: '缺失率_valid',
+  //     dataIndex: 'validMissRate',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.validMissRate) - parseFloat(b.validMissRate),
+  //     ...tbFilter('validMissRate'),
+  //   },
+  //   {
+  //     title: 'KS_train',
+  //     dataIndex: 'trainKs',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.trainKs) - parseFloat(b.trainKs),
+  //     ...tbFilter('trainKs'),
+  //   },
+  //   {
+  //     title: 'KS_valid',
+  //     dataIndex: 'validKs',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.validKs) - parseFloat(b.validKs),
+  //     ...tbFilter('validKs'),
+  //   },
+  //   {
+  //     title: 'IV_train',
+  //     dataIndex: 'trainIv',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.trainIv) - parseFloat(b.trainIv),
+  //     ...tbFilter('trainIv'),
+  //   },
+  //   {
+  //     title: 'IV_valid',
+  //     dataIndex: 'validIv',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.validIv) - parseFloat(b.validIv),
+  //     ...tbFilter('validIv'),
+  //   },
+  //   {
+  //     title: 'PSI_valid',
+  //     dataIndex: 'validPsi',
+  //     width: 200,
+  //     sorter: (a: any, b: any) => parseFloat(a.validPsi) - parseFloat(b.validPsi),
+  //     ...tbFilter('validPsi'),
+  //   },
+  // ];
+  const _vcolumns = useMemo(() => {
+    let left = ['variable', 'variableName'];
+    return column?.map((item: any) => {
+      if (item?.code == 'variableType') {
+        return {
+          title: item?.name,
+          dataIndex: item?.code,
+          width: 200,
+          render: (v: any, r: any) => {
+            let obj = {
+              number: '数值',
+              datetime: '日期',
+              string: '字符',
+              boolean: '布尔',
+              list: '列表',
+            };
+            return obj[v];
+          },
         };
-        return obj[v];
-      },
-    },
-    {
-      title: '缺失率_train',
-      dataIndex: 'trainMissRate',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.trainMissRate) - parseFloat(b.trainMissRate),
-      ...tbFilter('trainMissRate'),
-    },
-    {
-      title: '缺失率_valid',
-      dataIndex: 'validMissRate',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.validMissRate) - parseFloat(b.validMissRate),
-      ...tbFilter('validMissRate'),
-    },
-    {
-      title: 'KS_train',
-      dataIndex: 'trainKs',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.trainKs) - parseFloat(b.trainKs),
-      ...tbFilter('trainKs'),
-    },
-    {
-      title: 'KS_valid',
-      dataIndex: 'validKs',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.validKs) - parseFloat(b.validKs),
-      ...tbFilter('validKs'),
-    },
-    {
-      title: 'IV_train',
-      dataIndex: 'trainIv',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.trainIv) - parseFloat(b.trainIv),
-      ...tbFilter('trainIv'),
-    },
-    {
-      title: 'IV_valid',
-      dataIndex: 'validIv',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.validIv) - parseFloat(b.validIv),
-      ...tbFilter('validIv'),
-    },
-    {
-      title: 'PSI_valid',
-      dataIndex: 'validPsi',
-      width: 200,
-      sorter: (a: any, b: any) => parseFloat(a.validPsi) - parseFloat(b.validPsi),
-      ...tbFilter('validPsi'),
-    },
-  ];
+      } else if (left?.includes(item?.code)) {
+        return {
+          title: item?.name,
+          dataIndex: item?.code,
+          width: 200,
+          fixed: 'left',
+        };
+      } else {
+        return {
+          title: item?.name,
+          dataIndex: item?.code,
+          width: 200,
+          sorter: (a: any, b: any) => parseFloat(a.trainMissRate) - parseFloat(b.trainMissRate),
+          ...tbFilter(item?.code, item?.name),
+        };
+      }
+    });
+  }, [column, searchText]);
 
   useImperativeHandle(cref, () => ({
     tableList,
@@ -368,8 +408,8 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         <ProTable
           pagination={{ showSizeChanger: true }}
           dataSource={tableList}
-          columns={columns}
-          scroll={{ x: columns.length * 200 }}
+          columns={_vcolumns}
+          scroll={{ x: _vcolumns.length * 200 }}
           rowKey="variable"
           loading={loading}
           onChange={tableChange}

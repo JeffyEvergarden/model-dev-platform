@@ -41,6 +41,48 @@ const getLostList = (req: any, res: any) => {
       numTypeNum: '500',
       otherTypeNum: '300',
       variableList: [...list],
+      head: [
+        {
+          name: '变量名称',
+          code: 'variable',
+        },
+        {
+          name: '中文名称',
+          code: 'variableName',
+        },
+        {
+          name: '变量类型',
+          code: 'variableType',
+        },
+        {
+          name: '缺失率_train',
+          code: 'trainMissRate',
+        },
+        {
+          name: '缺失率_valid',
+          code: 'validMissRate',
+        },
+        {
+          name: 'KS_train',
+          code: 'trainKs',
+        },
+        {
+          name: 'KS_valid',
+          code: 'validKs',
+        },
+        {
+          name: 'IV_train',
+          code: 'trainIv',
+        },
+        {
+          name: 'IV_valid',
+          code: 'validIv',
+        },
+        {
+          name: 'PSI_valid',
+          code: 'validPsi',
+        },
+      ],
     },
   });
 };

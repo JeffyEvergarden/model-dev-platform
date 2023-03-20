@@ -30,7 +30,7 @@ const VarCardList: React.FC<any> = (props: any) => {
     setVarType(val);
     if (val != 'all') {
       let data = varList;
-      data = data.filter((item) => item?.variableType == val);
+      data = data.filter((item) => item?.variableType?.split(',')?.includes(val));
       setFilterList(data);
     } else {
       setFilterList(varList);
@@ -86,7 +86,7 @@ const VarCardList: React.FC<any> = (props: any) => {
                 全部类别
               </Option>
               {varTypeList?.map((item) => (
-                <Option key={item?.typeCode} value={item?.typeCode}>
+                <Option key={item?.typeCode} value={item?.typeName}>
                   {item?.typeName}
                 </Option>
               ))}

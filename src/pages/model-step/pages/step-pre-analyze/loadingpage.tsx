@@ -36,24 +36,24 @@ const TabThree: React.FC<any> = (props: any) => {
         data?.currentStageStatus == '1' &&
         data?.isCommittedPage == '1'
       ) {
-        setTimeout(async () => {
-          getloading();
-        }, 10 * 1000);
       } else if (data?.currentStage == 4 && data?.currentStageStatus == '3') {
+        clearTimeout(fake.current.timeFn);
         back();
       } else {
+        clearTimeout(fake.current.timeFn);
         nextStep();
       }
     } else {
+      clearTimeout(fake.current.timeFn);
       back();
     }
   };
 
   useEffect(() => {
     setDoneStepStatus('process');
-    fake.current.timeFn = setTimeout(async () => {
+    fake.current.timeFn = setInterval(async () => {
       getloading();
-    }, 10 * 1000);
+    }, 1 * 1000);
     return () => {
       clearTimeout(fake.current.timeFn);
     };

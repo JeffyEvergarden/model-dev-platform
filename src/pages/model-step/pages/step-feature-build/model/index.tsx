@@ -12,6 +12,48 @@ const successCode = config.successCode;
 
 export const useExportReportModel = () => {
   const [tableList, setTableList] = useState<any[]>([]);
+  const [column, setColumn] = useState<any>([
+    {
+      name: '变量名称',
+      code: 'variable',
+    },
+    {
+      name: '中文名称',
+      code: 'variableName',
+    },
+    {
+      name: '变量类型',
+      code: 'variableType',
+    },
+    {
+      name: '缺失率_train',
+      code: 'trainMissRate',
+    },
+    {
+      name: '缺失率_valid',
+      code: 'validMissRate',
+    },
+    {
+      name: 'KS_train',
+      code: 'trainKs',
+    },
+    {
+      name: 'KS_valid',
+      code: 'validKs',
+    },
+    {
+      name: 'IV_train',
+      code: 'trainIv',
+    },
+    {
+      name: 'IV_valid',
+      code: 'validIv',
+    },
+    {
+      name: 'PSI_valid',
+      code: 'validPsi',
+    },
+  ]);
   const [varList, setVarList] = useState<any[]>([]);
   const [varTypeList, setVarTypeList] = useState<any[]>([]);
   const [tableInfo, setTableInfo] = useState<any>();
@@ -27,8 +69,9 @@ export const useExportReportModel = () => {
     // 策略分析
     if (res?.status?.code === successCode) {
       let data: any[] = res?.result?.variableList || [];
-      setTableInfo(res?.result || {});
+      setTableInfo(res?.result || {}); //导出用
       setTableList(data);
+      setColumn(res?.result?.head);
     } else {
       message.error(res?.status?.desc);
     }
@@ -64,6 +107,7 @@ export const useExportReportModel = () => {
   return {
     loading,
     tableInfo,
+    column,
     tableList,
     varList,
     varTypeList,
