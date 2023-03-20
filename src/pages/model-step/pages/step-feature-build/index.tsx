@@ -84,9 +84,9 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
     await getModelStepDetailApi({ stage: '7', itmModelRegisCode: modelId }).then((res) => {
       if (res?.status?.code == successCode) {
         let data = res?.result || {};
-        lostRef?.current?.backSetForm(data?.featureMetricsRequest);
-        lostRef?.current?.setLostTable(data?.featureMetricsResult);
-        boxRef?.current?.backSetForm(data);
+        lostRef?.current?.backSetForm(data?.featureMetricsRequest); //回显缺失条件
+        lostRef?.current?.setLostTable(data?.featureMetricsResult); //回显缺失表格
+        boxRef?.current?.backSetForm(data); //回显变量条件
         // boxRef?.current?.tableRef?.current?.backSetForm(data)
       } else {
         message.error(res?.status?.desc);

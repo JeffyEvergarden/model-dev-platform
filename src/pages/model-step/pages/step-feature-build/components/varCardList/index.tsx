@@ -69,7 +69,9 @@ const VarCardList: React.FC<any> = (props: any) => {
       ...params,
     };
     getVarCardList(reqData, varType).then((res) => {
-      setSelectList(list?.split(',') || []);
+      if (list) {
+        setSelectList(list?.split(',') || []);
+      }
     });
   };
 

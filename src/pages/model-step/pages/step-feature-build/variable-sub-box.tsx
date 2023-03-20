@@ -53,9 +53,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         ...arr,
       });
       setTimeout(() => {
-        if (data?.featureBinningRequest?.selectedVariables) {
-          selectVar(data?.featureBinningRequest?.selectedVariables);
-        }
+        selectVar(data?.featureBinningRequest?.selectedVariables);
       }, 100);
     },
   }));
