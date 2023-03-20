@@ -55,9 +55,6 @@ const TabThree: React.FC<any> = (props: any) => {
         nextStep();
       } else {
         if (res?.status?.code == successCode) {
-          fake.current.timeFn = setTimeout(async () => {
-            getskip();
-          }, 2 * 1000);
         } else {
           clearTimeout(fake.current.timeFn);
           back();
