@@ -428,6 +428,8 @@ export default (props: any) => {
 
   useImperativeHandle(cref, () => ({
     selectList,
+    setSelectList,
+    setSelectAll,
     page,
     setPage,
     pageSize,

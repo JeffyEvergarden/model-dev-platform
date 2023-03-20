@@ -89,10 +89,15 @@ const SubBox: React.FC<any> = (props: any) => {
     selectList: tableRef?.current?.selectList || [],
     binningType: selectValue,
     binningNum,
-    // backSetForm: (data: any) => {
-    //   setSelectValue(data?.featureBinningRequest?.binningType),
-    //     setBinningNum(data?.featureBinningRequest?.binningNumber),
-    // }
+    backSetForm: (data: any) => {
+      setSelectValue(data?.featureBinningRequest?.binningType); //分箱条件回显
+      setBinningNum(data?.featureBinningRequest?.binningNumber);
+      setOriginTableList(data?.featureBinningResults || []); //table数据回显
+      tableRef?.current?.setSelectList(data?.variables?.split(',') || []);
+      tableRef?.current?.setSelectAll(
+        data?.variables?.split(',')?.length == data?.featureBinningResults?.length,
+      );
+    },
   }));
 
   const togetherData = (data: any) => {

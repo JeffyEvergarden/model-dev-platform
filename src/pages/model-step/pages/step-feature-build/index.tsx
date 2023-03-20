@@ -87,7 +87,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
         lostRef?.current?.backSetForm(data?.featureMetricsRequest); //回显缺失条件
         lostRef?.current?.setLostTable(data?.featureMetricsResult); //回显缺失表格
         boxRef?.current?.backSetForm(data); //回显变量条件
-        // boxRef?.current?.tableRef?.current?.backSetForm(data)
+        boxRef?.current?.tableRef?.current?.backSetForm(data); //分箱表格回显
       } else {
         message.error(res?.status?.desc);
       }
