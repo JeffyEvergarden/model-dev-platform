@@ -62,10 +62,10 @@ const getModelBuildResult = (req: any, res: any) => {
     result: {
       //变量相关性列表
       variableRelevanceData: {
-        rowList: ['fea1', 'fea2', 'fea3', 'fea11', 'fea21', 'fea31'], //行标题
+        rowList: ['fea11111111111111111111111111111', 'fea2', 'fea3', 'fea11', 'fea21', 'fea31'], //行标题
         correlationList: [
           {
-            name: 'fea1',
+            name: 'fea12222222222222222222222222',
             fea1: '1.0',
             fea2: '0.5',
             fea3: '0.45',

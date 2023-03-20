@@ -63,6 +63,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     isHadReported,
     isReadonly,
     setDoneStepStatus,
+    resetScroll,
+    setResetScroll,
   } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     doneStep: model.doneStep,
@@ -72,6 +74,8 @@ const StepModelBuild: React.FC<any> = (props: any) => {
     isHadReported: model.isHadReported,
     isReadonly: model.isReadonly,
     setDoneStepStatus: model.setDoneStepStatus,
+    resetScroll: model.resetScroll,
+    setResetScroll: model.setResetScroll,
   }));
 
   // 表单是否可以编辑
@@ -148,6 +152,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       setDoneStep(Number(data?.currentStage));
       // setDoneStepStatus('processing');
       setTimeout(() => setStepType(2), 500);
+      setResetScroll(resetScroll + 1);
       setStepType(2);
     } else {
       setLoading(false);
@@ -172,6 +177,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
       form.setFieldsValue(res.result);
       let temp: any[] = res.result?.variableList;
       setRulist(temp);
+      setResetScroll(resetScroll + 1);
     } else {
       setLoading(false);
       message.error(res.status?.desc || '失败');

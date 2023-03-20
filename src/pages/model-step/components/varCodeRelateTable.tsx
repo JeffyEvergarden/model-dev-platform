@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import styles from './style.less';
 import classnames from 'classnames';
+import { Tooltip } from 'antd';
 
 //使用前提：dataSource和columns数据字段和格式需要保持一致
 
@@ -20,13 +21,23 @@ export default (props: any) => {
         ellipsis: true,
         fixed: 'left',
         render: (t: any, r: any, i: any) => {
-          return <span className={styles.cellSty}>{r.name}</span>;
+          return (
+            <Tooltip title={r.name}>
+              <span className={styles.cellSty}>{r.name}</span>
+            </Tooltip>
+          );
         },
       },
     ];
     data?.rowList.map((item: any, index: any) => {
       temp.push({
-        title: item,
+        title: () => {
+          return (
+            <Tooltip title={item} placement="topLeft">
+              {item}
+            </Tooltip>
+          );
+        },
         dataIndex: item,
         key: item,
         ellipsis: true,

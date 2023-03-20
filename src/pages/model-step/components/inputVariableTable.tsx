@@ -97,6 +97,7 @@ export default (props: any) => {
         actionRef={actionRef}
         pagination={{
           pageSize: 10,
+          showSizeChanger: true,
         }}
         scroll={{ x: columns?.length * 150 }}
         search={false}
