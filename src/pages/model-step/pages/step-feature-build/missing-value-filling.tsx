@@ -244,7 +244,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               boolean: '布尔',
               list: '列表',
             };
-            return obj[v];
+            return obj?.[v];
           },
         };
       } else if (left?.includes(item?.code)) {
@@ -423,7 +423,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
           pagination={{ showSizeChanger: true }}
           dataSource={tableList}
           columns={_vcolumns}
-          scroll={{ x: _vcolumns.length * 200 }}
+          scroll={{ x: _vcolumns?.length * 200 }}
           rowKey="variable"
           loading={loading}
           onChange={tableChange}

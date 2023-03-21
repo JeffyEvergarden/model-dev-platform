@@ -71,7 +71,7 @@ export const useExportReportModel = () => {
       let data: any[] = res?.result?.variableList || [];
       setTableInfo(res?.result || {}); //导出用
       setTableList(data);
-      setColumn(res?.result?.head);
+      setColumn(res?.result?.head || []);
     } else {
       message.error(res?.status?.desc);
     }
