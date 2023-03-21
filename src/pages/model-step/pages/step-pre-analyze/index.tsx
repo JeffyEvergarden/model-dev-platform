@@ -463,8 +463,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getdefValue();
-    // getConditionList();
     getYaerMonth();
+    // getConditionList();
   }, []);
 
   const getdefValue = async () => {
@@ -923,6 +923,8 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
         <Loadingpage
           back={() => {
             setStepType(1);
+            getdefValue();
+            getSubmitValue();
           }}
         ></Loadingpage>
       </Condition>

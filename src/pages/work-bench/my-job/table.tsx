@@ -246,7 +246,7 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 }}
                 disabled={row?.reportFileOperable == '0'}
               >
-                查看
+                信息编辑
               </Button>
 
               <Button
@@ -255,11 +255,29 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 className={style['btn-success']}
                 onClick={() => exportFile(row)}
               >
-                下载
+                流程编辑
+              </Button>
+              <Button
+                type="link"
+                onClick={() => {
+                  viewReport(row);
+                }}
+                disabled={row?.reportFileOperable == '0'}
+              >
+                发布
+              </Button>
+
+              <Button
+                disabled={row?.reportFileOperable == '0'}
+                type="text"
+                className={style['btn-success']}
+                onClick={() => exportFile(row)}
+              >
+                下线
               </Button>
 
               <Popconfirm
-                title="你确定要删除这个报告吗？"
+                title="删除后将消失，请确认！"
                 okText="确定"
                 cancelText="取消"
                 onConfirm={() => {
