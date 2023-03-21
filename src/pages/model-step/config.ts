@@ -124,11 +124,14 @@ export const useNextStep = () => {
     console.log(_curName, STEP_NAME_MAP[_curName], curIndex, curIndex);
     if (STEP_NAME_MAP[curIndex]) {
       let urlName = config[STEP_NAME_MAP[curIndex]];
-      history.replace(urlName + `?id=${modelId}`);
+
       //
-      setDoneStep(res?.currentStage || curIndex);
+      setDoneStep(res?.result?.currentStage || curIndex);
       setCurStep(curIndex - 1);
-      setDoneStepStatus('process');
+      setDoneStepStatus(formateStatus(Number(res?.result?.currentStageStatus)) || 'process');
+      setTimeout(() => {
+        history.replace(urlName + `?id=${modelId}`);
+      }, 100);
     }
   };
 
