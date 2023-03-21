@@ -85,14 +85,16 @@ const LineChart: React.FC<any> = (props: any) => {
       return {
         name: item,
         type: 'line',
-        data: data?.map?.((item: any, index: any) => {
-          return parseFloat(item[index + 1]) || 0;
+        data: data?.map?.((itm: any, idx: any) => {
+          return parseFloat(itm[index + 1]) || 0;
         }),
       };
     });
     // if (!data1.length || !data2.length) {
     // return;
     // }
+    console.log('---------------------', data, col, series, x);
+
     const options: any = initOptions(col, series, x);
     lineChart.current.setOption(options);
   };
