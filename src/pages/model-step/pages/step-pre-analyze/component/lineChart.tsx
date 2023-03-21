@@ -36,6 +36,7 @@ const LineChart: React.FC<any> = (props: any) => {
         },
         tooltip: {
           trigger: 'axis',
+          enterable: true,
           formatter: formateTooltip,
         },
         xAxis: {
