@@ -271,7 +271,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
     tableInfo,
     searchData: form.getFieldsValue(),
     backSetForm: (obj: any) => {
-      form.setFieldsValue({ obj });
+      form.setFieldsValue({ ...obj });
     },
     setLostTable: (obj: any) => {
       setTableList(obj?.variableList);

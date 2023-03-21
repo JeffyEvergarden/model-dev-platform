@@ -52,6 +52,12 @@ const rebuild = (req: any, res: any) => {
         paymentTime: '2023-01,2023-02',
         loadTerm: '',
       },
+      featureMetricsRequest: {
+        binningType: '卡方分箱',
+        categoryCustomValue: '2',
+        categoryFillType: '自定义',
+        numberFillType: '均值',
+      },
     },
   });
 };
