@@ -523,7 +523,7 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                 rules={[{ required: true, message: '请输入正则化系数' }]}
                 initialValue={1.0}
               >
-                <InputNumber step="0.1" min={0} style={{ width: '100%' }} />
+                <InputNumber step="0.1" min={0} style={{ width: '100%' }} precision={2} />
               </Form.Item>
             </Col>
             <Col span={6}>

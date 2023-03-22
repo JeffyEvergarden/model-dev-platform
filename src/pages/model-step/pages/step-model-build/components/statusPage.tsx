@@ -46,6 +46,9 @@ const StepTwo: React.FC<any> = (props: any) => {
   }, [tabType]);
 
   useEffect(() => {
+    if (doneStep == 8) {
+      setDoneStepStatus(processType);
+    }
     setDoneStepStatus(processType);
   }, [processType]);
 
