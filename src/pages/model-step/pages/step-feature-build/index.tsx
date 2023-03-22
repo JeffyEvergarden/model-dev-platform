@@ -104,7 +104,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
 
       <MissingValueFilling cref={lostRef} />
       <Divider></Divider>
-      <VariableSubBox cref={boxRef} setSelectBoxList={setSelectBoxList} />
+      <VariableSubBox lostRef={lostRef} cref={boxRef} setSelectBoxList={setSelectBoxList} />
 
       <Condition r-if={operate == 'EDIT' && !isHadReported}>
         <NextStepButton
