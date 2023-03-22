@@ -109,6 +109,7 @@ export default (props: any) => {
         bordered
         pagination={{
           pageSize: 10,
+          showSizeChanger: true,
         }}
         search={false}
         columns={columnsMonth}
