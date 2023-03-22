@@ -74,7 +74,9 @@ export default (props: any) => {
       resetTable();
     }, 100);
     setSelectList(arr);
-    setSelectBoxList(arr);
+    if (setSelectBoxList) {
+      setSelectBoxList(arr);
+    }
     setSelectAll(true);
     // }
   }, [originTableList]);
