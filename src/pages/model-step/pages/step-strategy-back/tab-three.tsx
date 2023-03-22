@@ -26,9 +26,10 @@ const TabThree: React.FC<any> = (props: any) => {
   const [_form] = Form.useForm(form);
   const fake = useRef<any>({});
 
-  const { modelId, setDoneStepStatus } = useModel('step', (model: any) => ({
+  const { modelId, setDoneStepStatus, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     setDoneStepStatus: model.setDoneStepStatus,
+    doneStep: model.doneStep,
   }));
 
   const { submitProcess, passBackStep } = useStrategyBackUploadAwaitModel();
@@ -64,7 +65,9 @@ const TabThree: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    setDoneStepStatus('process');
+    if (doneStep == 3) {
+      setDoneStepStatus('process');
+    }
     fake.current.timeFn = setInterval(async () => {
       getskip();
     }, 2 * 1000);
