@@ -93,12 +93,11 @@ export const useStrategyBackUploadAwaitModel = () => {
 
   const awaitResult = async (params?: any, setDoneStep?: any) => {
     let res: any = await getStageStatus(params);
-    let res2: any = await getWaitResult(params);
     let data = res?.result || {};
     console.log(data);
 
-    if (res2?.result?.currentStage) {
-      setDoneStep(res2?.result?.currentStage);
+    if (data?.currentStage) {
+      setDoneStep(data?.currentStage);
     }
     setDataList(data?.backtrackProcessName || '');
     setSuccessMsg(data?.sampleTableName?.split('.'));
