@@ -5,8 +5,9 @@ import NextStepButton from '../../components/nextstep-button';
 import CommonPage from '../../components/common-page';
 import Condition from '@/components/Condition';
 import { successCode, useStrategyBackUploadAwaitModel } from './model';
-import { useNextStep } from '../../config';
+import { formateStatus, useNextStep } from '../../config';
 import { useModel } from 'umi';
+import { getWaitResult } from './model/api';
 
 // import { tabSelectColumns } from './model/config';
 
@@ -26,10 +27,11 @@ const TabThree: React.FC<any> = (props: any) => {
   const [_form] = Form.useForm(form);
   const fake = useRef<any>({});
 
-  const { modelId, setDoneStepStatus, doneStep } = useModel('step', (model: any) => ({
+  const { modelId, setDoneStepStatus, doneStep, setDoneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     setDoneStepStatus: model.setDoneStepStatus,
     doneStep: model.doneStep,
+    setDoneStep: model.setDoneStep,
   }));
 
   const { submitProcess, passBackStep } = useStrategyBackUploadAwaitModel();
@@ -49,6 +51,14 @@ const TabThree: React.FC<any> = (props: any) => {
 
   const getskip = async () => {
     let reqData = { itmModelRegisCode: modelId };
+    let res = await getWaitResult({ itmModelRegisCode: modelId });
+    let data = res?.result || {};
+    if (data?.currentStage) {
+      setDoneStep(data?.currentStage);
+    }
+    if (data?.currentStageStatus) {
+      setDoneStepStatus(formateStatus(Number(data?.currentStageStatus)));
+    }
     await passBackStep(reqData).then((res: any) => {
       if (res?.result?.skipCurrentStageStatus == '1') {
         clearTimeout(fake.current.timeFn);

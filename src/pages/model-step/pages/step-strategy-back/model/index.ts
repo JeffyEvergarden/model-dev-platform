@@ -91,11 +91,15 @@ export const useStrategyBackUploadAwaitModel = () => {
     }
   };
 
-  const awaitResult = async (params?: any) => {
+  const awaitResult = async (params?: any, setDoneStep?: any) => {
     let res: any = await getStageStatus(params);
+    let res2: any = await getWaitResult(params);
     let data = res?.result || {};
     console.log(data);
 
+    if (res2?.result?.currentStage) {
+      setDoneStep(res2?.result?.currentStage);
+    }
     setDataList(data?.backtrackProcessName || '');
     setSuccessMsg(data?.sampleTableName?.split('.'));
     if (StageStatus[data?.currentStageStatus] === 'finish') {
@@ -111,7 +115,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     }
   };
 
-  const startLoop = async (params: any, time: any, status?: any) => {
+  const startLoop = async (params: any, setStatus?: any, status?: any) => {
     // if (time > 10) {
     //   // 当这次查询时长超过20s取消
     //   setProcessType('error');
@@ -119,7 +123,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     //   return;
     // }
 
-    let res: any = await awaitResult(params);
+    let res: any = await awaitResult(params, setStatus);
     if (status == 'finish') {
       setProcessType('finish');
       return 'finish';
@@ -129,7 +133,7 @@ export const useStrategyBackUploadAwaitModel = () => {
     } else if (res == 'loading') {
       // 439 待机回调中
       fake.current.timeFn = setTimeout(async () => {
-        startLoop(params, time + 2);
+        startLoop(params, setStatus);
       }, 10 * 1000);
     }
   };
