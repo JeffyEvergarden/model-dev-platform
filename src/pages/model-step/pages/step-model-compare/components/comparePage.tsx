@@ -123,14 +123,16 @@ export default (props: any) => {
       </Descriptions>
       <Descriptions title="变量分箱" bordered column={4}>
         <Descriptions.Item label="分箱方式">{modelParams?.varBinningType}</Descriptions.Item>
-        <Descriptions.Item label="箱数">{modelParams?.boxNum}</Descriptions.Item>
+        <Descriptions.Item label="箱数">{modelParams?.varBoxNum}</Descriptions.Item>
         <Descriptions.Item label="每箱最小样本占比">{modelParams?.minSampleRate}</Descriptions.Item>
-        <Descriptions.Item label="空值单独分箱">{modelParams?.emptySeparate}</Descriptions.Item>
+        <Descriptions.Item label="空值单独分箱">
+          {modelParams?.emptySeparate == '1' ? '是' : '否'}
+        </Descriptions.Item>
       </Descriptions>
       <Descriptions title="逐步回归" bordered column={4}>
         <Descriptions.Item label="estimator">{modelParams?.estimator}</Descriptions.Item>
         <Descriptions.Item label="方向">{modelParams?.direction}</Descriptions.Item>
-        <Descriptions.Item label="评判标准">{modelParams?.criteria}</Descriptions.Item>
+        <Descriptions.Item label="评判标准">{modelParams?.criterion}</Descriptions.Item>
         <Descriptions.Item label="最大循环次数">{modelParams?.stepwiseMaxIter}</Descriptions.Item>
       </Descriptions>
       <Descriptions title="多重共线性检验" bordered column={4}>
