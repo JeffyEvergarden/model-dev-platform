@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Checkbox, message, Pagination, Progress, Table } from 'antd';
 import styles from './style.less';
@@ -19,6 +19,7 @@ export default (props: any) => {
     activeKey,
     originTableList = [],
     loading,
+    setSelectBoxList,
   } = props;
 
   const { modelId } = useModel('step', (model: any) => ({
@@ -30,6 +31,8 @@ export default (props: any) => {
   const [selectAll, setSelectAll] = useState(true);
 
   const [selectList, setSelectList] = useState<any>([]);
+  const selectRef = useRef<any>(null);
+
   const [page, setPage] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
   const [total, setTotal] = useState<any>(0);
@@ -53,9 +56,10 @@ export default (props: any) => {
       });
       // console.log(arr);
       setSelectList(arr);
-      setSelectAll(true);
+      setSelectBoxList(arr);
     } else {
       setSelectList([]);
+      setSelectBoxList([]);
     }
     actionRef?.current?.reload();
   };
@@ -70,6 +74,7 @@ export default (props: any) => {
       resetTable();
     }, 100);
     setSelectList(arr);
+    setSelectBoxList(arr);
     setSelectAll(true);
     // }
   }, [originTableList]);
@@ -201,9 +206,11 @@ export default (props: any) => {
                     setSelectAll(true);
                   }
                   setSelectList([...selectList, r?.variable]);
+                  setSelectBoxList([...selectList, r?.variable]);
                 } else {
                   setSelectAll(false);
                   setSelectList(selectList.filter((item: any) => item != r?.variable));
+                  setSelectBoxList(selectList.filter((item: any) => item != r?.variable));
                 }
               }}
             />
@@ -429,6 +436,7 @@ export default (props: any) => {
   useImperativeHandle(cref, () => ({
     selectList,
     setSelectList,
+    selectRef,
     setSelectAll,
     page,
     setPage,

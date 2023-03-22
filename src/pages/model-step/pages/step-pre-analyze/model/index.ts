@@ -39,7 +39,7 @@ export const useSearchModel = () => {
     return arr.filter((item: any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
   };
 
-  const getparams = async (tree?: any) => {
+  const getparams = async (tree?: any, def?: any) => {
     // let tempProcessList: any[] = res?.result?.processList;
     // tempProcessList?.unshift({
     //   value: '全部',
@@ -49,12 +49,14 @@ export const useSearchModel = () => {
 
     // if (res.status?.code === successCode) {
     let data: any = deepFormateData(tree, 1);
+    if (def?.prodCat == '全部') {
+      data?.unshift({
+        name: '全部',
+        label: '全部',
+        children: [],
+      });
+    }
 
-    data?.unshift({
-      name: '全部',
-      label: '全部',
-      children: [],
-    });
     setProductList(data);
     setOriginProductList(data);
     console.log(data);
@@ -82,18 +84,21 @@ export const useSearchModel = () => {
       }
     });
 
-    channelMidTemp?.unshift({
-      name: '全部',
-      label: '全部',
-    });
-    channelSmTemp?.unshift({
-      name: '全部',
-      label: '全部',
-    });
-    custCatTemp?.unshift({
-      name: '全部',
-      label: '全部',
-    });
+    def?.channelCatM == '全部' &&
+      channelMidTemp?.unshift({
+        name: '全部',
+        label: '全部',
+      });
+    def?.channelCatS == '全部' &&
+      channelSmTemp?.unshift({
+        name: '全部',
+        label: '全部',
+      });
+    def?.custCat == '全部' &&
+      custCatTemp?.unshift({
+        name: '全部',
+        label: '全部',
+      });
     // custCatSmTemp?.unshift({
     //   name: 'all',
     //   label: '全部',
@@ -165,7 +170,7 @@ export const useSearchModel = () => {
   const getProdChannelList = async (params: any) => {
     let res: any = await queryProdChannelList(params);
     if (res?.status?.code == successCode) {
-      await getparams(res?.result?.prodTreeDto);
+      await getparams(res?.result?.prodTreeDto, res?.result?.defaultSelection);
       let data = res?.result?.indexList || [];
       data = data.map((item: any) => ({ label: item, name: item }));
       setIndexList(data);

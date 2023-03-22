@@ -15,7 +15,7 @@ import config from '@/config/index';
 import Condition from '@/components/Condition';
 
 const SubBox: React.FC<any> = (props: any) => {
-  const { cref, varRef } = props;
+  const { cref, varRef, setSelectBoxList } = props;
   const { Option } = Select;
   const actionRef = useRef<any>();
   const tableRef = useRef<any>();
@@ -86,17 +86,20 @@ const SubBox: React.FC<any> = (props: any) => {
 
   useImperativeHandle(cref, () => ({
     originTableList: originTableList,
-    selectList: tableRef?.current?.selectList || [],
+    selectList: tableRef?.current?.selectRef?.current || [],
     binningType: selectValue,
     binningNum,
     backSetForm: (data: any) => {
       setSelectValue(data?.featureBinningRequest?.binningType); //分箱条件回显
       setBinningNum(data?.featureBinningRequest?.binningNumber);
       setOriginTableList(data?.featureBinningResults || []); //table数据回显
-      tableRef?.current?.setSelectList(data?.variables?.split(',') || []);
-      tableRef?.current?.setSelectAll(
-        data?.variables?.split(',')?.length == data?.featureBinningResults?.length,
-      );
+      setTimeout(() => {
+        tableRef?.current?.setSelectList(data?.variables?.split(',') || []);
+        setSelectBoxList(data?.variables?.split(',') || []);
+        tableRef?.current?.setSelectAll(
+          data?.variables?.split(',')?.length == data?.featureBinningResults?.length,
+        );
+      }, 100);
     },
   }));
 
@@ -223,6 +226,7 @@ const SubBox: React.FC<any> = (props: any) => {
           // dataSource={tableList}
           originTableList={originTableList}
           loading={loading}
+          setSelectBoxList={setSelectBoxList}
         />
       </div>
     </div>
