@@ -75,18 +75,18 @@ export default (props: any) => {
   return (
     <div className={styles.tableBox}>
       <Descriptions bordered column={2} title={<span style={{ fontWeight: 700 }}>样本定义</span>}>
-        <Descriptions.Item label="产品">{sampleData?.prodCat}</Descriptions.Item>
-        <Descriptions.Item label="渠道">{sampleData?.channelCat}</Descriptions.Item>
-        <Descriptions.Item label="训练集">{sampleData?.training}</Descriptions.Item>
-        <Descriptions.Item label="跨期验证">{sampleData?.validation}</Descriptions.Item>
+        <Descriptions.Item label="产品">{sampleData?.prodCat ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="渠道">{sampleData?.channelCat ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="训练集">{sampleData?.training ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="跨期验证">{sampleData?.validation ?? '-'}</Descriptions.Item>
         <Descriptions.Item label="其他验证" span={2}>
-          {sampleData?.otherValidList}
+          {sampleData?.otherValidList ?? '-'}
         </Descriptions.Item>
         <Descriptions.Item label="表现期" span={2}>
-          {sampleData?.performance}
+          {sampleData?.performance ?? '-'}
         </Descriptions.Item>
         <Descriptions.Item label="好坏样本定义" span={2}>
-          {sampleData?.goodAndBadDef}
+          {sampleData?.goodAndBadDef ?? '-'}
         </Descriptions.Item>
       </Descriptions>
       <ProTable

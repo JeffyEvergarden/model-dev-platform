@@ -7,7 +7,7 @@ import { VarBoxList } from './config';
 import style from './style.less';
 
 const MissingValueFilling: React.FC<any> = (props: any) => {
-  const { cref, setSelectBoxList } = props;
+  const { cref, setSelectBoxList, lostRef } = props;
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
   const varRef: any = useRef();
@@ -90,13 +90,14 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
   };
 
   const selectVar = (setSelectStr?: any) => {
-    console.log(form.getFieldsValue());
+    console.log(lostRef);
     let formData = form.getFieldsValue();
     let selectList = {
       ivFilter: formData?.ivFilter?.join(),
       ksFilter: formData?.ksFilter?.join(),
       missFilter: formData?.missFilter?.join(),
       corrFilter: formData?.corrFilter?.join(),
+      ...lostRef?.current?.tableInfo,
     };
     console.log(selectList);
 
