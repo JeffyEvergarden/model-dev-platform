@@ -20,6 +20,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
   const boxRef = useRef<any>();
 
   const [loading, setLoading] = useState<any>(false);
+  const [selectBoxList, setSelectBoxList] = useState<any>([]);
 
   const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -51,7 +52,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
         selectedVariables: boxRef?.current?.varRef?.current?.selectList?.join(','), //分箱勾选
       },
       featureBinningResults: boxRef?.current?.tableRef?.current?.originTableList, //分箱table
-      variables: boxRef?.current?.tableRef?.current?.selectList?.join(','), //table选中值
+      variables: selectBoxList?.join(','), //table选中值
     };
     console.log(reqData);
     setLoading(true);
@@ -103,7 +104,7 @@ const StepFeaturePrepare: React.FC<any> = (props: any) => {
 
       <MissingValueFilling cref={lostRef} />
       <Divider></Divider>
-      <VariableSubBox cref={boxRef} />
+      <VariableSubBox cref={boxRef} setSelectBoxList={setSelectBoxList} />
 
       <Condition r-if={operate == 'EDIT' && !isHadReported}>
         <NextStepButton

@@ -178,7 +178,7 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
     // setChannelMidList([]);
     // setChannelSmList([]);
     // setCustCatList([]);
-    await getparams({ businessType: val });
+    // await getparams({ businessType: val });
 
     formRef?.current?.setFieldsValue({
       prodCat: undefined,

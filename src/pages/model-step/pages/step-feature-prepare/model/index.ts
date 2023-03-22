@@ -134,12 +134,15 @@ export const useVarSelectModal = () => {
     }
   };
 
-  const awaitResult = async (params?: any) => {
+  const awaitResult = async (params?: any, setDoneStep?: any) => {
     let res: any = await getWaitResult(params);
     // let res2: any = await getInfo({ ...params });
 
     let data = res?.result || {};
     console.log(data);
+    if (data?.currentStage) {
+      setDoneStep(data?.currentStage);
+    }
 
     // setDataList(res2?.result?.featureVOList || []);
     if (StageStatus[data?.currentStageStatus] === 'finish') {
@@ -155,7 +158,7 @@ export const useVarSelectModal = () => {
     }
   };
 
-  const startLoop = async (params: any, time: any, status?: any) => {
+  const startLoop = async (params: any, setDoneStep: any, status?: any) => {
     // if (time > 10) {
     //   // 当这次查询时长超过20s取消
     //   setProcessType('error');
@@ -163,7 +166,7 @@ export const useVarSelectModal = () => {
     //   return;
     // }
 
-    let res: any = await awaitResult(params);
+    let res: any = await awaitResult(params, setDoneStep);
     if (status == 'finish') {
       console.log('直接跳完成');
 
@@ -175,7 +178,7 @@ export const useVarSelectModal = () => {
     } else if (res == 'loading') {
       // 439 待机回调中
       fake.current.timeFn = setTimeout(async () => {
-        startLoop(params, time + 2);
+        startLoop(params, setDoneStep);
       }, 10 * 1000);
     }
   };

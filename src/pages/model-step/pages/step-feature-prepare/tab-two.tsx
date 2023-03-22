@@ -40,16 +40,25 @@ const TabTwo: React.FC<any> = (props: any) => {
   } = useVarSelectModal();
   const { nextLoading, nextStep } = useNextStep();
 
-  const { modelId, curStep, doneStep, isHadBuild, isHadReported, operate, setDoneStepStatus } =
-    useModel('step', (model: any) => ({
-      modelId: model.modelId,
-      curStep: model.curStep,
-      doneStep: model.doneStep,
-      isHadBuild: model.isHadBuild,
-      isHadReported: model.isHadReported,
-      operate: model.operate,
-      setDoneStepStatus: model.setDoneStepStatus,
-    }));
+  const {
+    modelId,
+    curStep,
+    doneStep,
+    isHadBuild,
+    isHadReported,
+    operate,
+    setDoneStepStatus,
+    setDoneStep,
+  } = useModel('step', (model: any) => ({
+    modelId: model.modelId,
+    curStep: model.curStep,
+    doneStep: model.doneStep,
+    isHadBuild: model.isHadBuild,
+    isHadReported: model.isHadReported,
+    operate: model.operate,
+    setDoneStepStatus: model.setDoneStepStatus,
+    setDoneStep: model.setDoneStep,
+  }));
 
   const onClick = () => {
     nextFlow({ itmModelRegisCode: modelId }).then((res) => {
@@ -70,9 +79,9 @@ const TabTwo: React.FC<any> = (props: any) => {
       let res = await getWaitResult({ itmModelRegisCode: modelId });
       data = res.result || {};
       if (curStep + 1 < data.currentStage) {
-        startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+        startLoop({ itmModelRegisCode: modelId }, setDoneStep, 'finish');
       } else {
-        startLoop({ itmModelRegisCode: modelId }, 4);
+        startLoop({ itmModelRegisCode: modelId }, setDoneStep);
       }
     })();
 

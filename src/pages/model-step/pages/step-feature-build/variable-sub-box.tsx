@@ -7,7 +7,7 @@ import { VarBoxList } from './config';
 import style from './style.less';
 
 const MissingValueFilling: React.FC<any> = (props: any) => {
-  const { cref } = props;
+  const { cref, setSelectBoxList } = props;
   const [form] = Form.useForm();
   const { Item: FormItem, List: FormList } = Form;
   const varRef: any = useRef();
@@ -160,7 +160,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       </Form>
       <VarCardList cref={varRef} selectVar={selectVar} />
 
-      <SubBox varRef={varRef} cref={tableRef} />
+      <SubBox varRef={varRef} cref={tableRef} setSelectBoxList={setSelectBoxList} />
     </div>
   );
 };

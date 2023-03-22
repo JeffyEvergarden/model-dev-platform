@@ -13,10 +13,11 @@ import { getWaitResult } from '../step-select-sample/model/api';
 const TabThree: React.FC<any> = (props: any) => {
   const { back } = props;
   const fake = useRef<any>({});
-  const { modelId, setDoneStepStatus, setDoneStep } = useModel('step', (model: any) => ({
+  const { modelId, setDoneStepStatus, setDoneStep, doneStep } = useModel('step', (model: any) => ({
     modelId: model.modelId,
     setDoneStepStatus: model.setDoneStepStatus,
     setDoneStep: model.setDoneStep,
+    doneStep: model.doneStep,
   }));
 
   const { nextStep } = useNextStep();
@@ -50,7 +51,10 @@ const TabThree: React.FC<any> = (props: any) => {
   };
 
   useEffect(() => {
-    setDoneStepStatus('process');
+    if (doneStep == 4) {
+      setDoneStepStatus('process');
+    }
+
     fake.current.timeFn = setInterval(async () => {
       getloading();
     }, 10 * 1000);

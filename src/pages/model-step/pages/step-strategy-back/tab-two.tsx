@@ -69,9 +69,9 @@ const TabTwo: React.FC<any> = (props: any) => {
         console.log(data);
         if (curStep + 1 < data.currentStage) {
           console.log('直接成功');
-          startLoop({ itmModelRegisCode: modelId }, 4, 'finish');
+          startLoop({ itmModelRegisCode: modelId }, setDoneStep, 'finish');
         } else {
-          startLoop({ itmModelRegisCode: modelId }, 4);
+          startLoop({ itmModelRegisCode: modelId }, setDoneStep);
         }
         console.log(operate, processType, isHadBuild, isHadReported);
       });
