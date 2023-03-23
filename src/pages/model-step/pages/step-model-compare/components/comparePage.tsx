@@ -116,36 +116,46 @@ export default (props: any) => {
         <b>模型构建参数</b>
       </div>
       <Descriptions title="LogisticRegression参数" bordered column={4}>
-        <Descriptions.Item label="惩罚项">{modelParams?.penalty}</Descriptions.Item>
-        <Descriptions.Item label="solver">{modelParams?.solver}</Descriptions.Item>
-        <Descriptions.Item label="正则化系数">{modelParams?.lrc}</Descriptions.Item>
-        <Descriptions.Item label="迭代次数">{modelParams?.lrMaxIter}</Descriptions.Item>
+        <Descriptions.Item label="惩罚项">{modelParams?.penalty ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="solver">{modelParams?.solver ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="正则化系数">{modelParams?.lrc ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="迭代次数">{modelParams?.lrMaxIter ?? '-'}</Descriptions.Item>
       </Descriptions>
       <Descriptions title="变量分箱" bordered column={4}>
-        <Descriptions.Item label="分箱方式">{modelParams?.varBinningType}</Descriptions.Item>
-        <Descriptions.Item label="箱数">{modelParams?.boxNum}</Descriptions.Item>
-        <Descriptions.Item label="每箱最小样本占比">{modelParams?.minSampleRate}</Descriptions.Item>
-        <Descriptions.Item label="空值单独分箱">{modelParams?.emptySeparate}</Descriptions.Item>
+        <Descriptions.Item label="分箱方式">{modelParams?.varBinningType ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="箱数">{modelParams?.varBoxNum ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="每箱最小样本占比">
+          {modelParams?.minSampleRate ?? '-'}
+        </Descriptions.Item>
+        <Descriptions.Item label="空值单独分箱">
+          {modelParams?.emptySeparate == '1'
+            ? '是'
+            : modelParams?.emptySeparate == '0'
+            ? '否'
+            : '-'}
+        </Descriptions.Item>
       </Descriptions>
       <Descriptions title="逐步回归" bordered column={4}>
-        <Descriptions.Item label="estimator">{modelParams?.estimator}</Descriptions.Item>
-        <Descriptions.Item label="方向">{modelParams?.direction}</Descriptions.Item>
-        <Descriptions.Item label="评判标准">{modelParams?.criteria}</Descriptions.Item>
-        <Descriptions.Item label="最大循环次数">{modelParams?.stepwiseMaxIter}</Descriptions.Item>
+        <Descriptions.Item label="estimator">{modelParams?.estimator ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="方向">{modelParams?.direction ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="评判标准">{modelParams?.criterion ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="最大循环次数">
+          {modelParams?.stepwiseMaxIter ?? '-'}
+        </Descriptions.Item>
       </Descriptions>
       <Descriptions title="多重共线性检验" bordered column={4}>
         <Descriptions.Item label="VIF阈值设置" span={3}>
-          {modelParams?.vifOperator}
-          {modelParams?.vifThreshold}
+          {modelParams?.vifOperator ?? '-'}
+          {modelParams?.vifThreshold ?? '-'}
         </Descriptions.Item>
       </Descriptions>
       <Descriptions title="标准评分卡" bordered column={4}>
-        <Descriptions.Item label="标准分">{modelParams?.baseScore}</Descriptions.Item>
-        <Descriptions.Item label="Pdo">{modelParams?.pdo}</Descriptions.Item>
-        <Descriptions.Item label="Base Odds">{modelParams?.baseOdds}</Descriptions.Item>
-        <Descriptions.Item label="Rate">{modelParams?.rate}</Descriptions.Item>
+        <Descriptions.Item label="标准分">{modelParams?.baseScore ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="Pdo">{modelParams?.pdo ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="Base Odds">{modelParams?.baseOdds ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="Rate">{modelParams?.rate ?? '-'}</Descriptions.Item>
         <Descriptions.Item label="评分分箱方式" span={3}>
-          {modelParams?.scoreBinningType}
+          {modelParams?.scoreBinningType ?? '-'}
         </Descriptions.Item>
       </Descriptions>
       <div className={styles.tableBox}>
