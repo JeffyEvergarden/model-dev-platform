@@ -87,7 +87,10 @@ const LineChart: React.FC<any> = (props: any) => {
         name: item,
         type: 'line',
         data: data?.map?.((itm: any, idx: any) => {
-          return parseFloat(itm[index + 1]) || '-';
+          if (itm[index + 1] == '-') {
+            return '-';
+          }
+          return parseFloat(itm[index + 1]);
         }),
       };
     });
