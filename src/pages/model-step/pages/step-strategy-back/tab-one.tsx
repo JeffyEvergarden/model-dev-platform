@@ -36,6 +36,8 @@ const SelectorTable: React.FC<any> = (props: any) => {
   // 选中key值
   const [selectedKeys, setSelectedKeys] = useState<any[]>([]);
 
+  const [submitLoading, setSubmitLoading] = useState<any>(false);
+
   // 勾选筛选设置
   const rowSelection = {
     preserveSelectedRowKeys: true,
@@ -68,7 +70,9 @@ const SelectorTable: React.FC<any> = (props: any) => {
     } else {
       console.log(selectedKeys);
       let reqData = { itmModelRegisCode: modelId, backtrackProcessName: selectedKeys?.join() };
+      setSubmitLoading(true);
       await submitProcess(reqData).then((res: any) => {
+        setSubmitLoading(false);
         if (res) {
           onNext?.(selectedKeys);
         }
@@ -115,10 +119,10 @@ const SelectorTable: React.FC<any> = (props: any) => {
         <NextStepButton
           btnNode={
             <Space>
-              <Button onClick={skipBackStep} size="large">
+              <Button onClick={skipBackStep} size="large" loading={submitLoading}>
                 跳过，下一流程
               </Button>
-              <Button onClick={onClick} size="large" type="primary">
+              <Button onClick={onClick} size="large" type="primary" loading={submitLoading}>
                 提交
               </Button>
             </Space>
