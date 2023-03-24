@@ -127,7 +127,6 @@ const TabTwo: React.FC<any> = (props: any) => {
         r-if={
           operate == 'EDIT' &&
           (processType === 'finish' || processType === 'error') &&
-          !isHadBuild &&
           !isHadReported
         }
       >
