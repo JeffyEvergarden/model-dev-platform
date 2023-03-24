@@ -28,7 +28,9 @@ export default (props: any) => {
   useEffect(() => {
     getModelDatasetDistribution();
     getModelStability();
-    getSortData();
+    if (pageType == 'modelEffect') {
+      getSortData();
+    }
   }, []);
 
   const getCollectColumns = (data: any, type: string) => {
@@ -420,6 +422,7 @@ export default (props: any) => {
           actionRef={actionRef}
           pagination={{
             pageSize: 10,
+            showSizeChanger: true,
           }}
           search={false}
           scroll={{ x: getVarCodeStableColums(psiHeadList)?.length * 150 }}
