@@ -410,7 +410,7 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
               name={'binningNumber'}
               rules={[{ required: true, message: '请选择' }]}
             >
-              <InputNumber max={20} placeholder="分箱个数" controls={false}></InputNumber>
+              <InputNumber min={1} max={20} placeholder="分箱个数" controls={false}></InputNumber>
             </FormItem>
           </Condition>
           <Button type="primary" onClick={searchTable}>
