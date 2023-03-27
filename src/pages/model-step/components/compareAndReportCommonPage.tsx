@@ -182,7 +182,7 @@ export default (props: any) => {
         },
       },
       {
-        title: '基准线1',
+        title: '基准线2',
         render: (t: any, r: any, i: any) => {
           return <Fragment>0.25</Fragment>;
         },

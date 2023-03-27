@@ -281,7 +281,13 @@ const StepModelBuild: React.FC<any> = (props: any) => {
                   name="varBoxNum"
                   rules={[{ required: true, message: '请输入箱数' }]}
                 >
-                  <InputNumber step="1" min={0} style={{ width: '100%' }} placeholder="请输入" />
+                  <InputNumber
+                    step="1"
+                    min={0}
+                    max={20}
+                    style={{ width: '100%' }}
+                    placeholder="请输入"
+                  />
                 </Form.Item>
               </Col>
             )}
