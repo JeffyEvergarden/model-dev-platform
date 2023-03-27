@@ -112,16 +112,18 @@ const ModelManagement: React.FC<any> = (props: any) => {
       width: 180,
       render: (val: any, row: any) => {
         if (row?.operate == 'scan') {
-          return <span>{row?.modelName}</span>;
+          return <span>{row?.modelName || '-'}</span>;
         } else {
           return (
             <a
               style={{ color: '#1890ff !important' }}
               onClick={() => {
-                setModelName(row?.modelName || '');
+                setModelName(row?.modelName || '-');
                 history?.push(`/modelStep?id=${row?.itmModelRegisCode}`);
               }}
-            >{`${row?.modelName}`}</a>
+            >
+              {`${row?.modelName || '-'}`}
+            </a>
           );
         }
       },

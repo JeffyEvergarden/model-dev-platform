@@ -7,7 +7,7 @@ const baseUrl = config.basePath;
 const getList = (req: any, res: any) => {
   let list = new Array(57).fill(1).map((item: any, index: number) => {
     return {
-      modelName: '阿斯拉大' + index,
+      // modelName: '阿斯拉大' + index,
       itmModelRegisCode: 100 + index,
       modelNo: index + 1,
       modelType: ['A', 'B', 'C', 'F', '其他'][Math.floor(Math.random() * 5)],

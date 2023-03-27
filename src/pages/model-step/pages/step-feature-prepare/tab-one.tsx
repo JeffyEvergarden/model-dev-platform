@@ -113,7 +113,7 @@ const SelectModal: React.FC<any> = (props: any) => {
             })}
           </div>
         </div>
-        <Condition r-if={operate == 'EDIT' && !isHadBuild && !isHadReported}>
+        <Condition r-if={operate == 'EDIT' && !isHadReported}>
           <NextStepButton onClick={onClick} text={'提交'} loading={submitLoading} />
         </Condition>
       </div>

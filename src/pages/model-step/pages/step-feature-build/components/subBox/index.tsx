@@ -188,6 +188,7 @@ const SubBox: React.FC<any> = (props: any) => {
             style={{ marginRight: '16px' }}
             onChange={setBinningNum}
             max={20}
+            min={1}
             placeholder="分箱个数"
             controls={false}
             value={binningNum}
