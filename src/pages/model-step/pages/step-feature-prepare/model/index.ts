@@ -74,7 +74,7 @@ export const useVarSelectModal = () => {
         setVarList([]);
         setTotalSize(0);
       }
-      message.warning(res?.resultDesc);
+      message.error(res?.status?.code);
       return false;
     }
   };
@@ -91,7 +91,7 @@ export const useVarSelectModal = () => {
       return { data, total: res?.result?.totalSize || data?.length };
     } else {
       setVarList([]);
-      message.warning(res?.resultDesc);
+      message.error(res?.status?.code);
       return false;
     }
   };

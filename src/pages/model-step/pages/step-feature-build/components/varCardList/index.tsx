@@ -134,7 +134,7 @@ const VarCardList: React.FC<any> = (props: any) => {
           size="small"
           showSizeChanger
           className={style['Pagination']}
-          total={varTotal || 0}
+          total={filterList?.length || varTotal || 0}
           current={page}
           pageSize={pageSize}
           showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
