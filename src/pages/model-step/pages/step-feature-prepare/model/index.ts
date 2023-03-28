@@ -103,7 +103,7 @@ export const useVarSelectModal = () => {
     if (res?.status?.code === successCode) {
       return true;
     } else {
-      message.warning(res?.status?.desc);
+      message.error(res?.status?.desc);
       return false;
     }
   };
