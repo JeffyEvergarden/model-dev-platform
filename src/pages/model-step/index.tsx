@@ -74,9 +74,9 @@ const Myjob: React.FC<any> = (props: any) => {
   // 获取模型详情
   const _getInfo = async () => {
     let res = await getModelInfo(_modelId || modelId);
-    if (res?.modelName) {
-      setModelName(res?.modelName);
-    }
+    // if (res?.modelName) {
+    setModelName(res?.modelName || '-');
+    // }
 
     if (typeof res === 'object') {
       // 设置全局状态

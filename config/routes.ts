@@ -34,6 +34,7 @@ export default [
   {
     path: '/modelStep',
     layout: true,
+    hideInMenu: true,
     name: '模型详情',
     component: './model-step',
     routes: [
