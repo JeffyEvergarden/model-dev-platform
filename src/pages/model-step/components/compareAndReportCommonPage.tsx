@@ -337,7 +337,7 @@ export default (props: any) => {
 
       <div className={styles.tableBox}>
         <ProTable
-          headerTitle={pageType == 'modelEffect' ? '训练集' : '训练集分布'}
+          headerTitle={'训练集分布'}
           rowKey={(record: any) => record.id}
           toolBarRender={() => []}
           options={false}
@@ -351,7 +351,7 @@ export default (props: any) => {
       </div>
       <div className={styles.tableBox}>
         <ProTable
-          headerTitle={pageType == 'modelEffect' ? '验证集' : '验证集分布'}
+          headerTitle={'验证集分布'}
           rowKey={(record: any) => record.id}
           toolBarRender={() => []}
           options={false}

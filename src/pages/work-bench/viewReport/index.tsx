@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { history, useModel } from 'umi';
-import { Tabs, message } from 'antd';
+import { Tabs, message, Button } from 'antd';
 import styles from './index.less';
 import ModelBasic from './components/modelBasic';
 // import PreAnalysis from './components/preAnalysis';
@@ -14,6 +14,7 @@ import { getStepOneForm } from '@/pages/model-step/pages/step-model-overview/mod
 import { useExportReportModel } from './../../model-step/pages/step-export-report/model';
 import { useComparePage } from './../../model-step/pages/step-model-compare/model';
 import { changeData } from '@/utils';
+import { useOpModel } from '@/pages/work-bench/my-job/model/index';
 
 import config from '@/config';
 const successCode = config.successCode;
@@ -21,6 +22,7 @@ const successCode = config.successCode;
 export default () => {
   const { getSampleDefineDetail, getOptimalVersionRquest } = useExportReportModel();
   const { getModelResultRequest } = useComparePage();
+  const { exportData } = useOpModel();
 
   const [optimalVersion, setOptimalVersion] = useState<any>('');
 
@@ -113,6 +115,22 @@ export default () => {
     }
   };
 
+  const dowmLoadReport = () => {
+    const paramData = {
+      itmModelRegisCode: modelId,
+    };
+    exportData(paramData).then((res: any) => {
+      const _a = document.createElement('a');
+      _a.download = `报告详情-${modelId}.xlsx`;
+      _a.href = URL.createObjectURL(res);
+      const evt = document.createEvent('MouseEvents');
+      evt.initEvent('click', false, false);
+      _a.dispatchEvent(evt);
+
+      // _a.click();
+    });
+  };
+
   return (
     <div className={styles.model_report_detail}>
       <PageContainer
@@ -143,6 +161,11 @@ export default () => {
               },
             ],
           },
+          extra: [
+            <Button type="primary" key="download" onClick={dowmLoadReport}>
+              下载报告
+            </Button>,
+          ],
         }}
       >
         <Tabs size="large">
