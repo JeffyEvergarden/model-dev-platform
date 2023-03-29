@@ -186,7 +186,7 @@ export default () => {
           </Tabs.TabPane>
           <Tabs.TabPane tab={'模型效果'} key={'6'}>
             <CompareAndReportCommonPage
-              pageType={'modelEffect'}
+              pageType={'viewReport'}
               modelResult={modelResult}
               optimalVersion={optimalVersion}
             />

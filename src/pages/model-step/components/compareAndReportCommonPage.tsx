@@ -136,7 +136,7 @@ export default (props: any) => {
         render: (t: any, r: any, i: any) => {
           return (
             <span
-              style={{ color: r.scoreRange == '总计' && pageType == 'comparePage' ? 'red' : '' }}
+              style={{ color: r.scoreRange == '总计' && pageType !== 'modelEffect' ? 'red' : '' }}
             >
               {t}
             </span>
