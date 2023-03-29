@@ -44,14 +44,14 @@ export const VarBoxList: any[] = [
     label: 'KS筛选',
     name: 'ksFilter',
     str: 'ksFilterStr',
-    min: '-1.00',
+    min: '0.00',
     max: '1.00',
   },
   {
     label: '缺失率筛选',
     name: 'missFilter',
     str: 'missFilterStr',
-    min: '-1.00',
+    min: '0.00',
     max: '1.00',
   },
   {
