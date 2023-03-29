@@ -41,13 +41,13 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
       let obj = data?.featureSelectRequest || {};
       let arr = {
         ivFilter: obj?.ivFilter?.split(',') || [0, 10],
-        ksFilter: obj?.ksFilter?.split(',') || [0, 1],
-        missFilter: obj?.missFilter?.split(',') || [0, 1],
-        corrFilter: obj?.corrFilter?.split(',') || [0, 1],
+        ksFilter: obj?.ksFilter?.split(',') || [-1, 1],
+        missFilter: obj?.missFilter?.split(',') || [-1, 1],
+        corrFilter: obj?.corrFilter?.split(',') || [-1, 1],
         ivFilterStr: sliderAndInput(obj?.ivFilter?.split(',')) || '0.00~10.00',
-        ksFilterStr: sliderAndInput(obj?.ksFilter?.split(',')) || '0.00~1.00',
-        missFilterStr: sliderAndInput(obj?.missFilter?.split(',')) || '0.00~1.00',
-        corrFilterStr: sliderAndInput(obj?.corrFilter?.split(',')) || '0.00~1.00',
+        ksFilterStr: sliderAndInput(obj?.ksFilter?.split(',')) || '-1.00~1.00',
+        missFilterStr: sliderAndInput(obj?.missFilter?.split(',')) || '-1.00~1.00',
+        corrFilterStr: sliderAndInput(obj?.corrFilter?.split(',')) || '-1.00~1.00',
       };
       form.setFieldsValue({
         ...arr,
@@ -72,8 +72,8 @@ const MissingValueFilling: React.FC<any> = (props: any) => {
         if (arr[0] > arr[1]) {
           arr = arr.reverse();
         }
-        if (arr[1] > (name == 'ivFilter' ? 10 : 1) || arr[0] < 0) {
-          message.warning(name == 'ivFilter' ? '请保证范围在0-10' : '请保证范围在0-1');
+        if (arr[1] > (name == 'ivFilter' ? 10 : 1) || arr[0] < (name == 'ivFilter' ? 0 : -1)) {
+          message.warning(name == 'ivFilter' ? '请保证范围在0-10' : '请保证范围在-1-1');
           console.log(formData);
           formData[str] = formData?.[name]?.map((item: any) => twoDecimal_f(item))?.join('~');
           form.setFieldsValue({ ...formData });
