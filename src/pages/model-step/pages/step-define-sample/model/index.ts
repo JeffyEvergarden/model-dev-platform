@@ -58,10 +58,12 @@ export const useDefineSampleModel = () => {
 
       setTableResultTotal(res?.totalSize || data?.length || 0);
       setResultTableList(arr);
+      return true;
     } else {
       setTableResultTotal(0);
       setResultTableList([]);
       message.error(res?.status?.desc);
+      return false;
     }
   };
 

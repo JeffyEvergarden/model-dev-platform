@@ -121,6 +121,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   const [pageSize2, setPageSize2] = useState<number>(20);
 
   const { nextLoading, nextStep } = useNextStep();
+  const [formSubmitFlag, setFormSubmitFlag] = useState<any>(false);
 
   const { modelId, isHadReported, operate } = useModel('step', (model: any) => ({
     modelId: model.modelId,
@@ -177,6 +178,10 @@ const StepDefineSample: React.FC<any> = (props: any) => {
         });
       }
 
+      if (obj?.trainingTime?.length) {
+        setFormSubmitFlag(true);
+      }
+
       //回显整体
       form.setFieldsValue({
         ...obj,
@@ -214,7 +219,13 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       }),
     };
     console.log(newObj);
-    getResultTableList(newObj);
+    await getResultTableList(newObj).then((res) => {
+      if (res) {
+        setFormSubmitFlag(true);
+      } else {
+        setFormSubmitFlag(false);
+      }
+    });
   };
 
   const exportResult = async () => {
@@ -273,6 +284,10 @@ const StepDefineSample: React.FC<any> = (props: any) => {
   };
 
   const _nextFlow = () => {
+    if (!formSubmitFlag) {
+      message.warning('请确认整体分布查询正确');
+      return;
+    }
     form.validateFields().then((value: any) => {
       if (value) {
         let flag = timeTest(value);
@@ -324,6 +339,12 @@ const StepDefineSample: React.FC<any> = (props: any) => {
     console.log(formData);
 
     form.setFieldsValue({ ...formData });
+  };
+
+  const formChange = () => {
+    console.log('form改变');
+
+    setFormSubmitFlag(false);
   };
 
   const timeTest = (obj: any) => {
@@ -401,7 +422,7 @@ const StepDefineSample: React.FC<any> = (props: any) => {
       </div>
 
       <div className={style['step-form']}>
-        <Form form={form} layout="vertical" labelAlign="right">
+        <Form form={form} layout="vertical" labelAlign="right" onValuesChange={formChange}>
           <FormItem
             rules={[{ required: true, message: '请选择训练集范围' }]}
             name="trainingTime"
