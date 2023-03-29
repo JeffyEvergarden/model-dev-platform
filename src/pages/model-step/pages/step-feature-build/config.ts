@@ -58,7 +58,7 @@ export const VarBoxList: any[] = [
     label: '相关性筛选',
     name: 'corrFilter',
     str: 'corrFilterStr',
-    min: '-1.00',
+    min: '0.00',
     max: '1.00',
   },
 ];
