@@ -60,14 +60,14 @@ const getWaitResult = (req: any, res: any) => {
     },
     result: {
       modelName: '模型名称',
-      currentStage: '10',
-      currentStageStatus: '2', //：0：未开始 1：进行中 2：已完成 3：处理失败
+      currentStage: '2',
+      currentStageStatus: '1', //：0：未开始 1：进行中 2：已完成 3：处理失败
       isCommittedPage: '0',
       currentStageDesc: '0',
       modelBuildStatus: '0',
       reportFilePath: '',
       backtrackProcessName: '编排1,编排2',
-      operate: 'EDIT',
+      operate: 'SCAN',
       sampleTableName: '库名.表名',
     },
   });
