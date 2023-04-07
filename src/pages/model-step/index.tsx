@@ -69,7 +69,8 @@ const Myjob: React.FC<any> = (props: any) => {
 
   const query: any = history.location.query || {};
 
-  const _modelId: any = query?.id;
+  let _modelId: any = query?.id;
+  _modelId = _modelId.indexOf('script') > -1 ? '' : _modelId;
 
   // 获取模型详情
   const _getInfo = async () => {

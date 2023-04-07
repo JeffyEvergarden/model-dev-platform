@@ -61,12 +61,15 @@ const StepOne: React.FC<any> = (props: any) => {
     loading,
   } = props;
 
-  const { isHadBuild, isHadReported } = useModel('step', (model: any) => ({
+  const { isHadBuild, isHadReported, isReadonly } = useModel('step', (model: any) => ({
     isHadBuild: model.isHadBuild,
     isHadReported: model.isHadReported,
+    isReadonly: model.isReadonly,
   }));
 
   const [_form] = Form.useForm(form);
+
+  const isDisabled = isHadReported || isHadBuild || isReadonly;
 
   useEffect(() => {
     form.setFieldsValue({
@@ -575,9 +578,7 @@ const StepOne: React.FC<any> = (props: any) => {
         setOperationList={setOperationList}
         // paramList={paramList}
       />
-      {isHadBuild !== '1' && isHadReported !== '1' && (
-        <NextStepButton onClick={onClick} text={'提交'} loading={loading} />
-      )}
+      {!isDisabled && <NextStepButton onClick={onClick} text={'提交'} loading={loading} />}
     </div>
   );
 };

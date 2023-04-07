@@ -6,14 +6,14 @@ export default [
     layout: true,
     hideInMenu: true,
   },
-  {
-    path: '/login',
-    layout: false,
-    hideInMenu: true,
-    name: '登录',
-    component: './user/Login',
-    noAuth: true,
-  },
+  // {
+  //   path: '/login',
+  //   layout: false,
+  //   hideInMenu: true,
+  //   name: '登录',
+  //   component: './user/Login',
+  //   noAuth: true,
+  // },
   {
     path: '/workBench',
     layout: true,
