@@ -73,6 +73,8 @@ export const useExportReportModel = () => {
       setTableList(data);
       setColumn(res?.result?.head || []);
     } else {
+      setTableInfo({}); //导出用
+      setTableList([]);
       message.error(res?.status?.desc);
     }
   };
@@ -89,6 +91,8 @@ export const useExportReportModel = () => {
       setVarList(data);
       setVarTotal(data?.length || 0);
     } else {
+      setVarList([]);
+      setVarTotal(0);
       message.error(res?.status?.desc);
     }
   };
@@ -100,6 +104,7 @@ export const useExportReportModel = () => {
       let data: any[] = res?.result || [];
       setVarTypeList(data);
     } else {
+      setVarTypeList([]);
       message.error(res?.status?.desc);
     }
   };

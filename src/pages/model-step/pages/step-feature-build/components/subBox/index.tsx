@@ -77,6 +77,11 @@ const SubBox: React.FC<any> = (props: any) => {
         console.log(data);
         setTableList(data);
       } else {
+        data = [];
+        total = 0;
+        setOriginTableList(data);
+        data = togetherData(data);
+        setTableList(data);
         message.error(res?.status?.desc);
       }
       return { data, total: total };
