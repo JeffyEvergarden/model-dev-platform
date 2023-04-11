@@ -770,7 +770,11 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
             scroll={{ x: _vcolumns.length * 200 }}
             request={async (params = {}, sort, filter) => {
               console.log(params);
-              return getVintageList({ page: params.current, ...params });
+              return getVintageList({
+                page: params.current,
+                ...params,
+                itmModelRegisCode: modelId,
+              });
             }}
             editable={{
               type: 'multiple',
@@ -878,7 +882,10 @@ const StepPreAnalyze: React.FC<any> = (props: any) => {
                 loadTerm: params?.loadTerm?.join(),
               };
 
-              return getRateListArr({ page: params.current, ...params, ...reqData }, rateFilter);
+              return getRateListArr(
+                { page: params.current, ...params, ...reqData, itmModelRegisCode: modelId },
+                rateFilter,
+              );
             }}
             manualRequest={true}
             onChange={rateTableChange}
