@@ -267,9 +267,13 @@ const ModelManagement: React.FC<any> = (props: any) => {
                 onConfirm={() => {
                   deleteRow(row);
                 }}
-                disabled={row?.reportFileOperable == '0'}
+                disabled={row?.reportFileOperable == '0' || row?.operate == 'SCAN'}
               >
-                <Button type="link" danger disabled={row?.reportFileOperable == '0'}>
+                <Button
+                  type="link"
+                  danger
+                  disabled={row?.reportFileOperable == '0' || row?.operate == 'SCAN'}
+                >
                   删除
                 </Button>
               </Popconfirm>
