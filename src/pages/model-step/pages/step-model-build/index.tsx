@@ -218,18 +218,27 @@ const StepModelBuild: React.FC<any> = (props: any) => {
           form={form}
           layout="vertical"
           initialValues={{
+            modelBuildMethod: 'scoreCard',
+            varBinningType: '卡方分箱',
             penalty: 'l2',
             solver: 'liblinear',
             c: 1.0,
             lrMaxIter: 100,
-            emptySeparate: '0',
+            emptySeparate: '1',
             isStepwise: '1',
             estimator: 'ols',
             direction: 'both',
             criterion: 'aic',
             stepwiseMaxIter: 100,
             isVif: '1',
-            vifOperator: '=',
+            vifOperator: '<',
+            vifThreshold: '2',
+            baseScore: 600,
+            pdo: 60,
+            baseOdds: 35,
+            rate: 2,
+            scoreBinningType: '等频分箱',
+            scoreBoxNum: '10',
           }}
         >
           <Row gutter={gutter}>
