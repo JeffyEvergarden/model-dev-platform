@@ -63,7 +63,9 @@ export const useExportReportModel = () => {
 
   const getLostList = async (params?: any) => {
     setLoading(true);
-    const res: any = await getFillFeatureMetrics(params);
+    const res: any = await getFillFeatureMetrics(params).catch((err: any) => {
+      setLoading(false);
+    });
     setLoading(false);
 
     // 策略分析
@@ -81,7 +83,9 @@ export const useExportReportModel = () => {
 
   const getVarCardList = async (params?: any, type?: any) => {
     setLoading(true);
-    const res: any = await getVariableMetricsListForBinning(params);
+    const res: any = await getVariableMetricsListForBinning(params).catch((err: any) => {
+      setLoading(false);
+    });
     setLoading(false);
     console.log(res, type);
     // 策略分析
@@ -98,7 +102,9 @@ export const useExportReportModel = () => {
   };
 
   const getVarTypeList = async (params?: any) => {
-    const res: any = await getVariableTypeList(params);
+    const res: any = await getVariableTypeList(params).catch((err: any) => {
+      setLoading(false);
+    });
     // 策略分析
     if (res?.status?.code === successCode) {
       let data: any[] = res?.result || [];

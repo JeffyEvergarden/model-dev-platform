@@ -4,7 +4,7 @@ import config from '../config';
 // import { history } from 'umi';
 
 const request = extend({
-  timeout: 30000, // 超时10s就报错提示
+  timeout: 8 * 60000, // 超时10s就报错提示
   withCredentials: true,
   // headers: {
   //   'Content-Type': 'multipart/form-data',
